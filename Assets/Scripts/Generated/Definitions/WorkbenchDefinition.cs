@@ -4,6 +4,10 @@ using UnityEngine;
 public class WorkbenchDefinition : Definition
 {
 	[JsonField]
+	public string titlestring = "workbench";
+	[JsonField]
+	public string bannerTextureLocation = "";
+	[JsonField]
 	public GunCraftingDefinition gunCrafting = new GunCraftingDefinition();
 	[JsonField]
 	public GunModifyingDefinition gunModifying = new GunModifyingDefinition();

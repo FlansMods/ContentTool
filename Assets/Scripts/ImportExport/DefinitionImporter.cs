@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using UnityEngine;
 public class DefinitionImporter : MonoBehaviour
 {
 	public const string IMPORT_ROOT = "Import/Content Packs";
+	public const string MODEL_IMPORT_ROOT = "Import/Java Models";
 	public const string ASSET_ROOT = "Assets/Content Packs";
 	public string ExportRoot = "Export";
 
@@ -58,6 +60,16 @@ public class DefinitionImporter : MonoBehaviour
 		{
 			Debug.Log($"--------------------");
 			Debug.Log($"Creating backup of {packName}");
+			for(int i = Packs.Count - 1; i >= 0; i--)
+			{
+				if(Packs[i] == null)
+					Packs.RemoveAt(i);
+				else if(Packs[i].name == packName)
+				{
+					modName = Packs[i].ModName;
+					Packs.RemoveAt(i);
+				}
+			}
 			File.Copy(assetPath, $"{assetPath}.bak", true);
 			File.Delete(assetPath);
 			AssetDatabase.DeleteAsset(assetPath);
@@ -83,14 +95,16 @@ public class DefinitionImporter : MonoBehaviour
 		Debug.Log($"--------------------");
 		Debug.Log($"Importing {packName}");
 
-		pack.name = packName;
-		pack.ModName = packName;
+		pack.name = modName;
+		pack.ModName = modName;
 
 		TYPE_LOOKUP = new Dictionary<string, InfoType>[DefinitionTypes.NUM_TYPES];
+		//MODEL_LOOKUP = new Dictionary<string, Model>[DefinitionTypes.NUM_TYPES];
 
 		ImportAllTypeFiles(pack);
 		ConvertAllTypesToDefinitions(packName, pack);
 
+		//MODEL_LOOKUP = null;
 		TYPE_LOOKUP = null;
 
 		Debug.Log($"--------------------");
@@ -143,15 +157,27 @@ public class DefinitionImporter : MonoBehaviour
 
 				foreach(FileInfo file in dir.EnumerateFiles())
 				{
-					
-					InfoType imported = ImportType(pack, defType, file.Name.Split(".")[0]);
-					if(imported != null)
+					try
 					{
-						TYPE_LOOKUP[i].Add(imported.shortName, imported);
+						InfoType imported = ImportType(pack, defType, file.Name.Split(".")[0]);
+						if(imported != null)
+						{
+							TYPE_LOOKUP[i].Add(imported.shortName, imported);
+
+							if(imported.modelString != null && imported.modelString.Length > 0)
+							{
+								string modelPath = $"{MODEL_IMPORT_ROOT}/{imported.modelFolder}/Model{imported.modelString}.java";
+								imported.model = JavaModelImporter.ImportJava(modelPath, imported);			
+							}
+						}
+						else
+						{
+							Debug.LogWarning($"Failed to import {pack.name}:{file.Name}");
+						}
 					}
-					else
+					catch(Exception e)
 					{
-						Debug.LogWarning($"Failed to import {pack.name}:{file.Name}");
+						Debug.LogError($"Failed to load {file.Name} due to exception: {e.Message}, {e.StackTrace}");
 					}
 				}
 			}
@@ -176,6 +202,36 @@ public class DefinitionImporter : MonoBehaviour
 			}
 		}
 	}
+
+	private Texture2D ImportTexture(string packName, string textureName)
+	{
+		return ImportTexture(packName, textureName, Utils.ToLowerWithUnderscores(textureName));
+	}
+
+	private Texture2D ImportTexture(string packName, string textureName, string outputTextureName)
+	{
+		if(textureName != null && textureName.Length > 0)
+		{
+			string path = $"{IMPORT_ROOT}/{packName}/assets/flansmod/{textureName}";
+			if(File.Exists(path))
+			{
+				string importDst = $"{ASSET_ROOT}/{packName}/textures/{outputTextureName}";
+				if(!Directory.Exists(new FileInfo(importDst).DirectoryName))
+				{
+					Directory.CreateDirectory(new FileInfo(importDst).DirectoryName);
+				}
+				Debug.Log($"Imported texture from {path} to {importDst}");
+				File.Copy(path, importDst, true);
+				return AssetDatabase.LoadAssetAtPath<Texture2D>(importDst);
+			}
+			else
+			{
+				Debug.LogError($"Could not find texture at {path}");
+			}
+		}
+		return null;
+	}
+
 
     public InfoType ImportType(ContentPack pack, EDefinitionType type, string fileName)
 	{
@@ -205,39 +261,204 @@ public class DefinitionImporter : MonoBehaviour
 		// Convert it to a definition
 		InfoToDefinitionConverter.Convert(type, infoType, def);
 		def.name = infoType.shortName;
+		def.Model = infoType.model;
+
+		// Copy textures
+		if(infoType.texture != null && infoType.texture.Length > 0)
+			def.Skin = ImportTexture(packName, $"skins/{infoType.texture}.png", $"textures/skins/{Utils.ToLowerWithUnderscores(infoType.texture)}.png");
+		if(infoType.iconPath != null && infoType.iconPath.Length > 0)
+		{
+			def.Icon = ImportTexture(packName, $"textures/items/{infoType.iconPath}.png");
+			if(def.Model == null)
+			{
+				def.Model = new Model()
+				{
+					Type = Model.ModelType.Item,
+				};
+			}
+			def.Model.icon = Utils.ToLowerWithUnderscores(infoType.iconPath);
+		}
+		if(infoType is BoxType box)
+		{	
+			// Boxes need a model made from their side textures
+			def.Model = JavaModelImporter.CreateBoxModel(packName, box);
+			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+			{
+				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.bottomTexturePath)}.png",
+				texture = ImportTexture(packName, $"textures/blocks/{box.bottomTexturePath}.png")
+			});
+			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+			{
+				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.sideTexturePath)}.png",
+				texture = ImportTexture(packName, $"textures/blocks/{box.sideTexturePath}.png")
+			});
+			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+			{
+				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.topTexturePath)}.png",
+				texture = ImportTexture(packName, $"textures/blocks/{box.topTexturePath}.png")
+			});
+		}
+
 
 		//if(pack.HasContent(shortName))
 		//	return false;
 
-		string assetPath = $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{shortName}.asset";
+		string assetPath = $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{Utils.ToLowerWithUnderscores(shortName)}.asset";
 		Debug.Log($"Saving {def} to {assetPath}");
 		AssetDatabase.CreateAsset(def, assetPath);
 		return AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
 	}
 
-	public void ExportPack(ContentPack pack)
+	public void ExportPack(string packName)
 	{
+		ContentPack pack = FindContentPack(packName);
+		if(pack == null)
+		{
+			Debug.LogError($"Failed to find pack {packName}");
+			return;
+		}
+		string dataExportFolder = $"{ExportRoot}/data/{pack.ModName}";
+		string assetExportFolder = $"{ExportRoot}/assets/{pack.ModName}";
+		string itemModelsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/models/item";
+		string blockModelsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/models/block";
+		string blockstatesExportFolder = $"{ExportRoot}/assets/{pack.ModName}/blockstates";
+		string itemTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/items";
+		string skinsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/skins";
+		string guiTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/gui";
+
+		if(!Directory.Exists(dataExportFolder))
+			Directory.CreateDirectory(dataExportFolder);
+		if(!Directory.Exists(assetExportFolder))
+			Directory.CreateDirectory(assetExportFolder);
+		if(!Directory.Exists(blockstatesExportFolder))
+			Directory.CreateDirectory(blockstatesExportFolder);
+		if(!Directory.Exists(itemModelsExportFolder))
+			Directory.CreateDirectory(itemModelsExportFolder);
+		if(!Directory.Exists(blockModelsExportFolder))
+			Directory.CreateDirectory(blockModelsExportFolder);
+		if(!Directory.Exists(skinsExportFolder))
+			Directory.CreateDirectory(skinsExportFolder);
+		if(!Directory.Exists(guiTextureExportFolder))
+			Directory.CreateDirectory(guiTextureExportFolder);
+		if(!Directory.Exists(itemTextureExportFolder))
+			Directory.CreateDirectory(itemTextureExportFolder);
+
 		foreach(Definition def in pack.Content)
 		{
-			string exportFolder = $"{ExportRoot}/data/{pack.ModName}/{DefinitionTypes.GetFromObject(def).ToString()}";
-			string exportTo = $"{exportFolder}/{def.name}.json";
-			if(!Directory.Exists(exportFolder))
-			 	Directory.CreateDirectory(exportFolder);
-			JToken jToken = JsonExporter.Export(def);
-			JObject jRoot = jToken as JObject;
-			using(StringWriter stringWriter = new StringWriter())
-			using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+			string item_name = Utils.ToLowerWithUnderscores(def.name);
+
+			try
 			{
-				jsonWriter.Formatting = Formatting.Indented;
-				jsonWriter.Indentation = 4;
-				jRoot.WriteTo(jsonWriter);
-				Debug.Log($"Exporting {def.name} to {exportTo}");
-				File.WriteAllText(exportTo, stringWriter.ToString());
-			}
-		}
-		for(int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
-		{
+				
+				string exportFolder = $"{dataExportFolder}/{DefinitionTypes.GetFromObject(def).OutputFolder()}";
+				string exportTo = $"{exportFolder}/{item_name}.json";
+				if(!Directory.Exists(exportFolder))
+					Directory.CreateDirectory(exportFolder);
+				JToken jToken = JsonExporter.Export(def);
+				JObject jRoot = jToken as JObject;
+				using(StringWriter stringWriter = new StringWriter())
+				using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+				{
+					jsonWriter.Formatting = Formatting.Indented;
+					jsonWriter.Indentation = 4;
+					jRoot.WriteTo(jsonWriter);
+					Debug.Log($"Exporting {item_name} to {exportTo}");
+					File.WriteAllText(exportTo, stringWriter.ToString());
+				}
+
+				if(def.Model != null)
+				{
+					QuickJSONBuilder itemModelBuilder = new QuickJSONBuilder();
+					if(JsonModelExporter.ExportItemModel(def.Model, pack.ModName, item_name, itemModelBuilder))
+					{
+						using(StringWriter stringWriter = new StringWriter())						
+						using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+						{
+							jsonWriter.Formatting = Formatting.Indented;
+							jsonWriter.Indentation = 4;
+							itemModelBuilder.Root.WriteTo(jsonWriter);
+							string exportModelTo = $"{itemModelsExportFolder}/{item_name}.json";
+							Debug.Log($"Exporting {def.Model.name} item model to {exportModelTo}");
+							File.WriteAllText(exportModelTo, stringWriter.ToString());
+						}
+					}
+
+					QuickJSONBuilder blockModelBuilder = new QuickJSONBuilder();
+					if(JsonModelExporter.ExportBlockModel(def.Model, pack.ModName, item_name, blockModelBuilder))
+					{
+						using(StringWriter stringWriter = new StringWriter())						
+						using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+						{
+							jsonWriter.Formatting = Formatting.Indented;
+							jsonWriter.Indentation = 4;
+							blockModelBuilder.Root.WriteTo(jsonWriter);
+							string exportModelTo = $"{blockModelsExportFolder}/{item_name}.json";
+							Debug.Log($"Exporting {def.Model.name} block model to {exportModelTo}");
+							File.WriteAllText(exportModelTo, stringWriter.ToString());
+						}
+					}
+
+					QuickJSONBuilder itemVariantModelExporter = new QuickJSONBuilder();
+					if(JsonModelExporter.ExportInventoryVariantModel(def.Model, pack.ModName, item_name, itemVariantModelExporter))
+					{
+						using(StringWriter stringWriter = new StringWriter())						
+						using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+						{
+							jsonWriter.Formatting = Formatting.Indented;
+							jsonWriter.Indentation = 4;
+							itemVariantModelExporter.Root.WriteTo(jsonWriter);
+							string exportModelTo = $"{itemModelsExportFolder}/{item_name}_inventory.json";
+							Debug.Log($"Exporting {def.Model.name} inventory variant model to {exportModelTo}");
+							File.WriteAllText(exportModelTo, stringWriter.ToString());
+						}
+					}
+				}
+				if(def.Skin != null)
+				{
+					string src = $"{ASSET_ROOT}/{packName}/Textures/skins/{def.Skin.name}.png";
+					string dst = $"{skinsExportFolder}/{def.Skin.name}.png";
+					
+					Debug.Log($"Copying skin texture from {src} to {dst}");
+					File.Copy(src, dst, true);
+				}
+				if(def.Icon != null)
+				{
+					string src = $"{ASSET_ROOT}/{packName}/Textures/textures/items/{def.Icon.name}.png";
+					string dst = $"{itemTextureExportFolder}/{def.Icon.name}.png";
+					
+					Debug.Log($"Copying icon texture from {src} to {dst}");
+					File.Copy(src, dst, true);
+				}
+				foreach(Definition.AdditionalTexture texture in def.AdditionalTextures)
+				{
+					string src = AssetDatabase.GetAssetPath(texture.texture);
+					string dst = $"{assetExportFolder}/{texture.name}";
+
+					Debug.Log($"Copying additional texture from {src} to {dst}");
+					File.Copy(src, dst, true);
+				}
+				
+
+				//if(TryGetModel(DefinitionTypes.GetFromObject(def)))
+
+				// Export icons
+
 			
+				
+
+				
+
+				// Export blockstates
+
+
+				// Export textures
+
+
+			}
+			catch(Exception e)
+			{
+				Debug.LogError($"Failed to export {item_name} because of {e.Message} at {e.StackTrace}");
+			}
 		}
 	}
 }

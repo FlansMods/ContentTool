@@ -48,6 +48,30 @@ public static class DefinitionTypes
 {
 	public const int NUM_TYPES = (int)EDefinitionType.NUM_TYPES;
 
+	public static EDefinitionType GetFromObject(InfoType type)
+	{
+		if(type is PartType) return EDefinitionType.part;
+		if(type is MechaItemType) return EDefinitionType.mechaItem;
+		if(type is BulletType) return EDefinitionType.bullet;
+		if(type is AttachmentType) return EDefinitionType.attachment;
+		if(type is GrenadeType) return EDefinitionType.grenade;
+		if(type is GunType) return EDefinitionType.gun;
+		if(type is VehicleType) return EDefinitionType.vehicle;
+		if(type is MechaType) return EDefinitionType.mecha;
+		if(type is PlaneType) return EDefinitionType.plane;
+		if(type is AAGunType) return EDefinitionType.aa;
+		if(type is ToolType) return EDefinitionType.tool;
+		if(type is ArmourType) return EDefinitionType.armour;
+		if(type is GunBoxType) return EDefinitionType.box;
+		if(type is ArmourBoxType) return EDefinitionType.armourBox;
+		if(type is PlayerClass) return EDefinitionType.playerClass;
+		if(type is Team) return EDefinitionType.team;
+		if(type is RewardBox) return EDefinitionType.rewardBox;
+		if(type is LoadoutPool) return EDefinitionType.loadout;
+
+		return EDefinitionType.part;
+	}
+
 	public static ENewDefinitionType GetFromObject(Definition def)
 	{
 		if(def is PartDefinition) return ENewDefinitionType.part;
@@ -200,6 +224,27 @@ public static class DefinitionTypes
 			case EDefinitionType.itemHolder: return "workbenches";
 			case EDefinitionType.rewardBox: return "rewardBoxes";
 			case EDefinitionType.loadout: return "loadouts";
+			default: return "";
+		}
+	}
+
+	public static string OutputFolder(this ENewDefinitionType defType)
+	{
+		switch(defType)
+		{
+			case ENewDefinitionType.part: return "parts";
+			case ENewDefinitionType.bullet: return "bullets";
+			case ENewDefinitionType.attachment: return "attachments";
+			case ENewDefinitionType.grenade: return "grenades";
+			case ENewDefinitionType.gun: return "guns";
+			case ENewDefinitionType.vehicle: return "vehicles";
+			case ENewDefinitionType.tool: return "tools";
+			case ENewDefinitionType.armour: return "armour";
+			case ENewDefinitionType.playerClass: return "playerClasses";
+			case ENewDefinitionType.team: return "teams";
+			case ENewDefinitionType.rewardBox: return "rewardBoxes";
+			case ENewDefinitionType.loadout: return "loadouts";
+			case ENewDefinitionType.workbench: return "workbenches";
 			default: return "";
 		}
 	}

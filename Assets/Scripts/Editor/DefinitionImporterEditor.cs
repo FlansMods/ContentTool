@@ -30,14 +30,22 @@ public class DefinitionImporterEditor : Editor
 			
 
 			GUILayout.Label("Imported Packs");
+
+			List<string> packNames = new List<string>();
+
 			foreach(ContentPack pack in instance.Packs)
 			{
+				packNames.Add(pack.name);
+			}
+
+			foreach(string packName in packNames)
+			{
 				GUILayout.BeginHorizontal();
-				GUILayout.Label($"> {pack.name}");
+				GUILayout.Label($"> {packName}");
 				if(GUILayout.Button("Re-Import"))
-					instance.ImportPack(pack.name);
+					instance.ImportPack(packName);
 				if(GUILayout.Button("Export"))
-					instance.ExportPack(pack);
+					instance.ExportPack(packName);
 				GUILayout.EndHorizontal();
 			}
 

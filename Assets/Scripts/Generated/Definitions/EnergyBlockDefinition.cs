@@ -13,4 +13,16 @@ public class EnergyBlockDefinition
 	public int numBatterySlots = 0;
 	[JsonField]
 	public int batterySlotStackSize = 1;
+	[JsonField]
+	public int liquidFuelStorage = 0;
+	[JsonField]
+	public string liquidFuelFilter = "";
+	[JsonField]
+	public int liquidFEPerMillibucket = 0;
+	[JsonField]
+	public int numSolidFuelSlots = 0;
+	[JsonField]
+	public string solidFuelFilter = "";
+	[JsonField]
+	public int solidFEPerFuelTime = 0;
 }

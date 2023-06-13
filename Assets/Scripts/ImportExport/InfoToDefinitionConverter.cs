@@ -414,7 +414,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				actionType = EActionType.Scope,
 				scopeOverlay = inf.defaultScopeTexture,
 				//zoomFactor = inf.zoomLevel,
-				fovFactor = inf.FOVFactor,
+				fovFactor = Mathf.Approximately(inf.FOVFactor, 1.0f) ? inf.zoomLevel : inf.FOVFactor,
 			});
 		}
 		else if(inf.FOVFactor > 1.0f)
@@ -422,7 +422,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			secondaryActions.Add(new ActionDefinition()
 			{
 				canBeOverriden = true,
-				actionType = EActionType.IronSight,
+				actionType = EActionType.AimDownSights,
 				fovFactor = inf.FOVFactor,
 			});
 		}
@@ -616,24 +616,21 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 					{
 						actionType = EActionType.Scope,
 						scopeOverlay = input.zoomOverlay,
-						fovFactor = input.FOVZoomLevel,
+						// Legacy, people much prefer FOV zoom to regular ZOOM
+						fovFactor = Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel, 
 					}
 				};
 			}
 			else
 			{
-				mods.Add(new ModifierDefinition()
-				{
-					Stat = "fovFactor",
-					Multiply = 0.0f,
-					Add = input.FOVZoomLevel,
-				});
-				mods.Add(new ModifierDefinition()
-				{
-					Stat = "zoomFactor",
-					Multiply = 0.0f,
-					Add = input.zoomLevel,
-				});
+				output.secondaryActions = new ActionDefinition[] {
+					new ActionDefinition()
+					{
+						actionType = EActionType.AimDownSights,
+						scopeOverlay = input.zoomOverlay,
+						fovFactor = input.FOVZoomLevel,
+					}
+				};
 			}
 		}
 		

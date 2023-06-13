@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,6 +115,73 @@ public abstract class TxtImporter<T> where T : InfoType, new()
 			return split[1];
 		return currentValue;
 	}
+
+	protected bool ParseModelVector3(string line, string match, out Vector3 result)
+	{
+		if(line.Contains(match))
+		{
+			string values = line.Substring(line.IndexOf("Vector3f") + "Vector3f".Length);
+            float[] floats = Utils.ParseFloats(3, values);
+			result = new Vector3(floats[0], floats[1], floats[2]);
+			return true;
+		}
+
+		result = Vector3.zero;
+		return false;
+	}
+	protected bool ParseModelBool(string line, string match, out bool result)
+	{
+		if(line.Contains(match))
+		{
+			result = line.Contains("true");
+			return true;
+		}
+
+		result = false;
+		return false;
+	}
+	protected bool ParseModelString(string line, string match, out string result)
+	{
+		if(line.Contains(match))
+		{
+			result = line.Substring(line.IndexOf('='), line.IndexOf(';') - line.IndexOf('='));
+			return true;
+		}
+
+		result = "";
+		return false;
+	}
+	protected bool ParseModelEnum<TEnum>(string line, string match, out TEnum result) where TEnum : Enum
+	{
+		if(line.Contains(match))
+		{
+			string[] names = Enum.GetNames(typeof(TEnum));
+			TEnum[] values = (TEnum[])Enum.GetValues(typeof(TEnum));
+			for(int i = 0; i < names.Length; i++)
+			{
+				if(line.Contains(names[i]))
+				{
+					result = values[i];
+					return true;
+				}
+			}
+		}
+
+		result = (TEnum)Enum.GetValues(typeof(TEnum)).GetValue(0);
+		return false;
+	}
+	protected bool ParseModelFloat(string line, string match, out float result)
+	{
+		if(line.Contains(match))
+		{
+			float[] floats = Utils.ParseFloats(1, line);
+			result = floats[0];
+			return true;
+		}
+
+		result = 0.0f;
+		return false;
+	}
 }
 
 public static class TxtImport
@@ -145,11 +213,164 @@ public static class TxtImport
 			default: return null;
 		}
 	}
+
+	public static void ImportFromModel(string line, EDefinitionType type, Model model, InfoType target)
+	{
+		switch(type)
+		{
+			case EDefinitionType.gun: GunTypeImporter.inst.ImportFromModel((GunType)target, model, line); break;
+
+/*
+			case EDefinitionType.part: return PartTypeImporter.inst.ImportFromModel(file);
+			case EDefinitionType.bullet: return BulletTypeImporter.inst.Import(file);
+			case EDefinitionType.attachment: return AttachmentTypeImporter.inst.Import(file);
+			case EDefinitionType.grenade: return GrenadeTypeImporter.inst.Import(file);
+			
+			case EDefinitionType.aa: return AAGunTypeImporter.inst.Import(file);
+			case EDefinitionType.vehicle: return VehicleTypeImporter.inst.Import(file);
+			case EDefinitionType.plane: return PlaneTypeImporter.inst.Import(file);
+			case EDefinitionType.mechaItem: return MechaItemTypeImporter.inst.Import(file);
+			case EDefinitionType.mecha: return MechaTypeImporter.inst.Import(file);
+			case EDefinitionType.tool: return ToolTypeImporter.inst.Import(file);
+			case EDefinitionType.armour: return ArmourTypeImporter.inst.Import(file);
+			case EDefinitionType.armourBox: return ArmourBoxTypeImporter.inst.Import(file);
+			case EDefinitionType.box: return GunBoxTypeImporter.inst.Import(file);
+			case EDefinitionType.playerClass: return PlayerClassTypeImporter.inst.Import(file);
+			case EDefinitionType.team: return TeamTypeImporter.inst.Import(file);
+			case EDefinitionType.itemHolder: return ItemHolderTypeImporter.inst.Import(file);
+			case EDefinitionType.rewardBox: return RewardBoxTypeImporter.inst.Import(file);
+			case EDefinitionType.loadout: return LoadoutPoolTypeImporter.inst.Import(file);
+
+			default: return null;
+			*/
+		}
+	}
+}
+
+public class InfoTypeImporter : TxtImporter<InfoType>
+{
+	public static InfoTypeImporter inst = new InfoTypeImporter();
+	public override void read(InfoType obj, string[] split, TypeFile file)
+	{
+		if (split[0].Equals("Model"))
+		{
+			obj.modelString = split[1];
+			if (obj.modelString.Contains("."))
+			{
+				obj.modelFolder = obj.modelString.Split('.')[0];
+				obj.modelString = obj.modelString.Split('.')[1];
+			}
+		}
+		else if (split[0].Equals("ModelScale"))
+			obj.modelScale = float.Parse(split[1]);
+		else if (split[0].Equals("Name"))
+		{
+			obj.longName = split[1];
+			for (int i = 0; i < split.Length - 2; i++)
+			{
+				obj.longName = obj.longName + " " + split[i + 2];
+			}
+		}
+		else if (split[0].Equals("Description"))
+		{
+			obj.description = split[1];
+			for (int i = 0; i < split.Length - 2; i++)
+			{
+				obj.description = obj.description + " " + split[i + 2];
+			}
+		}
+		else if (split[0].Equals("ShortName"))
+		{
+			obj.shortName = split[1];
+		}
+		else if (split[0].Equals("Icon"))
+		{
+			obj.iconPath = split[1];
+		}
+	}
 }
 
 public class GunTypeImporter : TxtImporter<GunType>
 {
 	public static GunTypeImporter inst = new GunTypeImporter();
+
+	private bool ImportFloat(Model model, string match, string line)
+	{
+		if(ParseModelFloat(line, match, out float result))
+		{
+			model.animations.Add(new Model.AnimationParameter()
+			{
+				key = match,
+				floatValue = result,
+				isVec3 = false,
+			});
+			return true;
+		}
+		return false;
+	}
+
+	private bool ImportVec3(Model model, string match, string line)
+	{
+		if(ParseModelVector3(line, match, out Vector3 result))
+		{
+			model.animations.Add(new Model.AnimationParameter()
+			{
+				key = match,
+				vec3Value = result,
+				isVec3 = true,
+			});
+			return true;
+		}
+		return false;
+	}
+
+	public void ImportFromModel(GunType obj, Model model, string line)
+	{
+		if(ImportVec3(model, "itemFrameOffset", line)) {}
+		else if(ImportVec3(model, "thirdPersonOffset", line)) {}
+		else if(ImportVec3(model, "barrelBreakPoint", line)) {}
+		else if(ImportVec3(model, "spinPoint", line)) {}
+		else if(ImportVec3(model, "revolverFlipPoint", line)) {}
+		else if(ImportVec3(model, "minigunBarrelOrigin", line)) {}
+
+
+		else if(ImportFloat(model, "gunSlideDistance", line)) {}
+		else if(ImportFloat(model, "tiltGunTime", line)) {}
+		else if(ImportFloat(model, "unloadClipTime", line)) {}
+		else if(ImportFloat(model, "loadClipTime", line)) {}
+		else if(ImportFloat(model, "untiltGunTime", line)) {}
+		else if(ImportFloat(model, "breakAngle", line)) {}
+		else if(ImportFloat(model, "pumpDelayAfterReload", line)) {}
+		else if(ImportFloat(model, "pumpDelay", line)) {}
+		else if(ImportFloat(model, "pumpTime", line)) {}
+		else if(ImportFloat(model, "pumpHandleDistance", line)) {}
+		else if(ImportFloat(model, "numBulletsInReloadAnimation", line)) {}
+		else if(ImportFloat(model, "endLoadedAmmoDistance", line)) {}
+		else if(ImportFloat(model, "revolverFlipAngle", line)) {}
+		else if(ImportFloat(model, "renderOffset", line)) {}
+
+		Vector3 result;
+		bool boolResult;
+		if(ParseModelEnum<EAnimationType>(line, "animationType", out EAnimationType animType))
+			obj.animationType = animType;
+		else if(ParseModelBool(line, "spinningCocking", out boolResult))
+			obj.spinningCocking = boolResult;
+
+		else if(ParseModelBool(line, "gripIsOnPump", out boolResult))
+			model.SetAttachment("grip", "pump");
+		else if(ParseModelBool(line, "scopeIsOnSlide", out boolResult))
+			model.SetAttachment("scope", "slide");
+		else if(ParseModelBool(line, "scopeIsOnBreakAction", out boolResult))
+			model.SetAttachment("scope", "break_action");
+		else if(ParseModelVector3(line, "stockAttachPoint", out result))
+			model.SetAttachmentOffset("stock", result);
+		else if(ParseModelVector3(line, "barrelAttachPoint", out result))
+			model.SetAttachmentOffset("barrel", result);
+		else if(ParseModelVector3(line, "scopeAttachPoint", out result))
+			model.SetAttachmentOffset("scope", result);
+		else if(ParseModelVector3(line, "gripAttachPoint", out result))
+			model.SetAttachmentOffset("grip", result);
+	}
 
 	public override void read(GunType obj, string[] split, TypeFile file)
 	{
@@ -354,6 +575,8 @@ public class PaintableTypeImporter : TxtImporter<PaintableType>
 
 	public override void read(PaintableType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
+
 		if (split[0].ToLower().Equals("paintjob"))
 		{
 			obj.paintjobs.Add(new Paintjob(obj.nextPaintjobID++, split[1], split[2]));
@@ -426,6 +649,8 @@ public class ShootableTypeImporter : TxtImporter<ShootableType>
 
 	public override void read(ShootableType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
+
 			//Item Stuff
 		if(split[0].Equals("StackSize") || split[0].Equals("MaxStackSize"))
 			obj.maxStackSize = int.Parse(split[1]);
@@ -1082,6 +1307,8 @@ public class DriveableTypeImporter : TxtImporter<DriveableType>
 
 	public override void read(DriveableType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
+
 		if(parsers.TryGetValue(split[0], out ParseFunc func))
 			func(split, obj);
 	}
@@ -1205,6 +1432,8 @@ public class AttachmentTypeImporter : TxtImporter<AttachmentType>
 
 	public override void read(AttachmentType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
+
 		if (split[0].Equals("AttachmentType"))
 		{
 			if (split[1].Equals("barrel")) obj.type = EAttachmentType.Barrel;
@@ -1259,54 +1488,12 @@ public class AttachmentTypeImporter : TxtImporter<AttachmentType>
 	}
 }
 
-public class InfoTypeImporter : TxtImporter<InfoType>
-{
-	public static InfoTypeImporter inst = new InfoTypeImporter();
-	public override void read(InfoType obj, string[] split, TypeFile file)
-	{
-		if (split[0].Equals("Model"))
-		{
-			obj.modelString = split[1];
-			if (obj.modelString.Contains("."))
-			{
-				obj.modelFolder = obj.modelString.Split('.')[0];
-				obj.modelString = obj.modelString.Split('.')[1];
-			}
-		}
-		else if (split[0].Equals("ModelScale"))
-			obj.modelScale = float.Parse(split[1]);
-		else if (split[0].Equals("Name"))
-		{
-			obj.name = split[1];
-			for (int i = 0; i < split.Length - 2; i++)
-			{
-				obj.name = obj.name + " " + split[i + 2];
-			}
-		}
-		else if (split[0].Equals("Description"))
-		{
-			obj.description = split[1];
-			for (int i = 0; i < split.Length - 2; i++)
-			{
-				obj.description = obj.description + " " + split[i + 2];
-			}
-		}
-		else if (split[0].Equals("ShortName"))
-		{
-			obj.shortName = split[1];
-		}
-		else if (split[0].Equals("Icon"))
-		{
-			obj.iconPath = split[1];
-		}
-	}
-}
-
 public class RewardBoxTypeImporter : TxtImporter<RewardBox>
 {
 	public static RewardBoxTypeImporter inst = new RewardBoxTypeImporter();
 	public override void read(RewardBox obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(KeyMatches(split, "AddPaintjob"))
 		{
 			obj.paintjobs.Add(split[2]);
@@ -1325,6 +1512,7 @@ public class TeamTypeImporter : TxtImporter<Team>
 	public static TeamTypeImporter inst = new TeamTypeImporter();
 	public override void read(Team obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("TeamColour"))
 		{
 			obj.teamColour = (int.Parse(split[1]) << 16) + ((int.Parse(split[2])) << 8) + ((int.Parse(split[3])));
@@ -1392,6 +1580,7 @@ public class PlayerClassTypeImporter : TxtImporter<PlayerClass>
 	public static PlayerClassTypeImporter inst = new PlayerClassTypeImporter();
 	public override void read(PlayerClass obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("AddItem"))
 		{
 			obj.startingItemStrings.Add(split);
@@ -1422,6 +1611,7 @@ public class LoadoutPoolTypeImporter : TxtImporter<LoadoutPool>
 	public static LoadoutPoolTypeImporter inst = new LoadoutPoolTypeImporter();
 	public override void read(LoadoutPool obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		obj.XPForKill = Read(split, "XPForKill", obj.XPForKill);
 		obj.XPForDeath = Read(split, "XPForDeath", obj.XPForDeath);
 		obj.XPForKillstreakBonus = Read(split, "XPForKillstreakBonus", obj.XPForKillstreakBonus);
@@ -1549,6 +1739,7 @@ public class PartTypeImporter : TxtImporter<PartType>
 	public static PartTypeImporter inst = new PartTypeImporter();
 	public override void read(PartType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("Category"))
 			obj.category = System.Enum.Parse<EPartCategory>(split[1].ToUpper());
 		else if(split[0].Equals("StackSize"))
@@ -1601,6 +1792,7 @@ public class GrenadeTypeImporter : TxtImporter<GrenadeType>
 	public static GrenadeTypeImporter inst = new GrenadeTypeImporter();
 	public override void read(GrenadeType obj, string[] split, TypeFile file)
 	{
+		ShootableTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("MeleeDamage"))
 			obj.meleeDamage = int.Parse(split[1]);
 			
@@ -1682,6 +1874,7 @@ public class AAGunTypeImporter : TxtImporter<AAGunType>
 	public static AAGunTypeImporter inst = new AAGunTypeImporter();
 	public override void read(AAGunType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		obj.damage = Read(split, "Damage", obj.damage);
 		obj.reloadTime = Read(split, "ReloadTime", obj.reloadTime);
 		obj.recoil = Read(split, "Recoil", obj.recoil);
@@ -1747,6 +1940,7 @@ public class MechaItemTypeImporter : TxtImporter<MechaItemType>
 	public static MechaItemTypeImporter inst = new MechaItemTypeImporter();
 	public override void read(MechaItemType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("Type"))
 			obj.type = System.Enum.Parse<EMechaItemType>(split[1]);
 		if(split[0].Equals("ToolType"))
@@ -1824,6 +2018,7 @@ public class MechaTypeImporter : TxtImporter<MechaType>
 
 	public override void read(MechaType obj, string[] split, TypeFile file)
 	{
+		DriveableTypeImporter.inst.read(obj, split, file);
 		//Movement modifiers
 		if(split[0].Equals("TurnLeftSpeed"))
 			obj.turnLeftModifier = float.Parse(split[1]);
@@ -1912,6 +2107,7 @@ public class ToolTypeImporter : TxtImporter<ToolType>
 	public static ToolTypeImporter inst = new ToolTypeImporter();
 	public override void read(ToolType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("Parachute"))
 			obj.parachute = bool.Parse(split[1].ToLower());
 		else if(split[0].Equals("ExplosiveRemote"))
@@ -1949,6 +2145,7 @@ public class ArmourTypeImporter : TxtImporter<ArmourType>
 	public static ArmourTypeImporter inst = new ArmourTypeImporter();
 	public override void read(ArmourType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		if(split[0].Equals("Type"))
 		{
 			if(split[1].Equals("Hat") || split[1].Equals("Helmet"))
@@ -1986,6 +2183,7 @@ public class BoxTypeImporter : TxtImporter<BoxType>
 	public static BoxTypeImporter inst = new BoxTypeImporter();
 	public override void read(BoxType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		obj.topTexturePath = Read(split, "TopTexture", obj.topTexturePath);
 		obj.bottomTexturePath = Read(split, "BottomTexture", obj.bottomTexturePath);
 		obj.sideTexturePath = Read(split, "SideTexture", obj.sideTexturePath);
@@ -2075,6 +2273,7 @@ public class ItemHolderTypeImporter : TxtImporter<ItemHolderType>
 	public static ItemHolderTypeImporter inst = new ItemHolderTypeImporter();
 	public override void read(ItemHolderType obj, string[] split, TypeFile file)
 	{
+		InfoTypeImporter.inst.read(obj, split, file);
 		// Nothing here
 	}
 }

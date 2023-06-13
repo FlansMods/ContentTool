@@ -6,7 +6,7 @@ public enum EActionType
 {
 	Animation,
 	Shoot,
-	IronSight,
+	AimDownSights,
 	Scope,
 	Shield, // == Block?
 	Drop,
