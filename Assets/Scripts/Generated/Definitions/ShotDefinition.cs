@@ -22,6 +22,10 @@ public class ShotDefinition
 	[JsonField]
 	public string[] breaksMaterials = new string[0];
 	[JsonField]
+	public string[] matchAmmoNames = new string[0];
+	[JsonField]
+	public string[] matchAmmoTags = new string[0];
+	[JsonField]
 	public float penetrationPower = 1.0f;
 	[JsonField]
 	public string trailParticles = "";

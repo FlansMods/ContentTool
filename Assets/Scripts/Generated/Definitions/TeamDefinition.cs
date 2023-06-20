@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/TeamDefinition")]
 public class TeamDefinition : Definition
 {
 	[JsonField]

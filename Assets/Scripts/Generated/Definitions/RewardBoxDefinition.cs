@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/RewardBoxDefinition")]
 public class RewardBoxDefinition : Definition
 {
 	[JsonField]

@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/WorkbenchDefinition")]
 public class WorkbenchDefinition : Definition
 {
 	[JsonField]

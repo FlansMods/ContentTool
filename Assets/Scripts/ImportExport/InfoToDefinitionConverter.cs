@@ -95,7 +95,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			manualReloadAllowed = inf.canForceReload,
 			start = new ReloadStageDefinition()
 			{
-				duration = inf.reloadTime * inf.tiltGunTime,
+				duration = inf.reloadTime * inf.tiltGunTime / 20f,
 				sound = new SoundDefinition() 
 				{
 					sound = inf.reloadSound,
@@ -104,18 +104,18 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			},
 			eject = new ReloadStageDefinition()
 			{
-				duration = inf.reloadTime * inf.unloadClipTime,
+				duration = inf.reloadTime * inf.unloadClipTime / 20f,
 				sound = new SoundDefinition(),
 			},
 			loadOne = new ReloadStageDefinition()
 			{
-				duration = inf.reloadTime * inf.loadClipTime,
+				duration = inf.reloadTime * inf.loadClipTime / 20f,
 				sound = new SoundDefinition(),
 				actions = CreateLoadOneReloadActions(inf),
 			},
 			end = new ReloadStageDefinition()
 			{
-				duration = inf.reloadTime * inf.untiltGunTime,
+				duration = inf.reloadTime * inf.untiltGunTime / 20f,
 				sound = new SoundDefinition(),
 				actions = CreateEndReloadActions(inf),
 			},
@@ -299,12 +299,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				canActUnderOtherLiquid = false,
 				FireMode = inf.mode,
 
-				sound = new SoundDefinition()
-				{
-					sound = inf.shootSound,
-					length = inf.shootSoundLength,
-					minPitchMultiplier = inf.distortSound ? 1.0f / 1.2f : 1.0f,
-					maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
+				sounds = new SoundDefinition[] {
+					new SoundDefinition()
+					{
+						sound = inf.shootSound,
+						length = inf.shootSoundLength,
+						minPitchMultiplier = inf.distortSound ? 1.0f / 1.2f : 1.0f,
+						maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
+					},
 				},
 
 				// burstShotCount
@@ -325,9 +327,11 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			{
 				actionType = EActionType.Melee,
 				//damage = inf.meleeDamage,
-				sound = new SoundDefinition() 
-				{
-					sound = inf.meleeSound,
+				sounds = new SoundDefinition[] {
+					new SoundDefinition() 
+					{
+						sound = inf.meleeSound,
+					},
 				},
 			});
 		}
@@ -364,30 +368,32 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return primaryActions.ToArray();
 	}
 
-	public ShotDefinition CreateShotDefinition(GunType type)
+	public ShotDefinition[] CreateShotDefinition(GunType type)
 	{
-		return new ShotDefinition()
-		{
-			verticalReocil = type.recoil,
-			horizontalRecoil = 0.0f,
-			spread = type.bulletSpread,
-			hitscan = type.bulletSpeed <= 0.0f,
-			speed = type.bulletSpeed,
-			count = type.numBullets,
-			timeToNextShot = type.shootDelay,
-			impact = new ImpactDefinition()
+		return new ShotDefinition[] { 
+			new ShotDefinition()
 			{
-				damageToTarget = type.damage,
-				multiplierVsPlayers = 1.0f,
-				multiplierVsVehicles = 1.0f,
-				splashDamageRadius = 0.0f,
-				splashDamageFalloff = 0.0f,
-				setFireToTarget = 0.0f,
-				fireSpreadAmount = 0.0f,
-				fireSpreadRadius = 0.0f,
-				knockback = type.knockback,
-				decal = "flansmod:effects/bullet_decal.png",
-			},
+				verticalReocil = type.recoil,
+				horizontalRecoil = 0.0f,
+				spread = type.bulletSpread,
+				hitscan = type.bulletSpeed <= 0.0f,
+				speed = type.bulletSpeed,
+				count = type.numBullets,
+				timeToNextShot = type.shootDelay,
+				impact = new ImpactDefinition()
+				{
+					damageToTarget = type.damage,
+					multiplierVsPlayers = 1.0f,
+					multiplierVsVehicles = 1.0f,
+					splashDamageRadius = 0.0f,
+					splashDamageFalloff = 0.0f,
+					setFireToTarget = 0.0f,
+					fireSpreadAmount = 0.0f,
+					fireSpreadRadius = 0.0f,
+					knockback = type.knockback,
+					decal = "flansmod:effects/bullet_decal.png",
+				},
+			}
 		};
 	}
 
@@ -687,10 +693,12 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 			{ 
 				actionType = EActionType.Animation, 
 				anim = "GrenadeThrow",
-				sound = new SoundDefinition()
-				{
-					sound = inf.throwSound,
-					length = 1,
+				sounds = new SoundDefinition[] {
+					new SoundDefinition()
+					{
+						sound = inf.throwSound,
+						length = 1,
+					}
 				}
 			});
 			primaryActions.Add(new ActionDefinition() 
@@ -709,7 +717,6 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 		{ 
 			actionType = EActionType.Animation, 
 			anim = "GrenadeCook",
-			sound = new SoundDefinition(),
 		});
 		secondaryActions.Add(new ActionDefinition() 
 		{ 
@@ -875,12 +882,14 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						canActUnderwater = false,
 						canActUnderOtherLiquid = false,
 						FireMode = gunType.mode,
-						sound = new SoundDefinition()
-						{
-							sound = gunType.shootSound,
-							length = gunType.shootSoundLength,
-							minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
-							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
+						sounds = new SoundDefinition[] {
+							new SoundDefinition()
+							{
+								sound = gunType.shootSound,
+								length = gunType.shootSoundLength,
+								minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
+								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
+							},
 						},
 						shootStats = GunConverter.inst.CreateShotDefinition(gunType),
 					});
@@ -927,12 +936,14 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 					canActUnderwater = false,
 					canActUnderOtherLiquid = false,
 					FireMode = gunType.mode,
-					sound = new SoundDefinition()
-					{
-						sound = gunType.shootSound,
-						length = gunType.shootSoundLength,
-						minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
-						maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
+					sounds = new SoundDefinition[] {
+						new SoundDefinition()
+						{
+							sound = gunType.shootSound,
+							length = gunType.shootSoundLength,
+							minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
+							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
+						},
 					},
 					shootStats = GunConverter.inst.CreateShotDefinition(gunType),
 				});
@@ -989,9 +1000,10 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 					new ActionDefinition()
 					{
 						actionType = EActionType.Shoot,
-						shootStats = new ShotDefinition()
+						shootStats = new ShotDefinition[]
 						{
 							// TODO
+							new ShotDefinition(),
 						}
 					}
 				},

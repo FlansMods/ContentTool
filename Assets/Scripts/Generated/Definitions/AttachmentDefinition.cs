@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/AttachmentDefinition")]
 public class AttachmentDefinition : Definition
 {
 	[JsonField]

@@ -50,6 +50,8 @@ public class JavaToCSImport : MonoBehaviour
 		output.Add("using UnityEngine;");
 		output.Add("");
 		output.Add("[System.Serializable]");
+		if(!isElement)
+			output.Add($"[CreateAssetMenu(menuName = \"Flans Mod/{className}\")]");
 		if(isElement)
 			output.Add($"public class {className}");
 		else
@@ -78,8 +80,8 @@ public class JavaToCSImport : MonoBehaviour
 		return java
 		.Replace("Vec3.ZERO", "Vector3.zero")
 		.Replace("Vec3", "Vector3")
+		.Replace("Vector3f", "Vector3")
 		.Replace("boolean", "bool")
 		.Replace("String", "string");
-
 	}
 }

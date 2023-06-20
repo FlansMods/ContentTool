@@ -9,6 +9,29 @@ public static class JavaModelImporter
 {
     public static readonly int[] aiPermutation = { 0, 1, 4, 5, 3, 2, 7, 6 };
 
+	public static Vector3[] MirrorOffsets(Vector3[] offsets, bool bX, bool bY, bool bZ)
+	{
+		Vector3 v0 = offsets[(bX ? 1 : 0) + (bY ? 2 : 0) + (bZ ? 4 : 0)];
+		Vector3 v1 = offsets[(bX ? 0 : 1) + (bY ? 2 : 0) + (bZ ? 4 : 0)];
+		Vector3 v2 = offsets[(bX ? 1 : 0) + (bY ? 0 : 2) + (bZ ? 4 : 0)];
+		Vector3 v3 = offsets[(bX ? 0 : 1) + (bY ? 0 : 2) + (bZ ? 4 : 0)];
+		Vector3 v4 = offsets[(bX ? 1 : 0) + (bY ? 2 : 0) + (bZ ? 0 : 4)];
+		Vector3 v5 = offsets[(bX ? 0 : 1) + (bY ? 2 : 0) + (bZ ? 0 : 4)];
+		Vector3 v6 = offsets[(bX ? 1 : 0) + (bY ? 0 : 2) + (bZ ? 0 : 4)];
+		Vector3 v7 = offsets[(bX ? 0 : 1) + (bY ? 0 : 2) + (bZ ? 0 : 4)];
+		//return offsets;
+		return new Vector3[]
+		{
+			new Vector3(bX ? -v0.x : v0.x, bY ? -v0.y : v0.y, bZ ? -v0.z : v0.z),
+			new Vector3(bX ? -v1.x : v1.x, bY ? -v1.y : v1.y, bZ ? -v1.z : v1.z),
+			new Vector3(bX ? -v2.x : v2.x, bY ? -v2.y : v2.y, bZ ? -v2.z : v2.z),
+			new Vector3(bX ? -v3.x : v3.x, bY ? -v3.y : v3.y, bZ ? -v3.z : v3.z),
+			new Vector3(bX ? -v4.x : v4.x, bY ? -v4.y : v4.y, bZ ? -v4.z : v4.z),
+			new Vector3(bX ? -v5.x : v5.x, bY ? -v5.y : v5.y, bZ ? -v5.z : v5.z),
+			new Vector3(bX ? -v6.x : v6.x, bY ? -v6.y : v6.y, bZ ? -v6.z : v6.z),
+			new Vector3(bX ? -v7.x : v7.x, bY ? -v7.y : v7.y, bZ ? -v7.z : v7.z),
+		};
+	}
 
 	public static Model CreateBoxModel(string modName, BoxType box)
 	{
@@ -52,9 +75,6 @@ public static class JavaModelImporter
 			line = line.Trim(' ', '\t');
 			// Then ignore comment lines
 			if (line.StartsWith("//"))
-				continue;
-			string[] split = line.Split(' ');
-			if (split.Length < 2)
 				continue;
 
 			ReadLine(model, file, line, optionalType);
@@ -192,19 +212,72 @@ public static class JavaModelImporter
 						if ((i & 0x2) == 0) wrapper.Offsets[i].y *= -1;
 						if ((i & 0x4) == 0) wrapper.Offsets[i].z *= -1;
 					}
+					wrapper.Shape = Model.EShape.ShapeBox;
 				}
 				else if (line.Contains("Box"))
 				{
 					float[] floats = Utils.ParseFloats(6, line.Substring(iIndex + "].addBox(".Length));
 					wrapper.Pos = new Vector3(floats[0], floats[1], floats[2]);
 					wrapper.Dim = new Vector3(floats[3], floats[4], floats[5]);
+					wrapper.Shape = Model.EShape.Box;
 				}
 				else if (line.Contains("Trapezoid"))
 				{
-					// Who cares about trapezoids anymore?
-					float[] floats = Utils.ParseFloats(6, line.Substring(iIndex + "].addTrapezoid(".Length));
-					wrapper.Pos = new Vector3(floats[0], floats[1], floats[2]);
-					wrapper.Dim = new Vector3(floats[3], floats[4], floats[5]);
+					float[] floats = Utils.ParseFloats(8, line.Substring(iIndex + "].addTrapezoid(".Length));
+					float expand = floats[6];
+					wrapper.Pos = new Vector3(floats[0] - expand, floats[1] - expand, floats[2] - expand);
+					wrapper.Dim = new Vector3(floats[3] + 2*expand, floats[4] + 2*expand, floats[5] + 2*expand);
+					
+					float taper = floats[7];
+					if(line.Contains("MR_RIGHT"))
+					{
+						// expand +x face
+						wrapper.Offsets[1] = new Vector3(0f, -taper, -taper);
+						wrapper.Offsets[3] = new Vector3(0f, taper, -taper);
+						wrapper.Offsets[7] = new Vector3(0f, -taper, taper);
+						wrapper.Offsets[5] = new Vector3(0f, taper, taper);
+					}
+					else if(line.Contains("MR_LEFT"))
+					{
+						// expand -x face
+						wrapper.Offsets[4] = new Vector3(0f, -taper, -taper);
+						wrapper.Offsets[6] = new Vector3(0f, taper, -taper);
+						wrapper.Offsets[2] = new Vector3(0f, -taper, taper);
+						wrapper.Offsets[0] = new Vector3(0f, taper, taper);
+					}
+					else if(line.Contains("MR_FRONT"))
+					{
+						// expand +z face
+						wrapper.Offsets[5] = new Vector3(-taper, -taper, 0f);
+						wrapper.Offsets[7] = new Vector3(taper, -taper, 0f);
+						wrapper.Offsets[6] = new Vector3(-taper, taper, 0f);
+						wrapper.Offsets[4] = new Vector3(taper, taper, 0f);
+					}
+					else if(line.Contains("MR_BACK"))
+					{
+						// expand -z face
+						wrapper.Offsets[0] = new Vector3(-taper, -taper, 0f);
+						wrapper.Offsets[2] = new Vector3(taper, -taper, 0f);
+						wrapper.Offsets[3] = new Vector3(-taper, taper, 0f);
+						wrapper.Offsets[1] = new Vector3(taper, taper, 0f);
+					}
+					else if(line.Contains("MR_TOP"))
+					{
+						// expand +y face
+						wrapper.Offsets[7] = new Vector3(-taper, 0f, -taper);
+						wrapper.Offsets[3] = new Vector3(taper, 0f, -taper);
+						wrapper.Offsets[2] = new Vector3(-taper, 0f, taper);
+						wrapper.Offsets[6] = new Vector3(taper, 0f, taper);
+					}
+					else if(line.Contains("MR_BOTTOM"))
+					{
+						// expand -y face
+						wrapper.Offsets[5] = new Vector3(-taper, 0f, -taper);
+						wrapper.Offsets[4] = new Vector3(taper, 0f, -taper);
+						wrapper.Offsets[0] = new Vector3(-taper, 0f, taper);
+						wrapper.Offsets[1] = new Vector3(taper, 0f, taper);
+					}
+					wrapper.Shape = Model.EShape.ShapeBox;
 				}
 
 				return;
@@ -256,7 +329,7 @@ public static class JavaModelImporter
 		// translateAll
 		iIndex = line.IndexOf("translateAll");
 		if(iIndex != -1)
-		{
+		{							
 			float[] floats = Utils.ParseFloats(3, line.Substring(iIndex));
 
 			foreach(Model.Section section in model.sections)
@@ -277,18 +350,27 @@ public static class JavaModelImporter
 		// flipAll
 		iIndex = line.IndexOf("flipAll");
 		if (iIndex != -1)
-		{
+		{						
 			foreach (Model.Section section in model.sections)
 			{
-				foreach (Model.Piece wrapper in section.pieces)
+				foreach(Model.Piece piece in section.pieces)
 				{
-					if (wrapper != null)
+					piece.DoMirror(false, true, true);
+				}
+				/*
+				Model.Piece[] copies = new Model.Piece[section.pieces.Length * 2];
+				for(int i = 0; i < section.pieces.Length; i++)
+				{
+					if (section.pieces[i] != null)
 					{
-						wrapper.DoMirror(false, true, true);
-						wrapper.Origin.y = -wrapper.Origin.y;
-						wrapper.Origin.z = -wrapper.Origin.z;
+						copies[i*2] = section.pieces[i];
+						copies[i*2+1] = section.pieces[i].Copy();
+						copies[i*2+1].DoMirror(false, true, true);
 					}
 				}
+
+				section.pieces = copies;
+				*/
 			}
 			return;
 		}

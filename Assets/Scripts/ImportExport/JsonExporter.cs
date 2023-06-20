@@ -30,7 +30,16 @@ public class JsonExporter
 	public class StringWriter : Writer<string> { public override JToken Write(string s) { return s; } }
 	public class Vec3Writer : Writer<Vector3> { public override JToken Write(Vector3 v) { return new JArray(v.x, v.y, v.z); } }
 	public class BoolWriter : Writer<bool> { public override JToken Write(bool b) { return b; } }
-	
+	public class VecWithOverrideWriter : Writer<VecWithOverride> {
+		public override JToken Write(VecWithOverride obj)
+		{
+			return new JArray(obj.xOverride.Length > 0 ? obj.xOverride : obj.xValue.ToString(),
+								obj.yOverride.Length > 0 ? obj.yOverride : obj.yValue.ToString(),
+								obj.zOverride.Length > 0 ? obj.zOverride : obj.zValue.ToString()
+			);
+		}
+	}
+
 /*
 	public class ArrayWriter<T> : Writer<T[]>
 	{
@@ -155,6 +164,7 @@ public class JsonExporter
 			Writers.Add(typeof(string), new StringWriter());
 			Writers.Add(typeof(Vector3), new Vec3Writer());
 			Writers.Add(typeof(bool), new BoolWriter());
+			Writers.Add(typeof(VecWithOverride), new VecWithOverrideWriter());
 
 			Writers.Add(typeof(int[]), new ArrayWriter() { ElementWriter = Writers[typeof(int)] });
 			Writers.Add(typeof(float[]), new ArrayWriter() { ElementWriter = Writers[typeof(float)] });
@@ -165,6 +175,7 @@ public class JsonExporter
 			Writers.Add(typeof(string[]), new ArrayWriter() { ElementWriter = Writers[typeof(string)] });
 			Writers.Add(typeof(Vector3[]), new ArrayWriter() { ElementWriter = Writers[typeof(Vector3)] });
 			Writers.Add(typeof(bool[]), new ArrayWriter() { ElementWriter = Writers[typeof(bool)] });
+			Writers.Add(typeof(VecWithOverride[]), new ArrayWriter() { ElementWriter = Writers[typeof(VecWithOverride)]});
 		}
 
 		return true;

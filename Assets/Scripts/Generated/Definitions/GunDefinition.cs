@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/GunDefinition")]
 public class GunDefinition : Definition
 {
 	[JsonField]
@@ -12,7 +13,11 @@ public class GunDefinition : Definition
 	[JsonField]
 	public ActionDefinition[] secondaryActions = new ActionDefinition[0];
 	[JsonField]
+	public ActionDefinition[] lookAtActions = new ActionDefinition[0];
+	[JsonField]
 	public int numBullets = 0;
+	[JsonField]
+	public EAmmoConsumeMode AmmoConsumeMode = EAmmoConsumeMode.RoundRobin;
 	[JsonField]
 	public AttachmentSettingsDefinition barrelAttachments = new AttachmentSettingsDefinition();
 	[JsonField]

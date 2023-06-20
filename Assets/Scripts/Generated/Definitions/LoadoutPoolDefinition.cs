@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(menuName = "Flans Mod/LoadoutPoolDefinition")]
 public class LoadoutPoolDefinition : Definition
 {
 	[JsonField]

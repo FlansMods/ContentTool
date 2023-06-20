@@ -12,7 +12,7 @@ public class ActionDefinition
 	[JsonField]
 	public bool canBeOverriden = false;
 	[JsonField]
-	public SoundDefinition sound = new SoundDefinition();
+	public SoundDefinition[] sounds = new SoundDefinition[0];
 	[JsonField]
 	public float duration = 0.0f;
 	[JsonField]
@@ -20,7 +20,7 @@ public class ActionDefinition
 	[JsonField]
 	public EFireMode FireMode = EFireMode.FullAuto;
 	[JsonField]
-	public ShotDefinition shootStats = new ShotDefinition();
+	public ShotDefinition[] shootStats = new ShotDefinition[0];
 	[JsonField]
 	public float fovFactor = 1.25f;
 	[JsonField]

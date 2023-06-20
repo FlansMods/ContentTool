@@ -109,6 +109,31 @@ public static class JsonModelExporter
 		}
 	}
 
+	private static void CalculateGUIPose(Model model, out Vector3 scale, out Vector3 offset, out Vector3 euler)
+	{
+		Vector3 min = Vector3.one * 1000f;
+		Vector3 max = Vector3.one * -1000f;
+		foreach(Model.Section section in model.sections)
+		{
+			foreach(Model.Piece piece in section.pieces)
+			{
+				piece.GetBounds(out Vector3 pieceMin, out Vector3 pieceMax);
+				min = Vector3.Min(min, pieceMin);
+				max = Vector3.Max(max, pieceMax);
+			}
+		}
+
+		Vector3 center = (min + max) / 2f;
+		Vector3 size = (max - min) / 2f;
+
+		offset = -center / 16f;
+		float maxDim = Mathf.Max(size.x, size.y, size.z)* 2f;
+		scale = Vector3.one / maxDim;
+		euler = new Vector3(-30f, 160f, 45f);
+		offset = Quaternion.Euler(euler) * offset;
+		offset /= maxDim;
+	}
+
 	private static void ExportTurboRig(Model model, string modName, string modelName, QuickJSONBuilder builder)
 	{
 		if(model.textureX == 0)
@@ -142,7 +167,9 @@ public static class JsonModelExporter
 			WriteItemTransforms(builder, "firstperson_righthand", 	new Vector3(0f, 90f, 0f), 	new Vector3(8f, -7f, -13f), 	Vector3.one);
 			WriteItemTransforms(builder, "thirdperson_lefthand", 	new Vector3(0f, -90f, 0f), 	new Vector3(0f, 3.75f, 0f), 	Vector3.one);
 			WriteItemTransforms(builder, "thirdperson_righthand",	new Vector3(0f, 90f, 0f), 	new Vector3(0f, 3.25f, 0f), 	Vector3.one);
-			WriteItemTransforms(builder, "gui", 					new Vector3(28f, -163f, 43f), 	new Vector3(0.5f, 0f, 0f), 	Vector3.one);
+			
+			CalculateGUIPose(model, out Vector3 scale, out Vector3 offset, out Vector3 euler);
+			WriteItemTransforms(builder, "gui", 					euler, 	offset, 	scale);
 			WriteItemTransforms(builder, "head", 					new Vector3(-90f, 0f, 0f), 	new Vector3(), 					Vector3.one);
 			WriteItemTransforms(builder, "ground", 					new Vector3(-90f, 0f, 0f), 	new Vector3(0f, -2.3f, 0f), 	Vector3.one);
 			WriteItemTransforms(builder, "fixed", 					new Vector3(0f, 160f, 0f), 	new Vector3(0.5f, 0.5f, 0f), 	Vector3.one);

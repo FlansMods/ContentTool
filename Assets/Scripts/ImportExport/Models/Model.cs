@@ -38,11 +38,14 @@ public class Model
 	public string name;
 	public List<AnimationParameter> animations = new List<AnimationParameter>();
 	public List<AttachPoint> attachPoints = new List<AttachPoint>();
+
+	
 	
 	public enum EShape
 	{
 		Box,
 		ShapeBox,
+		Trapezoid
 	}
 
 	[System.Serializable]
@@ -59,10 +62,56 @@ public class Model
 		// For shapeboxes
 		public Vector3[] Offsets = new Vector3[8];
 
+		public Piece Copy()
+		{
+			return new Piece() {
+				textureU = this.textureU,
+				textureV = this.textureV,
+				Pos = this.Pos,
+				Dim = this.Dim,
+				Origin = this.Origin,
+				Euler = this.Euler,
+				Shape = this.Shape,
+				Offsets = new Vector3[] {
+					Offsets[0], Offsets[1], Offsets[2], Offsets[3], 
+					Offsets[4], Offsets[5], Offsets[6], Offsets[7],
+				},
+			};
+		}
+
 		public void DoMirror(bool bX, bool bY, bool bZ)
         {
-            // TODO: Fill in
+			if(bX)
+			{
+				Pos.x = -Pos.x - Dim.x;
+				Origin.x = -Origin.x;
+			}
+			if(bY)
+			{
+				Pos.y = -Pos.y - Dim.y;
+				Origin.y = -Origin.y;
+			}
+			if(bZ)
+			{
+				Pos.z = -Pos.z - Dim.z;
+				Origin.z = -Origin.z;
+			}
+			Offsets = JavaModelImporter.MirrorOffsets(Offsets, bX, bY, bZ);
         }
+
+		public void GetBounds(out Vector3 min, out Vector3 max)
+		{
+			Vector3[] verts = GetVerts();
+			min = Vector3.one * 1000f;
+			max = Vector3.one * -1000f;
+			for(int i = 0; i < verts.Length; i++)
+			{
+				verts[i] = Quaternion.Euler(Euler) * verts[i];
+				verts[i] += Origin;
+				min = Vector3.Min(min, verts[i]);
+				max = Vector3.Max(max, verts[i]);
+			}
+		}
 
 		public int[] GetIntUV(int u0, int v0, EFace face)
 		{
@@ -186,11 +235,75 @@ public class Model
 					return new Vector3[8];
 			}
 		}
+
+		public int[] GetTris()
+		{
+			return new int[] {
+				0,2,3,  0,3,1, // -z 0, 2, 3, 1, 
+				5,7,6,  5,6,4, // +z 5, 7, 6, 4,
+				4,6,2,  4,2,0, // -x 4, 6, 2, 0,
+				1,3,7,  1,7,5, // +x 1, 3, 7, 5,
+				7,3,2,  7,2,6, // +y 7, 3, 2, 6,
+				5,4,0,  5,0,1, // -y 5, 4, 0, 1 
+			};
+		}
+
+		public void ExportToMesh(Mesh mesh, float textureX, float textureY)
+		{
+			Vector3[] v = GetVerts();
+			mesh.SetVertices(new Vector3[] {
+				v[0], v[2], v[3], v[1],	// -z face
+				v[5], v[7], v[6], v[4], // +z face
+				v[4], v[6], v[2], v[0], // -x face
+				v[1], v[3], v[7], v[5], // +x face
+				v[7], v[3], v[2], v[6], // +y face
+				v[5], v[4], v[0], v[1], // -y face
+			});
+			List<Vector2> uvs = new List<Vector2>();
+			uvs.AddRange(GetUVS(EFace.north, textureU, textureV));
+			uvs.AddRange(GetUVS(EFace.south, textureU, textureV));
+			uvs.AddRange(GetUVS(EFace.west, textureU, textureV));
+			uvs.AddRange(GetUVS(EFace.east, textureU, textureV));
+			uvs.AddRange(GetUVS(EFace.up, textureU, textureV));
+			uvs.AddRange(GetUVS(EFace.down, textureU, textureV));
+			for(int i = 0; i < uvs.Count; i++)
+			{
+				uvs[i] = new Vector2(uvs[i].x / textureX, 1.0f - uvs[i].y / textureY);
+			}
+			mesh.SetUVs(0, uvs);
+			mesh.SetTriangles(new int[] {
+				0,1,2, 0,2,3,
+				4,5,6, 4,6,7,
+				8,9,10, 8,10,11,
+				12,13,14, 12,14,15,
+				16,17,18, 16,18,19,
+				20,21,22, 20,22,23,
+			}, 0);
+			mesh.SetNormals(new Vector3[] {
+				Vector3.back, Vector3.back, Vector3.back, Vector3.back,
+				Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward,
+				Vector3.left, Vector3.left, Vector3.left, Vector3.left,
+				Vector3.right, Vector3.right, Vector3.right, Vector3.right,
+				Vector3.up, Vector3.up, Vector3.up, Vector3.up,
+				Vector3.down, Vector3.down, Vector3.down, Vector3.down,
+			});
+		}
+
 	}
 
 	[System.Serializable]
 	public class Section
 	{
+		public string TranslatePartName()
+		{
+			switch(partName)
+			{
+				case "gun":
+					return "body";
+				default: return partName;
+			}
+			
+		}
 		public string partName;
 		public Piece[] pieces;
 	}
