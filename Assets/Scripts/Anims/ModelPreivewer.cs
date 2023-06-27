@@ -14,8 +14,9 @@ public class ModelPreivewer : MonoBehaviour
 	public AnimationDefinition Anim;
 	private DateTime AnimStartTime = DateTime.Now;
 
+	public bool Playing = false;
 	public string PreviewFrame = "";
-	public string PreviewSequence = "";
+	public List<string> PreviewSequences = new List<string>();
 
 	private string RendereredModel = "";
 	public string DebugOutput = "";
@@ -85,13 +86,13 @@ public class ModelPreivewer : MonoBehaviour
 	public void SetSequence(string sequenceName)
 	{
 		PreviewFrame = "";
-		PreviewSequence = sequenceName;
+		PreviewSequences.Add(sequenceName);
 	}
 
 	public void SetFrame(string frameName)
 	{
 		PreviewFrame = frameName;
-		PreviewSequence = "";
+		PreviewSequences.Clear();
 	}
 
 	public void OnEnable()
@@ -113,86 +114,88 @@ public class ModelPreivewer : MonoBehaviour
 			RendereredModel = Def.Model.name;
 		}
 
-		if(PreviewFrame.Length > 0)
+		if(Playing)
 		{
-			KeyframeDefinition keyframe = FindKeyframe(PreviewFrame);
-			if(keyframe != null)
+			if(PreviewFrame.Length > 0)
 			{
-				ApplyPose(keyframe);
-			}
-		}
-		else if(PreviewSequence.Length > 0)
-		{
-			SequenceDefinition sequence = FindSequence(PreviewSequence);
-			TimeSpan timeSinceStart = DateTime.Now - AnimStartTime;
-			float progress = 20f * (float)(timeSinceStart.TotalMilliseconds / 1000d);
-			if(progress >= GetSequenceLength(sequence))
-			{
-				AnimStartTime = DateTime.Now;
-				progress = 0f;
-			}
-
-			if(sequence != null)
-			{
-				SequenceEntryDefinition[] segment = GetSegment(sequence, progress);
-				float segmentDuration = segment[1].tick - segment[0].tick;
-
-				// If it is valid, let's animate it
-				if(segmentDuration > 0.0f)
+				KeyframeDefinition keyframe = FindKeyframe(PreviewFrame);
+				if(keyframe != null)
 				{
-					KeyframeDefinition from = FindKeyframe(segment[0].frame);
-					KeyframeDefinition to = FindKeyframe(segment[1].frame);
-					if (from != null && to != null)
+					ApplyPose(keyframe);
+				}
+			}
+			else if(PreviewSequences.Count > 0)
+			{
+				SequenceDefinition sequence = null;
+				int sequenceIndex = -1;
+				TimeSpan timeSinceStart = DateTime.Now - AnimStartTime;
+				float progress = 20f * (float)(timeSinceStart.TotalMilliseconds / 1000d);
+
+				for(int i = 0; i < PreviewSequences.Count; i++)
+				{
+					sequence = FindSequence(PreviewSequences[i], out sequenceIndex);
+					if(progress < GetSequenceLength(sequence))
+						break;
+
+					progress -= GetSequenceLength(sequence);
+					if(i == PreviewSequences.Count - 1)
 					{
-						float linearParameter = (progress - segment[0].tick) / segmentDuration;
-						linearParameter = Mathf.Clamp(linearParameter, 0f, 1f);
-						float outputParameter = linearParameter;
+						AnimStartTime = DateTime.Now;
+					}
+				}
 
-						// Instant transitions take priority first
-						if(segment[0].exit == ESmoothSetting.instant)
-							outputParameter = 1.0f;
-						if(segment[1].entry == ESmoothSetting.instant)
-							outputParameter = 0.0f;
+				if(sequence != null)
+				{
+					SequenceEntryDefinition[] segment = GetSegment(sequence, progress);
+					float segmentDuration = segment[1].tick - segment[0].tick;
 
-						// Then apply smoothing?
-						if(segment[0].exit == ESmoothSetting.smooth)
+					// If it is valid, let's animate it
+					if(segmentDuration > 0.0f)
+					{
+						KeyframeDefinition from = FindKeyframe(segment[0].frame);
+						KeyframeDefinition to = FindKeyframe(segment[1].frame);
+						if (from != null && to != null)
 						{
-							// Smoothstep function
-							if(linearParameter < 0.5f)
-								outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
-						}
-						if(segment[1].entry == ESmoothSetting.smooth)
-						{
-							// Smoothstep function
-							if(linearParameter > 0.5f)
-								outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
-						}
+							float linearParameter = (progress - segment[0].tick) / segmentDuration;
+							linearParameter = Mathf.Clamp(linearParameter, 0f, 1f);
+							float outputParameter = linearParameter;
 
-						DebugOutput = "";
-						foreach(var sectionPreview in SectionPreviews)
-						{
-							PoseDefinition fromPose = GetPose(from.name, sectionPreview.PartName);
-							PoseDefinition toPose = GetPose(to.name, sectionPreview.PartName);
+							// Instant transitions take priority first
+							if(segment[0].exit == ESmoothSetting.instant)
+								outputParameter = 1.0f;
+							if(segment[1].entry == ESmoothSetting.instant)
+								outputParameter = 0.0f;
 
-							
-							
-							if(fromPose != null && toPose != null)
+							// Then apply smoothing?
+							if(segment[0].exit == ESmoothSetting.smooth)
 							{
-		
+								// Smoothstep function
+								if(linearParameter < 0.5f)
+									outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
+							}
+							if(segment[1].entry == ESmoothSetting.smooth)
+							{
+								// Smoothstep function
+								if(linearParameter > 0.5f)
+									outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
+							}
 
+							
+							foreach(var sectionPreview in SectionPreviews)
+							{
+								PoseDefinition fromPose = GetPose(from.name, sectionPreview.PartName);
+								PoseDefinition toPose = GetPose(to.name, sectionPreview.PartName);
 								Vector3 pos = LerpPosition(fromPose, toPose, outputParameter);
 								Quaternion ori = LerpRotation(fromPose, toPose, outputParameter);
 
-								DebugOutput += $"\n{sectionPreview.PartName} lerp at t={outputParameter} from {from.name} to {to.name} gives pos={pos}, rot={ori}";
-
 								sectionPreview.transform.localPosition = new Vector3(-pos.z, pos.y, pos.x);
 								sectionPreview.transform.localRotation = ori;
-								sectionPreview.transform.localScale = fromPose.scale;
+								sectionPreview.transform.localScale = Vector3.one;
 							}
 						}
 					}
+					
 				}
-                
 			}
 		}
 	}
@@ -200,47 +203,80 @@ public class ModelPreivewer : MonoBehaviour
 	private Vector3 LerpPosition(PoseDefinition from, PoseDefinition to, float t)
 	{
 		t = Mathf.Clamp(t, 0f, 1f);
-		return Vector3.Lerp(Resolve(from.position), Resolve(to.position), t);
+		Vector3 a = from == null ? Vector3.zero : Resolve(from.position);
+		Vector3 b = to == null ? Vector3.zero : Resolve(to.position);
+		return Vector3.Lerp(a, b, t);
 	}
 
 	private Quaternion LerpRotation(PoseDefinition from, PoseDefinition to, float t)
 	{
 		t = Mathf.Clamp(t, 0f, 1f);
+		Vector3 a = from == null ? Vector3.zero : Resolve(from.rotation);
+		Vector3 b = to == null ? Vector3.zero : Resolve(to.rotation);
 		return Quaternion.Slerp(
-			Quaternion.Euler(Resolve(from.rotation)), 
-			Quaternion.Euler(Resolve(to.rotation)),
+			Quaternion.Euler(a), 
+			Quaternion.Euler(b),
 			t);
 	}
 
 	private PoseDefinition GetPose(string keyframeName, string part)
 	{
 		KeyframeDefinition keyframe = FindKeyframe(keyframeName);
-		foreach(PoseDefinition pose in keyframe.poses)
+		if(keyframe != null)
 		{
-			if(pose.applyTo == part)
-				return pose;
-		}
+			foreach(PoseDefinition pose in keyframe.poses)
+			{
+				if(pose.applyTo == part)
+					return pose;
+			}
 
-		foreach(string parent in keyframe.parents)
+			foreach(string parent in keyframe.parents)
+			{
+				PoseDefinition poseFromParent = GetPose(parent, part);
+				if(poseFromParent != null)
+					return poseFromParent;
+			}
+		}
+		else
 		{
-			PoseDefinition poseFromParent = GetPose(parent, part);
-			if(poseFromParent != null)
-				return poseFromParent;
+			Debug.LogError($"Could not find keyframe {keyframeName}");
 		}
 
 		return null;
 	}
 
-	private SequenceDefinition FindSequence(string key)
+	private string GetGenericFrame(string key, out int index)
 	{
+		index = -1;
+		int last_ = key.LastIndexOf('_');
+		if(last_ != -1 && int.TryParse(key.Substring(last_ + 1), out index))
+		{
+			key = $"{key.Substring(0, last_)}_#";
+		}
+		return key;
+	}
+
+	private SequenceDefinition FindSequence(string key, out int index)
+	{
+		string searchFor = key;
+		index = -1;
+		/*int last_ = key.LastIndexOf('_');
+		if(last_ != -1 && int.TryParse(key.Substring(last_ + 1), out index))
+		{
+			searchFor = $"{key.Substring(0, last_)}_#";
+		}*/
 		foreach(SequenceDefinition sequence in Anim.sequences)
-			if(sequence.name == key)
+		{
+			if(sequence.name == searchFor)
 				return sequence;
+		}
 		return null;
 	}
 
 	private float GetSequenceLength(SequenceDefinition sequenceDefinition)
 	{
+		if(sequenceDefinition == null)
+			return 0f;
 		int highestTick = 0;
 		foreach(SequenceEntryDefinition entry in sequenceDefinition.frames)
 		{

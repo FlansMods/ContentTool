@@ -24,5 +24,5 @@ public class ImpactDefinition
 	[JsonField]
 	public float fireSpreadAmount = 0.0f;
 	[JsonField]
-	public SoundDefinition hitSound = new SoundDefinition();
+	public SoundDefinition[] hitSounds = new SoundDefinition[0];
 }

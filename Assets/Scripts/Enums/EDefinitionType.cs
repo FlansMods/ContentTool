@@ -17,6 +17,7 @@ public enum ENewDefinitionType
 	team, 
 	rewardBox,
 	loadout,
+	animation,
 }
 
 public enum EDefinitionType
@@ -87,7 +88,8 @@ public static class DefinitionTypes
 		if(def is TeamDefinition) return ENewDefinitionType.team;
 		if(def is RewardBoxDefinition) return ENewDefinitionType.rewardBox;
 		if(def is LoadoutPoolDefinition) return ENewDefinitionType.loadout;
-
+		if(def is AnimationDefinition) return ENewDefinitionType.animation;
+		
 		return ENewDefinitionType.part;
 	}
 
@@ -245,6 +247,7 @@ public static class DefinitionTypes
 			case ENewDefinitionType.rewardBox: return "rewardBoxes";
 			case ENewDefinitionType.loadout: return "loadouts";
 			case ENewDefinitionType.workbench: return "workbenches";
+			case ENewDefinitionType.animation: return "animations";
 			default: return "";
 		}
 	}

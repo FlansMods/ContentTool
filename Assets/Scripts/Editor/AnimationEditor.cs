@@ -7,7 +7,6 @@ using UnityEngine;
 public class AnimationEditor : Editor
 {
 	private bool loopPreview = true;
-	private bool playing = false;
 
 	private List<bool> foldouts = new List<bool>();
 	private List<bool> subFoldouts = new List<bool>();
@@ -80,6 +79,7 @@ public class AnimationEditor : Editor
 		if(instance != null)
 		{
 			DebugRender();
+			Previewer.Anim = instance;
 
 			GUILayout.Label("Debug Tools");
 			GUILayout.BeginHorizontal();
@@ -92,7 +92,7 @@ public class AnimationEditor : Editor
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Preview model:");
-			Previewer.Def = (Definition)EditorGUILayout.ObjectField(Previewer.Def, typeof(Definition), false);
+			Previewer.Def = (GunDefinition)EditorGUILayout.ObjectField(Previewer.Def, typeof(GunDefinition), false);
 			if(GUILayout.Button("Refresh"))
 			{
 				RefreshAssetCache();
@@ -100,10 +100,10 @@ public class AnimationEditor : Editor
 			EditorGUILayout.Popup(0, DefinitionNames.ToArray());
 			GUILayout.EndHorizontal();
 
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Preview anim:");
-			Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);
-			GUILayout.EndHorizontal();
+			//GUILayout.BeginHorizontal();
+			//GUILayout.Label("Preview anim:");
+			//Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);
+			//GUILayout.EndHorizontal();
 
 
 			// Acquire names for dropdowns
@@ -120,18 +120,34 @@ public class AnimationEditor : Editor
 
 
 
-			GUILayout.BeginHorizontal();
+			GUILayout.BeginVertical();
 			{
-				GUILayout.Label("Preview sequence:");
-				int index = sequenceNames.IndexOf(Previewer.PreviewSequence);
-				index = EditorGUILayout.Popup(index, sequenceNames.ToArray());
-				if(index >= 0 && sequenceNames[index] != Previewer.PreviewSequence)
+				GUILayout.BeginHorizontal();
+				GUILayout.Label("Preview sequences:");
+				if(GUILayout.Button("+"))
+					Previewer.PreviewSequences.Add("sequence");
+				GUILayout.EndHorizontal();
+
+				int sequenceToDelete = -1;
+				for(int i = 0; i < Previewer.PreviewSequences.Count; i++)
 				{
-					Previewer.PreviewFrame = "";
-					Previewer.PreviewSequence = sequenceNames[index];
+					GUILayout.BeginHorizontal();
+					int index = sequenceNames.IndexOf(Previewer.PreviewSequences[i]);
+					index = EditorGUILayout.Popup(index, sequenceNames.ToArray());
+					if(index >= 0 && sequenceNames[index] != Previewer.PreviewSequences[i])
+					{
+						Previewer.PreviewFrame = "";
+						Previewer.PreviewSequences[i] = sequenceNames[index];
+					}
+					if(GUILayout.Button("-"))
+						sequenceToDelete = i;
+					GUILayout.EndHorizontal();
 				}
+				if(sequenceToDelete != -1)
+					Previewer.PreviewSequences.RemoveAt(sequenceToDelete);
+				
 			}
-			GUILayout.EndHorizontal();
+			GUILayout.EndVertical();
 			GUILayout.BeginHorizontal();
 			{
 				GUILayout.Label("Preview frame:");
@@ -139,7 +155,7 @@ public class AnimationEditor : Editor
 				index = EditorGUILayout.Popup(index, frameNames.ToArray());
 				if(index >= 0 && frameNames[index] != Previewer.PreviewFrame)
 				{
-					Previewer.PreviewSequence = "";
+					Previewer.PreviewSequences.Clear();
 					Previewer.PreviewFrame = frameNames[index];
 				}
 			}
@@ -437,7 +453,7 @@ public class AnimationEditor : Editor
 						SequenceEntryDefinition[] frames = new SequenceEntryDefinition[instance.sequences[i].frames.Length - 1];
 						for(int j = 0; j < instance.sequences[i].frames.Length - 1; j++)
 						{
-							frames[j] = j < frameToDelete ? instance.sequences[i].frames[j] : instance.sequences[i].frames[j-1];
+							frames[j] = j < frameToDelete ? instance.sequences[i].frames[j] : instance.sequences[i].frames[j+1];
 						}
 						instance.sequences[i].frames = frames;
 					}
@@ -457,6 +473,15 @@ public class AnimationEditor : Editor
 				newArray[i] = i >= sequenceToDelete ? instance.sequences[i+1] : instance.sequences[i];
 			}
 			instance.sequences = newArray;
+		}
+
+		for(int i = 0; i < instance.sequences.Length; i++)
+		{
+			instance.sequences[i].ticks = 0;
+			for(int j = 0; j < instance.sequences[i].frames.Length; j++)
+			{
+				instance.sequences[i].ticks = Mathf.Max(instance.sequences[i].frames[j].tick, instance.sequences[i].ticks);
+			}
 		}
 	}
 
@@ -526,11 +551,11 @@ public class AnimationEditor : Editor
 
 	private void PlayPreview()
 	{
-		playing = true;
+		Previewer.Playing = true;
 	}
 
 	private void PausePreview()
 	{
-		playing = false;
+		Previewer.Playing = false;
 	}
 }

@@ -29,6 +29,8 @@ public class ModelPiecePreviewer : MonoBehaviour
 		CheckInit();
 		piece.ExportToMesh(mesh, model.textureX, model.textureY);
 		mesh.name = "PieceMesh";
+		transform.localEulerAngles = piece.Euler;
+		transform.localPosition = piece.Origin;
 		//mesh.SetVertices(piece.GetVerts());
 		//mesh.SetTriangles(piece.GetTris(), 0);
 		mf.mesh = mesh;

@@ -229,53 +229,53 @@ public static class JavaModelImporter
 					wrapper.Dim = new Vector3(floats[3] + 2*expand, floats[4] + 2*expand, floats[5] + 2*expand);
 					
 					float taper = floats[7];
-					if(line.Contains("MR_RIGHT"))
+					if(line.Contains("MR_LEFT"))
 					{
 						// expand +x face
 						wrapper.Offsets[1] = new Vector3(0f, -taper, -taper);
 						wrapper.Offsets[3] = new Vector3(0f, taper, -taper);
-						wrapper.Offsets[7] = new Vector3(0f, -taper, taper);
-						wrapper.Offsets[5] = new Vector3(0f, taper, taper);
+						wrapper.Offsets[7] = new Vector3(0f, taper, taper);
+						wrapper.Offsets[5] = new Vector3(0f, -taper, taper);
 					}
-					else if(line.Contains("MR_LEFT"))
+					else if(line.Contains("MR_RIGHT"))
 					{
 						// expand -x face
-						wrapper.Offsets[4] = new Vector3(0f, -taper, -taper);
-						wrapper.Offsets[6] = new Vector3(0f, taper, -taper);
-						wrapper.Offsets[2] = new Vector3(0f, -taper, taper);
-						wrapper.Offsets[0] = new Vector3(0f, taper, taper);
-					}
-					else if(line.Contains("MR_FRONT"))
-					{
-						// expand +z face
-						wrapper.Offsets[5] = new Vector3(-taper, -taper, 0f);
-						wrapper.Offsets[7] = new Vector3(taper, -taper, 0f);
-						wrapper.Offsets[6] = new Vector3(-taper, taper, 0f);
-						wrapper.Offsets[4] = new Vector3(taper, taper, 0f);
+						wrapper.Offsets[4] = new Vector3(0f, -taper, taper);
+						wrapper.Offsets[6] = new Vector3(0f, taper, taper);
+						wrapper.Offsets[2] = new Vector3(0f, taper, -taper);
+						wrapper.Offsets[0] = new Vector3(0f, -taper, -taper);
 					}
 					else if(line.Contains("MR_BACK"))
 					{
+						// expand +z face
+						wrapper.Offsets[5] = new Vector3(taper, -taper, 0f);
+						wrapper.Offsets[7] = new Vector3(taper, taper, 0f);
+						wrapper.Offsets[6] = new Vector3(-taper, taper, 0f);
+						wrapper.Offsets[4] = new Vector3(-taper, -taper, 0f);
+					}
+					else if(line.Contains("MR_FRONT"))
+					{
 						// expand -z face
 						wrapper.Offsets[0] = new Vector3(-taper, -taper, 0f);
-						wrapper.Offsets[2] = new Vector3(taper, -taper, 0f);
-						wrapper.Offsets[3] = new Vector3(-taper, taper, 0f);
-						wrapper.Offsets[1] = new Vector3(taper, taper, 0f);
-					}
-					else if(line.Contains("MR_TOP"))
-					{
-						// expand +y face
-						wrapper.Offsets[7] = new Vector3(-taper, 0f, -taper);
-						wrapper.Offsets[3] = new Vector3(taper, 0f, -taper);
-						wrapper.Offsets[2] = new Vector3(-taper, 0f, taper);
-						wrapper.Offsets[6] = new Vector3(taper, 0f, taper);
+						wrapper.Offsets[2] = new Vector3(-taper, taper, 0f);
+						wrapper.Offsets[3] = new Vector3(taper, taper, 0f);
+						wrapper.Offsets[1] = new Vector3(taper, -taper, 0f);
 					}
 					else if(line.Contains("MR_BOTTOM"))
 					{
+						// expand +y face
+						wrapper.Offsets[7] = new Vector3(taper, 0f, taper);
+						wrapper.Offsets[3] = new Vector3(taper, 0f, -taper);
+						wrapper.Offsets[2] = new Vector3(-taper, 0f, -taper);
+						wrapper.Offsets[6] = new Vector3(-taper, 0f, taper);
+					}
+					else if(line.Contains("MR_TOP"))
+					{
 						// expand -y face
-						wrapper.Offsets[5] = new Vector3(-taper, 0f, -taper);
-						wrapper.Offsets[4] = new Vector3(taper, 0f, -taper);
-						wrapper.Offsets[0] = new Vector3(-taper, 0f, taper);
-						wrapper.Offsets[1] = new Vector3(taper, 0f, taper);
+						wrapper.Offsets[5] = new Vector3(taper, 0f, taper);
+						wrapper.Offsets[4] = new Vector3(-taper, 0f, taper);
+						wrapper.Offsets[0] = new Vector3(-taper, 0f, -taper);
+						wrapper.Offsets[1] = new Vector3(taper, 0f, -taper);
 					}
 					wrapper.Shape = Model.EShape.ShapeBox;
 				}
@@ -301,9 +301,9 @@ public static class JavaModelImporter
 				float[] floats = Utils.ParseFloats(1, line.Substring(iIndex + "rotateAngle".Length));
 				switch(cAxis)
 				{
-					case 'X': wrapper.Euler.x = floats[0];   break;
-					case 'Y': wrapper.Euler.y = floats[0];   break;
-					case 'Z': wrapper.Euler.z = floats[0];   break;
+					case 'X': wrapper.Euler.x = floats[0] * Mathf.Rad2Deg;   break;
+					case 'Y': wrapper.Euler.y = floats[0] * Mathf.Rad2Deg;   break;
+					case 'Z': wrapper.Euler.z = floats[0] * Mathf.Rad2Deg;   break;
 				}
 				return;
 			}
@@ -313,12 +313,11 @@ public static class JavaModelImporter
 			if (iIndex != -1)
 			{
 				line = line.Substring(iIndex);
-				int iFirstComma = line.IndexOf(',');
-				int iSecondComma = line.IndexOf(',');
-
-				bool bMirrorX = line.Substring(0, iFirstComma).Contains("true");
-				bool bMirrorY = line.Substring(iFirstComma, iSecondComma).Contains("true");
-				bool bMirrorZ = line.Substring(iSecondComma).Contains("true");
+				
+				string[] bools = line.Split(',');
+				bool bMirrorX = bools.Length > 0 && bools[0].Contains("true");
+				bool bMirrorY = bools.Length > 1 && bools[1].Contains("true");
+				bool bMirrorZ = bools.Length > 2 && bools[2].Contains("true");
 
 				wrapper.DoMirror(bMirrorX, bMirrorY, bMirrorZ);
 				return;

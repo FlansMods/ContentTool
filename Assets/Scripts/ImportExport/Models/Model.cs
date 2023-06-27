@@ -298,8 +298,13 @@ public class Model
 		{
 			switch(partName)
 			{
-				case "gun":
-					return "body";
+				case "gun": return "body";
+				case "ammo": return "ammo_0";
+				case "defaultScope": return "scope";
+				case "defaultStock": return "stock";
+				case "defaultGrip": return "grip";
+				case "defaultBarrel": return "barrel";
+				case "revolverBarrel": return "revolver";
 				default: return partName;
 			}
 			

@@ -20,7 +20,7 @@ public static class JsonModelExporter
 	}
 
 
-	public static bool ExportItemModel(Model model, string modName, string modelName, QuickJSONBuilder builder)
+	public static bool ExportItemModel(Model model, Dictionary<string, string> textures, string modName, string modelName, QuickJSONBuilder builder)
 	{
 		switch(model.Type)
 		{
@@ -36,7 +36,7 @@ public static class JsonModelExporter
 			}
 			case Model.ModelType.TurboRig:
 			{
-				ExportTurboRig(model, modName, modelName, builder);
+				ExportTurboRig(model, textures, modName, modelName, builder);
 				return true;
 			}
 		}	
@@ -87,10 +87,10 @@ public static class JsonModelExporter
 
 	private static void ExportVanillaItem(Model model, string modName, string modelName, QuickJSONBuilder builder)
 	{
-		builder.Current.Add("parent", $"builtin/generated");
+		builder.Current.Add("parent", $"item/generated");
 		using(builder.Indentation("textures"))
 		{
-			builder.Current.Add("layer0", $"{modName}:items/{model.icon}");
+			builder.Current.Add("layer0", $"{modName}:item/{model.icon}");
 		}
 		using(builder.Indentation("display"))
 		{
@@ -134,7 +134,7 @@ public static class JsonModelExporter
 		offset /= maxDim;
 	}
 
-	private static void ExportTurboRig(Model model, string modName, string modelName, QuickJSONBuilder builder)
+	private static void ExportTurboRig(Model model, Dictionary<string, string> textures, string modName, string modelName, QuickJSONBuilder builder)
 	{
 		if(model.textureX == 0)
 			model.textureX = 16;
@@ -144,7 +144,11 @@ public static class JsonModelExporter
 		builder.Current.Add("loader", "flansmod:turborig");
 		using (builder.Indentation("textures"))
 		{
-			builder.Current.Add("5", $"{modName}:skins/{modelName}");
+			foreach(var kvp in textures)
+			{
+				builder.Current.Add(kvp.Key, kvp.Value);
+			}
+			builder.Current.Add("default", $"{modName}:skins/{modelName}");
 			builder.Current.Add("particle", $"minecraft:block/iron_block");
 		}
 		using(builder.Indentation("animations"))
@@ -171,7 +175,7 @@ public static class JsonModelExporter
 			CalculateGUIPose(model, out Vector3 scale, out Vector3 offset, out Vector3 euler);
 			WriteItemTransforms(builder, "gui", 					euler, 	offset, 	scale);
 			WriteItemTransforms(builder, "head", 					new Vector3(-90f, 0f, 0f), 	new Vector3(), 					Vector3.one);
-			WriteItemTransforms(builder, "ground", 					new Vector3(-90f, 0f, 0f), 	new Vector3(0f, -2.3f, 0f), 	Vector3.one);
+			WriteItemTransforms(builder, "ground", 					new Vector3(0f, 0f, 0f), 	new Vector3(0f, 0.15f, 0f), 	Vector3.one / 16f);
 			WriteItemTransforms(builder, "fixed", 					new Vector3(0f, 160f, 0f), 	new Vector3(0.5f, 0.5f, 0f), 	Vector3.one);
 		} 
 		using(builder.Indentation("parts"))
@@ -240,7 +244,7 @@ public static class JsonModelExporter
 									builder.Current.Add("rotation", 180);
 								if(face == EFace.down)
 									builder.Current.Add("rotation", 90);
-								builder.Current.Add("texture", "#5");
+								builder.Current.Add("texture", "#default");
 							}
 						};
 

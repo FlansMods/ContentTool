@@ -265,10 +265,10 @@ public class DefinitionImporter : MonoBehaviour
 
 		// Copy textures
 		if(infoType.texture != null && infoType.texture.Length > 0)
-			def.Skin = ImportTexture(packName, $"skins/{infoType.texture}.png", $"textures/skins/{Utils.ToLowerWithUnderscores(infoType.texture)}.png");
+			def.Skin = ImportTexture(packName, $"skins/{infoType.texture}.png", $"skins/{Utils.ToLowerWithUnderscores(infoType.texture)}.png");
 		if(infoType.iconPath != null && infoType.iconPath.Length > 0)
 		{
-			def.Icon = ImportTexture(packName, $"textures/items/{infoType.iconPath}.png");
+			def.Icon = ImportTexture(packName, $"textures/items/{infoType.iconPath}.png", $"items/{infoType.iconPath}.png");
 			if(def.Model == null)
 			{
 				def.Model = new Model()
@@ -278,6 +278,14 @@ public class DefinitionImporter : MonoBehaviour
 			}
 			def.Model.icon = Utils.ToLowerWithUnderscores(infoType.iconPath);
 		}
+		if(infoType is PaintableType paintable)
+		{
+			foreach(Paintjob paintjob in paintable.paintjobs)
+			{
+				ImportTexture(packName, $"skins/{paintjob.textureName}.png", $"skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png");
+				ImportTexture(packName, $"textures/items/{paintjob.iconName}.png", $"items/{paintjob.iconName}.png");
+			}
+		}
 		if(infoType is BoxType box)
 		{	
 			// Boxes need a model made from their side textures
@@ -285,17 +293,17 @@ public class DefinitionImporter : MonoBehaviour
 			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
 			{
 				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.bottomTexturePath)}.png",
-				texture = ImportTexture(packName, $"textures/blocks/{box.bottomTexturePath}.png")
+				texture = ImportTexture(packName, $"blocks/{box.bottomTexturePath}.png")
 			});
 			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
 			{
 				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.sideTexturePath)}.png",
-				texture = ImportTexture(packName, $"textures/blocks/{box.sideTexturePath}.png")
+				texture = ImportTexture(packName, $"blocks/{box.sideTexturePath}.png")
 			});
 			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
 			{
 				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.topTexturePath)}.png",
-				texture = ImportTexture(packName, $"textures/blocks/{box.topTexturePath}.png")
+				texture = ImportTexture(packName, $"blocks/{box.topTexturePath}.png")
 			});
 		}
 
@@ -322,7 +330,7 @@ public class DefinitionImporter : MonoBehaviour
 		string itemModelsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/models/item";
 		string blockModelsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/models/block";
 		string blockstatesExportFolder = $"{ExportRoot}/assets/{pack.ModName}/blockstates";
-		string itemTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/items";
+		string itemTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/item";
 		string skinsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/skins";
 		string guiTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/gui";
 
@@ -366,10 +374,20 @@ public class DefinitionImporter : MonoBehaviour
 					File.WriteAllText(exportTo, stringWriter.ToString());
 				}
 
+				Dictionary<string, string> textures = new Dictionary<string, string>();
+				if(def is GunDefinition gunDef)
+				{
+					foreach(PaintjobDefinition paintDef in gunDef.paints.paintjobs)
+					{
+						string paintName = Utils.ToLowerWithUnderscores(paintDef.textureName);
+						textures.Add(paintName, $"{pack.ModName}:skins/{paintName}");
+					}
+				}
+
 				if(def.Model != null)
 				{
 					QuickJSONBuilder itemModelBuilder = new QuickJSONBuilder();
-					if(JsonModelExporter.ExportItemModel(def.Model, pack.ModName, item_name, itemModelBuilder))
+					if(JsonModelExporter.ExportItemModel(def.Model, textures, pack.ModName, item_name, itemModelBuilder))
 					{
 						using(StringWriter stringWriter = new StringWriter())						
 						using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
@@ -415,16 +433,27 @@ public class DefinitionImporter : MonoBehaviour
 				}
 				if(def.Skin != null)
 				{
-					string src = $"{ASSET_ROOT}/{packName}/Textures/skins/{def.Skin.name}.png";
-					string dst = $"{skinsExportFolder}/{def.Skin.name}.png";
-					
-					Debug.Log($"Copying skin texture from {src} to {dst}");
-					File.Copy(src, dst, true);
+					foreach(var kvp in textures)
+					{
+						string src = $"{ASSET_ROOT}/{packName}/Textures/skins/{kvp.Key}.png";
+						string dst = $"{skinsExportFolder}/{kvp.Key}.png";
+						
+						Debug.Log($"Copying skin texture from {src} to {dst}");
+						File.Copy(src, dst, true);
+					}
+
+					{
+						string src = $"{ASSET_ROOT}/{packName}/Textures/skins/{def.Skin.name}.png";
+						string dst = $"{skinsExportFolder}/{def.Skin.name}.png";
+						
+						Debug.Log($"Copying skin texture from {src} to {dst}");
+						File.Copy(src, dst, true);
+					}
 				}
 				if(def.Icon != null)
 				{
-					string src = $"{ASSET_ROOT}/{packName}/Textures/textures/items/{def.Icon.name}.png";
-					string dst = $"{itemTextureExportFolder}/{def.Icon.name}.png";
+					string src = $"{ASSET_ROOT}/{packName}/Textures/items/{def.Icon.name}.png";
+					string dst = $"{itemTextureExportFolder}/{Utils.ToLowerWithUnderscores(def.Icon.name)}.png";
 					
 					Debug.Log($"Copying icon texture from {src} to {dst}");
 					File.Copy(src, dst, true);

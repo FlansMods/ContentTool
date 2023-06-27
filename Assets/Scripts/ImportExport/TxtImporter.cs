@@ -335,10 +335,10 @@ public class GunTypeImporter : TxtImporter<GunType>
 
 
 		else if(ImportFloat(model, "gunSlideDistance", line)) {}
+		else if(ImportFloat(model, "untiltGunTime", line)) {}
 		else if(ImportFloat(model, "tiltGunTime", line)) {}
 		else if(ImportFloat(model, "unloadClipTime", line)) {}
 		else if(ImportFloat(model, "loadClipTime", line)) {}
-		else if(ImportFloat(model, "untiltGunTime", line)) {}
 		else if(ImportFloat(model, "breakAngle", line)) {}
 		else if(ImportFloat(model, "pumpDelayAfterReload", line)) {}
 		else if(ImportFloat(model, "pumpDelay", line)) {}
@@ -370,6 +370,8 @@ public class GunTypeImporter : TxtImporter<GunType>
 			model.SetAttachmentOffset("scope", result);
 		else if(ParseModelVector3(line, "gripAttachPoint", out result))
 			model.SetAttachmentOffset("grip", result);
+
+
 	}
 
 	public override void read(GunType obj, string[] split, TypeFile file)

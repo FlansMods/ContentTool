@@ -12,13 +12,13 @@ public class ActionDefinition
 	[JsonField]
 	public bool canBeOverriden = false;
 	[JsonField]
+	public bool twoHanded = false;
+	[JsonField]
 	public SoundDefinition[] sounds = new SoundDefinition[0];
 	[JsonField]
 	public float duration = 0.0f;
 	[JsonField]
 	public string itemStack = "";
-	[JsonField]
-	public EFireMode FireMode = EFireMode.FullAuto;
 	[JsonField]
 	public ShotDefinition[] shootStats = new ShotDefinition[0];
 	[JsonField]

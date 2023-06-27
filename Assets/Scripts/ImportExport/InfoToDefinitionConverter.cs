@@ -84,45 +84,71 @@ public abstract class Converter<TInfo, TDefinition>
 	protected abstract void DoConversion(TInfo input, TDefinition output);
 }
 
+public class PaintableConverter // : Converter<PaintableType, PaintableDefinition>
+{
+	public static PaintableConverter inst = new PaintableConverter();
+	public void DoConversion(PaintableType inf, PaintableDefinition def)
+	{
+		def.paintjobs = new PaintjobDefinition[inf.paintjobs.Count];
+		for(int i = 0; i < inf.paintjobs.Count; i++)
+		{
+			def.paintjobs[i] = new PaintjobDefinition()
+			{
+				textureName = inf.paintjobs[i].iconName,
+			};
+		}
+	}
+}
+
 public class GunConverter : Converter<GunType, GunDefinition>
 {
 	public static GunConverter inst = new GunConverter();
 
 	protected override void DoConversion(GunType inf, GunDefinition def)
 	{
+		PaintableConverter.inst.DoConversion(inf, def.paints);
+
+		def.numBullets = inf.numAmmoItemsInGun;
+
+		if(inf.model != null)
+		{
+			inf.model.TryGetFloatParam("tiltGunTime", out inf.tiltGunTime);
+			inf.model.TryGetFloatParam("loadClipTime", out inf.loadClipTime);
+			inf.model.TryGetFloatParam("unloadClipTime", out inf.unloadClipTime);
+			inf.model.TryGetFloatParam("untiltGunTime", out inf.untiltGunTime);
+		}
+
 		def.reload = new ReloadDefinition()
 		{
 			manualReloadAllowed = inf.canForceReload,
 			start = new ReloadStageDefinition()
 			{
 				duration = inf.reloadTime * inf.tiltGunTime / 20f,
-				sound = new SoundDefinition() 
-				{
-					sound = inf.reloadSound,
-				},
 				actions = CreateStartReloadActions(inf),
 			},
 			eject = new ReloadStageDefinition()
 			{
 				duration = inf.reloadTime * inf.unloadClipTime / 20f,
-				sound = new SoundDefinition(),
+				actions = CreateEjectReloadActions(inf),
 			},
 			loadOne = new ReloadStageDefinition()
 			{
-				duration = inf.reloadTime * inf.loadClipTime / 20f,
-				sound = new SoundDefinition(),
+				duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
 				actions = CreateLoadOneReloadActions(inf),
 			},
 			end = new ReloadStageDefinition()
 			{
 				duration = inf.reloadTime * inf.untiltGunTime / 20f,
-				sound = new SoundDefinition(),
 				actions = CreateEndReloadActions(inf),
 			},
 		};
 
+		if(inf.shortName == "r700")
+			Debug.Log($"R700 end-reload duration: {def.reload.end.duration} = {inf.reloadTime} x {inf.untiltGunTime} / 20f");
+
 		def.primaryActions = CreatePrimaryActions(inf);
 		def.secondaryActions = CreateSecondaryActions(inf);
+		def.lookAtActions = CreateLookAtActions(inf);
 
 		//def.idleSound = inf.idleSound;
 		//def.idleSoundLength = inf.idleSoundLength;
@@ -168,44 +194,59 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		//def.userMoveSpeedModifier = inf.moveSpeedModifier;
 		//def.userKnockbackResist = inf.knockbackModifier;
 
-
+		def.animationSet = inf.animationType.Convert();
+		switch(inf.animationType)
+		{
+			case EAnimationType.REVOLVER: 
+				def.AmmoConsumeMode = EAmmoConsumeMode.RoundRobin; 
+				break;
+			default: 
+				def.AmmoConsumeMode = EAmmoConsumeMode.LastNonEmpty;
+				break;
+		}
 
 	}
 
 	private ActionDefinition[] CreateStartReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		reloadActions.Add(new ActionDefinition() 
-		{ 
-			actionType = EActionType.Animation, 
-			anim = "TiltGunForReload",
-			//remainUntilEnd = true,
-		});
-		switch(inf.animationType)
+		if(inf.tiltGunTime > 0.0f)
 		{
-			case EAnimationType.BREAK_ACTION:
+			reloadActions.Add(new ActionDefinition() 
+			{ 
+				actionType = EActionType.Animation, 
+				duration = inf.reloadTime * inf.tiltGunTime / 20f,
+				anim = "reload_start",
+			});
+		}
+		if(inf.reloadSound != null && inf.reloadSound.Length > 0)
+		{
+			reloadActions.Add(new ActionDefinition()
 			{
-				reloadActions.Add(new ActionDefinition() 
-				{ 
-					actionType = EActionType.Animation, 
-					anim = "BreakActionOpen",
-					//angle = inf.breakAngle,
-					//remainUntilEnd = true,
-				});
-				break;
-			}
-			case EAnimationType.REVOLVER:
-			{
-				reloadActions.Add(new ActionDefinition() 
-				{ 
-					actionType = EActionType.Animation, 
-					anim = "RevolverOpen",
-					//angle = inf.revolverFlipAngle,
-					//revolverPivotLocation = revolverFlipPoint;
-					//remainUntilEnd = true,
-				});
-				break;
-			}
+				actionType = EActionType.PlaySound,
+				sounds = new SoundDefinition[] {
+					new SoundDefinition()
+					{
+						sound = inf.reloadSound,
+					}
+				}
+			});
+		}
+		return reloadActions.ToArray();
+	}
+
+	private ActionDefinition[] CreateEjectReloadActions(GunType inf)
+	{
+		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
+		if(inf.unloadClipTime > 0.0f &&
+		   inf.animationType != EAnimationType.END_LOADED)
+		{
+			reloadActions.Add(new ActionDefinition() 
+			{ 
+				actionType = EActionType.Animation, 
+				duration = inf.reloadTime * inf.unloadClipTime / 20f,
+				anim = "reload_eject",
+			});
 		}
 		return reloadActions.ToArray();
 	}
@@ -213,18 +254,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionDefinition[] CreateLoadOneReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		switch(inf.animationType)
+		if(inf.loadClipTime > 0.0f)
 		{
-			case EAnimationType.END_LOADED:
-			{
-				reloadActions.Add(new ActionDefinition() 
-				{ 
-					actionType = EActionType.Animation, 
-					anim = "LoadRocketLauncher",
-					//distance = inf.endLoadedAmmoDistance,
-				});
-				break;
-			}
+			reloadActions.Add(new ActionDefinition() 
+			{ 
+				actionType = EActionType.Animation, 
+				duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
+				anim = "reload_load_one",
+			});
 		}
 		return reloadActions.ToArray();
 	}
@@ -232,59 +269,32 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionDefinition[] CreateEndReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		switch(inf.animationType)
-		{
-			case EAnimationType.BREAK_ACTION:
-			{
-				reloadActions.Add(new ActionDefinition() 
-				{ 
-					actionType = EActionType.Animation, 
-					anim = "BreakActionClose",
-					//angle = inf.breakAngle,
-					//remainUntilEnd = true,
-				});
-				break;
-			}
-			case EAnimationType.REVOLVER:
-			{
-				reloadActions.Add(new ActionDefinition() 
-				{ 
-					actionType = EActionType.Animation, 
-					anim = "RevolverClose",
-					//angle = inf.revolverFlipAngle,
-					//revolverPivotLocation = revolverFlipPoint;
-					//remainUntilEnd = true,
-				});
-				break;
-			}
-		}
 
-		if(inf.pumpTime > 0.0f)
+		if(inf.untiltGunTime > 0.0f)
 		{
 			reloadActions.Add(new ActionDefinition() 
 			{ 
 				actionType = EActionType.Animation, 
-				anim = "PumpAction",
-				duration = inf.pumpTime,
-				//delay = inf.pumpDelayAfterReload,
-				//distance = pumpHandleDistance,
-			});
-		}
-		if(inf.spinningCocking)
-		{
-			reloadActions.Add(new ActionDefinition() 
-			{ 
-				actionType = EActionType.Animation, 
-				anim = "SpinBackwards",
-				duration = 0.5f,
-				//delay = 0.0f,
-				//spinLocation = inf.spinPoint,
+				duration = inf.reloadTime * inf.untiltGunTime / 20f,
+				anim = "reload_end",
 			});
 		}
 
 		return reloadActions.ToArray();
 	}
 
+	private ActionDefinition[] CreateLookAtActions(GunType inf)
+	{
+		List<ActionDefinition> lookAtActions = new List<ActionDefinition>();
+
+		lookAtActions.Add(new ActionDefinition()
+		{
+			actionType = EActionType.Animation,
+			anim = "look_at",
+		});
+
+		return lookAtActions.ToArray();
+	}
 	
 	private ActionDefinition[] CreatePrimaryActions(GunType inf)
 	{
@@ -297,8 +307,8 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				actionType = EActionType.Shoot,
 				canActUnderwater = inf.canShootUnderwater,
 				canActUnderOtherLiquid = false,
-				FireMode = inf.mode,
-
+				canBeOverriden = true,
+				twoHanded = !inf.oneHanded,				
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
@@ -308,17 +318,21 @@ public class GunConverter : Converter<GunType, GunDefinition>
 						maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
 					},
 				},
+				duration = inf.shootDelay / 20f,
+				itemStack = "", // Not used by this action
+				shootStats = CreateShotDefinition(inf),
+				fovFactor = 1.0f, // Not used by this action
+				scopeOverlay = "", // Not used by this action
+				anim = "", // Not used by this action
+				toolLevel = 1.0f, // Not used by this action
+				harvestSpeed = 1.0f, // Not used by this action
+				reach = 5.0f, // Not used by this action
 
 				// burstShotCount
 				// minigunWarmupDuration
 				// warmup
 				// loop
 				// cooldown
-
-				// numMagazineSlots = inf.numAmmoItemsInGun,
-				// ammoWithTags = ,
-				// ammoTypes = ,
-				shootStats = CreateShotDefinition(inf),
 			});
 		}
 		else if(inf.meleeDamage > 0.0f)
@@ -326,7 +340,8 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			primaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.Melee,
-				//damage = inf.meleeDamage,
+				reach = 5.0f,
+				toolLevel = inf.meleeDamage,
 				sounds = new SoundDefinition[] {
 					new SoundDefinition() 
 					{
@@ -356,7 +371,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		{
 			actionType = EActionType.Animation,
 			anim = "Shoot",
-			duration = inf.shootDelay,
+			duration = inf.shootDelay / 20f,
 		});
 
 		// gunSlide
@@ -376,22 +391,34 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				verticalReocil = type.recoil,
 				horizontalRecoil = 0.0f,
 				spread = type.bulletSpread,
+				spreadPattern = ESpreadPattern.Circle,
 				hitscan = type.bulletSpeed <= 0.0f,
 				speed = type.bulletSpeed,
-				count = type.numBullets,
+
+				fireMode = type.mode,
+				repeatCount = type.numBurstRounds,
+				bulletCount = type.numBullets,
+				spinUpDuration = type.minigunStartSpeed / 10f,
+				spinSpeed = 360f,
+
 				timeToNextShot = type.shootDelay,
+				breaksMaterials = new string[0],
+				matchAmmoNames = Utils.ToLowerWithUnderscores(type.ammo.ToArray()),
+				matchAmmoTags = new string[0],
+				penetrationPower = 1.0f,
+				trailParticles = "",
 				impact = new ImpactDefinition()
 				{
+					decal = "flansmod:effects/bullet_decal.png",
 					damageToTarget = type.damage,
 					multiplierVsPlayers = 1.0f,
 					multiplierVsVehicles = 1.0f,
+					knockback = type.knockback,
 					splashDamageRadius = 0.0f,
 					splashDamageFalloff = 0.0f,
 					setFireToTarget = 0.0f,
 					fireSpreadAmount = 0.0f,
 					fireSpreadRadius = 0.0f,
-					knockback = type.knockback,
-					decal = "flansmod:effects/bullet_decal.png",
 				},
 			}
 		};
@@ -509,9 +536,8 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 			speed = 0f,
 			timeToNextShot = 0f,
 			spreadPattern = ESpreadPattern.Circle,
-
 			spread = input.bulletSpread,
-			count = input.numBullets,
+			bulletCount = input.numBullets,
 			breaksMaterials = input.breaksGlass ? new string[] { "glass" } : new string[0],
 			penetrationPower = input.penetratingPower,
 			trailParticles = input.trailParticles ? input.trailParticleType : "",
@@ -528,11 +554,14 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 				setFireToTarget = input.setEntitiesOnFire ? 1f : 0f,
 				fireSpreadRadius = input.fireRadius,
 				fireSpreadAmount = 0.5f,
-				hitSound = new SoundDefinition()
-				{
-					sound = input.hitSound,
-					maxRange = input.hitSoundRange
-				}
+				hitSounds = input.hitSound.Length > 0 
+				? new SoundDefinition[] {
+					new SoundDefinition()
+					{
+						sound = input.hitSound,
+						maxRange = input.hitSoundRange
+					}
+				} : new SoundDefinition[0],
 			}
 		};
 	}
@@ -543,6 +572,7 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 	public static AttachmentConverter inst = new AttachmentConverter();
 	protected override void DoConversion(AttachmentType input, AttachmentDefinition output)
 	{
+		//PaintableConverter.inst.DoConversion(input, output.paints);
 		output.attachmentType = input.type;
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 
@@ -671,7 +701,7 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 			splashDamageFalloff = input.explosionDamageVsLiving,
 			multiplierVsPlayers = 1.0f,
 			multiplierVsVehicles =  input.explosionDamageVsLiving <= 0.01f ? 0.0f : input.explosionDamageVsDriveable / input.explosionDamageVsLiving,
-			hitSound = new SoundDefinition(),
+			hitSounds = new SoundDefinition[0],
 			knockback = 0f,
 			decal = "",
 		};
@@ -732,6 +762,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 	public static DriveableConverter inst = new DriveableConverter();
 	protected override void DoConversion(DriveableType input, VehicleDefinition output)
 	{
+		//PaintableConverter.inst.DoConversion(input, output.paints);
 		if(input.seats != null)
 		{
 			output.seats = new SeatDefinition[input.seats.Length];
@@ -881,7 +912,8 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						actionType = EActionType.Shoot,
 						canActUnderwater = false,
 						canActUnderOtherLiquid = false,
-						FireMode = gunType.mode,
+						canBeOverriden = true,
+						twoHanded = false,
 						sounds = new SoundDefinition[] {
 							new SoundDefinition()
 							{
@@ -935,7 +967,8 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 					actionType = EActionType.Shoot,
 					canActUnderwater = false,
 					canActUnderOtherLiquid = false,
-					FireMode = gunType.mode,
+					canBeOverriden = true,
+					twoHanded = false,
 					sounds = new SoundDefinition[] {
 						new SoundDefinition()
 						{

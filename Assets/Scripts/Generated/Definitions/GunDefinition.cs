@@ -15,6 +15,16 @@ public class GunDefinition : Definition
 	[JsonField]
 	public ActionDefinition[] lookAtActions = new ActionDefinition[0];
 	[JsonField]
+	public ActionDefinition[] startSpinUpActions = new ActionDefinition[0];
+	[JsonField]
+	public ActionDefinition[] reachMaxSpinActions = new ActionDefinition[0];
+	[JsonField]
+	public ActionDefinition[] startSpinDownActions = new ActionDefinition[0];
+	[JsonField]
+	public ActionDefinition[] reachZeroSpinActions = new ActionDefinition[0];
+	[JsonField]
+	public SoundDefinition[] loopingSounds = new SoundDefinition[0];
+	[JsonField]
 	public int numBullets = 0;
 	[JsonField]
 	public EAmmoConsumeMode AmmoConsumeMode = EAmmoConsumeMode.RoundRobin;
@@ -30,4 +40,6 @@ public class GunDefinition : Definition
 	public AttachmentSettingsDefinition genericAttachments = new AttachmentSettingsDefinition();
 	[JsonField]
 	public string[] modelParts = new string[0];
+	[JsonField]
+	public string animationSet = "";
 }

@@ -45,6 +45,9 @@ public static class Utils
 
     public static float[] ParseFloats(int numFloats, string text)
     {
+		text = text.Replace("(float)", "");
+		text = text.Replace("Math.PI", "3.14159265f");
+
         float[] ret = new float[numFloats];
         int current = 0;
         bool bNeg = false;
@@ -136,6 +139,16 @@ public static class Utils
         return ret;
     }
 
+	public static string[] ToLowerWithUnderscores(string[] names)
+	{
+		string[] results = new string[names.Length];
+		for(int i = 0; i < names.Length; i++)
+		{
+			results[i] = ToLowerWithUnderscores(names[i]);
+		}
+		return results;
+ 	}
+
 	public static string ToLowerWithUnderscores(string shortName)
 	{
 		if(shortName == null ||shortName.Length == 0)
@@ -147,6 +160,7 @@ public static class Utils
 		switch(partName)
 		{
 			case "gun": return "body";
+			case "ammo": return "ammo_0";
 			case "defaultGrip": return "grip";
 			case "defaultBarrel": return "barrel";
 			case "defaultScope": return "scope";
