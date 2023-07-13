@@ -5,6 +5,8 @@ using UnityEngine;
 public class ArmourDefinition : Definition
 {
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public EArmourSlot slot = EArmourSlot.HEAD;
 	[JsonField]
 	public int maxDurability = 128;

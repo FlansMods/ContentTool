@@ -4,7 +4,7 @@ using UnityEngine;
 public class ShotDefinition
 {
 	[JsonField]
-	public float verticalReocil = 3.0f;
+	public float verticalRecoil = 3.0f;
 	[JsonField]
 	public float horizontalRecoil = 0.0f;
 	[JsonField]
@@ -16,17 +16,9 @@ public class ShotDefinition
 	[JsonField]
 	public float speed = 0.0f;
 	[JsonField]
-	public EFireMode fireMode = EFireMode.SemiAuto;
-	[JsonField]
-	public int repeatCount = 1;
-	[JsonField]
 	public int bulletCount = 1;
 	[JsonField]
-	public float spinUpDuration = 1.0f;
-	[JsonField]
 	public float spinSpeed = 360.0f;
-	[JsonField]
-	public float timeToNextShot = 2.0f;
 	[JsonField]
 	public string[] breaksMaterials = new string[0];
 	[JsonField]

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ActionDefinition
 {
 	[JsonField]
-	public EActionType actionType = EActionType.Animation;
+	public EActionType actionType = EActionType.Invalid;
 	[JsonField]
 	public bool canActUnderwater = true;
 	[JsonField]
@@ -14,9 +14,17 @@ public class ActionDefinition
 	[JsonField]
 	public bool twoHanded = false;
 	[JsonField]
-	public SoundDefinition[] sounds = new SoundDefinition[0];
+	public ERepeatMode repeatMode = ERepeatMode.SemiAuto;
+	[JsonField]
+	public float repeatDelay = 0.0f;
+	[JsonField]
+	public int repeatCount = 0;
+	[JsonField]
+	public float spinUpDuration = 1.0f;
 	[JsonField]
 	public float duration = 0.0f;
+	[JsonField]
+	public SoundDefinition[] sounds = new SoundDefinition[0];
 	[JsonField]
 	public string itemStack = "";
 	[JsonField]

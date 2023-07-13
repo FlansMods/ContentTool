@@ -108,6 +108,8 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	{
 		PaintableConverter.inst.DoConversion(inf, def.paints);
 
+		def.itemSettings.maxStackSize = 1;
+		def.itemSettings.tags = GetTags(inf);
 		def.numBullets = inf.numAmmoItemsInGun;
 
 		if(inf.model != null)
@@ -118,7 +120,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			inf.model.TryGetFloatParam("untiltGunTime", out inf.untiltGunTime);
 		}
 
-		def.reload = new ReloadDefinition()
+		def.primaryReload = new ReloadDefinition()
 		{
 			manualReloadAllowed = inf.canForceReload,
 			start = new ReloadStageDefinition()
@@ -144,7 +146,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		};
 
 		if(inf.shortName == "r700")
-			Debug.Log($"R700 end-reload duration: {def.reload.end.duration} = {inf.reloadTime} x {inf.untiltGunTime} / 20f");
+			Debug.Log($"R700 end-reload duration: {def.primaryReload.end.duration} = {inf.reloadTime} x {inf.untiltGunTime} / 20f");
 
 		def.primaryActions = CreatePrimaryActions(inf);
 		def.secondaryActions = CreateSecondaryActions(inf);
@@ -205,6 +207,13 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				break;
 		}
 
+	}
+
+	private string[] GetTags(GunType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:gun");
+		return tags.ToArray();
 	}
 
 	private ActionDefinition[] CreateStartReloadActions(GunType inf)
@@ -291,6 +300,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		{
 			actionType = EActionType.Animation,
 			anim = "look_at",
+			duration = 2.5f,
 		});
 
 		return lookAtActions.ToArray();
@@ -328,8 +338,11 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				harvestSpeed = 1.0f, // Not used by this action
 				reach = 5.0f, // Not used by this action
 
-				// burstShotCount
-				// minigunWarmupDuration
+				repeatMode = inf.mode,
+				repeatCount = inf.numBurstRounds,
+				repeatDelay = inf.shootDelay / 20f,
+				spinUpDuration = inf.minigunStartSpeed / 10f,
+
 				// warmup
 				// loop
 				// cooldown
@@ -370,8 +383,9 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		primaryActions.Add(new ActionDefinition()
 		{
 			actionType = EActionType.Animation,
-			anim = "Shoot",
-			duration = inf.shootDelay / 20f,
+			anim = "shoot",
+			// "Instant" semi-automatics might have 1tick delay, but they want more than a 1tick anim
+			duration = inf.shootDelay <= 1.0f ? 0.5f : inf.shootDelay / 20f,
 		});
 
 		// gunSlide
@@ -388,20 +402,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return new ShotDefinition[] { 
 			new ShotDefinition()
 			{
-				verticalReocil = type.recoil,
+				verticalRecoil = type.recoil,
 				horizontalRecoil = 0.0f,
 				spread = type.bulletSpread,
-				spreadPattern = ESpreadPattern.Circle,
+				spreadPattern = ESpreadPattern.FilledCircle,
 				hitscan = type.bulletSpeed <= 0.0f,
 				speed = type.bulletSpeed,
-
-				fireMode = type.mode,
-				repeatCount = type.numBurstRounds,
 				bulletCount = type.numBullets,
-				spinUpDuration = type.minigunStartSpeed / 10f,
 				spinSpeed = 360f,
-
-				timeToNextShot = type.shootDelay,
 				breaksMaterials = new string[0],
 				matchAmmoNames = Utils.ToLowerWithUnderscores(type.ammo.ToArray()),
 				matchAmmoTags = new string[0],
@@ -470,8 +478,8 @@ public class PartConverter : Converter<PartType, PartDefinition>
 	public static PartConverter inst = new PartConverter();
 	protected override void DoConversion(PartType input, PartDefinition output)
 	{
-		output.maxStackSize = input.stackSize;
-		output.triggersApocalypse = input.isAIChip;
+		output.itemSettings.maxStackSize = input.stackSize;
+		output.itemSettings.tags = GetTags(input);
 		List<string> compatTags = new List<string>();
 		if(input.worksWith.Contains(EDefinitionType.mecha))
 			compatTags.Add("mecha");
@@ -493,6 +501,16 @@ public class PartConverter : Converter<PartType, PartDefinition>
 			FECapacity = input.useRFPower ? 1000000 : 0,
 		};
 	}
+
+	private string[] GetTags(PartType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:part");
+		tags.Add($"flansmod:{input.category.ToString().ToLower()}");
+		if(input.isAIChip)
+			tags.Add("flansmod:apocalypse_trigger");
+		return tags.ToArray();
+	}
 }
 
 public class BulletConverter : Converter<BulletType, BulletDefinition>
@@ -501,7 +519,8 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 	protected override void DoConversion(BulletType input, BulletDefinition output)
 	{
 		output.gravityFactor = input.fallSpeed;
-		output.maxStackSize = input.maxStackSize;
+		output.itemSettings.maxStackSize = input.maxStackSize;
+		output.itemSettings.tags = GetTags(input);
 		output.roundsPerItem = input.roundsPerItem;
 
 		List<ActionDefinition> onShoot = new List<ActionDefinition>();
@@ -525,17 +544,16 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 			});
 		}
 		output.onReloadActions = onReload.ToArray();
-
+		
 
 		output.shootStats = new ShotDefinition()
 		{
 			// All N/A? Set by gun?
-			verticalReocil = 0f,
+			verticalRecoil = 0f,
 			horizontalRecoil = 0f,
 			hitscan = true,
 			speed = 0f,
-			timeToNextShot = 0f,
-			spreadPattern = ESpreadPattern.Circle,
+			spreadPattern = ESpreadPattern.FilledCircle,
 			spread = input.bulletSpread,
 			bulletCount = input.numBullets,
 			breaksMaterials = input.breaksGlass ? new string[] { "glass" } : new string[0],
@@ -565,6 +583,17 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 			}
 		};
 	}
+
+	private string[] GetTags(BulletType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:bullet");
+		if(input.fireRadius > 0)
+			tags.Add($"flansmod:flammable");
+		if(input.explosionRadius > 0)
+			tags.Add("flansmod:explosive");
+		return tags.ToArray();
+	}
 }
 
 public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinition>
@@ -573,6 +602,8 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 	protected override void DoConversion(AttachmentType input, AttachmentDefinition output)
 	{
 		//PaintableConverter.inst.DoConversion(input, output.paints);
+		output.itemSettings.maxStackSize = 1;
+		output.itemSettings.tags = GetTags(input);
 		output.attachmentType = input.type;
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 
@@ -672,6 +703,14 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 		
 		output.modifiers = mods.ToArray();
 	}
+
+	private string[] GetTags(AttachmentType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:bullet");
+		tags.Add($"flansmod:{input.type.ToString().ToLower()}");
+		return tags.ToArray();
+	}
 }
 
 public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
@@ -679,6 +718,8 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 	public static GrenadeConverter inst = new GrenadeConverter();
 	protected override void DoConversion(GrenadeType input, GrenadeDefinition output)
 	{
+		output.itemSettings.maxStackSize = input.maxStackSize;
+		output.itemSettings.tags = GetTags(input);
 		output.primaryActions = CreatePrimaryActions(input);
 		output.secondaryActions = CreateSecondaryActions(input);
 		output.bounciness = input.bounciness;
@@ -755,6 +796,13 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 		});
 		return secondaryActions.ToArray();
 	}
+
+	private string[] GetTags(GrenadeType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:grenade");
+		return tags.ToArray();
+	}
 }
 
 public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
@@ -762,6 +810,9 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 	public static DriveableConverter inst = new DriveableConverter();
 	protected override void DoConversion(DriveableType input, VehicleDefinition output)
 	{
+		output.itemSettings.maxStackSize = 1;
+		output.itemSettings.tags = GetTags(input);
+
 		//PaintableConverter.inst.DoConversion(input, output.paints);
 		if(input.seats != null)
 		{
@@ -846,6 +897,13 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 	
 	}
 
+	private string[] GetTags(DriveableType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:vehicle");
+		return tags.ToArray();
+	}
+
 	public List<MountedGunDefinition> CreatePassengerMountedGunDefs(DriveableType input)
 	{
 		List<MountedGunDefinition> gunDefs = new List<MountedGunDefinition>();
@@ -895,7 +953,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 	}
 
 	private ActionDefinition[] CreateGunActions(DriveableType input, EWeaponType weaponType, bool alternate,
-		int shootDelay, EFireMode fireMode, int damageModifier, ShootPoint shootPoint, PilotGun gun)
+		int shootDelay, ERepeatMode fireMode, int damageModifier, ShootPoint shootPoint, PilotGun gun)
 	{
 		List<ActionDefinition> actions = new List<ActionDefinition>();
 
@@ -1745,6 +1803,7 @@ public class ToolConverter : Converter<ToolType, ToolDefinition>
 	public static ToolConverter inst = new ToolConverter();
 	protected override void DoConversion(ToolType input, ToolDefinition output)
 	{
+		output.itemSettings.tags = GetTags(input);
 		output.primaryActions = CreatePrimaryActions(input);
 		output.secondaryActions = CreateSecondaryActions(input);
 		output.hasDurability = input.toolLife != 0;
@@ -1756,6 +1815,13 @@ public class ToolConverter : Converter<ToolType, ToolDefinition>
 		output.secondaryFEUsage = input.EUPerCharge;
 		output.spendFEOnFailRatio = 0.0f;
 		output.foodValue = input.foodness;
+	}
+
+	private string[] GetTags(ToolType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:tool");
+		return tags.ToArray();
 	}
 
 	private ActionDefinition[] CreatePrimaryActions(ToolType input)
@@ -1791,6 +1857,7 @@ public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
 	public static ArmourConverter inst = new ArmourConverter();
 	protected override void DoConversion(ArmourType input, ArmourDefinition output)
 	{
+		output.itemSettings.tags = GetTags(input);
 		output.slot = (EArmourSlot)input.type;
 		output.maxDurability = input.Durability;
 		output.toughness = input.Toughness;
@@ -1817,6 +1884,13 @@ public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
 		if(input.negateFallDamage)
 			immunities.Add("FallDamage");
 		output.immunities = immunities.ToArray();
+	}
+
+	private string[] GetTags(ArmourType input)
+	{
+		List<string> tags = new List<string>();
+		tags.Add("flansmod:armour");
+		return tags.ToArray();
 	}
 }
 

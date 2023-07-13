@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EFireMode
+public enum ERepeatMode
 {
 	FullAuto,
 	SemiAuto,
@@ -12,15 +12,15 @@ public enum EFireMode
 
 public static class FireModes
 {
-	public static EFireMode Parse(string s)
+	public static ERepeatMode Parse(string s)
     {
         s = s.ToLower();
         if (s.Equals("fullauto"))
-            return EFireMode.FullAuto;
+            return ERepeatMode.FullAuto;
         if (s.Equals("minigun"))
-            return EFireMode.Minigun;
+            return ERepeatMode.Minigun;
         if (s.Equals("burst"))
-            return EFireMode.BurstFire;
-        return EFireMode.SemiAuto;
+            return ERepeatMode.BurstFire;
+        return ERepeatMode.SemiAuto;
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class VehicleDefinition : Definition
 {
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public SeatDefinition[] seats = new SeatDefinition[0];
 	[JsonField]
 	public ArticulatedPartDefinition[] articulatedParts = new ArticulatedPartDefinition[0];

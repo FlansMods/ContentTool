@@ -4,7 +4,7 @@ using UnityEngine;
 public class ReloadStageDefinition
 {
 	[JsonField]
-	public float duration = 10.0f;
+	public float duration = 1.0f;
 	[JsonField]
 	public ActionDefinition[] actions = new ActionDefinition[0];
 }

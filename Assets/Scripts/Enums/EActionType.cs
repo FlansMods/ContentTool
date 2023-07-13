@@ -4,6 +4,8 @@ using UnityEngine;
 
 public enum EActionType
 {
+	Invalid,
+
 	PlaySound,
 	Animation,
 	Shoot,

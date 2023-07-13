@@ -188,7 +188,7 @@ public class ModelPreivewer : MonoBehaviour
 								Vector3 pos = LerpPosition(fromPose, toPose, outputParameter);
 								Quaternion ori = LerpRotation(fromPose, toPose, outputParameter);
 
-								sectionPreview.transform.localPosition = new Vector3(-pos.z, pos.y, pos.x);
+								sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
 								sectionPreview.transform.localRotation = ori;
 								sectionPreview.transform.localScale = Vector3.one;
 							}
@@ -330,7 +330,7 @@ public class ModelPreivewer : MonoBehaviour
 			{
 				Vector3 pos = Resolve(pose.position);
 				Vector3 euler = Resolve(pose.rotation);
-				sectionPreview.transform.localPosition = new Vector3(-pos.z, pos.y, pos.x);
+				sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
 				sectionPreview.transform.localEulerAngles = euler;
 				sectionPreview.transform.localScale = pose.scale;
 			}

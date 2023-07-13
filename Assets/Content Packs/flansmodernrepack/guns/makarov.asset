@@ -1,0 +1,382 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
+  m_Name: makarov
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: makarov
+    textureX: 32
+    textureY: 16
+    sections:
+    - partName: gun
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: -1, y: -1, z: -1}
+        Dim: {x: 2, y: 3, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 5
+        Pos: {x: -2, y: 2, z: -1}
+        Dim: {x: 5, y: 1, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 1, y: -0, z: -0}
+        - {x: -2, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: 1, y: -0, z: 0}
+        - {x: -2, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 8
+        Pos: {x: 0.5, y: 3, z: -0.5}
+        Dim: {x: 6, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: slide
+      pieces:
+      - textureU: 0
+        textureV: 10
+        Pos: {x: -2, y: 3, z: -1}
+        Dim: {x: 8, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 1, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 1, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 2
+        textureV: 5
+        Pos: {x: -0.5, y: 4.25, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 2
+        textureV: 5
+        Pos: {x: 4.75, y: 4.25, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: ammo
+      pieces:
+      - textureU: 13
+        textureV: 0
+        Pos: {x: -0.90000004, y: -0.75, z: -0.5}
+        Dim: {x: 1.8, y: 4, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: makarov
+    animations:
+    - key: gunSlideDistance
+      isVec3: 0
+      floatValue: 0.25
+      vec3Value: {x: 0, y: 0, z: 0}
+    attachPoints:
+    - name: barrel
+      attachedTo: body
+      position: {x: 0.40625, y: 0.25, z: 0}
+    - name: scope
+      attachedTo: slide
+      position: {x: 0.1875, y: 0.3125, z: 0}
+  Skin: {fileID: 2800000, guid: 54b2691b6c981d240b9e5b6434d68776, type: 3}
+  Icon: {fileID: 2800000, guid: 0383277f80d64df46b5ab32b921fe5a8, type: 3}
+  paints:
+    paintjobs:
+    - textureName: Makarov_Brown
+    - textureName: Makarov_Cobra
+  primaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 0
+      actions:
+      - actionType: 1
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0
+        sounds:
+        - sound: MWColtReload
+          length: 1
+          minPitchMultiplier: 1
+          maxPitchMultiplier: 1
+          minVolume: 1
+          maxVolume: 1
+          maxRange: 100
+          LODs: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: 
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    eject:
+      duration: 0
+      actions: []
+    loadOne:
+      duration: 0
+      actions: []
+    end:
+      duration: 0
+      actions: []
+  secondaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 1
+      actions: []
+    eject:
+      duration: 1
+      actions: []
+    loadOne:
+      duration: 1
+      actions: []
+    end:
+      duration: 1
+      actions: []
+  primaryActions:
+  - actionType: 3
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0.05
+    repeatCount: 3
+    spinUpDuration: 1.5
+    duration: 0.05
+    sounds:
+    - sound: MakarovShoot
+      length: 0
+      minPitchMultiplier: 0.8333333
+      maxPitchMultiplier: 1.25
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    itemStack: 
+    shootStats:
+    - verticalRecoil: 1
+      horizontalRecoil: 0
+      spread: 1
+      spreadPattern: 0
+      hitscan: 1
+      speed: 0
+      bulletCount: 1
+      spinSpeed: 360
+      breaksMaterials: []
+      matchAmmoNames:
+      - m9ammo
+      - makarov_ammo
+      - m1911ammo
+      - sig_p226ammo
+      - usp_ammo
+      - usp_poison_ammo
+      matchAmmoTags: []
+      penetrationPower: 1
+      trailParticles: 
+      impact:
+        decal: flansmod:effects/bullet_decal.png
+        damageToTarget: 4
+        multiplierVsPlayers: 1
+        multiplierVsVehicles: 1
+        knockback: 0
+        splashDamageRadius: 0
+        splashDamageFalloff: 0
+        setFireToTarget: 0
+        fireSpreadRadius: 0
+        fireSpreadAmount: 0
+        hitSounds: []
+    fovFactor: 1
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 5
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0.5
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: shoot
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  secondaryActions:
+  - actionType: 4
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.2
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  lookAtActions:
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 2.5
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: look_at
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  startSpinUpActions: []
+  reachMaxSpinActions: []
+  startSpinDownActions: []
+  reachZeroSpinActions: []
+  loopingSounds: []
+  numBullets: 1
+  AmmoConsumeMode: 3
+  barrelAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  gripAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  stockAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  scopeAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  genericAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  modelParts: []
+  animationSet: flansmod:pistol

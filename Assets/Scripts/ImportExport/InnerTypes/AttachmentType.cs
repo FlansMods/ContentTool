@@ -30,7 +30,7 @@ public class AttachmentType : PaintableType
     /** This modifies the reload time, which is then rounded down to the nearest tick */
     public float reloadTimeMultiplier = 1F;
     /** If set to anything other than null, then this attachment will override the weapon's default firing mode */
-    public EFireMode modeOverride = EFireMode.BurstFire;
+    public ERepeatMode modeOverride = ERepeatMode.BurstFire;
 
     //Scope variables (These variables only come into play for scope attachments)
     /** The zoomLevel of this scope */

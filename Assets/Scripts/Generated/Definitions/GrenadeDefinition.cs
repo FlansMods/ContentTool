@@ -5,6 +5,8 @@ using UnityEngine;
 public class GrenadeDefinition : Definition
 {
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public ActionDefinition[] primaryActions = new ActionDefinition[0];
 	[JsonField]
 	public ActionDefinition[] secondaryActions = new ActionDefinition[0];

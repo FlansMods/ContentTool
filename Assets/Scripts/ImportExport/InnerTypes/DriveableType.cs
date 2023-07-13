@@ -185,7 +185,7 @@ public class DriveableType : PaintableType
 	/** Delays. Can override gun delays */
 	public int shootDelayPrimary = 1, shootDelaySecondary = 1;
 	/** Firing modes for primary and secondary guns. Minigun also an option */
-	public EFireMode modePrimary = EFireMode.FullAuto, modeSecondary = EFireMode.FullAuto;
+	public ERepeatMode modePrimary = ERepeatMode.FullAuto, modeSecondary = ERepeatMode.FullAuto;
 	/** Damage modifiers, so that different vehicles firing the same weapons can do different damage */
 	public int damageModifierPrimary = 1, damageModifierSecondary = 1;
 	

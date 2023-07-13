@@ -1,0 +1,440 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
+  m_Name: acr
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: acr
+    textureX: 64
+    textureY: 16
+    sections:
+    - partName: gun
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: 0, y: 3, z: -1}
+        Dim: {x: 8, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 4
+        Pos: {x: 0, y: 0, z: -1}
+        Dim: {x: 2, y: 3, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0.5, z: -0}
+        - {x: 1, y: 0, z: -0}
+        - {x: 1, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0.5, z: 0}
+        - {x: 1, y: 0, z: 0}
+        - {x: 1, y: 0, z: 0}
+      - textureU: 8
+        textureV: 4
+        Pos: {x: 5, y: 2, z: -1}
+        Dim: {x: 3, y: 1, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 9
+        Pos: {x: 8, y: 3, z: -1}
+        Dim: {x: 6, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 13
+        Pos: {x: 14, y: 3.1, z: -0.4}
+        Dim: {x: 4, y: 0.8, z: 0.8}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 10
+        textureV: 13
+        Pos: {x: 14, y: 4.1, z: -0.4}
+        Dim: {x: 1, y: 0.8, z: 0.8}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: defaultStock
+      pieces:
+      - textureU: 20
+        textureV: 0
+        Pos: {x: -8, y: 1, z: -1}
+        Dim: {x: 1, y: 3.5, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 26
+        textureV: 0
+        Pos: {x: -7, y: 1, z: -1}
+        Dim: {x: 2, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -1, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -1, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 18
+        textureV: 6
+        Pos: {x: -7, y: 3, z: -1}
+        Dim: {x: 7, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: -0.5, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: -0.5, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: ammo
+      pieces:
+      - textureU: 16
+        textureV: 10
+        Pos: {x: 5.5, y: -2, z: -1}
+        Dim: {x: 2, y: 4, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.25, y: -0.25, z: 0.25}
+        - {x: 0.5, y: -0, z: 0.25}
+        - {x: -0, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+        - {x: 0.25, y: -0.25, z: -0.25}
+        - {x: 0.5, y: -0, z: -0.25}
+        - {x: -0, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+    name: acr
+    animations:
+    - key: gunSlideDistance
+      isVec3: 0
+      floatValue: 0.5
+      vec3Value: {x: 0, y: 0, z: 0}
+    attachPoints:
+    - name: scope
+      attachedTo: body
+      position: {x: 0.21875, y: 0.3125, z: 0}
+    - name: stock
+      attachedTo: body
+      position: {x: 0.0625, y: 0.25, z: 0}
+    - name: barrel
+      attachedTo: body
+      position: {x: 1.125, y: 0.21875, z: 0}
+    - name: grip
+      attachedTo: body
+      position: {x: 0.6875, y: 0.1875, z: 0}
+  Skin: {fileID: 2800000, guid: e089646af2515bb4bbe270cf78b1e0a3, type: 3}
+  Icon: {fileID: 2800000, guid: 9b0338f90041b4d4d963e06120598866, type: 3}
+  paints:
+    paintjobs:
+    - textureName: ACR_Red
+    - textureName: ACR_Aquatic
+    - textureName: ACR_RoyalGreen
+    - textureName: ACR_Electric
+    - textureName: ACR_QuackQuack
+  primaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 0
+      actions:
+      - actionType: 1
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0
+        sounds:
+        - sound: MWMP44Reload
+          length: 1
+          minPitchMultiplier: 1
+          maxPitchMultiplier: 1
+          minVolume: 1
+          maxVolume: 1
+          maxRange: 100
+          LODs: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: 
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    eject:
+      duration: 0
+      actions: []
+    loadOne:
+      duration: 0
+      actions: []
+    end:
+      duration: 0
+      actions: []
+  secondaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 1
+      actions: []
+    eject:
+      duration: 1
+      actions: []
+    loadOne:
+      duration: 1
+      actions: []
+    end:
+      duration: 1
+      actions: []
+  primaryActions:
+  - actionType: 3
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 1
+    repeatMode: 0
+    repeatDelay: 0.1
+    repeatCount: 3
+    spinUpDuration: 1.5
+    duration: 0.1
+    sounds:
+    - sound: FNSCARShoot
+      length: 0
+      minPitchMultiplier: 0.8333333
+      maxPitchMultiplier: 1.25
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    itemStack: 
+    shootStats:
+    - verticalRecoil: 3
+      horizontalRecoil: 0
+      spread: 5
+      spreadPattern: 0
+      hitscan: 1
+      speed: 0
+      bulletCount: 1
+      spinSpeed: 360
+      breaksMaterials: []
+      matchAmmoNames:
+      - m16a4ammo
+      - acr_ammo
+      - mtar_ammo
+      - g36ammo
+      - aug_ammo
+      - m4carbine_ammo
+      - beta_cmag
+      matchAmmoTags: []
+      penetrationPower: 1
+      trailParticles: 
+      impact:
+        decal: flansmod:effects/bullet_decal.png
+        damageToTarget: 6.5
+        multiplierVsPlayers: 1
+        multiplierVsVehicles: 1
+        knockback: 0
+        splashDamageRadius: 0
+        splashDamageFalloff: 0
+        setFireToTarget: 0
+        fireSpreadRadius: 0
+        fireSpreadAmount: 0
+        hitSounds: []
+    fovFactor: 1
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 5
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0.1
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: shoot
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  secondaryActions:
+  - actionType: 4
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  lookAtActions:
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 2.5
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: look_at
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  startSpinUpActions: []
+  reachMaxSpinActions: []
+  startSpinDownActions: []
+  reachZeroSpinActions: []
+  loopingSounds: []
+  numBullets: 1
+  AmmoConsumeMode: 3
+  barrelAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  gripAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  stockAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  scopeAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  genericAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  modelParts: []
+  animationSet: flansmod:ar_load_from_bottom

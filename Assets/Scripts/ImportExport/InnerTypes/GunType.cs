@@ -30,7 +30,7 @@ public class GunType : PaintableType
 	* Some may hold more, such as Nerf pistols, revolvers or shotguns */
 	public int numAmmoItemsInGun = 1;
 	/** The firing mode of the gun. One of semi-auto, full-auto, minigun or burst */
-	public EFireMode mode = EFireMode.FullAuto;
+	public ERepeatMode mode = ERepeatMode.FullAuto;
 	/** The number of bullets to fire per burst in burst mode */
 	public int numBurstRounds = 3;
 	/** The required speed for minigun mode guns to start firing */

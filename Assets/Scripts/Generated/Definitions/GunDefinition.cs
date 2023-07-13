@@ -5,9 +5,13 @@ using UnityEngine;
 public class GunDefinition : Definition
 {
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public PaintableDefinition paints = new PaintableDefinition();
 	[JsonField]
-	public ReloadDefinition reload = new ReloadDefinition();
+	public ReloadDefinition primaryReload = new ReloadDefinition();
+	[JsonField]
+	public ReloadDefinition secondaryReload = new ReloadDefinition();
 	[JsonField]
 	public ActionDefinition[] primaryActions = new ActionDefinition[0];
 	[JsonField]

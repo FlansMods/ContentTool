@@ -205,7 +205,28 @@ public class AnimationEditor : Editor
 			};
 			instance.keyframes = newArray;
 		}
+		if(GUILayout.Button("Swap x"))
+		{
+			for(int i = 0; i < instance.keyframes.Length; i++)
+			{
+				for(int j = 0; j < instance.keyframes[i].poses.Length; j++)
+				{
+					VecWithOverride pos = instance.keyframes[i].poses[j].position;
+					instance.keyframes[i].poses[j].position = new VecWithOverride()
+					{
+						xValue = -pos.xValue,
+						xOverride = pos.xOverride,
+						yValue = pos.yValue,
+						yOverride = pos.yOverride,
+						zValue = pos.zValue,
+						zOverride = pos.zOverride,
+					};
+				}
+			}
+		}
 		GUILayout.EndHorizontal();
+
+
 		int keyframeToDelete = -1;
 		for(int i = 0; i < instance.keyframes.Length; i++)
 		{

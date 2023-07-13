@@ -1,0 +1,224 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
+  m_Name: bolt_action_rifle
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 0
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: 
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+  Skin: {fileID: 0}
+  Icon: {fileID: 0}
+  keyframes:
+  - name: idle
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: shot_fired
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: -5
+        yOverride: 
+        yValue: 1
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: ready_to_reload
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: -2
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 3
+      rotation:
+        xOverride: 
+        xValue: -30
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 15
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: bolt_open
+    poses:
+    - applyTo: slide
+      position:
+        xOverride: 
+        xValue: 2
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
+  - name: ammo_load_start
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: -12
+        zOverride: 
+        zValue: 16
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -60
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - bolt_open
+  - name: ammo_load_end
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - bolt_open
+  - name: keyframe_6
+    poses: []
+    parents:
+    - keyframe_28
+  - name: keyframe_7
+    poses: []
+    parents: []
+  - name: keyframe_8
+    poses: []
+    parents: []
+  sequences:
+  - name: shoot
+    ticks: 40
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 0
+      frame: idle
+    - tick: 1
+      entry: 2
+      exit: 1
+      frame: shot_fired
+    - tick: 4
+      entry: 2
+      exit: 1
+      frame: idle
+    - tick: 15
+      entry: 2
+      exit: 1
+      frame: ready_to_reload
+    - tick: 20
+      entry: 2
+      exit: 1
+      frame: bolt_open
+    - tick: 30
+      entry: 1
+      exit: 1
+      frame: ready_to_reload
+    - tick: 40
+      entry: 1
+      exit: 1
+      frame: idle
+  - name: reload_start
+    ticks: 10
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: idle
+    - tick: 10
+      entry: 1
+      exit: 1
+      frame: ready_to_reload
+  - name: reload_load_one
+    ticks: 5
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: ammo_load_start
+    - tick: 5
+      entry: 1
+      exit: 1
+      frame: ammo_load_end
+  - name: reload_end
+    ticks: 5
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: ready_to_reload
+    - tick: 5
+      entry: 1
+      exit: 1
+      frame: idle

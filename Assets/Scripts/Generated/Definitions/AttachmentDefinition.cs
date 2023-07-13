@@ -5,6 +5,8 @@ using UnityEngine;
 public class AttachmentDefinition : Definition
 {
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public EAttachmentType attachmentType = EAttachmentType.Generic;
 	[JsonField]
 	public ModifierDefinition[] modifiers = new ModifierDefinition[0];
@@ -21,7 +23,7 @@ public class AttachmentDefinition : Definition
 	[JsonField]
 	public bool replaceSecondaryAction = false;
 	[JsonField]
-	public EFireMode modeOverride = EFireMode.FullAuto;
+	public ERepeatMode modeOverride = ERepeatMode.FullAuto;
 	[JsonField]
 	public bool overrideFireMode = false;
 }

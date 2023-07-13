@@ -1,0 +1,933 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beea92bb404a0674c8ec1ef68b9595d2, type: 3}
+  m_Name: cobra
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: cobra
+    textureX: 512
+    textureY: 256
+    sections:
+    - partName: body
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: -24, y: 8, z: -10}
+        Dim: {x: 48, y: 32, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 54
+        Pos: {x: -64, y: 8, z: -10}
+        Dim: {x: 40, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 92
+        Pos: {x: -40, y: 24, z: -10}
+        Dim: {x: 16, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: 2}
+        - {x: 0, y: 0, z: 2}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: -2}
+        - {x: 0, y: 0, z: -2}
+      - textureU: 74
+        textureV: 92
+        Pos: {x: -64, y: 24, z: -10}
+        Dim: {x: 24, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 6, y: -6, z: 2}
+        - {x: 0, y: 0, z: 2}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 6, y: -6, z: -2}
+        - {x: 0, y: 0, z: -2}
+      - textureU: 0
+        textureV: 92
+        Pos: {x: -40, y: 24, z: -10}
+        Dim: {x: 16, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: 2}
+        - {x: 0, y: 0, z: 2}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: -2}
+        - {x: 0, y: 0, z: -2}
+      - textureU: 74
+        textureV: 92
+        Pos: {x: -64, y: 24, z: -10}
+        Dim: {x: 24, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 6, y: -6, z: 2}
+        - {x: 0, y: 0, z: 2}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 6, y: -6, z: -2}
+        - {x: 0, y: 0, z: -2}
+      - textureU: 0
+        textureV: 130
+        Pos: {x: -24, y: 40, z: -10}
+        Dim: {x: 48, y: 8, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 4, y: 0, z: 4}
+        - {x: -4, y: 0, z: 4}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 4, y: 0, z: -4}
+        - {x: -4, y: 0, z: -4}
+      - textureU: 0
+        textureV: 160
+        Pos: {x: 24, y: 26, z: -6}
+        Dim: {x: 8, y: 12, z: 12}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 42
+        textureV: 160
+        Pos: {x: 0, y: 26, z: 10}
+        Dim: {x: 24, y: 12, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 42
+        textureV: 178
+        Pos: {x: 0, y: 26, z: -14}
+        Dim: {x: 24, y: 12, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 162
+        textureV: 114
+        Pos: {x: -64, y: 8, z: -10}
+        Dim: {x: 40, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 162
+        textureV: 176
+        Pos: {x: -72, y: 16, z: -10}
+        Dim: {x: 8, y: 8, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0, y: 3, z: 3}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: -3, z: 3}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 3, z: -3}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: -3, z: -3}
+        - {x: 0, y: 0, z: 0}
+    - partName: rightWing
+      pieces:
+      - textureU: 162
+        textureV: 52
+        Pos: {x: -12, y: 21, z: -38}
+        Dim: {x: 24, y: 2, z: 28}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 8, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 8, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 162
+        textureV: 84
+        Pos: {x: -8, y: 20, z: -42}
+        Dim: {x: 24, y: 4, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 162
+        textureV: 94
+        Pos: {x: -4, y: 19, z: -30}
+        Dim: {x: 16, y: 2, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 162
+        textureV: 100
+        Pos: {x: -8, y: 13, z: -32}
+        Dim: {x: 24, y: 6, z: 6}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: leftWing
+      pieces:
+      - textureU: 268
+        textureV: 52
+        Pos: {x: -12, y: 21, z: 10}
+        Dim: {x: 24, y: 2, z: 28}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: 8, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 8, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 268
+        textureV: 84
+        Pos: {x: -8, y: 20, z: 38}
+        Dim: {x: 24, y: 4, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 268
+        textureV: 94
+        Pos: {x: -4, y: 19, z: 28}
+        Dim: {x: 16, y: 2, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 268
+        textureV: 100
+        Pos: {x: -8, y: 13, z: 26}
+        Dim: {x: 24, y: 6, z: 6}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: skids
+      pieces:
+      - textureU: 0
+        textureV: 196
+        Pos: {x: -48, y: -4, z: -24}
+        Dim: {x: 72, y: 2, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 204
+        Pos: {x: -48, y: -4, z: 20}
+        Dim: {x: 72, y: 2, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 100
+        textureV: 160
+        Pos: {x: -24, y: -2, z: 8}
+        Dim: {x: 2, y: 10, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: 12}
+        - {x: 0, y: -0, z: 12}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 12}
+        - {x: 0, y: -0, z: 12}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 110
+        textureV: 160
+        Pos: {x: 16, y: -2, z: 8}
+        Dim: {x: 2, y: 10, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: 12}
+        - {x: 0, y: -0, z: 12}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 12}
+        - {x: 0, y: -0, z: 12}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 120
+        textureV: 160
+        Pos: {x: -24, y: -2, z: -10}
+        Dim: {x: 2, y: 10, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -12}
+        - {x: 0, y: -0, z: -12}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: -12}
+        - {x: 0, y: -0, z: -12}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 130
+        textureV: 160
+        Pos: {x: 16, y: -2, z: -10}
+        Dim: {x: 2, y: 10, z: 2}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -12}
+        - {x: 0, y: -0, z: -12}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: -12}
+        - {x: 0, y: -0, z: -12}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: tail
+      pieces:
+      - textureU: 138
+        textureV: 0
+        Pos: {x: 24, y: 8, z: -10}
+        Dim: {x: 80, y: 16, z: 20}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: 8, z: 8}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: 8}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: 8, z: -8}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: -8}
+      - textureU: 340
+        textureV: 0
+        Pos: {x: 88, y: 24, z: -2}
+        Dim: {x: 16, y: 24, z: 4}
+        Origin: {x: 0, y: -20, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 20, y: 0, z: 1}
+        - {x: 16, y: 0, z: 1}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 20, y: 0, z: -1}
+        - {x: 16, y: 0, z: -1}
+    - partName: heliMainRotor
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: 0, y: 0, z: 0}
+        Dim: {x: 0, y: 0, z: 0}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: heliTailRotor
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: 0, y: 0, z: 0}
+        Dim: {x: 0, y: 0, z: 0}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: cobra
+    animations: []
+    attachPoints: []
+  Skin: {fileID: 0}
+  Icon: {fileID: 2800000, guid: 31445be706b625a4a9e4115b5b69e9d3, type: 3}
+  seats:
+  - attachedTo: core
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: -89
+    maxPitch: 89
+    gyroStabilised: 0
+    inputs:
+    - key: 0
+      articulations: []
+      guns: []
+      driving:
+      - control: 0
+        force: 3.5
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 1
+      articulations: []
+      guns: []
+      driving:
+      - control: 1
+        force: 0
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 2
+      articulations: []
+      guns: []
+      driving:
+      - control: 4
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 3
+      articulations: []
+      guns: []
+      driving:
+      - control: 5
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 13
+      articulations: []
+      guns: []
+      driving:
+      - control: 3
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 6
+      articulations: []
+      guns: []
+      driving:
+      - control: 8
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 7
+      articulations: []
+      guns: []
+      driving:
+      - control: 9
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 8
+      articulations: []
+      guns: []
+      driving:
+      - control: 6
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 9
+      articulations: []
+      guns: []
+      driving:
+      - control: 7
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 17
+      articulations: []
+      guns: []
+      driving:
+      - control: 13
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 18
+      articulations: []
+      guns: []
+      driving:
+      - control: 14
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  - attachedTo: nose
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -30
+    maxYaw: 30
+    minPitch: -30
+    maxPitch: 0
+    gyroStabilised: 0
+    inputs:
+    - key: 10
+      articulations: []
+      guns:
+      - gunName: seat_1_gun
+        toggle: 0
+      driving: []
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  articulatedParts: []
+  guns:
+  - name: seat_1_gun
+    primaryActions:
+    - actionType: 3
+      canActUnderwater: 0
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 1
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      duration: 0
+      sounds:
+      - sound: MinigunShoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      shootStats:
+      - verticalRecoil: 1
+        horizontalRecoil: 0
+        spread: 20
+        spreadPattern: 0
+        hitscan: 1
+        speed: 0
+        bulletCount: 1
+        spinSpeed: 360
+        breaksMaterials: []
+        matchAmmoNames:
+        - minigun_ammo
+        - minigun_explosive_ammo
+        - minigun_portable_ammo
+        matchAmmoTags: []
+        penetrationPower: 1
+        trailParticles: 
+        impact:
+          decal: flansmod:effects/bullet_decal.png
+          damageToTarget: 2
+          multiplierVsPlayers: 1
+          multiplierVsVehicles: 1
+          knockback: 0.5
+          splashDamageRadius: 0
+          splashDamageFalloff: 0
+          setFireToTarget: 0
+          fireSpreadRadius: 0
+          fireSpreadAmount: 0
+          hitSounds: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: nose
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: -30
+    maxYaw: 30
+    minPitch: -30
+    maxPitch: 0
+    aimingSpeed: 1
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_primary_0
+    primaryActions:
+    - actionType: 3
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      duration: 0
+      sounds: []
+      itemStack: 
+      shootStats: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      duration: 0
+      sounds: []
+      itemStack: 
+      shootStats: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: FireMissile
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_primary_1
+    primaryActions:
+    - actionType: 3
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      duration: 0
+      sounds: []
+      itemStack: 
+      shootStats: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      duration: 0
+      sounds: []
+      itemStack: 
+      shootStats: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: FireMissile
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  movementModes:
+  - name: helicopter
+    type: 1
+    wheels:
+    - attachedTo: coreWheel
+      visualOffset: {x: -2, y: -1.75, z: -1.5}
+      physicsOffset: {x: -2, y: -1.75, z: -1.5}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: -2, y: -1.75, z: 1.5}
+      physicsOffset: {x: -2, y: -1.75, z: 1.5}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: 3, y: -1.75, z: 1.5}
+      physicsOffset: {x: 3, y: -1.75, z: 1.5}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: 3, y: -1.75, z: -1.5}
+      physicsOffset: {x: 3, y: -1.75, z: -1.5}
+      springStrength: 0.125
+      stepHeight: 1
+    propellers:
+    - attachedTo: blades
+      visualOffset: {x: 0, y: 3, z: 0}
+      forceOffset: {x: 0, y: 0, z: 0}
+    legs: []
+    arms: []
+    maxAcceleration: 1
+    maxDecceleration: -1
+    maxSpeed: 100
+    liftForce: 10
+  restingEulerAngles: {x: 0, y: 0, z: 0}
+  defaultEngine:
+    maxAcceleration: 1
+    maxDeceleration: 1
+    maxSpeed: 1
+    fuelType: 0
+    fuelConsumptionRate: 1
+    solidFuelSlots: 0
+    liquidFuelCapacity: 1000
+    batterySlots: 0
+    FECapacity: 0
+  useAABBCollisionOnly: 0
+  aabbSize: {x: 0, y: 0, z: 0}
+  CargoSlots: 0
+  CanAccessMenusWhileMoving: 1
