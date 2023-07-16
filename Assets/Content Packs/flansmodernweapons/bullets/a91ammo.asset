@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
+  m_Name: a91ammo
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: a91ammo
+    textureX: 0
+    textureY: 0
+    sections:
+    - partName: bullet
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: -0.5, y: -1.5, z: -0.5}
+        Dim: {x: 1, y: 3, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: a91ammo
+    animations: []
+    attachPoints: []
+  Skin: {fileID: 0}
+  Icon: {fileID: 2800000, guid: 1cecefe4cc8cb6245ba3ddf85cbead43, type: 3}
+  AdditionalTextures: []
+  gravityFactor: 0.25
+  itemSettings:
+    maxStackSize: 4
+    tags:
+    - flansmod:bullet
+  roundsPerItem: 30
+  shootStats:
+    verticalRecoil: 0
+    horizontalRecoil: 0
+    spread: 1
+    spreadPattern: 1
+    hitscan: 1
+    speed: 0
+    bulletCount: 1
+    spinSpeed: 360
+    breaksMaterials:
+    - glass
+    matchAmmoNames: []
+    matchAmmoTags: []
+    penetrationPower: 1
+    trailParticles: 
+    impact:
+      decal: flansmod:effects/bullet_decal.png
+      damageToTarget: 1
+      multiplierVsPlayers: 1
+      multiplierVsVehicles: 1
+      knockback: 0
+      splashDamageRadius: 0
+      splashDamageFalloff: 0
+      setFireToTarget: 0
+      fireSpreadRadius: 0
+      fireSpreadAmount: 0.5
+      hitSounds:
+      - sound: flansmodernweapons:bullet
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 50
+        LODs: []
+  onShootActions: []
+  onClipEmptyActions: []
+  onReloadActions: []

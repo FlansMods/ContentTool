@@ -236,7 +236,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = inf.reloadSound,
+						sound = Utils.ToLowerWithUnderscores(inf.reloadSound),
 					}
 				}
 			});
@@ -319,15 +319,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				canActUnderOtherLiquid = false,
 				canBeOverriden = true,
 				twoHanded = !inf.oneHanded,				
-				sounds = new SoundDefinition[] {
-					new SoundDefinition()
-					{
-						sound = inf.shootSound,
-						length = inf.shootSoundLength,
-						minPitchMultiplier = inf.distortSound ? 1.0f / 1.2f : 1.0f,
-						maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
-					},
-				},
+				sounds = new SoundDefinition[0],
 				duration = inf.shootDelay / 20f,
 				itemStack = "", // Not used by this action
 				shootStats = CreateShotDefinition(inf),
@@ -347,6 +339,19 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				// loop
 				// cooldown
 			});
+			primaryActions.Add(new ActionDefinition()
+			{
+				actionType = EActionType.PlaySound,
+				sounds = new SoundDefinition[] {
+					new SoundDefinition()
+					{
+						sound = Utils.ToLowerWithUnderscores(inf.shootSound),
+						length = inf.shootSoundLength,
+						minPitchMultiplier = inf.distortSound ? 1.0f / 1.2f : 1.0f,
+						maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
+					},
+				},
+			});
 		}
 		else if(inf.meleeDamage > 0.0f)
 		{
@@ -358,7 +363,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition() 
 					{
-						sound = inf.meleeSound,
+						sound = Utils.ToLowerWithUnderscores(inf.meleeSound),
 					},
 				},
 			});
@@ -576,7 +581,7 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 				? new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = input.hitSound,
+						sound = Utils.ToLowerWithUnderscores(input.hitSound),
 						maxRange = input.hitSoundRange
 					}
 				} : new SoundDefinition[0],
@@ -767,7 +772,7 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = inf.throwSound,
+						sound = Utils.ToLowerWithUnderscores(inf.throwSound),
 						length = 1,
 					}
 				}
@@ -935,12 +940,12 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						traveseIndependently = input.seats[i].yawBeforePitch,
 						yawSound = new SoundDefinition()
 						{ 
-							sound = input.seats[i].yawSound,
+							sound = Utils.ToLowerWithUnderscores(input.seats[i].yawSound),
 							length = input.seats[i].yawSoundLength
 						},
 						pitchSound = new SoundDefinition()
 						{ 
-							sound = input.seats[i].pitchSound,
+							sound = Utils.ToLowerWithUnderscores(input.seats[i].pitchSound),
 							length = input.seats[i].pitchSoundLength,
 						},
 						primaryActions = CreateGunActions(input.seats[i]),
@@ -975,7 +980,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						sounds = new SoundDefinition[] {
 							new SoundDefinition()
 							{
-								sound = gunType.shootSound,
+								sound = Utils.ToLowerWithUnderscores(gunType.shootSound),
 								length = gunType.shootSoundLength,
 								minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
 								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
@@ -1030,7 +1035,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 					sounds = new SoundDefinition[] {
 						new SoundDefinition()
 						{
-							sound = gunType.shootSound,
+							sound = Utils.ToLowerWithUnderscores(gunType.shootSound),
 							length = gunType.shootSoundLength,
 							minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
 							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,

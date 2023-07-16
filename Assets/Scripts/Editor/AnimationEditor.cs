@@ -100,6 +100,31 @@ public class AnimationEditor : Editor
 			EditorGUILayout.Popup(0, DefinitionNames.ToArray());
 			GUILayout.EndHorizontal();
 
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Preview skin:");
+			if(	Previewer.Def != null && Previewer.Def is GunDefinition gun)
+			{
+				int selected = -1;
+				string[] skinNames = new string[gun.paints.paintjobs.Length + 1];
+				for(int i = 0; i < skinNames.Length - 1; i++)
+				{
+					skinNames[i] = gun.paints.paintjobs[i].textureName;
+					if(skinNames[i].ToLower() == Previewer.Skin.ToLower())
+					{
+						selected = i;
+					}
+				}
+				skinNames[skinNames.Length - 1] = gun.name;
+				selected = EditorGUILayout.Popup(selected, skinNames);
+				if(selected >= 0 && skinNames[selected] != Previewer.Skin)
+				{
+					Previewer.SetSkin(skinNames[selected]);
+				}
+			}
+			//Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);
+			GUILayout.EndHorizontal();
+
+
 			//GUILayout.BeginHorizontal();
 			//GUILayout.Label("Preview anim:");
 			//Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);

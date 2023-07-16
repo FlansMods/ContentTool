@@ -8,6 +8,7 @@ public abstract class Definition : ScriptableObject
 	public Texture2D Skin;
 	public Texture2D Icon;
 
+	[System.Serializable]
 	public class AdditionalTexture
 	{
 		public string name;

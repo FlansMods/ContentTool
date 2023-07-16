@@ -13,6 +13,7 @@ public class ModelPreivewer : MonoBehaviour
 	public Definition Def;
 	public AnimationDefinition Anim;
 	private DateTime AnimStartTime = DateTime.Now;
+	public string Skin = "";
 
 	public bool Playing = false;
 	public string PreviewFrame = "";
@@ -33,6 +34,33 @@ public class ModelPreivewer : MonoBehaviour
 		{
 			SetModel(null);
 		}
+	}
+
+	public void SetSkin(string skinName)
+	{
+		Skin = skinName;
+		if(material != null)
+		{
+			if(skinName == Def.Skin.name)
+			{
+				SetTexture(Def.Skin);
+				return;
+			}
+			foreach(Definition.AdditionalTexture tex in Def.AdditionalTextures)
+			{
+				if(tex.name.ToLower() == skinName.ToLower())
+				{
+					SetTexture(tex.texture);
+					return;
+				}
+			}
+		}
+
+		foreach(Definition.AdditionalTexture tex in Def.AdditionalTextures)
+		{
+			Debug.LogWarning($"It wasn't {tex.name}");
+		}
+		Debug.LogError("Failed to set " + skinName + " on " + name);
 	}
 
 	public void SetModel(Model model)

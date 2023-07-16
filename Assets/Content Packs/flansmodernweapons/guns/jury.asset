@@ -1,0 +1,642 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
+  m_Name: jury
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: jury
+    textureX: 64
+    textureY: 32
+    sections:
+    - partName: gun
+      pieces:
+      - textureU: 1
+        textureV: 1
+        Pos: {x: 1, y: 2.75, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0.5, y: -0.5, z: -0}
+        - {x: 0, y: 0.5, z: -0}
+        - {x: 0.5, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 0.5, y: -0.5, z: 0}
+        - {x: 0, y: 0.5, z: 0}
+      - textureU: 9
+        textureV: 1
+        Pos: {x: 4, y: 3, z: -0.5}
+        Dim: {x: 5, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: 0.25}
+        - {x: 0, y: -0, z: 0.25}
+        - {x: -0, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+        - {x: -0, y: -0, z: -0.25}
+        - {x: 0, y: -0, z: -0.25}
+        - {x: -0, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+      - textureU: 41
+        textureV: 1
+        Pos: {x: 4, y: 2, z: -0.5}
+        Dim: {x: 5, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 57
+        textureV: 1
+        Pos: {x: 2, y: 3.5, z: -0.5}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.25, z: 0.25}
+        - {x: 0, y: 0.25, z: 0.25}
+        - {x: -0, y: -0.25, z: 0.25}
+        - {x: 0, y: -0.25, z: 0.25}
+        - {x: -0, y: 0.25, z: -0.25}
+        - {x: 0, y: 0.25, z: -0.25}
+        - {x: -0, y: -0.25, z: -0.25}
+        - {x: 0, y: -0.25, z: -0.25}
+      - textureU: 1
+        textureV: 9
+        Pos: {x: 2, y: 1.5, z: -0.5}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.25, z: 0.25}
+        - {x: 0, y: 0.25, z: 0.25}
+        - {x: -0, y: -0.25, z: 0.25}
+        - {x: 0, y: -0.25, z: 0.25}
+        - {x: -0, y: 0.25, z: -0.25}
+        - {x: 0, y: 0.25, z: -0.25}
+        - {x: -0, y: -0.25, z: -0.25}
+        - {x: 0, y: -0.25, z: -0.25}
+      - textureU: 9
+        textureV: 9
+        Pos: {x: 0, y: 0.5, z: -0.5}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: -0, z: -0}
+        - {x: 0.5, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: -0, z: 0}
+        - {x: 0.5, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 9
+        Pos: {x: 0.5, y: 2.5, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.25, z: -0}
+        - {x: 0, y: 0.25, z: -0}
+        - {x: -0, y: -0.25, z: -0}
+        - {x: 0, y: -0.25, z: -0}
+        - {x: -0, y: 0.25, z: 0}
+        - {x: 0, y: 0.25, z: 0}
+        - {x: -0, y: -0.25, z: 0}
+        - {x: 0, y: -0.25, z: 0}
+      - textureU: 25
+        textureV: 9
+        Pos: {x: 0.5, y: 1.5, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0.5, y: -0, z: -0}
+        - {x: -0.25, y: 0.25, z: -0}
+        - {x: 0.5, y: 0.25, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0.5, y: -0, z: 0}
+        - {x: -0.25, y: 0.25, z: 0}
+        - {x: 0.5, y: 0.25, z: 0}
+      - textureU: 33
+        textureV: 9
+        Pos: {x: -0.5, y: -1.5, z: -0.5}
+        Dim: {x: 2, y: 2, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.25, y: -0, z: -0}
+        - {x: 0.5, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.25, y: -0, z: 0}
+        - {x: 0.5, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 1
+        textureV: 17
+        Pos: {x: 8.5, y: 2, z: -0.5}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.25, z: 0.25}
+        - {x: 0, y: 0.25, z: 0.25}
+        - {x: -0, y: -0.25, z: 0.25}
+        - {x: 0, y: -0.25, z: 0.25}
+        - {x: -0, y: 0.25, z: -0.25}
+        - {x: 0, y: 0.25, z: -0.25}
+        - {x: -0, y: -0.25, z: -0.25}
+        - {x: 0, y: -0.25, z: -0.25}
+    - partName: ammo
+      pieces:
+      - textureU: 25
+        textureV: 1
+        Pos: {x: 0, y: 0.1, z: -0.85}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 2, y: 2.75, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.2, y: 0.2, z: 0.2}
+        - {x: -0.2, y: 0.2, z: 0.2}
+        - {x: 0.2, y: -0.2, z: 0.2}
+        - {x: -0.2, y: -0.2, z: 0.2}
+        - {x: 0.2, y: 0.2, z: -0.2}
+        - {x: -0.2, y: 0.2, z: -0.2}
+        - {x: 0.2, y: -0.2, z: -0.2}
+        - {x: -0.2, y: -0.2, z: -0.2}
+      - textureU: 41
+        textureV: 9
+        Pos: {x: 0, y: 0.1, z: -0.15}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 2, y: 2.75, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.2, y: 0.2, z: 0.2}
+        - {x: -0.2, y: 0.2, z: 0.2}
+        - {x: 0.2, y: -0.2, z: 0.2}
+        - {x: -0.2, y: -0.2, z: 0.2}
+        - {x: 0.2, y: 0.2, z: -0.2}
+        - {x: -0.2, y: 0.2, z: -0.2}
+        - {x: 0.2, y: -0.2, z: -0.2}
+        - {x: -0.2, y: -0.2, z: -0.2}
+      - textureU: 49
+        textureV: 9
+        Pos: {x: 0, y: -0.6, z: -0.15}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 2, y: 2.75, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.2, y: 0.2, z: 0.2}
+        - {x: -0.2, y: 0.2, z: 0.2}
+        - {x: 0.2, y: -0.2, z: 0.2}
+        - {x: -0.2, y: -0.2, z: 0.2}
+        - {x: 0.2, y: 0.2, z: -0.2}
+        - {x: -0.2, y: 0.2, z: -0.2}
+        - {x: 0.2, y: -0.2, z: -0.2}
+        - {x: -0.2, y: -0.2, z: -0.2}
+      - textureU: 57
+        textureV: 9
+        Pos: {x: 0, y: -0.6, z: -0.85}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 2, y: 2.75, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.2, y: 0.2, z: 0.2}
+        - {x: -0.2, y: 0.2, z: 0.2}
+        - {x: 0.2, y: -0.2, z: 0.2}
+        - {x: -0.2, y: -0.2, z: 0.2}
+        - {x: 0.2, y: 0.2, z: -0.2}
+        - {x: -0.2, y: 0.2, z: -0.2}
+        - {x: 0.2, y: -0.2, z: -0.2}
+        - {x: -0.2, y: -0.2, z: -0.2}
+    - partName: revolverBarrel
+      pieces:
+      - textureU: 33
+        textureV: 1
+        Pos: {x: 0, y: 0, z: 0}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 2, y: 2.75, z: -0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0.5, z: -0.25}
+        - {x: 0, y: -0.5, z: -0.25}
+        - {x: -0, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+        - {x: -0, y: -0.5, z: 0.25}
+        - {x: 0, y: -0.5, z: 0.25}
+        - {x: -0, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+    name: jury
+    animations:
+    - key: revolverFlipAngle
+      isVec3: 0
+      floatValue: -25
+      vec3Value: {x: 0, y: 0, z: 0}
+    - key: tiltGunTime
+      isVec3: 0
+      floatValue: 0.1
+      vec3Value: {x: 0, y: 0, z: 0}
+    - key: unloadClipTime
+      isVec3: 0
+      floatValue: 0.3
+      vec3Value: {x: 0, y: 0, z: 0}
+    - key: loadClipTime
+      isVec3: 0
+      floatValue: 0.5
+      vec3Value: {x: 0, y: 0, z: 0}
+    - key: untiltGunTime
+      isVec3: 0
+      floatValue: 0.1
+      vec3Value: {x: 0, y: 0, z: 0}
+    attachPoints:
+    - name: barrel
+      attachedTo: body
+      position: {x: 0.59375, y: 0.15625, z: 0}
+    - name: scope
+      attachedTo: body
+      position: {x: 0.3125, y: 0.265625, z: 0}
+  Skin: {fileID: 2800000, guid: b86c4adfcbc9437468d1cca1e55d8480, type: 3}
+  Icon: {fileID: 2800000, guid: d0192deade2d02340803f0e69fa3188e, type: 3}
+  AdditionalTextures:
+  - name: Jury_Chaos
+    texture: {fileID: 2800000, guid: e769c61fe2b91e846a2c69b24df0b4fa, type: 3}
+  - name: Jury_Chaos_Icon
+    texture: {fileID: 2800000, guid: 76afd99fffb8d804690b2f4662e55d23, type: 3}
+  - name: Jury_Order
+    texture: {fileID: 2800000, guid: af6f8221da3f83c44994f5a342887844, type: 3}
+  - name: Jury_Order_Icon
+    texture: {fileID: 2800000, guid: 771cd6d71c75de64686198f9a719fb8a, type: 3}
+  - name: Jury_Thunderbolt
+    texture: {fileID: 2800000, guid: 067f004e582d59a4c830b7613c809f0e, type: 3}
+  - name: Jury_Thunderbolt_Icon
+    texture: {fileID: 2800000, guid: 2c790e22de66c584faf9b628a9dd4446, type: 3}
+  - name: Jury_Lightning
+    texture: {fileID: 2800000, guid: 6dd868166febb604b8a9f65cfd664712, type: 3}
+  - name: Jury_Lightning_Icon
+    texture: {fileID: 2800000, guid: 0b3d81f02ef901b48a4c42a7050aefd7, type: 3}
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - flansmod:gun
+  paints:
+    paintjobs:
+    - textureName: Jury_Chaos
+    - textureName: Jury_Order
+    - textureName: Jury_Thunderbolt
+    - textureName: Jury_Lightning
+  primaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_start
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+      - actionType: 1
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0
+        sounds:
+        - sound: flansmodernweapons:jury_reload
+          length: 1
+          minPitchMultiplier: 1
+          maxPitchMultiplier: 1
+          minVolume: 1
+          maxVolume: 1
+          maxRange: 100
+          LODs: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: 
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    eject:
+      duration: 1.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 1.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    loadOne:
+      duration: 0.41666666
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.41666666
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_load_one
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    end:
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_end
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+  secondaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 1
+      actions: []
+    eject:
+      duration: 1
+      actions: []
+    loadOne:
+      duration: 1
+      actions: []
+    end:
+      duration: 1
+      actions: []
+  primaryActions:
+  - actionType: 3
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0.1
+    repeatCount: 3
+    spinUpDuration: 1.5
+    duration: 0.1
+    sounds: []
+    itemStack: 
+    shootStats:
+    - verticalRecoil: 10
+      horizontalRecoil: 0
+      spread: 2
+      spreadPattern: 1
+      hitscan: 1
+      speed: 0
+      bulletCount: 1
+      spinSpeed: 360
+      breaksMaterials: []
+      matchAmmoNames:
+      - 357magnum
+      - jury_ammo
+      - highexpistolammo
+      - appistolammo
+      matchAmmoTags: []
+      penetrationPower: 1
+      trailParticles: 
+      impact:
+        decal: flansmod:effects/bullet_decal.png
+        damageToTarget: 11
+        multiplierVsPlayers: 1
+        multiplierVsVehicles: 1
+        knockback: 0
+        splashDamageRadius: 0
+        splashDamageFalloff: 0
+        setFireToTarget: 0
+        fireSpreadRadius: 0
+        fireSpreadAmount: 0
+        hitSounds: []
+    fovFactor: 1
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 5
+  - actionType: 1
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds:
+    - sound: flansmodernweapons:jury_shoot
+      length: 0
+      minPitchMultiplier: 0.8333333
+      maxPitchMultiplier: 1.25
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0.1
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: shoot
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  secondaryActions:
+  - actionType: 4
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  lookAtActions:
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 2.5
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: look_at
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  startSpinUpActions: []
+  reachMaxSpinActions: []
+  startSpinDownActions: []
+  reachZeroSpinActions: []
+  loopingSounds: []
+  numBullets: 6
+  AmmoConsumeMode: 0
+  barrelAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  gripAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  stockAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  scopeAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  genericAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 0
+  modelParts: []
+  animationSet: flansmod:revolver

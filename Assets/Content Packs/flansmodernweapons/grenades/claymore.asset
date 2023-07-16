@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba014bf4062023409122e3b517355bb, type: 3}
+  m_Name: claymore
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: claymore
+    textureX: 0
+    textureY: 0
+    sections:
+    - partName: claymore
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: -1, y: 2, z: -4}
+        Dim: {x: 2, y: 4, z: 8}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 12
+        textureV: 4
+        Pos: {x: 0, y: -2, z: -4}
+        Dim: {x: 0, y: 4, z: 8}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: claymore
+    animations: []
+    attachPoints: []
+  Skin: {fileID: 0}
+  Icon: {fileID: 2800000, guid: d3b4744ffd7a8b44085aedc29c118223, type: 3}
+  AdditionalTextures: []
+  itemSettings:
+    maxStackSize: 3
+    tags:
+    - flansmod:grenade
+  primaryActions:
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds:
+    - sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: GrenadeThrow
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  - actionType: 0
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  secondaryActions:
+  - actionType: 2
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: GrenadeCook
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  - actionType: 0
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    duration: 0
+    sounds: []
+    itemStack: 
+    shootStats: []
+    fovFactor: 1.25
+    scopeOverlay: 
+    anim: 
+    toolLevel: 1
+    harvestSpeed: 1
+    reach: 1
+  bounciness: 0
+  sticky: 0
+  canStickToThrower: 0
+  livingProximityTrigger: 2
+  vehicleProximityTrigger: -1
+  detonateWhenShot: 1
+  detonateWhenDamaged: 1
+  fuse: 0
+  spinForceX: 0
+  spinForceY: 0
+  impact:
+    decal: 
+    damageToTarget: 0
+    multiplierVsPlayers: 1
+    multiplierVsVehicles: 0
+    knockback: 0
+    splashDamageRadius: 2.5
+    splashDamageFalloff: 0
+    setFireToTarget: 0
+    fireSpreadRadius: 0
+    fireSpreadAmount: 0
+    hitSounds: []
+  lifetimeAfterDetonation: 0
+  smokeParticles:
+  - explode
+  effectsToApplyInSmoke: []
+  smokeRadius: 5
