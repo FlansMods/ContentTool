@@ -11,7 +11,7 @@ public class ModelSectionPreviewer : MonoBehaviour
 
     public void SetSection(Model.Section section, Model model)
 	{
-		PartName = section.TranslatePartName();
+		PartName = Utils.ConvertPartName(section.partName);
 		name = $"{PartName}";
 		foreach(ModelPiecePreviewer piecePreviewer in piecePreviews)
 			DestroyImmediate(piecePreviewer.gameObject);

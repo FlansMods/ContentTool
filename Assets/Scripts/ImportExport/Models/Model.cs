@@ -37,9 +37,7 @@ public class Model
 	public List<Section> sections = new List<Section>();
 	public string name;
 	public List<AnimationParameter> animations = new List<AnimationParameter>();
-	public List<AttachPoint> attachPoints = new List<AttachPoint>();
-
-	
+	public List<AttachPoint> attachPoints = new List<AttachPoint>();	
 	
 	public enum EShape
 	{
@@ -294,21 +292,6 @@ public class Model
 	[System.Serializable]
 	public class Section
 	{
-		public string TranslatePartName()
-		{
-			switch(partName)
-			{
-				case "gun": return "body";
-				case "ammo": return "ammo_0";
-				case "defaultScope": return "scope";
-				case "defaultStock": return "stock";
-				case "defaultGrip": return "grip";
-				case "defaultBarrel": return "barrel";
-				case "revolverBarrel": return "revolver";
-				default: return partName;
-			}
-			
-		}
 		public string partName;
 		public Piece[] pieces;
 	}
@@ -321,7 +304,13 @@ public class Model
 		return null;
 	}
 
-	public bool TryGetFloatParam(string key, out float value)
+	public float GetFloatParamOrDefault(string key, float defaultValue)
+	{
+		TryGetFloatParam(key, out float f, defaultValue);
+		return f;
+	}
+
+	public bool TryGetFloatParam(string key, out float value, float defaultValue = 0.0f)
 	{
 		foreach(AnimationParameter parameter in animations)
 			if(parameter.key == key)
@@ -329,11 +318,22 @@ public class Model
 				value = parameter.floatValue;
 				return true;
 			}
-		value = 0.0f;
+		value = defaultValue;
 		return false;
 	}
 
+	public Vector3 GetVec3ParamOrDefault(string key, Vector3 defaultValue)
+	{
+		TryGetVec3Param(key, out Vector3 v, defaultValue);
+		return v;
+	}
+
 	public bool TryGetVec3Param(string key, out Vector3 value)
+	{
+		return TryGetVec3Param(key, out value, Vector3.zero);
+	}
+
+	public bool TryGetVec3Param(string key, out Vector3 value, Vector3 defaultValue)
 	{
 		foreach(AnimationParameter parameter in animations)
 			if(parameter.key == key)
@@ -341,8 +341,18 @@ public class Model
 				value = parameter.vec3Value;
 				return true;
 			}
-		value = Vector3.zero;
+		value = defaultValue;
 		return false;
+	}
+
+	public bool IsAttached(string parent, string child, bool defaultValue = false)
+	{
+		foreach(AttachPoint ap in attachPoints)
+		{
+			if(ap.attachedTo == parent && ap.name == child)
+				return true;
+		}
+		return defaultValue;
 	}
 
 	[System.Serializable]
@@ -383,6 +393,6 @@ public class Model
 	public void SetAttachmentOffset(string name, Vector3 offset)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		ap.position = offset;
+		ap.position = offset * 16f;
 	}
 }

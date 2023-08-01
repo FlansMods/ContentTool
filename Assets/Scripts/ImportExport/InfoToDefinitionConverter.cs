@@ -45,10 +45,20 @@ public abstract class Converter<TInfo, TDefinition>
 	}
 	public IngredientDefinition ImportIngredient(string txt)
 	{
-		return new IngredientDefinition()
+		ItemStackDefinition stackDef = ImportStack(txt);
+		IngredientDefinition ingredient = new IngredientDefinition()
 		{
-			itemName = txt,
+			itemName = stackDef.item,
+			count = stackDef.count,
 		};
+		if(txt.Contains("."))
+		{
+			ingredient.compareDamage = true;
+			ingredient.minAllowedDamage = stackDef.damage;
+			ingredient.maxAllowedDamage = stackDef.damage;
+		}
+
+		return ingredient;
 	}
 	public ItemStackDefinition ImportStack(string txt)
 	{
@@ -77,7 +87,7 @@ public abstract class Converter<TInfo, TDefinition>
 	{
 		return new ItemStackDefinition()
 		{
-			item = typeName,
+			item = Utils.ToLowerWithUnderscores(typeName),
 		};
 	}
 
@@ -94,7 +104,7 @@ public class PaintableConverter // : Converter<PaintableType, PaintableDefinitio
 		{
 			def.paintjobs[i] = new PaintjobDefinition()
 			{
-				textureName = inf.paintjobs[i].iconName,
+				textureName = Utils.ToLowerWithUnderscores(inf.paintjobs[i].iconName),
 			};
 		}
 	}
@@ -111,14 +121,6 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		def.itemSettings.maxStackSize = 1;
 		def.itemSettings.tags = GetTags(inf);
 		def.numBullets = inf.numAmmoItemsInGun;
-
-		if(inf.model != null)
-		{
-			inf.model.TryGetFloatParam("tiltGunTime", out inf.tiltGunTime);
-			inf.model.TryGetFloatParam("loadClipTime", out inf.loadClipTime);
-			inf.model.TryGetFloatParam("unloadClipTime", out inf.unloadClipTime);
-			inf.model.TryGetFloatParam("untiltGunTime", out inf.untiltGunTime);
-		}
 
 		def.primaryReload = new ReloadDefinition()
 		{
@@ -1960,10 +1962,12 @@ public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
 		output.outputs = new ItemStackDefinition[] {
 			ImportStackFromTypeName(entry.type)
 		};
-		output.ingredients = new IngredientDefinition[entry.requiredParts.Count];
+		output.parts = new RecipePartDefinition[1];
+		output.parts[0] = new RecipePartDefinition();
+		output.parts[0].additionalIngredients = new IngredientDefinition[entry.requiredParts.Count];
 		for(int n = 0; n < entry.requiredParts.Count; n++)
 		{
-			output.ingredients[n] = ImportIngredient(entry.requiredParts[n]);
+			output.parts[0].additionalIngredients[n] = ImportIngredient(entry.requiredParts[n]);
 		}
 
 		if(entry is GunBoxEntryTopLevel withChildren)

@@ -12,6 +12,7 @@ public class ContentPack : ScriptableObject
 
 	public bool HasContent(string shortName)
 	{
+		shortName = Utils.ToLowerWithUnderscores(shortName);
 		foreach(Definition def in Content)
 			if(def.name == shortName)
 				return true;

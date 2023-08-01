@@ -120,45 +120,49 @@ public class GunType : PaintableType
 	/** For guns with 3D models */
 	//    public ModelGun model;
 
-	/** The point about which the minigun barrel rotates. Rotation is along the line of the gun through this point */
-	public Vector3 minigunBarrelOrigin = new Vector3();
-
-	//These designate the locations of 3D attachment models on the gun
-	public Vector3 barrelAttachPoint = new Vector3();
-	public Vector3 scopeAttachPoint = new Vector3();
-	public Vector3 stockAttachPoint = new Vector3();
-	public Vector3 gripAttachPoint = new Vector3();
-
 	//Various animation parameters
-	public float gunSlideDistance = 1F / 4F;
 	public EAnimationType animationType = EAnimationType.NONE;
-	public float tiltGunTime = 0.25F, unloadClipTime = 0.25F, loadClipTime = 0.25F, untiltGunTime = 0.25F;
-	/** If true, then the scope attachment will move with the top slide */
-	public bool scopeIsOnSlide = false;
-	/** If true, then the scope attachment will move with the break action. Can be combined with the above */
-	public bool scopeIsOnBreakAction = false;
-	/** For rifles and shotguns. Currently a generic reload animation regardless of how full the internal magazine already is */
-	public float numBulletsInReloadAnimation = 1;
-	/** For shotgun pump handles and rifle bolts */
-	public float pumpDelay = 0, pumpDelayAfterReload = 0, pumpTime = 1;
-	/** For shotgun pump handle */
-	public float pumpHandleDistance = 4F / 16F;
-	/** For end loaded projectiles */
-	public float endLoadedAmmoDistance = 1F;
-	/** If true, then the grip attachment will move with the shotgun pump */
-	public bool gripIsOnPump = false;
-	/** The rotation point for the barrel break */
-	public Vector3 barrelBreakPoint = new Vector3();
-	/** The amount the revolver barrel flips out by */
-	public float revolverFlipAngle = 15F;
-	/** The rotation point for the revolver flip */
-	public Vector3 revolverFlipPoint = new Vector3();
-	/** The angle the gun is broken by for break actions */
-	public float breakAngle = 45F;
+
+	private const float _tiltGunTime = 0.25F, _unloadClipTime = 0.25F, _loadClipTime = 0.25F, _untiltGunTime = 0.25F;
+
+	public float tiltGunTime { get { return model == null ? _tiltGunTime : model.GetFloatParamOrDefault("tiltGunTime", _tiltGunTime); } }
+	public float unloadClipTime { get { return model == null ? _unloadClipTime : model.GetFloatParamOrDefault("unloadClipTime", _unloadClipTime); } }
+	public float loadClipTime { get { return model == null ? _loadClipTime : model.GetFloatParamOrDefault("loadClipTime", _loadClipTime); } }
+	public float untiltGunTime { get { return model == null ? _untiltGunTime : model.GetFloatParamOrDefault("untiltGunTime", _untiltGunTime); } }
+	
+	private const float _numBulletsInReloadAnimation = 1f, _pumpDelay = 0f, _pumpDelayAfterReload = 0f, _pumpTime = 1f,
+						_pumpHandleDistance = 4F / 16F, _endLoadedAmmoDistance = 1f, _revolverFlipAngle = 15f, _breakAngle = 45f,
+						_gunSlideDistance = 1F / 4F;
+	public float numBulletsInReloadAnimation { get { return model == null ? _numBulletsInReloadAnimation : model.GetFloatParamOrDefault("numBulletsInReloadAnimation", _numBulletsInReloadAnimation); } }
+	public float pumpDelay { get { return model == null ? _pumpDelay : model.GetFloatParamOrDefault("pumpDelay", _pumpDelay); } }
+	public float pumpDelayAfterReload { get { return model == null ? _pumpDelayAfterReload : model.GetFloatParamOrDefault("pumpDelayAfterReload", _pumpDelayAfterReload); } }
+	public float pumpTime { get { return model == null ? _pumpTime : model.GetFloatParamOrDefault("pumpTime", _pumpTime); } }
+	public float pumpHandleDistance { get { return model == null ? _pumpHandleDistance : model.GetFloatParamOrDefault("pumpHandleDistance", _pumpHandleDistance); } }
+	public float endLoadedAmmoDistance { get { return model == null ? _endLoadedAmmoDistance : model.GetFloatParamOrDefault("endLoadedAmmoDistance", _endLoadedAmmoDistance); } }
+	public float revolverFlipAngle { get { return model == null ? _revolverFlipAngle : model.GetFloatParamOrDefault("revolverFlipAngle", _revolverFlipAngle); } }
+	public float breakAngle { get { return model == null ? _breakAngle : model.GetFloatParamOrDefault("breakAngle", _breakAngle); } }
+	public float gunSlideDistance { get { return model == null ? _gunSlideDistance : model.GetFloatParamOrDefault("gunSlideDistance", _gunSlideDistance); } }
+	
+	//These designate the locations of 3D attachment models on the gun
+	public static readonly Vector3 _barrelAttachPoint = new Vector3(),_scopeAttachPoint = new Vector3(),_stockAttachPoint = new Vector3(),_gripAttachPoint = new Vector3();
+	public static readonly Vector3 _barrelBreakPoint = new Vector3(),  _revolverFlipPoint = new Vector3(), _spinPoint = new Vector3(), _minigunBarrelOrigin = new Vector3();
+	public Vector3 barrelBreakPoint { get { return model == null ? _barrelBreakPoint : model.GetVec3ParamOrDefault("barrelBreakPoint", _barrelBreakPoint); } }
+	public Vector3 revolverFlipPoint { get { return model == null ? _revolverFlipPoint : model.GetVec3ParamOrDefault("revolverFlipPoint", _revolverFlipPoint); } }
+	public Vector3 spinPoint { get { return model == null ? _spinPoint : model.GetVec3ParamOrDefault("spinPoint", _spinPoint); } }
+	public Vector3 barrelAttachPoint { get { return model == null ? _barrelAttachPoint : model.GetVec3ParamOrDefault("barrelAttachPoint", _barrelAttachPoint); } }
+	public Vector3 scopeAttachPoint { get { return model == null ? _scopeAttachPoint : model.GetVec3ParamOrDefault("scopeAttachPoint", _scopeAttachPoint); } }
+	public Vector3 stockAttachPoint { get { return model == null ? _stockAttachPoint : model.GetVec3ParamOrDefault("stockAttachPoint", _stockAttachPoint); } }
+	public Vector3 gripAttachPoint { get { return model == null ? _gripAttachPoint : model.GetVec3ParamOrDefault("gripAttachPoint", _gripAttachPoint); } }
+	public Vector3 minigunBarrelOrigin { get { return model == null ? _minigunBarrelOrigin : model.GetVec3ParamOrDefault("minigunBarrelOrigin", _minigunBarrelOrigin); } }
+
+	private const bool _scopeIsOnSlide = false, _scopeIsOnBreakAction = false, _gripIsOnPump = false;
+
+	public bool scopeIsOnSlide { get { return model == null ? _scopeIsOnSlide : model.IsAttached("slide", "scope", _scopeIsOnSlide); } }
+	public bool scopeIsOnBreakAction { get { return model == null ? _scopeIsOnBreakAction : model.IsAttached("break_action", "scope", _scopeIsOnBreakAction); } }
+	public bool gripIsOnPump { get { return model == null ? _gripIsOnPump : model.IsAttached("pump", "grip", _gripIsOnPump); } }
+
 	/** If true, then the gun will perform a spinning reload animation */
 	public bool spinningCocking = false;
-	/** The point, in model co-ordinates, about which the gun is spun */
-	public Vector3 spinPoint = new Vector3();
 
 	//Attachment settings
 	/** If this is true, then all attachments are allowed. Otherwise the list is checked */

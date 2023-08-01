@@ -287,6 +287,10 @@ public class InfoTypeImporter : TxtImporter<InfoType>
 		{
 			obj.iconPath = split[1];
 		}
+		else if(split[0].Equals("Texture"))
+		{
+			obj.texture = split[1];
+		}
 	}
 }
 
@@ -1440,7 +1444,9 @@ public class AttachmentTypeImporter : TxtImporter<AttachmentType>
 		{
 			if (split[1].Equals("barrel")) obj.type = EAttachmentType.Barrel;
 			else if (split[1].Equals("grip")) obj.type = EAttachmentType.Grip;
+			else if (split[1].Equals("sights")) obj.type = EAttachmentType.Sights;
 			else if (split[1].Equals("sight")) obj.type = EAttachmentType.Sights;
+			else if (split[1].Equals("scope")) obj.type = EAttachmentType.Sights;
 			else if (split[1].Equals("stock")) obj.type = EAttachmentType.Stock;
 			else obj.type = EAttachmentType.Generic;
 		}

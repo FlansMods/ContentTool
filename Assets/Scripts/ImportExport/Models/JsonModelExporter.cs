@@ -109,6 +109,22 @@ public static class JsonModelExporter
 		}
 	}
 
+	private static void ExportVanillaItemSkinSwitcher(Model model, string modName, string modelName, QuickJSONBuilder builder)
+	{
+		using(builder.Tabulation("overrides"))
+		{
+			// tODO
+			using(builder.TableEntry())
+			{
+				using(builder.Indentation("predicate"))
+				{
+					//builder.Current.Add("custom_model_data", i);
+				}
+				builder.Current.Add("model");
+			}
+		}
+	}
+
 	private static void CalculateGUIPose(Model model, out Vector3 scale, out Vector3 offset, out Vector3 euler)
 	{
 		Vector3 min = Vector3.one * 1000f;
@@ -150,7 +166,7 @@ public static class JsonModelExporter
 			}
 			builder.Current.Add("default", $"{modName}:skins/{modelName}");
 			builder.Current.Add("particle", $"minecraft:block/iron_block");
-		}
+		}	
 		using(builder.Indentation("animations"))
 		{
 			foreach(Model.AnimationParameter animParam in model.animations)
@@ -195,7 +211,10 @@ public static class JsonModelExporter
 			{
 				using(builder.TableEntry())
 				{
-					builder.Current.Add("name", attachPoint.name);
+					if(attachPoint.name == "scope")
+						builder.Current.Add("name", "sights");
+					else
+						builder.Current.Add("name", attachPoint.name);
 					builder.Current.Add("attachTo", attachPoint.attachedTo);
 					builder.Current.Add("offset", JSONHelpers.ToJSON(attachPoint.position));
 				}
@@ -209,6 +228,16 @@ public static class JsonModelExporter
 		if(section == null)
 			return false;
 
+		Vector3 origin = Vector3.zero;
+		switch(part)
+		{
+			case "defaultBarrel": origin = model.GetVec3ParamOrDefault("barrelBreakOrigin", origin); break;
+			case "revolverBarrel": origin = model.GetVec3ParamOrDefault("revolverFlipPoint", origin); break;
+			case "minigunBarrel": origin = model.GetVec3ParamOrDefault("minigunBarrelOrigin", origin); break;
+		}
+
+		origin *= 16f;
+		builder.Current.Add("origin", JSONHelpers.ToJSON(origin));
 		
 		using(builder.Tabulation("turboelements"))
 		{
@@ -225,7 +254,7 @@ public static class JsonModelExporter
 						}
 					}
 					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(wrapper.Euler));
-					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(wrapper.Origin));
+					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(wrapper.Origin - origin));
 					using(builder.Indentation("faces"))
 					{
 						Action<Model.Piece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>

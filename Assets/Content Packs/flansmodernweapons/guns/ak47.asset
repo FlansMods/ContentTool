@@ -393,16 +393,16 @@ MonoBehaviour:
     attachPoints:
     - name: barrel
       attachedTo: body
-      position: {x: 0.96875, y: 0.203125, z: 0}
+      position: {x: 15.5, y: 3.25, z: 0}
     - name: stock
       attachedTo: body
-      position: {x: -0.03125, y: 0.1875, z: 0}
+      position: {x: -0.5, y: 3, z: 0}
     - name: scope
       attachedTo: body
-      position: {x: 0.25, y: 0.296875, z: 0}
+      position: {x: 4, y: 4.75, z: 0}
     - name: grip
       attachedTo: body
-      position: {x: 0.5625, y: 0.171875, z: 0}
+      position: {x: 9, y: 2.75, z: 0}
   Skin: {fileID: 2800000, guid: 0101630d2914f664081c9899008034c0, type: 3}
   Icon: {fileID: 2800000, guid: cd14ca21c503df94e92d46dcc11a4136, type: 3}
   AdditionalTextures:
@@ -428,16 +428,35 @@ MonoBehaviour:
     - flansmod:gun
   paints:
     paintjobs:
-    - textureName: AK47_JungleCamo
-    - textureName: AK47_Redline
-    - textureName: AK47_CaseHardened
-    - textureName: AK47_Birch
+    - textureName: ak47_jungle_camo
+    - textureName: ak47_redline
+    - textureName: ak47_case_hardened
+    - textureName: ak47_birch
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 0
+      duration: 0.5
       actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_start
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
       - actionType: 1
         canActUnderwater: 1
         canActUnderOtherLiquid: 0
@@ -466,14 +485,71 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
     loadOne:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_load_one
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
     end:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_end
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
   secondaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
@@ -639,34 +715,34 @@ MonoBehaviour:
     numAttachmentSlots: 1
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:ar_load_from_bottom

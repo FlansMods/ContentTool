@@ -8,5 +8,6 @@ public enum EMaterialType
 	Glass,
 	Metal,
 	Composite,
+	Electronic,
 	Fabric,
 }

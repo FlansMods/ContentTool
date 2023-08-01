@@ -163,8 +163,9 @@ public static class Utils
 			case "ammo": return "ammo_0";
 			case "defaultGrip": return "grip";
 			case "defaultBarrel": return "barrel";
-			case "defaultScope": return "scope";
+			case "defaultScope": return "sights";
 			case "defaultStock": return "stock";
+			case "revolverBarrel": return "revolver";
 			default: return partName;
 		}
 	}

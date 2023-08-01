@@ -223,10 +223,10 @@ MonoBehaviour:
     attachPoints:
     - name: barrel
       attachedTo: body
-      position: {x: 0.46875, y: 0.25, z: 0}
+      position: {x: 11.5, y: 4, z: 0}
     - name: scope
       attachedTo: slide
-      position: {x: 0.1875, y: 0.3125, z: 0}
+      position: {x: 7, y: 5, z: 0}
   Skin: {fileID: 2800000, guid: c399143fe8d7ea841bad66d1056b896e, type: 3}
   Icon: {fileID: 2800000, guid: 600543874e5fe1f47a357718c0994481, type: 3}
   AdditionalTextures:
@@ -248,9 +248,9 @@ MonoBehaviour:
     - flansmod:gun
   paints:
     paintjobs:
-    - textureName: GL1_Blackwood
-    - textureName: GL1_Birch
-    - textureName: GL1_Static
+    - textureName: gl1_blackwood
+    - textureName: gl1_birch
+    - textureName: gl1_static
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
@@ -532,34 +532,34 @@ MonoBehaviour:
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
-    attachToMesh: body
+    attachToMesh: slide
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:shotgun_break_action

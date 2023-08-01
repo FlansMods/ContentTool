@@ -233,16 +233,16 @@ MonoBehaviour:
     attachPoints:
     - name: scope
       attachedTo: body
-      position: {x: 0.1875, y: 0.3125, z: 0}
+      position: {x: 3, y: 5, z: 0}
     - name: stock
       attachedTo: body
-      position: {x: 0.0625, y: 0.25, z: 0}
+      position: {x: 1, y: 4, z: 0}
     - name: barrel
       attachedTo: body
-      position: {x: 1.125, y: 0.25, z: 0}
+      position: {x: 18, y: 4, z: 0}
     - name: grip
       attachedTo: pump
-      position: {x: 0.75, y: 0.1875, z: 0}
+      position: {x: 12, y: 3, z: 0}
   Skin: {fileID: 2800000, guid: 9087d5833b59fd24795e970631026be3, type: 3}
   Icon: {fileID: 2800000, guid: db6a5000a1ca72647b939a45736f2f2e, type: 3}
   AdditionalTextures:
@@ -264,9 +264,9 @@ MonoBehaviour:
     - flansmod:gun
   paints:
     paintjobs:
-    - textureName: W1200_Blue
-    - textureName: W1200_Periwinkle
-    - textureName: W1200_Zebra
+    - textureName: w1200_blue
+    - textureName: w1200_periwinkle
+    - textureName: w1200_zebra
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
@@ -533,34 +533,34 @@ MonoBehaviour:
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
-    attachToMesh: body
+    attachToMesh: pump
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:shotgun_shell_loader

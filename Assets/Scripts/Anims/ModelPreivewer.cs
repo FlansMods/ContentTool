@@ -369,4 +369,52 @@ public class ModelPreivewer : MonoBehaviour
 	{
 		return new Vector3((float)v.xValue, (float)v.yValue, (float)v.zValue);
 	}
+
+	public void OnDrawGizmos()
+	{
+		if(Def != null && Def.Model != null)
+		{
+			foreach(Model.AttachPoint ap in Def.Model.attachPoints)
+			{
+				Vector3 direction = Vector3.right;
+				Gizmos.color = Color.white;
+				switch(ap.name)
+				{
+					case "barrel": 
+						direction = Vector3.right; 
+						Gizmos.color = Color.red;
+						break;
+					case "grip": 
+						direction = Vector3.down; 
+						Gizmos.color = Color.blue;
+						break;
+					case "stock": 
+						direction = Vector3.left; 
+						Gizmos.color = Color.green;
+						break;
+					case "scope": 
+						direction = Vector3.up; 
+						Gizmos.color = Color.magenta;
+						break;
+				}
+				Gizmos.DrawRay(ap.position, direction);
+				Gizmos.DrawWireCube(ap.position + direction, Vector3.one * 0.25f);
+			}
+
+			foreach(Model.AnimationParameter animParam in Def.Model.animations)
+			{
+				if(animParam.isVec3)
+				{
+					Gizmos.DrawWireSphere(animParam.vec3Value, 0.5f);
+				}
+			}
+		}
+
+		if(Def is GunDefinition gunDef)
+		{
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawSphere(new Vector3(-10f, 5f, 0f), 1.0f);
+			Gizmos.DrawRay(new Vector3(-10f, 5f, 0f), new Vector3(30f, 0f, 0f));
+		}
+	}
 }

@@ -14,4 +14,8 @@ public class PartDefinition : Definition
 	public ItemDefinition itemSettings = new ItemDefinition();
 	[JsonField]
 	public EngineDefinition engine = new EngineDefinition();
+	[JsonField]
+	public int materialTier = 0;
+	[JsonField]
+	public EMaterialType materialType = EMaterialType.Misc;
 }

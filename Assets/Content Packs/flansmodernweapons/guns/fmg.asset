@@ -332,8 +332,27 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 0
+      duration: 0.5
       actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_start
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
       - actionType: 1
         canActUnderwater: 1
         canActUnderOtherLiquid: 0
@@ -362,14 +381,71 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
     loadOne:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_load_one
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
     end:
-      duration: 0
-      actions: []
+      duration: 0.5
+      actions:
+      - actionType: 2
+        canActUnderwater: 1
+        canActUnderOtherLiquid: 0
+        canBeOverriden: 0
+        twoHanded: 0
+        repeatMode: 1
+        repeatDelay: 0
+        repeatCount: 0
+        spinUpDuration: 1
+        duration: 0.5
+        sounds: []
+        itemStack: 
+        shootStats: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_end
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
   secondaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
@@ -537,34 +613,34 @@ MonoBehaviour:
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
-    hideDefaultMesh: 0
+    hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:ar_load_from_bottom

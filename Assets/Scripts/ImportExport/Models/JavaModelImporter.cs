@@ -343,6 +343,12 @@ public static class JavaModelImporter
 					}
 				}
 			}
+
+			foreach(Model.AttachPoint ap in model.attachPoints)
+			{
+				ap.position -= new Vector3(floats[0], floats[1], floats[2]);
+			}
+
 			return;
 		}
 

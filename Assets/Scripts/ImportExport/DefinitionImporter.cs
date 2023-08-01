@@ -36,8 +36,9 @@ public class DefinitionImporter : MonoBehaviour
 	{
 		// First, see if we already cached it
 		foreach(ContentPack pack in Packs)
-			if(pack.name == packName)
-				return pack;
+			if(pack != null)
+				if(pack.name == packName)
+					return pack;
 		
 		// Second, try to find it in the asset database
 		foreach(string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
@@ -456,6 +457,14 @@ public class DefinitionImporter : MonoBehaviour
 					}
 				}
 			}
+			else if(obj is ItemStackDefinition itemStackDef)
+			{
+				itemStackDef.item = ValidateItemId(itemStackDef.item, itemStackDef.damage, pack);
+			}
+			else if(obj is IngredientDefinition ingredientDef)
+			{
+				ingredientDef.itemName = ValidateItemId(ingredientDef.itemName, ingredientDef.maxAllowedDamage, pack);
+			}
 
 			foreach(FieldInfo field in obj.GetType().GetFields())
 			{
@@ -477,6 +486,106 @@ public class DefinitionImporter : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private string ResolveLegacyDamageItem(string itemName, int damage)
+	{
+		switch(itemName)
+		{
+			case "dye_powder": 
+			{
+				switch(damage)
+				{
+					case 0: return "black_dye";
+					case 1: return "red_dye";
+					case 2: return "green_dye";
+					case 3: return "brown_dye";
+					case 4: return "blue_dye";
+					case 5: return "purple_dye";
+					case 6: return "cyan_dye";
+					case 7: return "light_gray_dye";
+					case 8: return "gray_dye";
+					case 9: return "pink_dye";
+					case 10: return "lime_dye";
+					case 11: return "yellow_dye";
+					case 12: return "light_blue_dye";
+					case 13: return "magenta_dye";
+					case 14: return "orange_dye";
+					case 15: return "white_dye";
+					default: return null;
+				}
+			}
+			case "log":
+			{
+				switch(damage)
+				{
+					case 0: return "oak_log";
+					case 1: return "spruce_log";
+					case 2: return "birch_log";
+					case 3: return "jungle_log";
+					default: return null;
+				}
+			}
+			case "planks":
+			{
+				switch(damage)
+				{
+					case 0: return "oak_planks";
+					case 1: return "spruce_planks";
+					case 2: return "birch_planks";
+					case 3: return "jungle_planks";
+					default: return null;
+				}
+			}
+		}
+		return null;
+	}
+
+	private string ValidateItemId(string item, int damage, ContentPack currentPack)
+	{
+		item = Utils.ToLowerWithUnderscores(item);
+		string legacy = ResolveLegacyDamageItem(item, damage);
+		if(legacy != null)
+			item = legacy;
+
+		// Apply legacy fixes
+		switch(item)
+		{
+			case "door_iron": item = "iron_door"; break;
+			case "clay_item": item = "clay_ball"; break;
+			case "ingot_iron": item = "iron_ingot"; break;
+			case "iron": item = "iron_ingot"; break;
+			case "ingot_gold": item = "gold_ingot"; break;
+			case "slimeball": item = "slime_ball"; break;
+			case "skull": item = "wither_skeleton_skull"; break;
+		}
+
+		if(!item.Contains(":"))
+		{
+			bool found = false;
+			if(currentPack.HasContent(item))
+			{
+				item = $"{currentPack.ModName}:{item}";
+				found = true;
+			}
+			else
+			{
+				foreach(ContentPack cp in Packs)
+				{
+					if(cp.HasContent(item))
+					{
+						item = $"{cp.ModName}:{item}";
+						found = true;
+						break;
+					}
+				}
+			}
+			if(!found)
+			{
+				item = $"minecraft:{item}";
+			}
+		}
+		return item;
 	}
 
 	public void ExportPack(string packName)
