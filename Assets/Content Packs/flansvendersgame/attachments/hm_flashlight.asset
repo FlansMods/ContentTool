@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e008fc4365cab3145b710bfa08dafb1d, type: 3}
+  m_Name: hm_flashlight
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: flashlight
+    textureX: 16
+    textureY: 16
+    sections:
+    - partName: attachment
+      pieces:
+      - textureU: 0
+        textureV: 0
+        Pos: {x: -2, y: -1, z: -0.5}
+        Dim: {x: 4, y: 1, z: 1}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 2
+        Pos: {x: -2.5, y: -3, z: -1}
+        Dim: {x: 5, y: 2, z: 2}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 0
+        textureV: 6
+        Pos: {x: 2.5, y: -3.5, z: -1.5}
+        Dim: {x: 1, y: 3, z: 3}
+        Origin: {x: 0, y: 0, z: 0}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: flashlight
+    animations: []
+    attachPoints: []
+    customModelLocation: 
+  Skin: {fileID: 2800000, guid: 0751ffb779637d446a309863d11b3f79, type: 3}
+  Icon: {fileID: 2800000, guid: da1d859678ad33f4abea4bf623d07183, type: 3}
+  AdditionalTextures: []
+  LocalisedNames:
+  - Lang: 0
+    Name: HitMarket Budget Rifle Flashlight
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - flansmod:bullet
+    - flansmod:grip
+  attachmentType: 3
+  modifiers:
+  - Stat: flashlight_strength
+    Filter: 
+    Add: 12
+    Multiply: 1
+    SetValue: 
+    ApplyToPrimary: 1
+    ApplyToSecondary: 0
+  - Stat: flashlight_range
+    Filter: 
+    Add: 10
+    Multiply: 1
+    SetValue: 
+    ApplyToPrimary: 1
+    ApplyToSecondary: 0
+  mechaEffects: 
+  mechaEffectFilter: 
+  primaryActions: []
+  secondaryActions: []
+  replacePrimaryAction: 0
+  replaceSecondaryAction: 0
+  modeOverride: 0
+  overrideFireMode: 0

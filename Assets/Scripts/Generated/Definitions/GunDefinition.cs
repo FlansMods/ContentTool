@@ -13,11 +13,20 @@ public class GunDefinition : Definition
 	[JsonField]
 	public ReloadDefinition secondaryReload = new ReloadDefinition();
 	[JsonField]
-	public ActionDefinition[] primaryActions = new ActionDefinition[0];
+[Tooltip("Actions on the primary mouse button, this is where a shoot action normally goes")]
+	public ActionGroupDefinition primary = new ActionGroupDefinition();
 	[JsonField]
-	public ActionDefinition[] secondaryActions = new ActionDefinition[0];
+[Tooltip("Actions on the alternate mouse button, like scopes")]
+	public ActionGroupDefinition secondary = new ActionGroupDefinition();
 	[JsonField]
-	public ActionDefinition[] lookAtActions = new ActionDefinition[0];
+[Tooltip("Actions to trigger when pressing the 'Look At' key")]
+	public ActionGroupDefinition lookAt = new ActionGroupDefinition();
+	[JsonField]
+[Tooltip("Defines which magazine options there are for the primary shoot action")]
+	public MagazineSlotSettingsDefinition primaryMagazines = new MagazineSlotSettingsDefinition();
+	[JsonField]
+[Tooltip("If there is a secondary slot, defines which magazines are applicable")]
+	public MagazineSlotSettingsDefinition secondaryMagazines = new MagazineSlotSettingsDefinition();
 	[JsonField]
 	public ActionDefinition[] startSpinUpActions = new ActionDefinition[0];
 	[JsonField]
@@ -28,10 +37,6 @@ public class GunDefinition : Definition
 	public ActionDefinition[] reachZeroSpinActions = new ActionDefinition[0];
 	[JsonField]
 	public SoundDefinition[] loopingSounds = new SoundDefinition[0];
-	[JsonField]
-	public int numBullets = 0;
-	[JsonField]
-	public EAmmoConsumeMode AmmoConsumeMode = EAmmoConsumeMode.RoundRobin;
 	[JsonField]
 	public AttachmentSettingsDefinition barrelAttachments = new AttachmentSettingsDefinition();
 	[JsonField]

@@ -63,6 +63,12 @@ public class JavaToCSImport : MonoBehaviour
 			if(input[i].Contains("@JsonField"))
 			{
 				output.Add("	[JsonField]");
+				if(input[i].Contains("Docs = \""))
+				{
+					string docString = input[i].Substring(input[i].IndexOf("Docs = \"") + 8);
+					docString = docString.Substring(0, docString.IndexOf("\""));
+					output.Add($"[Tooltip(\"{docString}\")]");
+				}
 
 				int lineToInclude = i+1;
 				while(input[lineToInclude].Contains("@"))

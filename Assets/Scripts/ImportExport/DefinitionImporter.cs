@@ -572,7 +572,7 @@ public class DefinitionImporter : MonoBehaviour
 			{
 				foreach(ContentPack cp in Packs)
 				{
-					if(cp.HasContent(item))
+					if(cp != null && cp.HasContent(item))
 					{
 						item = $"{cp.ModName}:{item}";
 						found = true;
@@ -602,6 +602,7 @@ public class DefinitionImporter : MonoBehaviour
 		string blockModelsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/models/block";
 		string blockstatesExportFolder = $"{ExportRoot}/assets/{pack.ModName}/blockstates";
 		string itemTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/item";
+		string magTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/magazine";
 		string skinsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/skins";
 		string soundsExportFolder = $"{ExportRoot}/assets/{pack.ModName}/sounds";
 		string guiTextureExportFolder = $"{ExportRoot}/assets/{pack.ModName}/textures/gui";
@@ -623,6 +624,8 @@ public class DefinitionImporter : MonoBehaviour
 			Directory.CreateDirectory(guiTextureExportFolder);
 		if(!Directory.Exists(itemTextureExportFolder))
 			Directory.CreateDirectory(itemTextureExportFolder);
+		if(!Directory.Exists(magTextureExportFolder))
+			Directory.CreateDirectory(magTextureExportFolder);
 		if(!Directory.Exists(soundsExportFolder))
 			Directory.CreateDirectory(soundsExportFolder);
 		if(!Directory.Exists(langExportFolder))
@@ -663,6 +666,8 @@ public class DefinitionImporter : MonoBehaviour
 				if(def.Model != null)
 				{
 					QuickJSONBuilder itemModelBuilder = new QuickJSONBuilder();
+					if(def.Icon != null)
+						def.Model.icon = Utils.ToLowerWithUnderscores(def.Icon.name);
 					if(JsonModelExporter.ExportItemModel(def.Model, textures, pack.ModName, item_name, itemModelBuilder))
 					{
 						using(StringWriter stringWriter = new StringWriter())						
@@ -728,20 +733,32 @@ public class DefinitionImporter : MonoBehaviour
 				}
 				if(def.Icon != null)
 				{
-					string src = $"{ASSET_ROOT}/{packName}/Textures/items/{def.Icon.name}.png";
-					string dst = $"{itemTextureExportFolder}/{Utils.ToLowerWithUnderscores(def.Icon.name)}.png";
 					
-					Debug.Log($"Copying icon texture from {src} to {dst}");
-					File.Copy(src, dst, true);
+					if(def is MagazineDefinition magDef)
+					{
+						string src = $"{ASSET_ROOT}/{packName}/Textures/mags/{def.Icon.name}.png";
+						string dst = $"{magTextureExportFolder}/{Utils.ToLowerWithUnderscores(def.Icon.name)}.png";
+						
+						Debug.Log($"Copying mag texture from {src} to {dst}");
+						File.Copy(src, dst, true);
+					}
+					else
+					{
+						string src = $"{ASSET_ROOT}/{packName}/Textures/items/{def.Icon.name}.png";
+						string dst = $"{itemTextureExportFolder}/{Utils.ToLowerWithUnderscores(def.Icon.name)}.png";
+						
+						Debug.Log($"Copying icon texture from {src} to {dst}");
+						File.Copy(src, dst, true);
+					}
 				}
-				foreach(Definition.AdditionalTexture texture in def.AdditionalTextures)
-				{
-					string src = AssetDatabase.GetAssetPath(texture.texture);
-					string dst = $"{assetExportFolder}/{texture.name}";
-
-					Debug.Log($"Copying additional texture from {src} to {dst}");
-					File.Copy(src, dst, true);
-				}
+				//foreach(Definition.AdditionalTexture texture in def.AdditionalTextures)
+				//{
+				//	string src = AssetDatabase.GetAssetPath(texture.texture);
+				//	string dst = $"{assetExportFolder}/{texture.name}.png";
+//
+				//	Debug.Log($"Copying additional texture from {src} to {dst}");
+				//	File.Copy(src, dst, true);
+				//}
 				
 
 				//if(TryGetModel(DefinitionTypes.GetFromObject(def)))
@@ -785,6 +802,7 @@ public class DefinitionImporter : MonoBehaviour
 			}
 		}
 		// Copy lang.jsons
+		Dictionary<string, JObject> langJsons = new Dictionary<string, JObject>();
 		DirectoryInfo langFolder = new DirectoryInfo($"{ASSET_ROOT}/{packName}/lang/");
 		if(langFolder.Exists)
 		{
@@ -793,13 +811,54 @@ public class DefinitionImporter : MonoBehaviour
 				if(!langFile.Extension.Contains("meta"))
 				{
 					string src = langFile.FullName;
-					string dst = $"{assetExportFolder}/lang/{langFile.Name}";
-					
-					Debug.Log($"Copying lang file from {src} to {dst}");
-					File.Copy(src, dst, true);
+					using(StringReader stringReader = new StringReader(File.ReadAllText(src)))
+					using(JsonTextReader jsonReader = new JsonTextReader(stringReader))
+					{
+						langJsons.Add(langFile.Name, JObject.Load(jsonReader));
+					}
+					Debug.Log($"Importing lang file from {src}");
 				}
 			}
+		}
+		foreach(Definition def in pack.Content)
+		{
+			foreach(Definition.LocalisedName locName in def.LocalisedNames)
+			{
+				string langFileName = $"{locName.Lang}.json";
+				if(!langJsons.ContainsKey(langFileName))
+					langJsons.Add(langFileName, new JObject());
+				
+				langJsons[langFileName].Add($"{(def is MagazineDefinition ? "magazine" : "item")}.{pack.ModName}.{def.name}", locName.Name);
+			}
+			foreach(Definition.LocalisedExtra locExtra in def.LocalisedExtras)
+			{
+				string langFileName = $"{locExtra.Lang}.json";
+				if(!langJsons.ContainsKey(langFileName))
+					langJsons.Add(langFileName, new JObject());
+					
+				langJsons[langFileName].Add(locExtra.Unlocalised, locExtra.Localised);
+			}
+		}
+		foreach(Definition.LocalisedExtra locExtra in pack.ExtraLocalisation)
+		{
+			string langFileName = $"{locExtra.Lang}.json";
+			if(!langJsons.ContainsKey(langFileName))
+				langJsons.Add(langFileName, new JObject());
+				
+			langJsons[langFileName].Add(locExtra.Unlocalised, locExtra.Localised);
+		}
 
+		foreach(var kvp in langJsons)
+		{
+			using(StringWriter stringWriter = new StringWriter())						
+			using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+			{
+				jsonWriter.Formatting = Formatting.Indented;
+				string dst = $"{assetExportFolder}/lang/{kvp.Key}";
+				kvp.Value.WriteTo(jsonWriter);
+				File.WriteAllText(dst, stringWriter.ToString());
+				Debug.Log($"Exporting lang file to {dst}");
+			}
 		}
 	}
 	

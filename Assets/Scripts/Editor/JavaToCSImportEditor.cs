@@ -12,13 +12,6 @@ public class JavaToCSImportEditor : Editor
 		JavaToCSImport instance = (JavaToCSImport)target;
 		if(instance != null)
 		{
-			base.OnInspectorGUI();
-
-			if(GUILayout.Button("Process"))
-			{
-				instance.Process();
-			}
-
 			if(GUILayout.Button("Scan Directory"))
 			{
 				string folder = EditorUtility.OpenFolderPanel("Select Definitions .java Root Folder", "", "");
@@ -37,6 +30,15 @@ public class JavaToCSImportEditor : Editor
 					instance.AutoMappings.Add(file);
 				}
 			}
+
+			GUILayout.Label($"Found {instance.AutoMappings.Count} files");
+
+			if(GUILayout.Button("Process"))
+			{
+				instance.Process();
+			}
+
+			base.OnInspectorGUI();
 		}
 	}
 }

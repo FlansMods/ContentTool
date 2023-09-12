@@ -1,0 +1,288 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 282f23e8eb487df49a216a877d039607, type: 3}
+  m_Name: vender
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 0
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: 
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+    customModelLocation: 
+  Skin: {fileID: 0}
+  Icon: {fileID: 0}
+  AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras:
+  - Unlocalised: npc.vender.hello.neutral.1
+    Lang: 0
+    Localised: Greetings, friend!
+  - Unlocalised: npc.vender.hello.neutral.2
+    Lang: 0
+    Localised: Vender sees new friend. Friend trades with Vender. Does not attack
+      Vender.
+  - Unlocalised: npc.vender.hello.happy
+    Lang: 0
+    Localised: Friend returns. So good to see friend.
+  - Unlocalised: npc.vender.hello.angry
+    Lang: 0
+    Localised: Hmm, is friend still foe? Vender will not deal with foe.
+  - Unlocalised: npc.vender.chat.1
+    Lang: 0
+    Localised: Always check the safety, friend.
+  - Unlocalised: npc.vender.chat.2
+    Lang: 0
+    Localised: Never hold the trigger. Be safe, friend.
+  - Unlocalised: npc.vender.buy_from_player.1
+    Lang: 0
+    Localised: Ooh I like this item, friend.
+  - Unlocalised: npc.vender.buy_from_player.2
+    Lang: 0
+    Localised: Fascinating.
+  - Unlocalised: npc.vender.sell_to_player.1
+    Lang: 0
+    Localised: Haha, friend will like this one.
+  - Unlocalised: npc.vender.sell_to_player.2
+    Lang: 0
+    Localised: Only quality products from Vender.
+  - Unlocalised: npc.vender.goodbye.1
+    Lang: 0
+    Localised: A pleasure doing business with friend.
+  - Unlocalised: npc.vender.goodbye.2
+    Lang: 0
+    Localised: Goodbye, friend.
+  - Unlocalised: npc.vender.hurt.1
+    Lang: 0
+    Localised: FRIEND IS NOW FOE!
+  - Unlocalised: npc.vender.hurt.2
+    Lang: 0
+    Localised: AAAAAAAH FOE FOE FOE!
+  voiceLines:
+  - type: 1
+    unlocalisedstring: npc.vender.hello.neutral.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hello_neutral
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 1
+    unlocalisedstring: npc.vender.hello.neutral.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hello_neutral
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 3
+    unlocalisedstring: npc.vender.hello.angry
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hello_angry
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 2
+    unlocalisedstring: npc.vender.hello.happy
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hello_happy
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 0
+    unlocalisedstring: npc.vender.chat.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/chat
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 0
+    unlocalisedstring: npc.vender.chat.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/chat
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 6
+    unlocalisedstring: npc.vender.buy_from_player.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/buy_from_player
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 6
+    unlocalisedstring: npc.vender.buy_from_player.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/buy_from_player
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 5
+    unlocalisedstring: npc.vender.sell_to_player.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/sell_to_player
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 5
+    unlocalisedstring: npc.vender.sell_to_player.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/sell_to_player
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 4
+    unlocalisedstring: npc.vender.goodbye.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/goodbye
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 4
+    unlocalisedstring: npc.vender.goodbye.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/goodbye
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 7
+    unlocalisedstring: npc.vender.hurt.1
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hurt
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  - type: 7
+    unlocalisedstring: npc.vender.hurt.2
+    audioClip:
+      sound: flansvendersgame:sounds/vender/hurt
+      length: 2
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 50
+      LODs: []
+  hat:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  chest:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  legs:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  shoes:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  mainHand:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  offHand:
+    item: minecraft:air
+    count: 1
+    damage: 0
+    tags: '{}'
+  maxMerchantLevel: 5
+  xpPerMerchantLevel: 0f0000002d000000780000002c010000bc020000
+  offers:
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - count: 16
+      compareItemName: 1
+      itemName: minecraft:emerald
+      compareDamage: 0
+      minAllowedDamage: 0
+      maxAllowedDamage: 0
+      compareItemTags: 0
+      requiredTags: []
+      materialTags: []
+      disallowedTags: []
+      compareNBT: 0
+      requiredNBT: []
+      disallowedNBT: []
+    output:
+      item: flansvendersgame:fc_700
+      count: 1
+      damage: 0
+      tags: 
+    merchantXP: 0

@@ -207,14 +207,6 @@ MonoBehaviour:
   - name: seat_1_gun
     primaryActions:
     - actionType: 3
-      canActUnderwater: 0
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 1
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
       duration: 0
       sounds:
       - sound: flansmodernweapons:rpdshoot
@@ -226,38 +218,49 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      shootStats:
-      - verticalRecoil: 6
-        horizontalRecoil: 0
-        spread: 22
-        spreadPattern: 1
-        hitscan: 1
-        speed: 0
-        bulletCount: 1
-        spinSpeed: 360
-        breaksMaterials: []
-        matchAmmoNames:
-        - a91ammo
-        - ak47ammo
-        - ak74ammo
-        - rpd_ammo
-        - rpk_ammo
-        - witheringakammo
-        matchAmmoTags: []
-        penetrationPower: 1
-        trailParticles: 
-        impact:
-          decal: flansmod:effects/bullet_decal.png
-          damageToTarget: 3
-          multiplierVsPlayers: 1
-          multiplierVsVehicles: 1
-          knockback: 0
-          splashDamageRadius: 0
-          splashDamageFalloff: 0
-          setFireToTarget: 0
-          fireSpreadRadius: 0
-          fireSpreadAmount: 0
-          hitSounds: []
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 6
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 22
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: damage_to_target
+        Filter: 
+        Add: 0
+        Multiply: 3
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
       fovFactor: 1.25
       scopeOverlay: 
       anim: 
@@ -295,18 +298,10 @@ MonoBehaviour:
   - name: pilot_gun_primary_0
     primaryActions:
     - actionType: 3
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
       duration: 0
       sounds: []
       itemStack: 
-      shootStats: []
+      modifiers: []
       fovFactor: 1.25
       scopeOverlay: 
       anim: 
@@ -314,18 +309,10 @@ MonoBehaviour:
       harvestSpeed: 1
       reach: 1
     - actionType: 2
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
       duration: 0
       sounds: []
       itemStack: 
-      shootStats: []
+      modifiers: []
       fovFactor: 1.25
       scopeOverlay: 
       anim: FireMissile
@@ -363,18 +350,10 @@ MonoBehaviour:
   - name: pilot_gun_primary_1
     primaryActions:
     - actionType: 3
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
       duration: 0
       sounds: []
       itemStack: 
-      shootStats: []
+      modifiers: []
       fovFactor: 1.25
       scopeOverlay: 
       anim: 
@@ -382,18 +361,10 @@ MonoBehaviour:
       harvestSpeed: 1
       reach: 1
     - actionType: 2
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
       duration: 0
       sounds: []
       itemStack: 
-      shootStats: []
+      modifiers: []
       fovFactor: 1.25
       scopeOverlay: 
       anim: FireMissile

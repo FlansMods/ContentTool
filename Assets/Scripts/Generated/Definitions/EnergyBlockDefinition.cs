@@ -14,6 +14,7 @@ public class EnergyBlockDefinition
 	[JsonField]
 	public int batterySlotStackSize = 1;
 	[JsonField]
+[Tooltip("In millibuckets")]
 	public int liquidFuelStorage = 0;
 	[JsonField]
 	public string liquidFuelFilter = "";

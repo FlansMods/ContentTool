@@ -19,8 +19,10 @@ public class AttachmentDefinition : Definition
 	[JsonField]
 	public ActionDefinition[] secondaryActions = new ActionDefinition[0];
 	[JsonField]
+[Tooltip("If true, adding this attachment will swap the primaryActions array. Otherwise, it will be additive")]
 	public bool replacePrimaryAction = false;
 	[JsonField]
+[Tooltip("If true, adding this attachment will swap the secondaryActions array. Otherwise, it will be additive")]
 	public bool replaceSecondaryAction = false;
 	[JsonField]
 	public ERepeatMode modeOverride = ERepeatMode.FullAuto;

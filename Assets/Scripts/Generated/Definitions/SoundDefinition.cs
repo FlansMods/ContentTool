@@ -6,6 +6,7 @@ public class SoundDefinition
 	[JsonField]
 	public string sound = "";
 	[JsonField]
+[Tooltip("In seconds")]
 	public float length = 1f;
 	[JsonField]
 	public float minPitchMultiplier = 1f;

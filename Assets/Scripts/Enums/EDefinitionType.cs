@@ -18,6 +18,8 @@ public enum ENewDefinitionType
 	rewardBox,
 	loadout,
 	animation,
+	magazine,
+	npc,
 }
 
 public enum EDefinitionType
@@ -89,6 +91,8 @@ public static class DefinitionTypes
 		if(def is RewardBoxDefinition) return ENewDefinitionType.rewardBox;
 		if(def is LoadoutPoolDefinition) return ENewDefinitionType.loadout;
 		if(def is AnimationDefinition) return ENewDefinitionType.animation;
+		if(def is MagazineDefinition) return ENewDefinitionType.magazine;
+		if(def is NpcDefinition) return ENewDefinitionType.npc;
 		
 		return ENewDefinitionType.part;
 	}
@@ -248,6 +252,8 @@ public static class DefinitionTypes
 			case ENewDefinitionType.loadout: return "loadouts";
 			case ENewDefinitionType.workbench: return "workbenches";
 			case ENewDefinitionType.animation: return "animations";
+			case ENewDefinitionType.magazine: return "magazines";
+			case ENewDefinitionType.npc: return "npcs";
 			default: return "";
 		}
 	}

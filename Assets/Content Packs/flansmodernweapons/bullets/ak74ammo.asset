@@ -55,40 +55,29 @@ MonoBehaviour:
     - flansmod:bullet
   roundsPerItem: 30
   shootStats:
-    verticalRecoil: 0
+    verticalRecoil: 3
     horizontalRecoil: 0
-    spread: 1
+    spread: 3
     spreadPattern: 1
     hitscan: 1
     speed: 0
     bulletCount: 1
     spinSpeed: 360
-    breaksMaterials:
-    - glass
-    matchAmmoNames: []
-    matchAmmoTags: []
+    breaksMaterials: []
     penetrationPower: 1
     trailParticles: 
     impact:
-      decal: flansmod:effects/bullet_decal.png
-      damageToTarget: 1
+      decal: 
+      damageToTarget: 8
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
       knockback: 0
       splashDamageRadius: 0
-      splashDamageFalloff: 0
+      splashDamageFalloff: 1
       setFireToTarget: 0
       fireSpreadRadius: 0
-      fireSpreadAmount: 0.5
-      hitSounds:
-      - sound: flansmodernweapons:bullet
-        length: 1
-        minPitchMultiplier: 1
-        maxPitchMultiplier: 1
-        minVolume: 1
-        maxVolume: 1
-        maxRange: 50
-        LODs: []
+      fireSpreadAmount: 0
+      hitSounds: []
   onShootActions: []
   onClipEmptyActions: []
   onReloadActions: []

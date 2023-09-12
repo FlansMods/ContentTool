@@ -16,6 +16,7 @@ public class Model
 		TurboRig,
 		Block,
 		Item,
+		Custom
 	}
 
 	public ModelType Type = ModelType.None;
@@ -38,6 +39,9 @@ public class Model
 	public string name;
 	public List<AnimationParameter> animations = new List<AnimationParameter>();
 	public List<AttachPoint> attachPoints = new List<AttachPoint>();	
+
+	[Header("Custom")]
+	public string customModelLocation = "";
 	
 	public enum EShape
 	{

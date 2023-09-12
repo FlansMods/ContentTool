@@ -16,6 +16,7 @@ public class EngineDefinition
 	[JsonField]
 	public int solidFuelSlots = 0;
 	[JsonField]
+[Tooltip("In millibuckets")]
 	public int liquidFuelCapacity = 1000;
 	[JsonField]
 	public int batterySlots = 0;

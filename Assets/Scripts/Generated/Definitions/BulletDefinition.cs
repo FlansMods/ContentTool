@@ -5,8 +5,6 @@ using UnityEngine;
 public class BulletDefinition : Definition
 {
 	[JsonField]
-	public float gravityFactor = 0.25f;
-	[JsonField]
 	public ItemDefinition itemSettings = new ItemDefinition();
 	[JsonField]
 	public int roundsPerItem = 1;

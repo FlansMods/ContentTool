@@ -336,6 +336,25 @@ MonoBehaviour:
         zValue: 30
       scale: {x: 1, y: 1, z: 1}
     parents: []
+  - name: iron_sights
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 2
+        yOverride: 
+        yValue: 2
+        zOverride: 
+        zValue: 8
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
   sequences:
   - name: shoot
     ticks: 8
@@ -485,3 +504,18 @@ MonoBehaviour:
       entry: 1
       exit: 1
       frame: idle
+  - name: aim_down_sights
+    ticks: 20
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: idle
+    - tick: 5
+      entry: 2
+      exit: 1
+      frame: iron_sights
+    - tick: 20
+      entry: 1
+      exit: 1
+      frame: iron_sights

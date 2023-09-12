@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
+  m_Name: projectile_grenade_incendiary
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 3
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: artillery_shell_incendiary
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+    customModelLocation: 
+  Skin: {fileID: 0}
+  Icon: {fileID: 2800000, guid: eac17564ee1e0874eb67cee35f7b7d55, type: 3}
+  AdditionalTextures: []
+  LocalisedNames:
+  - Lang: 0
+    Name: Incendiary Impact Grenade Projectile
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 64
+    tags:
+    - flansmod:bullet
+    - flansmod:launchable_grenade
+  roundsPerItem: 1
+  shootStats:
+    verticalRecoil: 1
+    horizontalRecoil: 0
+    spread: 1
+    spreadPattern: 1
+    speed: 3
+    bulletCount: 1
+    spinSpeed: 360
+    breaksMaterials: []
+    penetrationPower: 0
+    impact:
+      decal: 
+      damageToTarget: 1
+      multiplierVsPlayers: 1
+      multiplierVsVehicles: 10
+      knockback: 0
+      potionEffectOnTarget: 
+      splashDamage: 0
+      splashDamageRadius: 0
+      splashDamageFalloff: 1
+      potionEffectOnSplash: 
+      setFireToTarget: 8
+      fireSpreadRadius: 5
+      fireSpreadAmount: 0.5
+      explosionRadius: 0
+      hitSounds: []
+      onImpactActions: []
+    hitscan: 0
+    fuseTime: 0
+    gravityFactor: 1
+    sticky: 0
+    turnRate: 0.5
+    dragInAir: 0.01
+    trailParticles: 
+    secondsBetweenTrailParticles: 0.25
+    dragInWater: 0.2
+    waterParticles: 
+  onShootActions: []
+  onClipEmptyActions: []
+  onReloadActions: []

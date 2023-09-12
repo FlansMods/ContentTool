@@ -1,0 +1,541 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
+  m_Name: phantek_lock
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 1
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: glock
+    textureX: 256
+    textureY: 16
+    sections:
+    - partName: gun
+      pieces:
+      - textureU: 1
+        textureV: 1
+        Pos: {x: 0, y: -5, z: -2}
+        Dim: {x: 2, y: 5, z: 2}
+        Origin: {x: 0, y: 3.5, z: 1}
+        Euler: {x: 0, y: 0, z: -7.999998}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 17
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 9, y: 1, z: 2}
+        Origin: {x: -1, y: 4, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 49
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 7, y: 1, z: 1}
+        Origin: {x: 1, y: 3.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 41
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 7.5, y: 4.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 73
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 1.5, y: 2.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 129
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 8, y: 1, z: 1}
+        Origin: {x: 0, y: 4.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+    - partName: ammo
+      pieces:
+      - textureU: 81
+        textureV: 1
+        Pos: {x: 0, y: -5, z: -1}
+        Dim: {x: 1, y: 5, z: 1}
+        Origin: {x: 0, y: -1, z: 0.5}
+        Euler: {x: 0, y: 0, z: -7.999998}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 89
+        textureV: 1
+        Pos: {x: 0, y: -5, z: -1}
+        Dim: {x: 1, y: 5, z: 1}
+        Origin: {x: -0.5, y: -0.9, z: 0.5}
+        Euler: {x: 0, y: 0, z: -7.999998}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 97
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: -0.90000004, y: -5.3, z: 0.5}
+        Euler: {x: 0, y: 0, z: -7.999998}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+    - partName: slide
+      pieces:
+      - textureU: 105
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 9, y: 1, z: 2}
+        Origin: {x: -1, y: 5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+      - textureU: 153
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 7, y: 5.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 0
+        Offsets:
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+    name: glock
+    animations:
+    - key: gunSlideDistance
+      isVec3: 0
+      floatValue: 0.2
+      vec3Value: {x: 0, y: 0, z: 0}
+    attachPoints:
+    - name: barrel
+      attachedTo: body
+      position: {x: 8.5, y: 3, z: 0}
+    - name: scope
+      attachedTo: slide
+      position: {x: 3, y: 4, z: 0}
+  Skin: {fileID: 2800000, guid: ce68dcf60e3331c4db77d8c85892c8eb, type: 3}
+  Icon: {fileID: 2800000, guid: 8f7e8d26719ed634b843256e14ba8045, type: 3}
+  AdditionalTextures:
+  - name: phantek_lock_cottonmouth
+    texture: {fileID: 2800000, guid: 513f62ec62dc9484d9a4df78bfbeb757, type: 3}
+    icon: {fileID: 2800000, guid: 0081a16d7bc994c4188271b206bf1101, type: 3}
+  - name: phantek_lock_fade
+    texture: {fileID: 2800000, guid: b3ecd4d536bf4764a9cb7c5b9b19f478, type: 3}
+    icon: {fileID: 2800000, guid: 83a8f91299b08f34bb0e5a788dc8a9a4, type: 3}
+  - name: phantek_lock_venom
+    texture: {fileID: 2800000, guid: f0535f365e87f9f4d9ed3755f062bac6, type: 3}
+    icon: {fileID: 2800000, guid: 26f875570d7fdfd45b03236688aea7ba, type: 3}
+  LocalisedNames:
+  - Lang: 0
+    Name: PhanTek Lock
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - flansmod:gun
+  paints:
+    paintjobs:
+    - textureName: phantek_lock_cottonmouth
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: phantek_lock_fade
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: phantek_lock_venom
+      paintBucketsRequired: 1
+      entitlementKey: 
+  primaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 0.4
+      actions:
+      - actionType: 2
+        duration: 0.4
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_start
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+      - actionType: 1
+        duration: 0
+        sounds:
+        - sound: flansmodernweapons:mwcolt_reload
+          length: 1
+          minPitchMultiplier: 1
+          maxPitchMultiplier: 1
+          minVolume: 1
+          maxVolume: 1
+          maxRange: 100
+          LODs: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: 
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    eject:
+      duration: 0.4
+      actions:
+      - actionType: 2
+        duration: 0.4
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    loadOne:
+      duration: 0.4
+      actions:
+      - actionType: 2
+        duration: 0.4
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_load_one
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    end:
+      duration: 0.4
+      actions:
+      - actionType: 2
+        duration: 0.4
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_end
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+  secondaryReload:
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    start:
+      duration: 1
+      actions: []
+    eject:
+      duration: 1
+      actions: []
+    loadOne:
+      duration: 1
+      actions: []
+    end:
+      duration: 1
+      actions: []
+  primary:
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 0
+    repeatDelay: 0.1
+    repeatCount: 3
+    spinUpDuration: 1.5
+    actions:
+    - actionType: 3
+      duration: 0.1
+      sounds: []
+      itemStack: 
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 2
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 20
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: impact_damage
+        Filter: 
+        Add: 0
+        Multiply: 2.5
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      fovFactor: 1
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 5
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:glock_shoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 0.1
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: shoot
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  secondary:
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 0
+    repeatMode: 0
+    repeatDelay: 0.1
+    repeatCount: 3
+    spinUpDuration: 1.5
+    actions:
+    - actionType: 4
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: aim_down_sights
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  lookAt:
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    actions:
+    - actionType: 2
+      duration: 2.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: look_at
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  primaryMagazines:
+    matchByNames: []
+    matchByTags:
+    - flansvendersgame:phantek_lock
+    baseCostToSwap: 0
+  secondaryMagazines:
+    matchByNames: []
+    matchByTags: []
+    baseCostToSwap: 0
+  startSpinUpActions: []
+  reachMaxSpinActions: []
+  startSpinDownActions: []
+  reachZeroSpinActions: []
+  loopingSounds: []
+  barrelAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 1
+  gripAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 1
+  stockAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 1
+  scopeAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 1
+    attachToMesh: slide
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 1
+  genericAttachments:
+    allowlist: []
+    allowAll: 1
+    numAttachmentSlots: 0
+    attachToMesh: body
+    attachPoint: {x: 0, y: 0, z: 0}
+    hideDefaultMesh: 1
+  modelParts: []
+  animationSet: flansmod:pistol

@@ -772,24 +772,34 @@ MonoBehaviour:
   AdditionalTextures:
   - name: Minigun_Candy
     texture: {fileID: 2800000, guid: 94355a67a9081e9418e929b3489305f9, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Candy_Icon
     texture: {fileID: 2800000, guid: 9b87b3feb2cb8a64a8f56e11b746c351, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Murica
     texture: {fileID: 2800000, guid: 73a301105eff8f74891199cbe858e1cf, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Murica_Icon
     texture: {fileID: 2800000, guid: c06332ddb540fec4b94881026161186c, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Rainbow
     texture: {fileID: 2800000, guid: ebc3b02622cb9f947a3360c290ca2559, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Rainbow_Icon
     texture: {fileID: 2800000, guid: 0eb5d3f11c1caec4fab692219678df3b, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Harvester
     texture: {fileID: 2800000, guid: c521b6ff9dd26584a99e0aabae4917df, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Harvester_Icon
     texture: {fileID: 2800000, guid: 1a3549e9659965647aa3696b19cad709, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Steampunk
     texture: {fileID: 2800000, guid: ca678e2a25982a14f86ed4c49047f963, type: 3}
+    icon: {fileID: 0}
   - name: Minigun_Steampunk_Icon
     texture: {fileID: 2800000, guid: 7b4028b356897f2438d5fe8c8d996d59, type: 3}
+    icon: {fileID: 0}
   itemSettings:
     maxStackSize: 1
     tags:
@@ -808,18 +818,10 @@ MonoBehaviour:
       duration: 1.25
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 1.25
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_start
@@ -827,14 +829,6 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
       - actionType: 1
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 0
         sounds:
         - sound: flansmodernweapons:browning_reload
@@ -846,7 +840,7 @@ MonoBehaviour:
           maxRange: 100
           LODs: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: 
@@ -857,18 +851,10 @@ MonoBehaviour:
       duration: 1.25
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 1.25
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_eject
@@ -879,18 +865,10 @@ MonoBehaviour:
       duration: 1.25
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 1.25
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_load_one
@@ -901,18 +879,10 @@ MonoBehaviour:
       duration: 1.25
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 1.25
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_end
@@ -934,8 +904,7 @@ MonoBehaviour:
     end:
       duration: 1
       actions: []
-  primaryActions:
-  - actionType: 3
+  primary:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -944,45 +913,101 @@ MonoBehaviour:
     repeatDelay: 0.015000001
     repeatCount: 3
     spinUpDuration: 1.5
-    duration: 0.015000001
-    sounds: []
-    itemStack: 
-    shootStats:
-    - verticalRecoil: 1
-      horizontalRecoil: 0
-      spread: 20
-      spreadPattern: 1
-      hitscan: 1
-      speed: 0
-      bulletCount: 1
-      spinSpeed: 360
-      breaksMaterials: []
-      matchAmmoNames:
-      - minigun_ammo
-      - minigun_explosive_ammo
-      - minigun_portable_ammo
-      matchAmmoTags: []
-      penetrationPower: 1
-      trailParticles: 
-      impact:
-        decal: flansmod:effects/bullet_decal.png
-        damageToTarget: 2
-        multiplierVsPlayers: 1
-        multiplierVsVehicles: 1
-        knockback: 0.5
-        splashDamageRadius: 0
-        splashDamageFalloff: 0
-        setFireToTarget: 0
-        fireSpreadRadius: 0
-        fireSpreadAmount: 0
-        hitSounds: []
-    fovFactor: 1
-    scopeOverlay: 
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 5
-  - actionType: 1
+    actions:
+    - actionType: 3
+      duration: 0.015000001
+      sounds: []
+      itemStack: 
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 20
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: damage_to_target
+        Filter: 
+        Add: 0
+        Multiply: 2
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0.5
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      fovFactor: 1
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 5
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:minigun_shoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 0.1
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: shoot
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  secondary:
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 1
+    repeatMode: 3
+    repeatDelay: 0.015000001
+    repeatCount: 3
+    spinUpDuration: 1.5
+    actions: []
+  lookAt:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -991,71 +1016,32 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
-    duration: 0
-    sounds:
-    - sound: flansmodernweapons:minigun_shoot
-      length: 0
-      minPitchMultiplier: 0.8333333
-      maxPitchMultiplier: 1.25
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  - actionType: 2
-    canActUnderwater: 1
-    canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
-    repeatMode: 1
-    repeatDelay: 0
-    repeatCount: 0
-    spinUpDuration: 1
-    duration: 0.5
-    sounds: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: shoot
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  secondaryActions: []
-  lookAtActions:
-  - actionType: 2
-    canActUnderwater: 1
-    canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
-    repeatMode: 1
-    repeatDelay: 0
-    repeatCount: 0
-    spinUpDuration: 1
-    duration: 2.5
-    sounds: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: look_at
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
+    actions:
+    - actionType: 2
+      duration: 2.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: look_at
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  primaryMagazines:
+    matchByNames:
+    - minigun_ammo
+    - minigun_explosive_ammo
+    - minigun_portable_ammo
+    matchByTags: []
+  secondaryMagazines:
+    matchByNames: []
+    matchByTags: []
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []
   reachZeroSpinActions: []
   loopingSounds: []
-  numBullets: 1
-  AmmoConsumeMode: 3
   barrelAttachments:
     allowlist: []
     allowAll: 1

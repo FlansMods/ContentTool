@@ -120,39 +120,39 @@ public class GunConverter : Converter<GunType, GunDefinition>
 
 		def.itemSettings.maxStackSize = 1;
 		def.itemSettings.tags = GetTags(inf);
-		def.numBullets = inf.numAmmoItemsInGun;
+		def.primaryMagazines = new MagazineSlotSettingsDefinition()
+		{
+			matchByNames = GetMags(inf),
+		};
 
 		def.primaryReload = new ReloadDefinition()
 		{
 			manualReloadAllowed = inf.canForceReload,
-			start = new ReloadStageDefinition()
+			start = new ActionGroupDefinition() 
 			{
-				duration = inf.reloadTime * inf.tiltGunTime / 20f,
+				//duration = inf.reloadTime * inf.tiltGunTime / 20f,
 				actions = CreateStartReloadActions(inf),
 			},
-			eject = new ReloadStageDefinition()
+			eject = new ActionGroupDefinition()
 			{
-				duration = inf.reloadTime * inf.unloadClipTime / 20f,
+				//duration = inf.reloadTime * inf.unloadClipTime / 20f,
 				actions = CreateEjectReloadActions(inf),
 			},
-			loadOne = new ReloadStageDefinition()
+			loadOne = new ActionGroupDefinition()
 			{
-				duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
+				//duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
 				actions = CreateLoadOneReloadActions(inf),
 			},
-			end = new ReloadStageDefinition()
+			end = new ActionGroupDefinition()
 			{
-				duration = inf.reloadTime * inf.untiltGunTime / 20f,
+				//duration = inf.reloadTime * inf.untiltGunTime / 20f,
 				actions = CreateEndReloadActions(inf),
 			},
 		};
 
-		if(inf.shortName == "r700")
-			Debug.Log($"R700 end-reload duration: {def.primaryReload.end.duration} = {inf.reloadTime} x {inf.untiltGunTime} / 20f");
-
-		def.primaryActions = CreatePrimaryActions(inf);
-		def.secondaryActions = CreateSecondaryActions(inf);
-		def.lookAtActions = CreateLookAtActions(inf);
+		def.primary = CreatePrimaryActions(inf);
+		def.secondary = CreateSecondaryActions(inf);
+		def.lookAt = CreateLookAtActions(inf);
 
 		//def.idleSound = inf.idleSound;
 		//def.idleSoundLength = inf.idleSoundLength;
@@ -199,16 +199,31 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		//def.userKnockbackResist = inf.knockbackModifier;
 
 		def.animationSet = inf.animationType.Convert();
-		switch(inf.animationType)
-		{
-			case EAnimationType.REVOLVER: 
-				def.AmmoConsumeMode = EAmmoConsumeMode.RoundRobin; 
-				break;
-			default: 
-				def.AmmoConsumeMode = EAmmoConsumeMode.LastNonEmpty;
-				break;
-		}
+		//switch(inf.animationType)
+		//{
+		//	case EAnimationType.REVOLVER: 
+		//		def.AmmoConsumeMode = EAmmoConsumeMode.RoundRobin; 
+		//		break;
+		//	default: 
+		//		def.AmmoConsumeMode = EAmmoConsumeMode.LastNonEmpty;
+		//		break;
+		//}
 
+	}
+
+	private string[] GetMags(GunType input)
+	{
+		List<string> mags = new List<string>();
+		if(input.numAmmoItemsInGun > 1)
+		{
+			mags.Add($"{input.shortName}_internal_mag_{input.numAmmoItemsInGun}");
+		}
+		else
+		{
+			foreach(string ammoType in input.ammo)
+				mags.Add($"{Utils.ToLowerWithUnderscores(ammoType)}");
+		}
+		return mags.ToArray();
 	}
 
 	private string[] GetTags(GunType input)
@@ -294,7 +309,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return reloadActions.ToArray();
 	}
 
-	private ActionDefinition[] CreateLookAtActions(GunType inf)
+	private ActionGroupDefinition CreateLookAtActions(GunType inf)
 	{
 		List<ActionDefinition> lookAtActions = new List<ActionDefinition>();
 
@@ -305,10 +320,13 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			duration = 2.5f,
 		});
 
-		return lookAtActions.ToArray();
+		return new ActionGroupDefinition() 
+		{
+			actions = lookAtActions.ToArray(),
+		};
 	}
 	
-	private ActionDefinition[] CreatePrimaryActions(GunType inf)
+	private ActionGroupDefinition CreatePrimaryActions(GunType inf)
 	{
 		List<ActionDefinition> primaryActions = new List<ActionDefinition>();
 
@@ -317,14 +335,10 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			primaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.Shoot,
-				canActUnderwater = inf.canShootUnderwater,
-				canActUnderOtherLiquid = false,
-				canBeOverriden = true,
-				twoHanded = !inf.oneHanded,				
+						
 				sounds = new SoundDefinition[0],
-				duration = inf.shootDelay / 20f,
+				modifiers = CreateShotModifiers(inf),
 				itemStack = "", // Not used by this action
-				shootStats = CreateShotDefinition(inf),
 				fovFactor = 1.0f, // Not used by this action
 				scopeOverlay = "", // Not used by this action
 				anim = "", // Not used by this action
@@ -332,10 +346,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				harvestSpeed = 1.0f, // Not used by this action
 				reach = 5.0f, // Not used by this action
 
-				repeatMode = inf.mode,
-				repeatCount = inf.numBurstRounds,
-				repeatDelay = inf.shootDelay / 20f,
-				spinUpDuration = inf.minigunStartSpeed / 10f,
+				duration = inf.shootDelay / 20f,
 
 				// warmup
 				// loop
@@ -392,16 +403,58 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			actionType = EActionType.Animation,
 			anim = "shoot",
 			// "Instant" semi-automatics might have 1tick delay, but they want more than a 1tick anim
-			duration = inf.shootDelay <= 1.0f ? 0.5f : inf.shootDelay / 20f,
+			duration = inf.shootDelay <= 1.0f ? 0.1f : inf.shootDelay / 20f,
 		});
 
 		// gunSlide
 
 		// pumpHandle
 
+		return new ActionGroupDefinition()
+		{
+			canActUnderwater = inf.canShootUnderwater,
+			canActUnderOtherLiquid = false,
+			canBeOverriden = true,
+			twoHanded = !inf.oneHanded,		
 
+			repeatMode = inf.mode,
+			repeatCount = inf.numBurstRounds,
+			repeatDelay = inf.shootDelay / 20f,
+			spinUpDuration = inf.minigunStartSpeed / 10f,
 
-		return primaryActions.ToArray();
+			actions = primaryActions.ToArray(),
+		};
+	}
+
+	public ModifierDefinition[] CreateShotModifiers(GunType type)
+	{
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
+		mods.Add(new ModifierDefinition() {
+			Stat = "vertical_recoil",
+			Multiply = type.recoil,
+		});
+		mods.Add(new ModifierDefinition() {
+			Stat = "spread",
+			Multiply = type.bulletSpread,
+		});
+		mods.Add(new ModifierDefinition() {
+			Stat = "speed",
+			Multiply = type.bulletSpeed,
+		});
+		mods.Add(new ModifierDefinition() {
+			Stat = "bullet_count",
+			Multiply = type.numBullets,
+		});
+		mods.Add(new ModifierDefinition() {
+			Stat = "impact_damage",
+			Multiply = type.damage,
+		});
+		mods.Add(new ModifierDefinition() {
+			Stat = "knockback",
+			Multiply = type.knockback,
+		});
+
+		return mods.ToArray();
 	}
 
 	public ShotDefinition[] CreateShotDefinition(GunType type)
@@ -418,8 +471,6 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				bulletCount = type.numBullets,
 				spinSpeed = 360f,
 				breaksMaterials = new string[0],
-				matchAmmoNames = Utils.ToLowerWithUnderscores(type.ammo.ToArray()),
-				matchAmmoTags = new string[0],
 				penetrationPower = 1.0f,
 				trailParticles = "",
 				impact = new ImpactDefinition()
@@ -439,7 +490,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		};
 	}
 
-	private ActionDefinition[] CreateSecondaryActions(GunType inf)
+	private ActionGroupDefinition CreateSecondaryActions(GunType inf)
 	{
 		List<ActionDefinition> secondaryActions = new List<ActionDefinition>();
 
@@ -447,7 +498,6 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		{
 			secondaryActions.Add(new ActionDefinition()
 			{
-				canBeOverriden = true,
 				actionType = EActionType.Shield,
 				//shieldOrigin = shieldOrigin
 				// shieldDimensions
@@ -458,7 +508,6 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		{
 			secondaryActions.Add(new ActionDefinition()
 			{
-				canBeOverriden = true,
 				actionType = EActionType.Scope,
 				scopeOverlay = inf.defaultScopeTexture,
 				//zoomFactor = inf.zoomLevel,
@@ -469,14 +518,30 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		{	
 			secondaryActions.Add(new ActionDefinition()
 			{
-				canBeOverriden = true,
 				actionType = EActionType.AimDownSights,
 				fovFactor = inf.FOVFactor,
 			});
+			// Add animation action?
+			secondaryActions.Add(new ActionDefinition()
+			{
+				actionType = EActionType.Animation,
+				anim = "aim_down_sights",
+			});
 		}
+		return new ActionGroupDefinition()
+		{
+			canActUnderwater = inf.canShootUnderwater,
+			canActUnderOtherLiquid = false,
+			canBeOverriden = true,
+			twoHanded = !inf.oneHanded,		
 
+			repeatMode = inf.mode,
+			repeatCount = inf.numBurstRounds,
+			repeatDelay = inf.shootDelay / 20f,
+			spinUpDuration = inf.minigunStartSpeed / 10f,
 
-		return secondaryActions.ToArray();
+			actions = secondaryActions.ToArray(),
+		};
 	}
 }
 
@@ -520,12 +585,23 @@ public class PartConverter : Converter<PartType, PartDefinition>
 	}
 }
 
+public class MagazineConverter : Converter<BulletType, MagazineDefinition>
+{
+	public static MagazineConverter inst = new MagazineConverter();
+	protected override void DoConversion(BulletType input, MagazineDefinition output)
+	{
+		output.allRoundsMustBeIdentical = false;
+		
+	}
+
+}
+
 public class BulletConverter : Converter<BulletType, BulletDefinition>
 {
 	public static BulletConverter inst = new BulletConverter();
 	protected override void DoConversion(BulletType input, BulletDefinition output)
 	{
-		output.gravityFactor = input.fallSpeed;
+		output.shootStats.gravityFactor = input.fallSpeed;
 		output.itemSettings.maxStackSize = input.maxStackSize;
 		output.itemSettings.tags = GetTags(input);
 		output.roundsPerItem = input.roundsPerItem;
@@ -552,43 +628,59 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 		}
 		output.onReloadActions = onReload.ToArray();
 		
-
-		output.shootStats = new ShotDefinition()
-		{
-			// All N/A? Set by gun?
-			verticalRecoil = 0f,
-			horizontalRecoil = 0f,
-			hitscan = true,
-			speed = 0f,
-			spreadPattern = ESpreadPattern.FilledCircle,
-			spread = input.bulletSpread,
-			bulletCount = input.numBullets,
-			breaksMaterials = input.breaksGlass ? new string[] { "glass" } : new string[0],
-			penetrationPower = input.penetratingPower,
-			trailParticles = input.trailParticles ? input.trailParticleType : "",
-
-			impact = new ImpactDefinition()
+		List<ModifierDefinition> modifiers = new List<ModifierDefinition>();
+		if(input.damageVsLiving != 1.0f)
+			modifiers.Add(new ModifierDefinition()
 			{
-				decal = "flansmod:effects/bullet_decal.png",
-				damageToTarget = input.damageVsLiving,
-				multiplierVsPlayers = 1f,
-				multiplierVsVehicles = input.damageVsDriveable / input.damageVsLiving,
-				knockback = 0f, // Not present?
-				splashDamageRadius = 0f,
-				splashDamageFalloff = 0f,
-				setFireToTarget = input.setEntitiesOnFire ? 1f : 0f,
-				fireSpreadRadius = input.fireRadius,
-				fireSpreadAmount = 0.5f,
-				hitSounds = input.hitSound.Length > 0 
-				? new SoundDefinition[] {
-					new SoundDefinition()
-					{
-						sound = Utils.ToLowerWithUnderscores(input.hitSound),
-						maxRange = input.hitSoundRange
-					}
-				} : new SoundDefinition[0],
-			}
-		};
+				Stat = "multiplier_vs_living",
+				Multiply = input.damageVsLiving,
+			});
+		if(input.damageVsDriveable != 1.0f)
+			modifiers.Add(new ModifierDefinition()
+			{
+				Stat = "multiplier_vs_vehicle",
+				Multiply = input.damageVsDriveable,
+			});
+		//if(input.)
+
+		// TODO:
+		//output.shootStats = 
+		//ShotDefinition()
+		//
+		//// All N/A? Set by gun?
+		//verticalRecoil = 0f,
+		//horizontalRecoil = 0f,
+		//hitscan = true,
+		//speed = 0f,
+		//spreadPattern = ESpreadPattern.FilledCircle,
+		//spread = input.bulletSpread,
+		//bulletCount = input.numBullets,
+		//breaksMaterials = input.breaksGlass ? new string[] { "glass" } : new string[0],
+		//penetrationPower = input.penetratingPower,
+		//trailParticles = input.trailParticles ? input.trailParticleType : "",
+
+		//impact = new ImpactDefinition()
+		//{
+		//	decal = "flansmod:effects/bullet_decal.png",
+		//	damageToTarget = input.damageVsLiving,
+		//	multiplierVsPlayers = 1f,
+		//	multiplierVsVehicles = input.damageVsDriveable / input.damageVsLiving,
+		//	knockback = 0f, // Not present?
+		//	splashDamageRadius = 0f,
+		//	splashDamageFalloff = 0f,
+		//	setFireToTarget = input.setEntitiesOnFire ? 1f : 0f,
+		//	fireSpreadRadius = input.fireRadius,
+		//	fireSpreadAmount = 0.5f,
+		//	hitSounds = input.hitSound.Length > 0 
+		//	? new SoundDefinition[] {
+		//		new SoundDefinition()
+		//		{
+		//			sound = Utils.ToLowerWithUnderscores(input.hitSound),
+		//			maxRange = input.hitSoundRange
+		//		}
+		//	} : new SoundDefinition[0],
+		//}
+		//};
 	}
 
 	private string[] GetTags(BulletType input)
@@ -975,10 +1067,6 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 					actions.Add(new ActionDefinition()
 					{
 						actionType = EActionType.Shoot,
-						canActUnderwater = false,
-						canActUnderOtherLiquid = false,
-						canBeOverriden = true,
-						twoHanded = false,
 						sounds = new SoundDefinition[] {
 							new SoundDefinition()
 							{
@@ -988,7 +1076,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
 							},
 						},
-						shootStats = GunConverter.inst.CreateShotDefinition(gunType),
+						modifiers = GunConverter.inst.CreateShotModifiers(gunType),
 					});
 				}
 				else Debug.LogError($"Could not find gun {gun.type}");
@@ -1005,7 +1093,6 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 				actions.Add(new ActionDefinition()
 				{
 					actionType = EActionType.Shoot,
-					//shootStats = BulletConverter.
 				});
 				actions.Add(new ActionDefinition()
 				{
@@ -1030,10 +1117,6 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 				primaryActions.Add(new ActionDefinition()
 				{
 					actionType = EActionType.Shoot,
-					canActUnderwater = false,
-					canActUnderOtherLiquid = false,
-					canBeOverriden = true,
-					twoHanded = false,
 					sounds = new SoundDefinition[] {
 						new SoundDefinition()
 						{
@@ -1043,7 +1126,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
 						},
 					},
-					shootStats = GunConverter.inst.CreateShotDefinition(gunType),
+					modifiers = GunConverter.inst.CreateShotModifiers(gunType),
 				});
 			}
 		}
@@ -1098,11 +1181,6 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 					new ActionDefinition()
 					{
 						actionType = EActionType.Shoot,
-						shootStats = new ShotDefinition[]
-						{
-							// TODO
-							new ShotDefinition(),
-						}
 					}
 				},
 				recoil = new Vector3(input.recoil, 0f, 0f),

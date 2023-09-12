@@ -233,16 +233,22 @@ MonoBehaviour:
   AdditionalTextures:
   - name: R700_Red
     texture: {fileID: 2800000, guid: d07fdf8cdb413ae43a5359d815913249, type: 3}
+    icon: {fileID: 0}
   - name: R700_Red_Icon
     texture: {fileID: 2800000, guid: d7e0f9dcfeddb6748a05c08e80dfe142, type: 3}
+    icon: {fileID: 0}
   - name: R700_Blue
     texture: {fileID: 2800000, guid: 599b35c7378ed324b90d23bbdead5f1b, type: 3}
+    icon: {fileID: 0}
   - name: R700_Blue_Icon
     texture: {fileID: 2800000, guid: cc4644e89f994b44c91fc9f7e1a47996, type: 3}
+    icon: {fileID: 0}
   - name: R700_Markings
     texture: {fileID: 2800000, guid: e5aadfba5e20c9c4d853bd95f6de53d8, type: 3}
+    icon: {fileID: 0}
   - name: R700_Markings_Icon
     texture: {fileID: 2800000, guid: cb9159b1ae29e5d489a247fc08c94e2f, type: 3}
+    icon: {fileID: 0}
   itemSettings:
     maxStackSize: 1
     tags:
@@ -259,18 +265,10 @@ MonoBehaviour:
       duration: 1.116
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 1.116
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_start
@@ -278,14 +276,6 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
       - actionType: 1
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 0
         sounds:
         - sound: flansmodernweapons:mwspringfield_reload
@@ -297,7 +287,7 @@ MonoBehaviour:
           maxRange: 100
           LODs: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: 
@@ -311,18 +301,10 @@ MonoBehaviour:
       duration: 0.558
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 0.558
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_load_one
@@ -333,18 +315,10 @@ MonoBehaviour:
       duration: 0.65200007
       actions:
       - actionType: 2
-        canActUnderwater: 1
-        canActUnderOtherLiquid: 0
-        canBeOverriden: 0
-        twoHanded: 0
-        repeatMode: 1
-        repeatDelay: 0
-        repeatCount: 0
-        spinUpDuration: 1
         duration: 0.65200007
         sounds: []
         itemStack: 
-        shootStats: []
+        modifiers: []
         fovFactor: 1.25
         scopeOverlay: 
         anim: reload_end
@@ -366,8 +340,7 @@ MonoBehaviour:
     end:
       duration: 1
       actions: []
-  primaryActions:
-  - actionType: 3
+  primary:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -376,113 +349,112 @@ MonoBehaviour:
     repeatDelay: 1
     repeatCount: 3
     spinUpDuration: 1.5
-    duration: 1
-    sounds: []
-    itemStack: 
-    shootStats:
-    - verticalRecoil: 15
-      horizontalRecoil: 0
-      spread: 2
-      spreadPattern: 1
-      hitscan: 1
-      speed: 0
-      bulletCount: 1
-      spinSpeed: 360
-      breaksMaterials: []
-      matchAmmoNames:
-      - m40a3ammo
-      - r700ammo
-      - 3006bullet
-      - shulkersniperammo
-      matchAmmoTags: []
-      penetrationPower: 1
-      trailParticles: 
-      impact:
-        decal: flansmod:effects/bullet_decal.png
-        damageToTarget: 16
-        multiplierVsPlayers: 1
-        multiplierVsVehicles: 1
-        knockback: 0
-        splashDamageRadius: 0
-        splashDamageFalloff: 0
-        setFireToTarget: 0
-        fireSpreadRadius: 0
-        fireSpreadAmount: 0
-        hitSounds: []
-    fovFactor: 1
-    scopeOverlay: 
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 5
-  - actionType: 1
-    canActUnderwater: 1
-    canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
-    repeatMode: 1
-    repeatDelay: 0
-    repeatCount: 0
-    spinUpDuration: 1
-    duration: 0
-    sounds:
-    - sound: flansmodernweapons:r700shoot
-      length: 0
-      minPitchMultiplier: 0.8333333
-      maxPitchMultiplier: 1.25
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  - actionType: 2
-    canActUnderwater: 1
-    canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
-    repeatMode: 1
-    repeatDelay: 0
-    repeatCount: 0
-    spinUpDuration: 1
-    duration: 1
-    sounds: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: shoot
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  secondaryActions:
-  - actionType: 5
+    actions:
+    - actionType: 3
+      duration: 1
+      sounds: []
+      itemStack: 
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 15
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 2
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: damage_to_target
+        Filter: 
+        Add: 0
+        Multiply: 16
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      fovFactor: 1
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 5
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:r700shoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 1
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: shoot
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  secondary:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
-    twoHanded: 0
+    twoHanded: 1
     repeatMode: 1
-    repeatDelay: 0
-    repeatCount: 0
-    spinUpDuration: 1
-    duration: 0
-    sounds: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 6
-    scopeOverlay: mwr700
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  lookAtActions:
-  - actionType: 2
+    repeatDelay: 1
+    repeatCount: 3
+    spinUpDuration: 1.5
+    actions:
+    - actionType: 5
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 6
+      scopeOverlay: mwr700
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  lookAt:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -491,23 +463,30 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
-    duration: 2.5
-    sounds: []
-    itemStack: 
-    shootStats: []
-    fovFactor: 1.25
-    scopeOverlay: 
-    anim: look_at
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
+    actions:
+    - actionType: 2
+      duration: 2.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: look_at
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  primaryMagazines:
+    matchByNames:
+    - r700_internal_mag_4
+    matchByTags: []
+  secondaryMagazines:
+    matchByNames: []
+    matchByTags: []
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []
   reachZeroSpinActions: []
   loopingSounds: []
-  numBullets: 4
-  AmmoConsumeMode: 3
   barrelAttachments:
     allowlist: []
     allowAll: 1

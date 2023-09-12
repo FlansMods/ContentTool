@@ -48,7 +48,7 @@ public class ModelPreivewer : MonoBehaviour
 			}
 			foreach(Definition.AdditionalTexture tex in Def.AdditionalTextures)
 			{
-				if(tex.name.ToLower() == skinName.ToLower())
+				if(Utils.ToLowerWithUnderscores(tex.name) == Utils.ToLowerWithUnderscores(skinName))
 				{
 					SetTexture(tex.texture);
 					return;

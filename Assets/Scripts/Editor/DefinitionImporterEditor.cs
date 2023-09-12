@@ -5,7 +5,7 @@ using UnityEngine;
 
 [CustomEditor(typeof(DefinitionImporter))]
 public class DefinitionImporterEditor : Editor
-{
+{	
 	private bool hasDoneInit = false;
 
     public override void OnInspectorGUI()
@@ -35,7 +35,8 @@ public class DefinitionImporterEditor : Editor
 
 			foreach(ContentPack pack in instance.Packs)
 			{
-				packNames.Add(pack.name);
+				if(pack != null)
+					packNames.Add(pack.name);
 			}
 
 			foreach(string packName in packNames)

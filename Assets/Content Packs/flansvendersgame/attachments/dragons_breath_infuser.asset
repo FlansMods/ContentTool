@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e008fc4365cab3145b710bfa08dafb1d, type: 3}
+  m_Name: dragons_breath_infuser
+  m_EditorClassIdentifier: 
+  Model:
+    Type: 3
+    top: 
+    north: 
+    east: 
+    south: 
+    west: 
+    bottom: 
+    icon: dragonsbreathinfuser
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+    customModelLocation: 
+  Skin: {fileID: 0}
+  Icon: {fileID: 2800000, guid: 2b4ac79a360dec140b8a6343c1ab6a7a, type: 3}
+  AdditionalTextures: []
+  LocalisedNames:
+  - Lang: 0
+    Name: Dragon's Breath Infuser
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - flansmod:bullet
+    - flansmod:generic
+  attachmentType: 4
+  modifiers:
+  - Stat: set_fire_to_target
+    Filter: 
+    Add: 2
+    Multiply: 0
+    SetValue: 
+    ApplyToPrimary: 1
+    ApplyToSecondary: 0
+  mechaEffects: 
+  mechaEffectFilter: 
+  primaryActions: []
+  secondaryActions: []
+  replacePrimaryAction: 0
+  replaceSecondaryAction: 0
+  modeOverride: 0
+  overrideFireMode: 0
