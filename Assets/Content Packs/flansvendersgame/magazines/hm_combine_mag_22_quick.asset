@@ -20,24 +20,34 @@ MonoBehaviour:
     south: 
     west: 
     bottom: 
-    icon: 
+    icon: hm_combine_mag_22_quick
     textureX: 0
     textureY: 0
     sections: []
     name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 2800000, guid: 14e884187cee77d4ba25d1c1d501a4b1, type: 3}
   AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Quick-Flip 22 Round Magazine
+  LocalisedExtras: []
   tags:
   - flansvendersgame:hm_combine
-  modifiers: []
+  modifiers:
+  - Stat: reload_speed
+    Filter: 
+    Add: 0
+    Multiply: 0.75
+    SetValue: 
+    ApplyToPrimary: 1
+    ApplyToSecondary: 1
   ammoLoadMode: 2
   ammoConsumeMode: 2
+  upgradeCost: 2
   numRounds: 22
   allRoundsMustBeIdentical: 0
   matchBulletNames: []

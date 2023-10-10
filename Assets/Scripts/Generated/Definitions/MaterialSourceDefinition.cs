@@ -10,4 +10,6 @@ public class MaterialSourceDefinition
 	[JsonField]
 [Tooltip("For ref, nugget = 1, ingot = 9, block = 81")]
 	public int count = 1;
+	[JsonField]
+	public EMaterialIconType icon = EMaterialIconType.ingot;
 }

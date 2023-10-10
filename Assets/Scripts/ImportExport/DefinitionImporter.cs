@@ -660,6 +660,11 @@ public class DefinitionImporter : MonoBehaviour
 					{
 						string paintName = Utils.ToLowerWithUnderscores(paintDef.textureName);
 						textures.Add(paintName, $"{pack.ModName}:skins/{paintName}");
+
+						string src = $"{ASSET_ROOT}/{packName}/textures/items/{paintName}.png";
+						string dst = $"{itemTextureExportFolder}/{paintName}.png";
+						File.Copy(src, dst, true);
+						Debug.Log($"Copied paint icon {src} to {dst}");
 					}
 				}
 
@@ -697,18 +702,74 @@ public class DefinitionImporter : MonoBehaviour
 						}
 					}
 
-					QuickJSONBuilder itemVariantModelExporter = new QuickJSONBuilder();
-					if(JsonModelExporter.ExportInventoryVariantModel(def.Model, pack.ModName, item_name, itemVariantModelExporter))
+					// TODO: Or other paintable
+					if (def is GunDefinition gun)
 					{
-						using(StringWriter stringWriter = new StringWriter())						
-						using(JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
 						{
-							jsonWriter.Formatting = Formatting.Indented;
-							jsonWriter.Indentation = 4;
-							itemVariantModelExporter.Root.WriteTo(jsonWriter);
-							string exportModelTo = $"{itemModelsExportFolder}/{item_name}_inventory.json";
-							Debug.Log($"Exporting {def.Model.name} inventory variant model to {exportModelTo}");
-							File.WriteAllText(exportModelTo, stringWriter.ToString());
+							QuickJSONBuilder paintjobRootExporter = new QuickJSONBuilder();
+							if (JsonModelExporter.ExportInventorySkinSwitcherModel(gun.paints, def.Model, pack.ModName, item_name, paintjobRootExporter))
+							{
+								using (StringWriter stringWriter = new StringWriter())
+								using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+								{
+									jsonWriter.Formatting = Formatting.Indented;
+									jsonWriter.Indentation = 4;
+									paintjobRootExporter.Root.WriteTo(jsonWriter);
+									string exportModelTo = $"{itemModelsExportFolder}/{item_name}_inventory.json";
+									Debug.Log($"Exporting {def.Model.name} paintjob root model to {exportModelTo}");
+									File.WriteAllText(exportModelTo, stringWriter.ToString());
+								}
+							}
+						}
+						if (!Directory.Exists($"{itemModelsExportFolder}/{item_name}"))
+							Directory.CreateDirectory($"{itemModelsExportFolder}/{item_name}");
+						for (int i = 0; i < gun.paints.paintjobs.Length; i++)
+						{
+
+							QuickJSONBuilder paintjobInstanceExporter = new QuickJSONBuilder();
+							JsonModelExporter.ExportVanillaItem($"{pack.ModName}:item/{gun.paints.paintjobs[i].textureName}", paintjobInstanceExporter);
+							using (StringWriter stringWriter = new StringWriter())
+							using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+							{
+								jsonWriter.Formatting = Formatting.Indented;
+								jsonWriter.Indentation = 4;
+								paintjobInstanceExporter.Root.WriteTo(jsonWriter);
+								string exportModelTo = $"{itemModelsExportFolder}/{item_name}/{gun.paints.paintjobs[i].textureName}.json";
+								Debug.Log($"Exporting {def.Model.name} paintjob variant model to {exportModelTo}");
+								File.WriteAllText(exportModelTo, stringWriter.ToString());
+							}
+						}
+
+						QuickJSONBuilder paintjobDefaultExporter = new QuickJSONBuilder();
+						JsonModelExporter.ExportVanillaItem($"{pack.ModName}:item/{gun.name}", paintjobDefaultExporter);
+						{
+							using (StringWriter stringWriter = new StringWriter())
+							using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+							{
+								jsonWriter.Formatting = Formatting.Indented;
+								jsonWriter.Indentation = 4;
+								paintjobDefaultExporter.Root.WriteTo(jsonWriter);
+								string exportModelTo = $"{itemModelsExportFolder}/{item_name}/default.json";
+								Debug.Log($"Exporting {def.Model.name} inventory variant model to {exportModelTo}");
+								File.WriteAllText(exportModelTo, stringWriter.ToString());
+							}
+						}
+					}
+					else
+					{
+						QuickJSONBuilder itemVariantModelExporter = new QuickJSONBuilder();
+						if (JsonModelExporter.ExportInventoryVariantModel(def.Model, pack.ModName, item_name, itemVariantModelExporter))
+						{
+							using (StringWriter stringWriter = new StringWriter())
+							using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+							{
+								jsonWriter.Formatting = Formatting.Indented;
+								jsonWriter.Indentation = 4;
+								itemVariantModelExporter.Root.WriteTo(jsonWriter);
+								string exportModelTo = $"{itemModelsExportFolder}/{item_name}_inventory.json";
+								Debug.Log($"Exporting {def.Model.name} inventory variant model to {exportModelTo}");
+								File.WriteAllText(exportModelTo, stringWriter.ToString());
+							}
 						}
 					}
 				}
@@ -827,8 +888,13 @@ public class DefinitionImporter : MonoBehaviour
 				string langFileName = $"{locName.Lang}.json";
 				if(!langJsons.ContainsKey(langFileName))
 					langJsons.Add(langFileName, new JObject());
-				
-				langJsons[langFileName].Add($"{(def is MagazineDefinition ? "magazine" : "item")}.{pack.ModName}.{def.name}", locName.Name);
+
+				string prefix = "item";
+				if (def is MagazineDefinition) 
+					prefix = "magazine";
+				if (def is MaterialDefinition) 
+					prefix = "material";
+				langJsons[langFileName].Add($"{prefix}.{pack.ModName}.{def.name}", locName.Name);
 			}
 			foreach(Definition.LocalisedExtra locExtra in def.LocalisedExtras)
 			{

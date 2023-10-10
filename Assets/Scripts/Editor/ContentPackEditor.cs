@@ -17,7 +17,8 @@ public class ContentPackEditor : Editor
 				pack.Content.Clear();
 				foreach(string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{pack.name}/", "*.asset", SearchOption.AllDirectories))
 				{
-					
+					if (assetPath.EndsWith($"{pack.name}.asset"))
+						continue;
 				//}
 				//foreach(string assetGUID in AssetDatabase.FindAssets($"dir:{pack.name} t:Definition"))
 				//{

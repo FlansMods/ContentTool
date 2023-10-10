@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Model:
     Type: 2
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
+    top: flansworldwars:workbench_top
+    north: flansworldwars:workbench_german_side
+    east: flansworldwars:workbench_german_side
+    south: flansworldwars:workbench_german_side
+    west: flansworldwars:workbench_german_side
+    bottom: flansworldwars:workbench_bottom
     icon: 
     textureX: 0
     textureY: 0
@@ -27,12 +27,23 @@ MonoBehaviour:
     name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 2800000, guid: 2ab3dde0894c1c949812aff605c3236a, type: 3}
-  AdditionalTextures: []
+  AdditionalTextures:
+  - name: workbench_top
+    texture: {fileID: 2800000, guid: f22c49371f6e5044685a6dcd7eba0362, type: 3}
+    icon: {fileID: 0}
+  - name: workbench_bottom
+    texture: {fileID: 2800000, guid: 41e425db2ee4e704585c8ac8a72bdae1, type: 3}
+    icon: {fileID: 0}
+  - name: workbench_german_side
+    texture: {fileID: 2800000, guid: 65dacd45d238d2a43a2c67f7e33981cc, type: 3}
+    icon: {fileID: 0}
   LocalisedNames:
   - Lang: 0
     Name: German Weapons Box
+  LocalisedExtras: []
   titlestring: German Weapons Box
   bannerTextureLocation: 
   gunCrafting:
@@ -50,24 +61,28 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 0200000003000000
             allowedMaterials: 04000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:phantek_90
@@ -80,18 +95,21 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 0200000003000000
             allowedMaterials: 04000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:phantek_auto_12
@@ -104,30 +122,35 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000001000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 4
           tieredIngredients:
           - tag: flansmod:grip
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000003000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:phantek_fury
@@ -140,30 +163,35 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000003000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 4
           tieredIngredients:
           - tag: flansmod:grip
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000003000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:phantek_lock
@@ -176,18 +204,21 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:phantek_seeker
@@ -203,26 +234,38 @@ MonoBehaviour:
           - tag: flansmod:circuitry
             allowedTiers: 0200000003000000
             allowedMaterials: 05000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 0200000003000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 4
           tieredIngredients:
           - tag: flansmod:grip
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000003000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 0200000003000000
             allowedMaterials: 0400000003000000
+          rawIngredients: []
           additionalIngredients: []
     FECostPerCraft: 0
+  partCrafting:
+    isActive: 0
+    inputSlots: 8
+    outputSlots: 8
+    timePerCraft: 1
+    FECostPerCraft: 0
+    partsByName: []
+    partsByTier: []
   gunModifying:
     isActive: 1
     disallowedMods: []

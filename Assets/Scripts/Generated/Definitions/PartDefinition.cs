@@ -11,8 +11,6 @@ public class PartDefinition : Definition
 	[JsonField]
 	public string[] compatiblityTags = new string[] { "mecha", "groundVehicle", "plane" };
 	[JsonField]
-	public IngredientDefinition[] recipeIngredients = new IngredientDefinition[0];
-	[JsonField]
 	public ItemDefinition itemSettings = new ItemDefinition();
 	[JsonField]
 	public ModifierDefinition[] modifiers = new ModifierDefinition[0];

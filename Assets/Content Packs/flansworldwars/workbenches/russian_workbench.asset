@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Model:
     Type: 2
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
+    top: flansworldwars:workbench_top
+    north: flansworldwars:workbench_russian_side
+    east: flansworldwars:workbench_russian_side
+    south: flansworldwars:workbench_russian_side
+    west: flansworldwars:workbench_russian_side
+    bottom: flansworldwars:workbench_bottom
     icon: 
     textureX: 0
     textureY: 0
@@ -27,12 +27,23 @@ MonoBehaviour:
     name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 2800000, guid: 2ab3dde0894c1c949812aff605c3236a, type: 3}
-  AdditionalTextures: []
+  AdditionalTextures:
+  - name: workbench_top
+    texture: {fileID: 2800000, guid: f22c49371f6e5044685a6dcd7eba0362, type: 3}
+    icon: {fileID: 0}
+  - name: workbench_bottom
+    texture: {fileID: 2800000, guid: 41e425db2ee4e704585c8ac8a72bdae1, type: 3}
+    icon: {fileID: 0}
+  - name: workbench_russian_side
+    texture: {fileID: 2800000, guid: fbd54b3e17bed2142ae4666a838ba4a0, type: 3}
+    icon: {fileID: 0}
   LocalisedNames:
   - Lang: 0
     Name: Russian Weapons Box
+  LocalisedExtras: []
   titlestring: Russian Weapons Box
   bannerTextureLocation: 
   gunCrafting:
@@ -50,24 +61,28 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 03000000
             allowedMaterials: 0400000001000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:fc_870
@@ -80,30 +95,35 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 03000000
             allowedMaterials: 0400000001000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 4
           tieredIngredients:
           - tag: flansmod:grip
             allowedTiers: 03000000
             allowedMaterials: 0400000001000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:fc_puncher
@@ -116,24 +136,28 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 5
           tieredIngredients:
           - tag: flansmod:stock
             allowedTiers: 03000000
             allowedMaterials: 0400000001000000
+          rawIngredients: []
           additionalIngredients: []
       - outputs:
         - item: flansvendersgame:fc_hawk
@@ -146,26 +170,38 @@ MonoBehaviour:
           - tag: flansmod:upper_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 2
           tieredIngredients:
           - tag: flansmod:lower_receiver
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 3
           tieredIngredients:
           - tag: flansmod:barrel
             allowedTiers: 03000000
             allowedMaterials: 0300000004000000
+          rawIngredients: []
           additionalIngredients: []
         - part: 4
           tieredIngredients:
           - tag: flansmod:grip
             allowedTiers: 03000000
             allowedMaterials: 01000000
+          rawIngredients: []
           additionalIngredients: []
     FECostPerCraft: 0
+  partCrafting:
+    isActive: 0
+    inputSlots: 8
+    outputSlots: 8
+    timePerCraft: 1
+    FECostPerCraft: 0
+    partsByName: []
+    partsByTier: []
   gunModifying:
     isActive: 1
     disallowedMods: []

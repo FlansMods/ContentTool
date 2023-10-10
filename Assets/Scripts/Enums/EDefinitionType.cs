@@ -20,6 +20,7 @@ public enum ENewDefinitionType
 	animation,
 	magazine,
 	npc,
+	material,
 }
 
 public enum EDefinitionType
@@ -72,6 +73,7 @@ public static class DefinitionTypes
 		if(type is RewardBox) return EDefinitionType.rewardBox;
 		if(type is LoadoutPool) return EDefinitionType.loadout;
 
+		Debug.LogError("Unknown definition output type");
 		return EDefinitionType.part;
 	}
 
@@ -93,7 +95,9 @@ public static class DefinitionTypes
 		if(def is AnimationDefinition) return ENewDefinitionType.animation;
 		if(def is MagazineDefinition) return ENewDefinitionType.magazine;
 		if(def is NpcDefinition) return ENewDefinitionType.npc;
-		
+		if(def is MaterialDefinition) return ENewDefinitionType.material;
+
+		Debug.LogError("Unknown definition output type");
 		return ENewDefinitionType.part;
 	}
 
@@ -254,7 +258,12 @@ public static class DefinitionTypes
 			case ENewDefinitionType.animation: return "animations";
 			case ENewDefinitionType.magazine: return "magazines";
 			case ENewDefinitionType.npc: return "npcs";
-			default: return "";
+			case ENewDefinitionType.material: return "materials";
+			default:
+			{
+				Debug.LogError("Unknown definition output type");
+				return "";
+			}
 		}
 	}
 }

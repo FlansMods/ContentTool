@@ -19,6 +19,12 @@ public class NpcDefinition : Definition
 	[JsonField]
 	public ItemStackDefinition offHand = new ItemStackDefinition();
 	[JsonField]
+	public ENpcActionType[] validActions = new ENpcActionType[0];
+	[JsonField]
+	public float cooldownSecondsFriendly = 120;
+	[JsonField]
+	public float cooldownSecondsHostile = 300;
+	[JsonField]
 [Tooltip("If set to 0, this NPC will not be considered a merchant")]
 	public int maxMerchantLevel = 0;
 	[JsonField]

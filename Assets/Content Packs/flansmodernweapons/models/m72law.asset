@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: m72law
+  m_EditorClassIdentifier: 
+  ID:
+    Namespace: 
+    ID: 
+  Icon:
+    Namespace: 
+    ID: 
+  TextureX: 64
+  TextureY: 16
+  Textures: []
+  Sections:
+  - partName: gun
+    pieces:
+    - textureU: 0
+      textureV: 10
+      Pos: {x: -12, y: 1, z: -1.5}
+      Dim: {x: 26, y: 3, z: 3}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 7
+      Pos: {x: -12, y: 4, z: -1}
+      Dim: {x: 3, y: 1, z: 2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 0
+      Pos: {x: 0, y: 4, z: -1}
+      Dim: {x: 14, y: 1, z: 2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 3
+      Pos: {x: 0, y: 5, z: -0.5}
+      Dim: {x: 1, y: 2, z: 1}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - partName: ammo
+    pieces: []
+  AnimationParameters:
+  - key: gunSlideDistance
+    isVec3: 0
+    floatValue: 0.5
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: tiltGunTime
+    isVec3: 0
+    floatValue: 0.4
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: unloadClipTime
+    isVec3: 0
+    floatValue: 0.1
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: loadClipTime
+    isVec3: 0
+    floatValue: 0.1
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: untiltGunTime
+    isVec3: 0
+    floatValue: 0.4
+    vec3Value: {x: 0, y: 0, z: 0}
+  AttachPoints:
+  - name: scope
+    attachedTo: body
+    position: {x: 1.5, y: 5, z: 0}
+  - name: barrel
+    attachedTo: body
+    position: {x: 18, y: 4, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: -1, y: 1, z: 0}

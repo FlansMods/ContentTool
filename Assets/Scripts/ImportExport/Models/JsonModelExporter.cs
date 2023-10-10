@@ -6,6 +6,24 @@ using UnityEngine;
 
 public static class JsonModelExporter
 {	
+	public static bool ExportInventorySkinSwitcherModel(PaintableDefinition paintSettings, Model model, string modName, string modelName, QuickJSONBuilder builder)
+	{
+		builder.Current.Add("parent", $"{modName}:item/{modelName}/default");
+		using (builder.Tabulation("overrides"))
+		{
+			for(int i = 0; i < paintSettings.paintjobs.Length; i++)
+				using (builder.TableEntry())
+				{
+					using (builder.Indentation("predicate"))
+					{
+						builder.Current.Add("custom_model_data", i+1);
+					}
+					builder.Current.Add("model", $"{modName}:item/{modelName}/{paintSettings.paintjobs[i].textureName}");
+				}
+		}
+		return true;
+	}
+
 	public static bool ExportInventoryVariantModel(Model model, string modName, string modelName, QuickJSONBuilder builder)
 	{
 		switch(model.Type)
@@ -87,20 +105,25 @@ public static class JsonModelExporter
 
 	private static void ExportVanillaItem(Model model, string modName, string modelName, QuickJSONBuilder builder)
 	{
+		ExportVanillaItem($"{modName}:item/{model.icon}", builder);		
+	}
+
+	public static void ExportVanillaItem(string textureID, QuickJSONBuilder builder)
+	{
 		builder.Current.Add("parent", $"item/generated");
-		using(builder.Indentation("textures"))
+		using (builder.Indentation("textures"))
 		{
-			builder.Current.Add("layer0", $"{modName}:item/{model.icon}");
+			builder.Current.Add("layer0", textureID);
 		}
-		using(builder.Indentation("display"))
+		using (builder.Indentation("display"))
 		{
-			using(builder.Indentation("thirdperson"))
+			using (builder.Indentation("thirdperson"))
 			{
 				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(-90f, 0f, 0f)));
 				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 1f, -3f)));
 				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(0.55f, 0.55f, 0.55f)));
 			}
-			using(builder.Indentation("firstperson"))
+			using (builder.Indentation("firstperson"))
 			{
 				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(0f, -135f, 25f)));
 				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 4f, 2f)));

@@ -41,12 +41,18 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
     - flansmod:armour
+    recipe:
+    - part: 0
+      tieredIngredients: []
+      rawIngredients:
+      - amount: 144
+        materialName: flansbasicparts:aluminium
+      additionalIngredients: []
   modifiers: []
   engine:
     maxAcceleration: 1
