@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class ModelEditingRigEditor : Editor
 		{
 			if (rig.ModelOpenedForEdit != null)
 				rig.DiscardChanges();
-			
+
 			if (chosenObject == null)
 			{
 				//rig.SaveAndCloseModel();
@@ -41,37 +42,55 @@ public class ModelEditingRigEditor : Editor
 				Debug.LogWarning("Could not switch to object " + chosenObject);
 			}
 		}
-		//if (GUILayout.Button("Open Model..."))
-		//{
-		//	Object chosenObject = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false);
-		//	if(chosenObject != rig.ModelOpenedForEdit
-		//	&& chosenObject is MinecraftModel mcModel)
-		//	{
-		//		rig.OpenModel(mcModel);
-		//	}
-		//}
+
+		rig.Editor_Toolbox();
+
 		EditorGUI.BeginDisabledGroup(rig.WorkingCopy == null);
 		{
-			if (GUILayout.Button("Save"))
-				rig.SaveChanges();
-			if (GUILayout.Button("Discard"))
-				rig.DiscardChanges();
+			EditorGUI.BeginChangeCheck();
+			// --------------------------------------------------------------------------------
+			#region Painting  Controls
+			// --------------------------------------------------------------------------------
+			rig.ApplySkin = GUILayout.Toggle(rig.ApplySkin, "Skins");
+			EditorGUI.BeginDisabledGroup(!rig.ApplySkin);
+			{
+				if (rig.WorkingCopy != null)
+				{
+					for(int i = 0; i < rig.WorkingCopy.Textures.Count; i++)
+					{
+						MinecraftModel.NamedTexture tex = rig.WorkingCopy.Textures[i];
+						GUILayout.BeginHorizontal(); 
+						tex.Key = GUILayout.TextField(tex.Key);
+						tex.Texture = (Texture2D)EditorGUILayout.ObjectField(tex.Texture, typeof(Texture2D), false);
+						GUILayout.EndHorizontal();
+						tex.Location = ResourceLocation.EditorField(tex.Location);
+						
+					}
+				}
+					
+			}
+			EditorGUI.EndDisabledGroup();
+			#endregion
+			// --------------------------------------------------------------------------------
 
+			// --------------------------------------------------------------------------------
+			#region Animation Controls
+			// --------------------------------------------------------------------------------
+			rig.ApplyAnimation = GUILayout.Toggle(rig.ApplyAnimation, "Animations");
+			EditorGUI.BeginDisabledGroup(!rig.ApplyAnimation);
+			{
+
+			}
+			EditorGUI.EndDisabledGroup();
+			#endregion
+			// --------------------------------------------------------------------------------
+
+			if(EditorGUI.EndChangeCheck())
+			{
+				rig.SetDirty();
+			}
 		}
 		EditorGUI.EndDisabledGroup();
-
-		// --------------------------------------------------------------------------------
-		#region Animation Controls
-		// --------------------------------------------------------------------------------
-		rig.ApplyAnimation = GUILayout.Toggle(rig.ApplyAnimation, "Animations");
-		EditorGUI.BeginDisabledGroup(!rig.ApplyAnimation);
-		{
-			
-		}
-		EditorGUI.EndDisabledGroup();
-		#endregion
-		// --------------------------------------------------------------------------------
-
 
 
 

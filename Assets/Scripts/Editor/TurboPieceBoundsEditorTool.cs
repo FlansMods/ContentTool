@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEditor.IMGUI.Controls;
@@ -98,5 +99,8 @@ public class TurboPieceEditor : Editor
 		if (GUILayout.Button("Duplicate"))
 			preview.Duplicate();
 
+		Texture2D tex = preview.GetTemporaryTexture();
+		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
+		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
 	}
 }

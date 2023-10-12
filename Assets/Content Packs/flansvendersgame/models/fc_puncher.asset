@@ -1,0 +1,246 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: fc_puncher
+  m_EditorClassIdentifier: 
+  ID:
+    Namespace: minecraft
+    ID: null
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: fc_puncher
+    Texture: {fileID: 2800000, guid: 5086584f24096124985634066bae47eb, type: 3}
+  - Key: fc_puncher_birch
+    Location:
+      Namespace: flansvendersgame
+      ID: fc_puncher_birch
+    Texture: {fileID: 2800000, guid: d426f6cb340f6344f9117c410d4a1637, type: 3}
+  - Key: fc_puncher_blackwood
+    Location:
+      Namespace: flansvendersgame
+      ID: fc_puncher_blackwood
+    Texture: {fileID: 2800000, guid: 77ae95abd99f0d34893087000cd19de5, type: 3}
+  - Key: fc_puncher_static
+    Location:
+      Namespace: flansvendersgame
+      ID: fc_puncher_static
+    Texture: {fileID: 2800000, guid: 2df9dda87a8361248b6740a9a6f49d07, type: 3}
+  Icon:
+    Namespace: minecraft
+    ID: null
+  TextureX: 64
+  TextureY: 16
+  Sections:
+  - partName: gun
+    pieces:
+    - textureU: 0
+      textureV: 0
+      Pos: {x: -8, y: 2, z: -1}
+      Dim: {x: 4, y: 3, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 1
+      Offsets:
+      - {x: -0, y: -0.5, z: -0}
+      - {x: 0, y: -0.5, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -2, z: -0}
+      - {x: -0, y: -0.5, z: 0}
+      - {x: 0, y: -0.5, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 0}
+    - textureU: 12
+      textureV: 0
+      Pos: {x: -4, y: 2, z: -1}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 1
+      Offsets:
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 24
+      textureV: 0
+      Pos: {x: 0, y: 2, z: -1}
+      Dim: {x: 3, y: 3, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 1
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 5
+      Pos: {x: 3, y: 2, z: -1}
+      Dim: {x: 5, y: 1, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - partName: breakAction
+    pieces:
+    - textureU: 0
+      textureV: 8
+      Pos: {x: 3, y: 3, z: -1}
+      Dim: {x: 13, y: 2, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 14
+      textureV: 5
+      Pos: {x: 15, y: 5, z: -0.5}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 13
+      Pos: {x: 8, y: 2, z: -1}
+      Dim: {x: 4, y: 1, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 12
+      textureV: 14
+      Pos: {x: 3, y: 4.5, z: -0.5}
+      Dim: {x: 3, y: 1, z: 1}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 34
+      textureV: -1
+      Pos: {x: 11, y: 5.0001, z: -3.5}
+      Dim: {x: 1, y: 10, z: 7}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 1
+      Offsets:
+      - {x: -0, y: -0, z: 2.5}
+      - {x: 0, y: -0, z: 2.5}
+      - {x: -0, y: -6, z: 2.5}
+      - {x: 0, y: -6, z: 2.5}
+      - {x: -0, y: -0, z: -2.5}
+      - {x: 0, y: -0, z: -2.5}
+      - {x: -0, y: -6, z: -2.5}
+      - {x: 0, y: -6, z: -2.5}
+  - partName: ammo
+    pieces:
+    - textureU: 20
+      textureV: 12
+      Pos: {x: 2.9, y: 3.25, z: -0.75}
+      Dim: {x: 3, y: 1.5, z: 1.5}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Shape: 0
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters:
+  - key: breakAngle
+    isVec3: 0
+    floatValue: 60
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: barrelBreakPoint
+    isVec3: 1
+    floatValue: 0
+    vec3Value: {x: 0.25, y: 0.125, z: 0}
+  - key: gunSlideDistance
+    isVec3: 0
+    floatValue: 0.25
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: tiltGunTime
+    isVec3: 0
+    floatValue: 0.2
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: unloadClipTime
+    isVec3: 0
+    floatValue: 0.2
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: loadClipTime
+    isVec3: 0
+    floatValue: 0.2
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: untiltGunTime
+    isVec3: 0
+    floatValue: 0.4
+    vec3Value: {x: 0, y: 0, z: 0}
+  AttachPoints:
+  - name: barrel
+    attachedTo: body
+    position: {x: 11.5, y: 4, z: 0}
+  - name: scope
+    attachedTo: slide
+    position: {x: 7, y: 5, z: 0}

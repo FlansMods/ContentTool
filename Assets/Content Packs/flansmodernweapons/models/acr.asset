@@ -13,14 +13,44 @@ MonoBehaviour:
   m_Name: acr
   m_EditorClassIdentifier: 
   ID:
-    Namespace: 
-    ID: 
+    Namespace: minecraft
+    ID: null
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr
+    Texture: {fileID: 2800000, guid: c63031585d0931e4abce830239f908e2, type: 3}
+  - Key: acr_red
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr_red
+    Texture: {fileID: 2800000, guid: 10fd4a881dfefd945afde052f266a23e, type: 3}
+  - Key: acr_aquatic
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr_aquatic
+    Texture: {fileID: 2800000, guid: cdffc6fad66a1974da3279644d193067, type: 3}
+  - Key: acr_royal_green
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr_royal_green
+    Texture: {fileID: 2800000, guid: ed3acc27219434b4b8ad26a66df30b49, type: 3}
+  - Key: acr_electric
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr_electric
+    Texture: {fileID: 2800000, guid: ce95db27b24c1ea4f88ff9612b25de87, type: 3}
+  - Key: acr_quack_quack
+    Location:
+      Namespace: flansmodernweapons
+      ID: acr_quack_quack
+    Texture: {fileID: 2800000, guid: 48ea21eaf8ee09444bff2d1fafa54bac, type: 3}
   Icon:
-    Namespace: 
-    ID: 
+    Namespace: minecraft
+    ID: null
   TextureX: 64
   TextureY: 16
-  Textures: []
   Sections:
   - partName: gun
     pieces:
@@ -48,11 +78,11 @@ MonoBehaviour:
       Euler: {x: 0, y: 0, z: 0}
       Shape: 1
       Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: -0.5, z: 0}
-      - {x: 1, y: 0, z: 0}
-      - {x: 1, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0.5, z: -0}
+      - {x: 1, y: 0, z: -0}
+      - {x: 1, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
       - {x: 0, y: -0.5, z: 0}
       - {x: 1, y: 0, z: 0}
       - {x: 1, y: 0, z: 0}
@@ -75,7 +105,7 @@ MonoBehaviour:
     - textureU: 0
       textureV: 9
       Pos: {x: 8, y: 3, z: -1}
-      Dim: {x: 6, y: 7, z: 2}
+      Dim: {x: 6, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
       Shape: 0
@@ -146,13 +176,13 @@ MonoBehaviour:
       Euler: {x: 0, y: 0, z: 0}
       Shape: 1
       Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: -1, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: -1, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
+      - {x: -0, y: -0, z: -0}
+      - {x: -1, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -1, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
     - textureU: 18
       textureV: 6
@@ -162,13 +192,13 @@ MonoBehaviour:
       Euler: {x: 0, y: 0, z: 0}
       Shape: 1
       Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: -0.5, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: -0.5, z: 0}
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -0.5, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -0.5, z: 0}
       - {x: 0, y: 0, z: 0}
   - partName: ammo
     pieces:
@@ -181,12 +211,12 @@ MonoBehaviour:
       Shape: 1
       Offsets:
       - {x: 0.25, y: -0.25, z: 0.25}
-      - {x: 0.5, y: 0, z: 0.25}
-      - {x: 0, y: 0, z: 0.25}
+      - {x: 0.5, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
       - {x: 0, y: 0, z: 0.25}
       - {x: 0.25, y: -0.25, z: -0.25}
-      - {x: 0.5, y: 0, z: -0.25}
-      - {x: 0, y: 0, z: -0.25}
+      - {x: 0.5, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
       - {x: 0, y: 0, z: -0.25}
   AnimationParameters:
   - key: gunSlideDistance

@@ -93,14 +93,10 @@ public class FlansModToolbox : EditorWindow
 					{
 						if(def.Model != null)
 						{
-							MinecraftModel updatedModel = UpdateModel(def.Model);
+							MinecraftModel updatedModel = UpdateModel(def.Model, pack, def);
 							if(updatedModel != null)
 							{
-								updatedModel.name = def.Model.name;
-								if(updatedModel.name == null || updatedModel.name.Length == 0)
-								{
-									updatedModel.name = def.name;
-								}
+								updatedModel.name = def.name;
 								if (updatedModel.name == null || updatedModel.name.Length == 0)
 								{
 									updatedModel.name = "unknown";
@@ -120,7 +116,7 @@ public class FlansModToolbox : EditorWindow
 
     }
 
-	private MinecraftModel UpdateModel(Model model)
+	private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
 	{
 		switch (model.Type)
 		{
@@ -142,6 +138,16 @@ public class FlansModToolbox : EditorWindow
 					rig.AttachPoints.Add(new AttachPoint(attachPoint.name, attachPoint.attachedTo, attachPoint.position));
 				rig.TextureX = model.textureX;
 				rig.TextureY = model.textureY;
+
+				if(def.Skin != null)
+					rig.AddTexture("default", pack.ModName, def.Skin);
+				if(def is GunDefinition gun)
+				{
+					foreach(PaintjobDefinition paint in gun.paints.paintjobs)
+					{
+						rig.AddTexture(paint.textureName, pack.ModName, def.GetSkin(paint.textureName));
+					}
+				}
 				return rig;
 			}
 			case Model.ModelType.Block:

@@ -8,6 +8,25 @@ public abstract class Definition : ScriptableObject
 	public Texture2D Skin;
 	public Texture2D Icon;
 
+	public Texture2D GetSkin(string name)
+	{
+		if (name == "default" || name.Length == 0)
+			return Skin;
+		foreach (AdditionalTexture tex in AdditionalTextures)
+			if (Utils.ToLowerWithUnderscores(tex.name) == name)
+				return tex.texture;
+		return null;
+	}
+	public Texture2D GetIcon(string name)
+	{
+		if (name == "default" || name.Length == 0)
+			return Icon;
+		foreach (AdditionalTexture tex in AdditionalTextures)
+			if (Utils.ToLowerWithUnderscores(tex.name) == name)
+				return tex.icon;
+		return null;
+	}
+
 	[System.Serializable]
 	public class AdditionalTexture
 	{

@@ -2,17 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Model;
 
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
 public class TurboRig : MinecraftModel
 {
-	[System.Serializable]
-	public class NamedTexture
-	{
-		public string Name;
-		public ResourceLocation Location;
-	}
+
 
 	// --------------------------------------------------------------------------
 	#region Model definition and helpers
@@ -20,7 +14,6 @@ public class TurboRig : MinecraftModel
 	public ResourceLocation Icon;
 	public int TextureX = 16;
 	public int TextureY = 16;
-	public List<NamedTexture> Textures = new List<NamedTexture>();
 	public List<TurboModel> Sections = new List<TurboModel>();
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
 	public List<AttachPoint> AttachPoints = new List<AttachPoint>();	
@@ -255,7 +248,7 @@ public class TurboRig : MinecraftModel
 		{
 			foreach (var kvp in Textures)
 			{
-				builder.Current.Add(kvp.Name, kvp.Location.ResolveWithSubdir("skins"));
+				builder.Current.Add(kvp.Key, kvp.Location.ResolveWithSubdir("skins"));
 			}
 			builder.Current.Add("default", ID.ResolveWithSubdir("skins"));
 			builder.Current.Add("particle", $"minecraft:block/iron_block");

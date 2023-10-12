@@ -70,6 +70,12 @@ public class TurboPiece
 		}
 	}
 
+	public Vector2Int GetBoxUVSize()
+	{
+		int x = Mathf.CeilToInt(Dim.x), y = Mathf.CeilToInt(Dim.y), z = Mathf.CeilToInt(Dim.z);
+		return new Vector2Int(z + x + z + x, z + y);
+	}
+
 	public int[] GetIntUV(int u0, int v0, EFace face)
 	{
 		int x = Mathf.CeilToInt(Dim.x), y = Mathf.CeilToInt(Dim.y), z = Mathf.CeilToInt(Dim.z);
@@ -259,15 +265,15 @@ public class TurboPiece
 		Vector3[] v = GetVerts();
 		mesh.SetVertices(GenerateVertsForUV(v));
 		List<Vector2> uvs = new List<Vector2>();
-		uvs.AddRange(GetUVS(EFace.north, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.south, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.west, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.east, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.up, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.down, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.north, 0, 0));
+		uvs.AddRange(GetUVS(EFace.south, 0, 0));
+		uvs.AddRange(GetUVS(EFace.west, 0, 0));
+		uvs.AddRange(GetUVS(EFace.east, 0, 0));
+		uvs.AddRange(GetUVS(EFace.up, 0, 0));
+		uvs.AddRange(GetUVS(EFace.down, 0, 0));
 		for (int i = 0; i < uvs.Count; i++)
 		{
-			uvs[i] = new Vector2(uvs[i].x / textureX, 1.0f - uvs[i].y / textureY);
+			uvs[i] = new Vector2(uvs[i].x / textureX, (textureY - uvs[i].y) / textureY);
 		}
 		mesh.SetUVs(0, uvs);
 		mesh.SetTriangles(GenerateTrisForUV(), 0);
