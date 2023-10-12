@@ -11,7 +11,16 @@ public class TurboPieceBoundsEditorTool : MinecraftModelEditorTool<TurboPiecePre
 {
 	private ShapeboxBoundsHandle _Handle = new ShapeboxBoundsHandle();
 	public override PrimitiveBoundsHandle BoundsHandle { get { return _Handle; } }
-
+	public override GUIContent toolbarIcon => new GUIContent(ToolbarIcon);
+	public Texture2D ToolbarIcon = null;
+	public void OnEnable()
+	{
+		ToolbarIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/shapebox_bounds.png");
+	}
+	public void OnDisable()
+	{
+		ToolbarIcon = null;
+	}
 
 	public override void CopyFromHandle(TurboPiecePreview preview)
 	{
@@ -36,6 +45,16 @@ public class TurboPieceCornersEditorTool : MinecraftModelEditorTool<TurboPiecePr
 {
 	private ShapeboxCornersHandle _Handle = new ShapeboxCornersHandle();
 	public override PrimitiveBoundsHandle BoundsHandle { get { return _Handle; } }
+	public override GUIContent toolbarIcon => new GUIContent(ToolbarIcon);
+	public Texture2D ToolbarIcon = null;
+	public void OnEnable()
+	{
+		ToolbarIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/shapebox_corners.png");
+	}
+	public void OnDisable()
+	{
+		ToolbarIcon = null;
+	}
 
 	public override void CopyFromHandle(TurboPiecePreview preview)
 	{

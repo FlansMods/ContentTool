@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
@@ -40,6 +42,17 @@ public class ModelEditingRig : MonoBehaviour
 	[Header("Animations")]
     public bool ApplyAnimation = false;
     public AnimationDefinition SelectedAnimation = null;
+	private DateTime AnimStartTime = DateTime.Now;
+	[System.Serializable]
+	public class AnimPreviewEntry
+	{
+		public bool IsSequence = false;
+		public string Name = "";
+		public int Duration = 0;
+	}
+	public bool Playing = false;
+	public List<AnimPreviewEntry> PreviewSequences = new List<AnimPreviewEntry>();
+
 
 	public void SetDirty()
 	{
@@ -47,9 +60,236 @@ public class ModelEditingRig : MonoBehaviour
 		//EditorUtility.SetDirty(WorkingCopy);
 	}
 
+	public void OnEnable()
+	{
+		EditorApplication.update += UpdateAnims;
+	}
+
+	public void OnDisable()
+	{
+		EditorApplication.update -= UpdateAnims;
+	}
+
 	public void Update()
 	{
         RefreshMeshes();
+	}
+
+	public void UpdateAnims()
+	{
+		if (Playing && PreviewSequences.Count > 0)
+		{
+			AnimPreviewEntry entry = null;
+
+			TimeSpan timeSinceStart = DateTime.Now - AnimStartTime;
+			float progress = 20f * (float)(timeSinceStart.TotalMilliseconds / 1000d);
+
+			SequenceDefinition sequence = null;
+			KeyframeDefinition keyframe = null;
+
+			for (int i = 0; i < PreviewSequences.Count; i++)
+			{
+				float duration = 0.0f;
+				if(PreviewSequences[i].IsSequence)
+				{
+					sequence = FindSequence(PreviewSequences[i].Name);
+					keyframe = null;
+					duration = GetSequenceLength(sequence);
+				}
+				else
+				{
+					sequence = null;
+					keyframe = FindKeyframe(PreviewSequences[i].Name);
+					duration = PreviewSequences[i].Duration;
+				}
+
+				if (progress < duration)
+					break;
+
+				progress -= duration;
+				if (i == PreviewSequences.Count - 1)
+				{
+					AnimStartTime = DateTime.Now;
+				}
+			}
+
+			if (keyframe != null)
+			{
+				ApplyPose(keyframe);
+			}
+			else if (sequence != null)
+			{
+				SequenceEntryDefinition[] segment = GetSegment(sequence, progress);
+				float segmentDuration = segment[1].tick - segment[0].tick;
+
+				// If it is valid, let's animate it
+				if (segmentDuration > 0.0f)
+				{
+					KeyframeDefinition from = FindKeyframe(segment[0].frame);
+					KeyframeDefinition to = FindKeyframe(segment[1].frame);
+					if (from != null && to != null)
+					{
+						float linearParameter = (progress - segment[0].tick) / segmentDuration;
+						linearParameter = Mathf.Clamp(linearParameter, 0f, 1f);
+						float outputParameter = linearParameter;
+
+						// Instant transitions take priority first
+						if (segment[0].exit == ESmoothSetting.instant)
+							outputParameter = 1.0f;
+						if (segment[1].entry == ESmoothSetting.instant)
+							outputParameter = 0.0f;
+
+						// Then apply smoothing?
+						if (segment[0].exit == ESmoothSetting.smooth)
+						{
+							// Smoothstep function
+							if (linearParameter < 0.5f)
+								outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
+						}
+						if (segment[1].entry == ESmoothSetting.smooth)
+						{
+							// Smoothstep function
+							if (linearParameter > 0.5f)
+								outputParameter = linearParameter * linearParameter * (3f - 2f * linearParameter);
+						}
+
+
+						foreach (var sectionPreview in GetComponentsInChildren<TurboModelPreview>())
+						{
+							PoseDefinition fromPose = GetPose(from.name, sectionPreview.PartName);
+							PoseDefinition toPose = GetPose(to.name, sectionPreview.PartName);
+							Vector3 pos = LerpPosition(fromPose, toPose, outputParameter);
+							Quaternion ori = LerpRotation(fromPose, toPose, outputParameter);
+
+							sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
+							sectionPreview.transform.localRotation = ori;
+							sectionPreview.transform.localScale = Vector3.one;
+						}
+					}
+				}
+			}
+			else 
+			{
+				// Found neither matching frame nor sequence, default pose?
+			}
+		}
+	}
+
+	private TurboRigPreview FindRigPreview()
+	{
+		return GetComponentInChildren<TurboRigPreview>();
+	}
+	private TurboModelPreview FindSectionPreview(string key)
+	{
+		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
+			if (section.PartName == key)
+				return section;
+		return null;
+	}
+	private void ApplyPose(KeyframeDefinition keyframe)
+	{
+		foreach (PoseDefinition pose in keyframe.poses)
+		{
+			TurboModelPreview sectionPreview = FindSectionPreview(pose.applyTo);
+			if (sectionPreview != null)
+			{
+				Vector3 pos = Resolve(pose.position);
+				Vector3 euler = Resolve(pose.rotation);
+				sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
+				sectionPreview.transform.localEulerAngles = euler;
+				sectionPreview.transform.localScale = pose.scale;
+			}
+		}
+	}
+	private Vector3 LerpPosition(PoseDefinition from, PoseDefinition to, float t)
+	{
+		t = Mathf.Clamp(t, 0f, 1f);
+		Vector3 a = from == null ? Vector3.zero : Resolve(from.position);
+		Vector3 b = to == null ? Vector3.zero : Resolve(to.position);
+		return Vector3.Lerp(a, b, t);
+	}
+	private PoseDefinition GetPose(string keyframeName, string part)
+	{
+		KeyframeDefinition keyframe = FindKeyframe(keyframeName);
+		if (keyframe != null)
+		{
+			foreach (PoseDefinition pose in keyframe.poses)
+			{
+				if (pose.applyTo == part)
+					return pose;
+			}
+
+			foreach (string parent in keyframe.parents)
+			{
+				PoseDefinition poseFromParent = GetPose(parent, part);
+				if (poseFromParent != null)
+					return poseFromParent;
+			}
+		}
+		else
+		{
+			Debug.LogError($"Could not find keyframe {keyframeName}");
+		}
+
+		return null;
+	}
+	private Quaternion LerpRotation(PoseDefinition from, PoseDefinition to, float t)
+	{
+		t = Mathf.Clamp(t, 0f, 1f);
+		Vector3 a = from == null ? Vector3.zero : Resolve(from.rotation);
+		Vector3 b = to == null ? Vector3.zero : Resolve(to.rotation);
+		return Quaternion.Slerp(
+			Quaternion.Euler(a),
+			Quaternion.Euler(b),
+			t);
+	}
+	private Vector3 Resolve(VecWithOverride v)
+	{
+		return new Vector3((float)v.xValue, (float)v.yValue, (float)v.zValue);
+	}
+	private SequenceDefinition FindSequence(string key)
+	{
+		foreach (SequenceDefinition sequence in SelectedAnimation.sequences)
+			if (sequence.name == key)
+				return sequence;
+		return null;
+	}
+	private float GetSequenceLength(SequenceDefinition sequenceDefinition)
+	{
+		if (sequenceDefinition == null)
+			return 0f;
+		int highestTick = 0;
+		foreach (SequenceEntryDefinition entry in sequenceDefinition.frames)
+		{
+			if (entry.tick > highestTick)
+				highestTick = entry.tick;
+		}
+		return highestTick;
+	}
+	private SequenceEntryDefinition[] GetSegment(SequenceDefinition sequence, float tickPlusPartial)
+	{
+		SequenceEntryDefinition[] entries = new SequenceEntryDefinition[2];
+		entries[0] = sequence.frames[0];
+		entries[1] = sequence.frames[sequence.frames.Length - 1];
+
+		for (int i = 0; i < sequence.frames.Length; i++)
+		{
+			// If this is the closest above or below our current time, set it
+			if (sequence.frames[i].tick <= tickPlusPartial && sequence.frames[i].tick > entries[0].tick)
+				entries[0] = sequence.frames[i];
+
+			if (sequence.frames[i].tick > tickPlusPartial && sequence.frames[i].tick < entries[1].tick)
+				entries[1] = sequence.frames[i];
+		}
+
+		return entries;
+	}
+	private KeyframeDefinition FindKeyframe(string key)
+	{
+		foreach (KeyframeDefinition keyframe in SelectedAnimation.keyframes)
+			if (keyframe.name == key)
+				return keyframe;
+		return null;
 	}
 
 	public void RefreshMeshes()
@@ -256,7 +496,7 @@ public class ModelEditingRig : MonoBehaviour
 				else
 				{
 					Debug.LogError($"Could not load model at {loadPath}");
-					Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(loadPath);
+                    UnityEngine.Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(loadPath);
 					for (int i = 0; i < allAssets.Length; i++)
 						Debug.LogWarning($"Found asset {allAssets[i]}");
 				}

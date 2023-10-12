@@ -126,7 +126,7 @@ public class FlansModToolbox : EditorWindow
 				foreach(Model.Section modelSection in model.sections)
 				{
 					TurboModel section = new TurboModel();
-					section.partName = modelSection.partName;
+					section.partName = Utils.ConvertPartName(modelSection.partName);
 					section.pieces = new TurboPiece[modelSection.pieces.Length];
 					for (int i = 0; i < modelSection.pieces.Length; i++)
 						section.pieces[i] = modelSection.pieces[i].CopyAsTurbo();

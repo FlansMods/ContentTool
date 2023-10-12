@@ -19,5 +19,31 @@ public class AttachPoint
 		this.attachedTo = attachedTo;
 		this.position = position;
 	}
+
+	public Vector3 GuessDirection()
+	{
+		switch (name)
+		{
+			case "grip": return Vector3.down;
+			case "barrel": return Vector3.right;
+			case "scope": return Vector3.up;
+			case "sights": return Vector3.up;
+			case "stock": return Vector3.left;
+		}
+		return Vector3.right;
+	}
+
+	public Color GetDebugColour()
+	{
+		switch(name)
+		{
+			case "grip": return Color.magenta;
+			case "barrel": return Color.cyan;
+			case "scope": return Color.green;
+			case "sights": return Color.green;
+			case "stock": return Color.yellow;
+		}
+		return Color.red;
+	}
 }
 

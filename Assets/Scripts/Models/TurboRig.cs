@@ -114,6 +114,13 @@ public class TurboRig : MinecraftModel
 		AttachPoints.Add(point1);
 		return point1;
 	}
+	public AttachPoint GetAttachPoint(string key)
+	{
+		foreach (AttachPoint point in AttachPoints)
+			if (point.name == name)
+				return point;
+		return null;
+	}
 	public void SetAttachment(string name, string attachedTo)
 	{
 		AttachPoint ap = GetOrCreate(name);
