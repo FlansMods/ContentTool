@@ -18,6 +18,13 @@ public class SceneViewToolbox : Overlay
 		root.Add(new Button(SaveChangesAs) { text = "Save As..." });
 		root.Add(new Button(DiscardChanges) { text = "Discard" });
 
+		root.Add(new Label() { text = "-- Preview --" });
+		root.Add(new Button(SelectDefault) { text = "Default" });
+		root.Add(new Button(SelectFirst) { text = "First Person" });
+		root.Add(new Button(SelectAlexThird) { text = "Third (Alex)" });
+		root.Add(new Button(SelectSteveThird) { text = "Third (Steve)" });
+		root.Add(new Button(SelectGUI) { text = "GUI" });
+
 		return root;
 
 	}
@@ -44,6 +51,26 @@ public class SceneViewToolbox : Overlay
 	public void DiscardChanges()
 	{
 		GetCurrentRig()?.Button_Discard();
+	}
+	public void SelectFirst()
+	{
+		Object.FindObjectOfType<PreviewGallery>()?.SelectContext(PreviewGallery.EPreviewContext.First);
+	}
+	public void SelectSteveThird()
+	{
+		Object.FindObjectOfType<PreviewGallery>()?.SelectContext(PreviewGallery.EPreviewContext.Third_Steve);
+	}
+	public void SelectAlexThird()
+	{
+		Object.FindObjectOfType<PreviewGallery>()?.SelectContext(PreviewGallery.EPreviewContext.Third_Alex);
+	}
+	public void SelectDefault()
+	{
+		Object.FindObjectOfType<PreviewGallery>()?.SelectContext(PreviewGallery.EPreviewContext.Default);
+	}
+	public void SelectGUI()
+	{
+		Object.FindObjectOfType<PreviewGallery>()?.SelectContext(PreviewGallery.EPreviewContext.GUI);
 	}
 
 	private ModelEditingRig GetCurrentRig()

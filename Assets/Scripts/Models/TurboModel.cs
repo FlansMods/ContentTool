@@ -7,16 +7,36 @@ using static Model;
 [System.Serializable]
 public class TurboModel
 {
-	public string partName = "";
-	public TurboPiece[] pieces = new TurboPiece[0];
+	public string PartName = "";
+	public List<TurboPiece> Pieces = new List<TurboPiece>();
+
+
+	// These two functions are guaranteed to construct the shapes at the specified index
+	public void SetIndexedTextureUV(int index, int u, int v)
+	{
+		if (index < 0 || index > 10000)
+			return;
+		while (Pieces.Count <= index)
+			AddChild();
+		Pieces[index].textureU = u;
+		Pieces[index].textureV = v;
+	}
+	public TurboPiece GetIndexedPiece(int index)
+	{
+		if (index < 0 || index > 10000)
+			return null;
+		while (Pieces.Count <= index)
+			AddChild();
+		return Pieces[index];
+	}
+
 
 	public TurboPiece GetPiece(int index)
 	{
-		if (0 <= index && index < pieces.Length)
-			return pieces[index];
+		if (0 <= index && index < Pieces.Count)
+			return Pieces[index];
 		return null;
 	}
-
 	public bool ExportToJson(QuickJSONBuilder builder)
 	{
 		return false;
@@ -25,53 +45,37 @@ public class TurboModel
 	{
 		return false;
 	}
-
 	public TurboModel Copy()
 	{
 		TurboModel copy = new TurboModel()
 		{
-			partName = partName,
-			pieces = new TurboPiece[pieces.Length],
+			PartName = PartName,
 		};
-		for (int i = 0; i < pieces.Length; i++)
-			copy.pieces[i] = pieces[i].Copy();
+		for (int i = 0; i < Pieces.Count; i++)
+			copy.Pieces.Add(Pieces[i].Copy());
 		return copy;
 	}
-
-	public void AddChild()
+	public TurboPiece AddChild()
 	{
-		TurboPiece[] newArray = new TurboPiece[pieces.Length + 1];
-		for (int i = 0; i < pieces.Length; i++)
-			newArray[i] = pieces[i];
-		newArray[pieces.Length] = new TurboPiece();
-		pieces = newArray;
+		TurboPiece newPiece = new TurboPiece();
+		Pieces.Add(newPiece);
+		return newPiece;
 	}
-
-	public void DuplicateChild(int index)
+	public TurboPiece DuplicateChild(int index)
 	{
-		if (0 <= index && index < pieces.Length)
+		if (0 <= index && index < Pieces.Count)
 		{
-			TurboPiece[] newArray = new TurboPiece[pieces.Length + 1];
-			for (int i = 0; i <= index; i++)
-				newArray[i] = pieces[i];
-			for (int i = index + 2; i < pieces.Length + 1; i++)
-				newArray[i] = pieces[i-1];
-
-			newArray[index + 1] = pieces[index].Copy();
-			pieces = newArray;
+			TurboPiece dupe = Pieces[index].Copy();
+			Pieces.Insert(index, dupe);
+			return dupe;
 		}
+		return null;
 	}
-
 	public void DeleteChild(int index)
 	{
-		if (0 <= index && index < pieces.Length)
+		if (0 <= index && index < Pieces.Count)
 		{
-			TurboPiece[] newArray = new TurboPiece[pieces.Length - 1];
-			for (int i = 0; i < index; i++)
-				newArray[i] = pieces[i];
-			for (int i = index + 1; i < pieces.Length; i++)
-				newArray[i - 1] = pieces[i];
-			pieces = newArray;
+			Pieces.RemoveAt(index);
 		}
 	}
 }

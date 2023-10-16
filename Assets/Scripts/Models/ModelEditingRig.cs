@@ -18,6 +18,7 @@ public class ModelEditingRig : MonoBehaviour
 
 	public MinecraftModelPreview Preview = null;
 
+
     // Preview models
     public bool IsDirty = false;
 
@@ -297,17 +298,19 @@ public class ModelEditingRig : MonoBehaviour
         if (WorkingCopy == null)
             return;
 
-        if (WorkingCopy is CubeModel cubeModel)
-        {
+		if (WorkingCopy is CubeModel cubeModel)
+		{
 			Preview = CreatePreviewObject(cubeModel, false);
-			Preview.Refresh();
 		}
-        else if (WorkingCopy is TurboRig turboRig)
-        {
+		else if (WorkingCopy is ItemModel itemModel)
+		{
+			Preview = CreatePreviewObject(itemModel, false);
+		}
+		else if (WorkingCopy is TurboRig turboRig)
+		{
 			Preview = CreatePreviewObject(turboRig, false);
-			Preview.Refresh();
-        }
-
+		}
+		Preview.Refresh();
 	}
 
 	public MinecraftModelPreview CreatePreviewObject(TurboRig model, bool forceUpdate)
@@ -349,7 +352,26 @@ public class ModelEditingRig : MonoBehaviour
 		return existing.GetComponent<CubeModelPreview>();
 	}
 
-    public void OpenModel(MinecraftModel model)
+	public MinecraftModelPreview CreatePreviewObject(ItemModel model, bool forceUpdate)
+	{
+		Transform existing = transform.Find("item");
+		if (existing == null || forceUpdate)
+		{
+			if (existing != null)
+				DestroyImmediate(existing.gameObject);
+			GameObject go = new GameObject("item");
+			go.transform.SetParent(transform);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localScale = Vector3.one;
+			go.transform.localRotation = Quaternion.identity;
+			ItemModelPreview preview = go.AddComponent<ItemModelPreview>();
+			preview.SetModel(model);
+			return preview;
+		}
+		return existing.GetComponent<ItemModelPreview>();
+	}
+
+	public void OpenModel(MinecraftModel model)
     {
 		if (WorkingCopy != null)
 		{

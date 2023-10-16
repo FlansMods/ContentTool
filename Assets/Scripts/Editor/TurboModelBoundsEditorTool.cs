@@ -24,11 +24,11 @@ public class TurboModelEditor : Editor
 			return;
 		}
 
-		preview.Section.partName = GUILayout.TextField(preview.Section.partName);
+		preview.Section.PartName = GUILayout.TextField(preview.Section.PartName);
 
 		int pieceToDelete = -1;
 		int pieceToDuplicate = -1;
-		for(int i = 0; i < preview.Section.pieces.Length; i++)
+		for(int i = 0; i < preview.Section.Pieces.Count; i++)
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label($"{i}");

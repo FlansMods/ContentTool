@@ -126,16 +126,28 @@ public class FlansModToolbox : EditorWindow
 				foreach(Model.Section modelSection in model.sections)
 				{
 					TurboModel section = new TurboModel();
-					section.partName = Utils.ConvertPartName(modelSection.partName);
-					section.pieces = new TurboPiece[modelSection.pieces.Length];
+					section.PartName = Utils.ConvertPartName(modelSection.partName);
+					section.Pieces = new List<TurboPiece>();
 					for (int i = 0; i < modelSection.pieces.Length; i++)
-						section.pieces[i] = modelSection.pieces[i].CopyAsTurbo();
+						section.Pieces.Add( modelSection.pieces[i].CopyAsTurbo());
 					rig.Sections.Add(section);
 				}
 				foreach (Model.AnimationParameter animParam in model.animations)
 					rig.AnimationParameters.Add(new AnimationParameter(animParam.key, animParam.isVec3, animParam.floatValue, animParam.vec3Value));
 				foreach (Model.AttachPoint attachPoint in model.attachPoints)
-					rig.AttachPoints.Add(new AttachPoint(attachPoint.name, attachPoint.attachedTo, attachPoint.position));
+					rig.AttachPoints.Add(new AttachPoint(
+						Utils.ConvertPartName(attachPoint.name), 
+						Utils.ConvertPartName(attachPoint.attachedTo), 
+						attachPoint.position));
+
+				rig.GetOrCreate("barrel");
+				rig.GetOrCreate("slide");
+				rig.GetOrCreate("ammo_0");
+				rig.GetOrCreate("stock");
+				rig.GetOrCreate("sights");
+				rig.GetOrCreate("grip");
+
+
 				rig.TextureX = model.textureX;
 				rig.TextureY = model.textureY;
 

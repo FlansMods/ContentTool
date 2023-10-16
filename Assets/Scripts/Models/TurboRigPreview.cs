@@ -9,44 +9,83 @@ public class TurboRigPreview : MinecraftModelPreview
 
 	public void DeleteSection(int index)
 	{
-		DestroyImmediate(GetChild(Rig.Sections[index].partName).gameObject);
+		DestroyImmediate(GetChild(Rig.Sections[index].PartName).gameObject);
 		Rig.DeleteSection(index);
 	}
 
 	public TurboModelPreview DuplicateSection(int index)
 	{
-		string newName = $"{Rig.Sections[index].partName}-";
+		string newName = $"{Rig.Sections[index].PartName}-";
 		Rig.DuplicateSection(index);
 		return GetChild(newName);
 	}
 
 	public TurboModelPreview AddSection()
 	{
-		return GetChild(Rig.AddSection().partName);
+		return GetChild(Rig.AddSection().PartName);
+	}
+
+	public Transform GetEmptyChild(string apName)
+	{
+		foreach (Transform t in GetComponentsInChildren<Transform>())
+			if (t.name == apName)
+				return t;
+
+		Transform parent = transform;
+		Vector3 offset = Vector3.zero;
+		AttachPoint ap = Rig.GetAttachPoint(apName);
+		if (ap != null)
+		{
+			TurboModelPreview parentPreview = GetChild(ap.attachedTo);
+			parent = parentPreview.transform;
+			offset = ap.position;
+		}
+
+		GameObject go = new GameObject(apName);
+		go.transform.SetParent(parent);
+		go.transform.localPosition = offset;
+		go.transform.localRotation = Quaternion.identity;
+		go.transform.localScale = Vector3.one;
+		return go.transform;
 	}
 
 	public TurboModelPreview GetChild(string partName)
 	{
-		Transform existing = transform.Find(partName);
-		if (existing == null)
+		foreach(TurboModelPreview model in GetComponentsInChildren<TurboModelPreview>())
 		{
-			GameObject go = new GameObject(partName);
-			go.transform.SetParent(transform);
-			go.transform.localPosition = Vector3.zero;
-			go.transform.localRotation = Quaternion.identity;
-			go.transform.localScale = Vector3.one;
-			existing = go.transform;
+			if (model.PartName == partName)
+				return model;
 		}
 
-		TurboModelPreview modelPreview = existing.GetComponent<TurboModelPreview>();
-		if(modelPreview == null)
+		Transform parent = transform;
+		AttachPoint ap = Rig.GetAttachPoint(partName);
+		Vector3 offset = Vector3.zero;
+		if (ap != null)
 		{
-			modelPreview = existing.gameObject.AddComponent<TurboModelPreview>();
-			modelPreview.PartName = partName;
-			modelPreview.SetModel(Model);
+			TurboModelPreview parentPreview = GetChild(ap.attachedTo);
+			parent = parentPreview.transform;
+			offset = ap.position;
 		}
+	
+		GameObject go = new GameObject(partName);
+		go.transform.SetParent(parent);
+		go.transform.localPosition = offset;
+		go.transform.localRotation = Quaternion.identity;
+		go.transform.localScale = Vector3.one;
 
+		TurboModelPreview modelPreview = go.AddComponent<TurboModelPreview>();
+		modelPreview.PartName = partName;
+		modelPreview.SetModel(Model);
 		return modelPreview;
+	}
+
+	public void UpdateAttachPointPositions()
+	{
+		foreach(AttachPoint ap in Rig.AttachPoints)
+		{
+			Transform child = GetEmptyChild(ap.name);
+			child.localPosition = ap.position;
+		}
 	}
 
 	public override void GenerateMesh()
@@ -56,11 +95,18 @@ public class TurboRigPreview : MinecraftModelPreview
 
 		foreach(TurboModel section in Rig.Sections)
 		{
-			TurboModelPreview modelPreview = GetChild(section.partName);
+			TurboModelPreview modelPreview = GetChild(section.PartName);
 			if (modelPreview == null)
 				continue;
 
 			modelPreview.Refresh();
+		}
+
+		// Load all non-defaulted APs as empty transforms
+		foreach(AttachPoint ap in Rig.AttachPoints)
+		{
+			if(ap.position.sqrMagnitude > 0.0f)
+				GetEmptyChild(ap.name);
 		}
 	}
 }

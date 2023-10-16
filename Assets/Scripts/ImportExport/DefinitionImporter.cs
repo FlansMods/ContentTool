@@ -148,20 +148,25 @@ public class DefinitionImporter : MonoBehaviour
 
 	public void ImportAllTypeFiles(ContentPack pack)
 	{
-		for(int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+		DirectoryInfo modelsFolder = new DirectoryInfo($"{ASSET_ROOT}/{pack.ModName}/models/");
+		if (!modelsFolder.Exists)
+			modelsFolder.Create();
+
+		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
 		{
 			TYPE_LOOKUP[i] = new Dictionary<string, InfoType>();
 			EDefinitionType defType = (EDefinitionType)i;
-			DirectoryInfo dir = new DirectoryInfo($"{IMPORT_ROOT}/{pack.name}/{defType.Folder()}");
+			DirectoryInfo dir = new DirectoryInfo($"{IMPORT_ROOT}/{pack.ModName}/{defType.Folder()}");
 			if(dir.Exists)
 			{
-				DirectoryInfo assetDir = new DirectoryInfo($"{ASSET_ROOT}/{pack.name}/{defType.OutputFolder()}");
+				DirectoryInfo assetDir = new DirectoryInfo($"{ASSET_ROOT}/{pack.ModName}/{defType.OutputFolder()}");
 				if(!assetDir.Exists)
 					assetDir.Create();
+					
 
-				foreach(FileInfo file in dir.EnumerateFiles())
+				foreach (FileInfo file in dir.EnumerateFiles())
 				{
-					try
+					//try
 					{
 						InfoType imported = ImportType(pack, defType, file.Name.Split(".")[0]);
 						if(imported != null)
@@ -171,7 +176,14 @@ public class DefinitionImporter : MonoBehaviour
 							if(imported.modelString != null && imported.modelString.Length > 0)
 							{
 								string modelPath = $"{MODEL_IMPORT_ROOT}/{imported.modelFolder}/Model{imported.modelString}.java";
-								imported.model = JavaModelImporter.ImportJava(modelPath, imported);			
+								TurboRig rig = JavaModelImporter.ImportTurboModel(pack.ModName, modelPath, imported);
+								if (rig != null)
+								{
+									string importToPath = $"{ASSET_ROOT}/{pack.ModName}/models/{rig.name}.asset";
+									AssetDatabase.CreateAsset(rig, importToPath);
+								}
+								else
+									Debug.LogError($"Failed to import {pack.name}:{file.Name}");
 							}
 						}
 						else
@@ -179,9 +191,9 @@ public class DefinitionImporter : MonoBehaviour
 							Debug.LogWarning($"Failed to import {pack.name}:{file.Name}");
 						}
 					}
-					catch(Exception e)
+					//catch(Exception e)
 					{
-						Debug.LogError($"Failed to load {file.Name} due to exception: {e.Message}, {e.StackTrace}");
+					//	Debug.LogError($"Failed to load {file.Name} due to exception: {e.Message}, {e.StackTrace}");
 					}
 				}
 			}
@@ -405,7 +417,12 @@ public class DefinitionImporter : MonoBehaviour
 		if(infoType is BoxType box)
 		{	
 			// Boxes need a model made from their side textures
-			def.Model = JavaModelImporter.CreateBoxModel(packName, box);
+			CubeModel cubeModel = JavaModelImporter.ImportBlock(packName, box);
+			if(cubeModel != null)
+			{
+				string importPath = $"{IMPORT_ROOT}/{packName}/models/{cubeModel.name}.asset";
+				AssetDatabase.CreateAsset(cubeModel, importPath);
+			}
 			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
 			{
 				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.bottomTexturePath)}.png",

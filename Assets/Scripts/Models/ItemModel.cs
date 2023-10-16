@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Minecraft Models/Item")]
 public class ItemModel : MinecraftModel
 {
-	public ResourceLocation icon;
+	public ResourceLocation IconLocation;
+	public Texture2D Icon;
+
+	public Texture2D GetIcon()
+	{
+		if(Icon == null && IconLocation != null)
+		{
+			Icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
+				$"Assets/Content Packs/{IconLocation.Namespace}/textures/items/{IconLocation.ID}.png");
+		}
+		return Icon;
+	}
 
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("parent", $"item/generated");
 		using (builder.Indentation("textures"))
 		{
-			builder.Current.Add("layer0", icon.ResolveWithSubdir("item"));
+			builder.Current.Add("layer0", IconLocation.ResolveWithSubdir("item"));
 		}
 		using (builder.Indentation("display"))
 		{

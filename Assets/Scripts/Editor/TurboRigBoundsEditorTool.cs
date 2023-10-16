@@ -28,13 +28,13 @@ public class TurboRigEditor : Editor
 		for (int i = 0; i < preview.Rig.Sections.Count; i++)
 		{
 			GUILayout.BeginHorizontal();
-			string changedName = GUILayout.TextField(preview.Rig.Sections[i].partName);
-			if(changedName != preview.Rig.Sections[i].partName)
+			string changedName = GUILayout.TextField(preview.Rig.Sections[i].PartName);
+			if(changedName != preview.Rig.Sections[i].PartName)
 			{
-				Transform existing = preview.transform.Find(preview.Rig.Sections[i].partName);
+				Transform existing = preview.transform.Find(preview.Rig.Sections[i].PartName);
 				if (existing != null)
 					existing.name = changedName;
-				preview.Rig.Sections[i].partName = changedName;
+				preview.Rig.Sections[i].PartName = changedName;
 			}
 			if (GUILayout.Button("Delete"))
 			{

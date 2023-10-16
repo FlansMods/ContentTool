@@ -157,15 +157,22 @@ public static class Utils
 	}
 	public static string ConvertPartName(string partName)
 	{
-		switch(partName)
+        if (partName.EndsWith("Model"))
+            partName = partName.Substring(0, partName.Length - 5);
+		else if (partName.EndsWith("Models"))
+			partName = partName.Substring(0, partName.Length - 6);
+
+		switch (partName)
 		{
 			case "gun": return "body";
+			case "pump": return "pump";
 			case "ammo": return "ammo_0";
 			case "defaultGrip": return "grip";
 			case "defaultBarrel": return "barrel";
 			case "defaultScope": return "sights";
 			case "defaultStock": return "stock";
 			case "revolverBarrel": return "revolver";
+			case "breakAction": return "break_action";
 			default: return partName;
 		}
 	}

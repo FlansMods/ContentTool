@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Model;
 
 [System.Serializable]
 public class TurboPiece
@@ -13,7 +12,6 @@ public class TurboPiece
 	public Vector3 Dim = Vector3.one;
 	public Vector3 Origin = Vector3.zero;
 	public Vector3 Euler = Vector3.zero;
-	public EShape Shape = EShape.Box;
 
 	// For shapeboxes
 	public Vector3[] Offsets = new Vector3[8];
@@ -28,7 +26,6 @@ public class TurboPiece
 			Dim = this.Dim,
 			Origin = this.Origin,
 			Euler = this.Euler,
-			Shape = this.Shape,
 			Offsets = new Vector3[] {
 					Offsets[0], Offsets[1], Offsets[2], Offsets[3],
 					Offsets[4], Offsets[5], Offsets[6], Offsets[7],
@@ -148,62 +145,30 @@ public class TurboPiece
 
 	public Vector3[] GetVerts()
 	{
-		switch (Shape)
+		Quaternion xRotation = Quaternion.Euler(Euler);
+		Vector3[] verts = new Vector3[8];
+		for (int x = 0; x < 2; x++)
 		{
-			case EShape.Box:
+			for (int y = 0; y < 2; y++)
+			{
+				for (int z = 0; z < 2; z++)
 				{
-					Quaternion xRotation = Quaternion.Euler(Euler);
-					Vector3[] verts = new Vector3[8];
-					for (int x = 0; x < 2; x++)
-					{
-						for (int y = 0; y < 2; y++)
-						{
-							for (int z = 0; z < 2; z++)
-							{
-								int index = x + y * 2 + z * 4;
-								verts[index] = Pos;
-								if (x == 1) verts[index].x += Dim.x;
-								if (y == 1) verts[index].y += Dim.y;
-								if (z == 1) verts[index].z += Dim.z;
+					int index = x + y * 2 + z * 4;
+					verts[index] = Pos;
+					if (x == 1) verts[index].x += Dim.x;
+					if (y == 1) verts[index].y += Dim.y;
+					if (z == 1) verts[index].z += Dim.z;
 
-								//verts[index] = xRotation * verts[index];
-								//verts[index] += xOrigin;
-							}
-						}
-					}
+					verts[index] += Offsets[index];
 
-					return verts;
+					// These get applied in the Unity transform
+					//verts[index] = xRotation * verts[index];
+					//verts[index] += Origin;
 				}
-			case EShape.ShapeBox:
-				{
-					Quaternion xRotation = Quaternion.Euler(Euler);
-					Vector3[] verts = new Vector3[8];
-					for (int x = 0; x < 2; x++)
-					{
-						for (int y = 0; y < 2; y++)
-						{
-							for (int z = 0; z < 2; z++)
-							{
-								int index = x + y * 2 + z * 4;
-								verts[index] = Pos;
-								if (x == 1) verts[index].x += Dim.x;
-								if (y == 1) verts[index].y += Dim.y;
-								if (z == 1) verts[index].z += Dim.z;
-
-								verts[index] += Offsets[index];
-
-								// These get applied in the Unity transform
-								//verts[index] = xRotation * verts[index];
-								//verts[index] += Origin;
-							}
-						}
-					}
-
-					return verts;
-				}
-			default:
-				return new Vector3[8];
+			}
 		}
+
+		return verts;
 	}
 
 	public static readonly int[] NON_UV_TRIS = new int[] {
@@ -257,11 +222,6 @@ public class TurboPiece
 
 	public void ExportToMesh(Mesh mesh, float textureX, float textureY)
 	{
-		Shape = EShape.Box;
-		foreach (Vector3 offset in Offsets)
-			if (offset.sqrMagnitude > 0.001f)
-				Shape = EShape.ShapeBox;
-
 		Vector3[] v = GetVerts();
 		mesh.SetVertices(GenerateVertsForUV(v));
 		List<Vector2> uvs = new List<Vector2>();

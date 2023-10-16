@@ -46,6 +46,7 @@ public abstract class TurboAttachPointsTool : EditorTool
 	private void CopyFromHandle()
 	{
 		Handle.CopyToAttachPoints(Rig.Rig.AttachPoints);
+		Rig.UpdateAttachPointPositions();
 	}
 
 	public override void OnToolGUI(EditorWindow window)
@@ -63,6 +64,7 @@ public abstract class TurboAttachPointsTool : EditorTool
 			Handle.DrawMinecraftHandle();
 			if (EditorGUI.EndChangeCheck())
 			{
+				Undo.RecordObject(rig.Rig, "Edit attach point");
 				CopyFromHandle();
 			}
 		}

@@ -21,15 +21,26 @@ public class TurboRig : MinecraftModel
 	public TurboModel GetSection(string key)
 	{
 		foreach (TurboModel section in Sections)
-			if (section.partName == key)
+			if (section.PartName == key)
 				return section;
 		return null;
 	}
-
+	public TurboModel GetOrCreateSection(string key)
+	{
+		foreach (TurboModel section in Sections)
+			if (section.PartName == key)
+				return section;
+		TurboModel newSection = new TurboModel()
+		{
+			PartName = key
+		};
+		Sections.Add(newSection);
+		return newSection;
+	}
 	public TurboModel AddSection()
 	{
 		Sections.Add(new TurboModel() {
-			partName = $"new_{Sections.Count}"
+			PartName = $"new_{Sections.Count}"
 		});
 		return Sections[Sections.Count - 1];
 	}
@@ -39,7 +50,7 @@ public class TurboRig : MinecraftModel
 		if (0 <= index && index < Sections.Count)
 		{
 			TurboModel copy = Sections[index].Copy();
-			copy.partName = $"{copy.partName}-";
+			copy.PartName = $"{copy.PartName}-";
 			Sections.Insert(index + 1, copy);
 		}
 	}
@@ -117,7 +128,7 @@ public class TurboRig : MinecraftModel
 	public AttachPoint GetAttachPoint(string key)
 	{
 		foreach (AttachPoint point in AttachPoints)
-			if (point.name == name)
+			if (point.name == key)
 				return point;
 		return null;
 	}
@@ -145,7 +156,7 @@ public class TurboRig : MinecraftModel
 		Vector3 max = Vector3.one * -1000f;
 		foreach (TurboModel section in Sections)
 		{
-			foreach (TurboPiece piece in section.pieces)
+			foreach (TurboPiece piece in section.Pieces)
 			{
 				piece.GetBounds(out Vector3 pieceMin, out Vector3 pieceMax);
 				min = Vector3.Min(min, pieceMin);
@@ -183,7 +194,7 @@ public class TurboRig : MinecraftModel
 
 		using (builder.Tabulation("turboelements"))
 		{
-			foreach (TurboPiece wrapper in section.pieces)
+			foreach (TurboPiece wrapper in section.Pieces)
 			{
 				using (builder.TableEntry())
 				{
@@ -291,10 +302,10 @@ public class TurboRig : MinecraftModel
 		{
 			foreach (TurboModel section in Sections)
 			{
-				string partName = Utils.ConvertPartName(section.partName);
+				string partName = Utils.ConvertPartName(section.PartName);
 				using (builder.Indentation(partName))
 				{
-					ExportSectionToJson(builder, section.partName);
+					ExportSectionToJson(builder, section.PartName);
 				}
 			}
 		}

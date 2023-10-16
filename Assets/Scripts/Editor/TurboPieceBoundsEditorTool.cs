@@ -121,5 +121,10 @@ public class TurboPieceEditor : Editor
 		Texture2D tex = preview.GetTemporaryTexture();
 		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
 		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
+
+		if(GUILayout.Button("Clear Texture"))
+		{
+			preview.ResetTexture();
+		}
 	}
 }

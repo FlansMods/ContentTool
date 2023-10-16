@@ -2,12 +2,66 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
 
 public static class JavaModelImporter
 {
-    public static readonly int[] aiPermutation = { 0, 1, 4, 5, 3, 2, 7, 6 };
+	private static readonly string VariableNameCapture = "([A-Za-z][A-Za-z0-9_]*)";
+	private static readonly string BoolCapture = "([Tt]rue|[Ff]alse)";
+	private static readonly string IntCapture = "(-?[0-9]*)";
+	private static readonly string AdvancedFloatCapture = "(?:\\/\\*[0-9 ]*\\*\\/)?\\s*([\\-0-9.\\/\\*Ff]*)";
+	private static readonly string WhitespaceCommaCapture = "\\s*,\\s*";
+	private static readonly Regex RegexExpanderRegex = new Regex("(.*)%(var)%(.*)%(index)%(.*)%([0-9]*(?:xFloat|xBool))%(.*)|(.*)%(var)%(.*)%([0-9]*(?:xFloat|xBool))%(.*)|(.*)%([0-9]*(?:xFloat|xBool))%(.*)");
+	private static Regex CreateRegex(string src)
+	{
+		// "%var%[%index%].addShapeBox(%32xFloat%);"
+		Match match = RegexExpanderRegex.Match(src);
+		if (match.Success)
+		{
+			StringBuilder builder = new StringBuilder();
+			for (int i = 1; i < match.Groups.Count; i++)
+			{
+				string value = match.Groups[i].Value;
+				if (value == "var")
+					builder.Append(VariableNameCapture);
+				else if (value == "index")
+					builder.Append(IntCapture);
+				else if (value.Contains("xFloat"))
+				{ 
+					int numFloats = int.Parse(value.Substring(0, value.IndexOf("xFloat")));
+					for (int j = 0; j < numFloats; j++)
+					{
+						builder.Append(AdvancedFloatCapture);
+						if (j < numFloats - 1) 
+							builder.Append(WhitespaceCommaCapture);
+					}
+				}
+				else if (value.Contains("xBool"))
+				{
+					int numBools = int.Parse(value.Substring(0, value.IndexOf("xBool")));
+					for (int j = 0; j < numBools; j++)
+					{
+						builder.Append(BoolCapture);
+						if (j < numBools - 1)
+							builder.Append(WhitespaceCommaCapture);
+					}
+				}
+				else
+					builder.Append(value);
+			}
+			return new Regex(builder.ToString());
+		}
+		Debug.LogError($"Failed to parse {src} string into regex");
+		return new Regex(src);
+
+	}
+
+	public static readonly int[] aiPermutation = { 0, 1, 4, 5, 3, 2, 7, 6 };
 
 	public static Vector3[] MirrorOffsets(Vector3[] offsets, bool bX, bool bY, bool bZ)
 	{
@@ -33,40 +87,48 @@ public static class JavaModelImporter
 		};
 	}
 
-	public static Model CreateBoxModel(string modName, BoxType box)
+	public static CubeModel ImportBlock(string modName, BoxType box)
 	{
-		Model model = new Model();
-		model.Type = Model.ModelType.Block;
-		model.top = Utils.ToLowerWithUnderscores(box.topTexturePath);
-		model.bottom = Utils.ToLowerWithUnderscores(box.bottomTexturePath);
-		model.north = Utils.ToLowerWithUnderscores(box.sideTexturePath);
-		model.east = Utils.ToLowerWithUnderscores(box.sideTexturePath);
-		model.south = Utils.ToLowerWithUnderscores(box.sideTexturePath);
-		model.west = Utils.ToLowerWithUnderscores(box.sideTexturePath);
-		return model;
+		CubeModel cube = ScriptableObject.CreateInstance<CubeModel>();
+
+		ResourceLocation side = new ResourceLocation(modName, Utils.ToLowerWithUnderscores(box.sideTexturePath));
+		ResourceLocation top = new ResourceLocation(modName, Utils.ToLowerWithUnderscores(box.topTexturePath));
+		ResourceLocation bottom = new ResourceLocation(modName, Utils.ToLowerWithUnderscores(box.bottomTexturePath));
+
+		cube.top = top;
+		cube.north = cube.east = cube.south = cube.west = side;
+		cube.bottom = bottom;
+		cube.particle = side;
+		return cube;
 	}
 
-   	public static Model ImportJava(string path, InfoType optionalType)
+	public static TurboRig ImportTurboModel(string modName, string javaPath, InfoType optionalType)
 	{
-		Model model = new Model();
-		model.Type = Model.ModelType.TurboRig;
-
-		TypeFile file = new TypeFile(path);
-		using(StreamReader reader = new StreamReader(path, Encoding.Default))
+		TypeFile file = new TypeFile(javaPath);
+		try
 		{
-			string line = null;
-			do
-            {
-                line = reader.ReadLine();
-                if (line != null)
-                {
-                    file.addLine(line);
-                }
-            }
-            while (line != null);
+			using (StreamReader reader = new StreamReader(javaPath, Encoding.Default))
+			{
+				string line = null;
+				do
+				{
+					line = reader.ReadLine();
+					if (line != null)
+					{
+						file.addLine(line);
+					}
+				}
+				while (line != null);
+			}
+		}
+		catch(Exception e)
+		{
+			Debug.LogError($"Failed to find Java model {javaPath} because of {e.Message}");
+			return null;
 		}
 
-		for (;;)
+		TurboRig rig = ScriptableObject.CreateInstance<TurboRig>();
+		for (; ; )
 		{
 			string line = file.readLine();
 			if (line == null)
@@ -77,18 +139,14 @@ public static class JavaModelImporter
 			if (line.StartsWith("//"))
 				continue;
 
-			ReadLine(model, file, line, optionalType);
+			ReadLine(rig, file, line, optionalType);
 		}
-
-		if(optionalType != null)
-			model.name = Utils.ToLowerWithUnderscores(optionalType.shortName);
-
-		Debug.Log($"Imported model {model.name} with {model.sections.Count} parts from {path} with {file.lines.Count} lines");
-
-		return model;
+		if (optionalType != null)
+			rig.name = Utils.ToLowerWithUnderscores(optionalType.shortName);
+		return rig;
 	}
 
-	private static void ReadLine(Model model, TypeFile file, string line, InfoType optionalType)
+	private static void ReadLine(TurboRig rig, TypeFile file, string line, InfoType optionalType)
 	{
 		// Skip simple / unimportant lines
 		if (line == null || line.Length == 0) return;
@@ -119,270 +177,42 @@ public static class JavaModelImporter
 			string[] split = line.Split(' ');
 			if (split.Length == 4)
 			{
-				if (split[1].Equals("textureX")) model.textureX = int.Parse(split[3].Trim(';'));
-				if (split[1].Equals("textureY")) model.textureY = int.Parse(split[3].Trim(';'));
+				if (split[1].Equals("textureX")) rig.TextureX = int.Parse(split[3].Trim(';'));
+				if (split[1].Equals("textureY")) rig.TextureY = int.Parse(split[3].Trim(';'));
 			}
 			else Debug.Assert(false, $"Invalid length textureX/Y string '{line}' in {file.name}");
 			return;
 		}
 
-		// gunModel = new ModelRendererTurbo[11];
-		int iIndex = line.IndexOf("Model = new Model");
-		if(iIndex == -1)
-		{
-			iIndex = line.IndexOf("Models = new Model");
-		}
-		if (iIndex != -1)
-		{
-			string pieceName = line.Substring(0, iIndex);
-			int iIndexOfOpenBrace = line.IndexOf('[');
-			int iIndexOfClosedBrace = line.IndexOf(']');
-			int iNumPieces = int.Parse(line.Substring(iIndexOfOpenBrace + 1, iIndexOfClosedBrace - iIndexOfOpenBrace - 1));
-			model.sections.Add(new Model.Section()
-			{
-				partName = pieceName, 
-				pieces = new Model.Piece[iNumPieces]
-			});
-			return;
-		}
+		if(MatchNewMRTurbo(rig, line))
+		{ }
+		else if (MatchAddBox(rig, line))
+		{ }
+		else if (MatchAddShapeBox(rig, line))
+		{ }
+		else if(MatchAddTrapezoid(rig, line))
+		{ }
+		else if (MatchDoMirror(rig, line))
+		{ }
+		else if (MatchSetRotateAngle(rig, line))
+		{ }
+		else if (MatchSetRotationPoint(rig, line))
+		{ }
+		else if (MatchTranslateAll(rig, line))
+		{ }
+		else if (MatchFlipAll(rig, line))
+		{ }
+		else if (MatchFloatParam(rig, line))
+		{ }
+		else if(MatchVec3Param(rig, line))
+		{ }
 
-		// Model setup lines
-		if (line.Contains("Model["))
-		{
-			int iIndexOfOpenBrace = line.IndexOf('[');
-			int iIndexOfClosedBrace = line.IndexOf(']');
-			int iPieceNum = 0;
-			try
-			{
-				iPieceNum = int.Parse(line.Substring(iIndexOfOpenBrace + 1, iIndexOfClosedBrace - iIndexOfOpenBrace - 1));
-			}
-			catch(Exception e)
-			{
-				Debug.Log("Failed to parse model piece number :" + line.Substring(iIndexOfOpenBrace + 1, iIndexOfClosedBrace - iIndexOfOpenBrace - 1));
-				Debug.Log(e.StackTrace);
-				return;
-			}
-			string pieceName = line.Substring(0, iIndexOfOpenBrace - 5); // 5 = Length("Model")
-			Model.Section section = model.GetSection(pieceName);
-			if(section == null)
-			{
-				Debug.Assert(false, "Failed to find key " + pieceName + " in model " + file.name);
-				return;
-			}
-
-			// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
-			iIndex = line.IndexOf("] = new Model");
-			if (iIndex != -1)
-			{
-				int iThis = line.IndexOf("(this,");
-				string coordString = line.Substring(iThis + "(this,".Length);
-				int[] coords = Utils.ParseInts(2, coordString);
-				section.pieces[iPieceNum] = new Model.Piece()
-				{
-					textureU = coords[0],
-					textureV = coords[1],
-				};
-				return;
-			}
-
-			Model.Piece wrapper = section.pieces[iPieceNum];
-			Debug.Assert(wrapper != null, $"Could not find model piece {iPieceNum} in section {section.partName} of {file.name}");
-			if(wrapper == null)
-			{
-				return;
-			}
-
-			// defaultScopeModel[0].addBox(-2F, 4.5F, -0.5F, 6, 1, 1);
-			// defaultScopeModel[1].addTrapezoid(4F, 4F, -1F, 4, 2, 2, 0F, -0.5F, ModelRendererTurbo.MR_RIGHT);
-			// ammoModel[0].addShapeBox(3F, -2F, -1F, 3, 2, 2, 0F, /* 0 */ 0F, 1F, 0F, /* 1 */ 0F, 0F, 0F, /* 2 */ 0F, 0F, 0F, /* 3 */ 0F, 1F, 0F, /* 4 */ 0F, 0F, 0F, /* 5 */ 0F, 0F, 0F, /* 6 */ 0F, 0F, 0F, /* 7 */ 0F, 0F, 0F);
-			iIndex = line.IndexOf("].add");
-			if (iIndex != -1)
-			{
-				if (line.Contains("ShapeBox"))
-				{
-					float[] floats = Utils.ParseFloats(31, line.Substring(iIndex + "].addShapeBox(".Length));
-					wrapper.Pos = new Vector3(floats[0], floats[1], floats[2]);
-					wrapper.Dim = new Vector3(floats[3], floats[4], floats[5]);
-					// floats[6] What is this? Scale?
-					for (int i = 0; i < 8; i++)
-					{
-						int iPermuted = aiPermutation[i];
-						wrapper.Offsets[i] = new Vector3(floats[7 + iPermuted * 3 + 0], floats[7 + iPermuted * 3 + 1], floats[7 + iPermuted * 3 + 2]);
-						if ((i & 0x1) == 0) wrapper.Offsets[i].x *= -1;
-						if ((i & 0x2) == 0) wrapper.Offsets[i].y *= -1;
-						if ((i & 0x4) == 0) wrapper.Offsets[i].z *= -1;
-					}
-					wrapper.Shape = Model.EShape.ShapeBox;
-				}
-				else if (line.Contains("Box"))
-				{
-					float[] floats = Utils.ParseFloats(6, line.Substring(iIndex + "].addBox(".Length));
-					wrapper.Pos = new Vector3(floats[0], floats[1], floats[2]);
-					wrapper.Dim = new Vector3(floats[3], floats[4], floats[5]);
-					wrapper.Shape = Model.EShape.Box;
-				}
-				else if (line.Contains("Trapezoid"))
-				{
-					float[] floats = Utils.ParseFloats(8, line.Substring(iIndex + "].addTrapezoid(".Length));
-					float expand = floats[6];
-					wrapper.Pos = new Vector3(floats[0] - expand, floats[1] - expand, floats[2] - expand);
-					wrapper.Dim = new Vector3(floats[3] + 2*expand, floats[4] + 2*expand, floats[5] + 2*expand);
-					
-					float taper = floats[7];
-					if(line.Contains("MR_LEFT"))
-					{
-						// expand +x face
-						wrapper.Offsets[1] = new Vector3(0f, -taper, -taper);
-						wrapper.Offsets[3] = new Vector3(0f, taper, -taper);
-						wrapper.Offsets[7] = new Vector3(0f, taper, taper);
-						wrapper.Offsets[5] = new Vector3(0f, -taper, taper);
-					}
-					else if(line.Contains("MR_RIGHT"))
-					{
-						// expand -x face
-						wrapper.Offsets[4] = new Vector3(0f, -taper, taper);
-						wrapper.Offsets[6] = new Vector3(0f, taper, taper);
-						wrapper.Offsets[2] = new Vector3(0f, taper, -taper);
-						wrapper.Offsets[0] = new Vector3(0f, -taper, -taper);
-					}
-					else if(line.Contains("MR_BACK"))
-					{
-						// expand +z face
-						wrapper.Offsets[5] = new Vector3(taper, -taper, 0f);
-						wrapper.Offsets[7] = new Vector3(taper, taper, 0f);
-						wrapper.Offsets[6] = new Vector3(-taper, taper, 0f);
-						wrapper.Offsets[4] = new Vector3(-taper, -taper, 0f);
-					}
-					else if(line.Contains("MR_FRONT"))
-					{
-						// expand -z face
-						wrapper.Offsets[0] = new Vector3(-taper, -taper, 0f);
-						wrapper.Offsets[2] = new Vector3(-taper, taper, 0f);
-						wrapper.Offsets[3] = new Vector3(taper, taper, 0f);
-						wrapper.Offsets[1] = new Vector3(taper, -taper, 0f);
-					}
-					else if(line.Contains("MR_BOTTOM"))
-					{
-						// expand +y face
-						wrapper.Offsets[7] = new Vector3(taper, 0f, taper);
-						wrapper.Offsets[3] = new Vector3(taper, 0f, -taper);
-						wrapper.Offsets[2] = new Vector3(-taper, 0f, -taper);
-						wrapper.Offsets[6] = new Vector3(-taper, 0f, taper);
-					}
-					else if(line.Contains("MR_TOP"))
-					{
-						// expand -y face
-						wrapper.Offsets[5] = new Vector3(taper, 0f, taper);
-						wrapper.Offsets[4] = new Vector3(-taper, 0f, taper);
-						wrapper.Offsets[0] = new Vector3(-taper, 0f, -taper);
-						wrapper.Offsets[1] = new Vector3(taper, 0f, -taper);
-					}
-					wrapper.Shape = Model.EShape.ShapeBox;
-				}
-
-				return;
-			}
-
-			// gunModel[4].setRotationPoint(0F, 1F, 0F);
-			iIndex = line.IndexOf("setRotationPoint");
-			if (iIndex != -1)
-			{
-				float[] floats = Utils.ParseFloats(3, line.Substring(iIndex));
-				wrapper.Origin = new Vector3(floats[0], floats[1], floats[2]);
-				return;
-			}
-
-			// gunModel[4].rotateAngleZ = -0.5F;
-			iIndex = line.IndexOf("rotateAngle");
-			if (iIndex != -1)
-			{
-				char cAxis = line[iIndex + "rotateAngle".Length];
-
-				float[] floats = Utils.ParseFloats(1, line.Substring(iIndex + "rotateAngle".Length));
-				switch(cAxis)
-				{
-					case 'X': wrapper.Euler.x = floats[0] * Mathf.Rad2Deg;   break;
-					case 'Y': wrapper.Euler.y = floats[0] * Mathf.Rad2Deg;   break;
-					case 'Z': wrapper.Euler.z = floats[0] * Mathf.Rad2Deg;   break;
-				}
-				return;
-			}
-
-			// gunModel[4].doMirror(false, true, true);
-			iIndex = line.IndexOf("doMirror");
-			if (iIndex != -1)
-			{
-				line = line.Substring(iIndex);
-				
-				string[] bools = line.Split(',');
-				bool bMirrorX = bools.Length > 0 && bools[0].Contains("true");
-				bool bMirrorY = bools.Length > 1 && bools[1].Contains("true");
-				bool bMirrorZ = bools.Length > 2 && bools[2].Contains("true");
-
-				wrapper.DoMirror(bMirrorX, bMirrorY, bMirrorZ);
-				return;
-			}
-
-		}
-
-		// translateAll
-		iIndex = line.IndexOf("translateAll");
-		if(iIndex != -1)
-		{							
-			float[] floats = Utils.ParseFloats(3, line.Substring(iIndex));
-
-			foreach(Model.Section section in model.sections)
-			{
-				foreach(Model.Piece wrapper in section.pieces)
-				{
-					if (wrapper != null)
-					{
-						wrapper.Origin.x += floats[0];
-						wrapper.Origin.y += floats[1];
-						wrapper.Origin.z += floats[2];
-					}
-				}
-			}
-
-			foreach(Model.AttachPoint ap in model.attachPoints)
-			{
-				ap.position -= new Vector3(floats[0], floats[1], floats[2]);
-			}
-
-			return;
-		}
-
-		// flipAll
-		iIndex = line.IndexOf("flipAll");
-		if (iIndex != -1)
-		{						
-			foreach (Model.Section section in model.sections)
-			{
-				foreach(Model.Piece piece in section.pieces)
-				{
-					piece.DoMirror(false, true, true);
-				}
-				/*
-				Model.Piece[] copies = new Model.Piece[section.pieces.Length * 2];
-				for(int i = 0; i < section.pieces.Length; i++)
-				{
-					if (section.pieces[i] != null)
-					{
-						copies[i*2] = section.pieces[i];
-						copies[i*2+1] = section.pieces[i].Copy();
-						copies[i*2+1].DoMirror(false, true, true);
-					}
-				}
-
-				section.pieces = copies;
-				*/
-			}
-			return;
-		}
 
 		if(optionalType != null)
 		{
-			TxtImport.ImportFromModel(line, DefinitionTypes.GetFromObject(optionalType), model, optionalType);
+			// Auto-import anim parameters
+			// TODO: Check we covered this case
+			TxtImport.ImportFromModel(line, DefinitionTypes.GetFromObject(optionalType), optionalType);
 			return;
 		}
 
@@ -390,5 +220,360 @@ public static class JavaModelImporter
 			return;
 
 		Debug.Assert(false, "Hit bad line in model (" + file.name + "): " + line);
+	}
+
+	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
+	//private static readonly Regex NewMRTurboRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*=\\s*new ModelRendererTurbo\\(\\s*this\\s*,\\s*([0-9]*)\\s*,\\s*([0-9]*)\\s*,\\s*[a-zA-Z,0-9\\s]*\\);");
+	private static readonly Regex NewMRTurboRegex = CreateRegex("%var%\\[%index%\\] = new ModelRendererTurbo(this, %2xFloat%, textureX, textureY);");
+	public static bool MatchNewMRTurbo(TurboRig rig, string line)
+	{
+		Match match = NewMRTurboRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[0].Value);
+			int index = int.Parse(match.Groups[1].Value);
+			int u = int.Parse(match.Groups[2].Value);
+			int v = int.Parse(match.Groups[3].Value);
+
+			TurboModel section = rig.GetOrCreateSection(partName);
+			section.SetIndexedTextureUV(index, u, v);
+			return true;
+		}
+		return false;
+	}
+
+	// defaultScopeModel[0].addBox(-2F, 4.5F, -0.5F, 6, 1, 1);
+	//private static readonly Regex AddBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
+	private static readonly Regex AddBoxRegex = CreateRegex("%var%\\[%index%\\].addBox\\(%6xFloat%\\);"); 
+	public static bool MatchAddBox(TurboRig rig, string line)
+	{
+		Match match = AddBoxRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			float x = ParseFloat(match.Groups[3].Value);
+			float y = ParseFloat(match.Groups[4].Value);
+			float z = ParseFloat(match.Groups[5].Value);
+			float w = ParseFloat(match.Groups[6].Value);
+			float h = ParseFloat(match.Groups[7].Value);
+			float d = ParseFloat(match.Groups[8].Value);
+
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+			piece.Pos = new Vector3(x, y, z);
+			piece.Dim = new Vector3(w, h, d);
+			return true;
+		}
+		return false;
+	}
+
+	// defaultScopeModel[0].addBox(-2F, 4.5F, -0.5F, 6, 1, 1);
+	//private static readonly Regex AddBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
+	private static readonly Regex AddTrapezoidRegex = CreateRegex("%var%\\[%index%\\].addTrapezoid\\(%8xFloat%,\\s*(MR_[A-Z]*)\\);");
+	public static bool MatchAddTrapezoid(TurboRig rig, string line)
+	{
+		Match match = AddTrapezoidRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			float x = ParseFloat(match.Groups[3].Value);
+			float y = ParseFloat(match.Groups[4].Value);
+			float z = ParseFloat(match.Groups[5].Value);
+			float w = ParseFloat(match.Groups[6].Value);
+			float h = ParseFloat(match.Groups[7].Value);
+			float d = ParseFloat(match.Groups[8].Value);
+			float expand = ParseFloat(match.Groups[9].Value);
+			float taper = ParseFloat(match.Groups[10].Value);
+			string eDirection = match.Groups[11].Value;
+
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+			piece.Pos = new Vector3(x - expand, y - expand, z - expand);
+			piece.Dim = new Vector3(w + 2 * expand, h + 2 * expand, d + 2 * expand);
+
+			switch(eDirection)
+			{
+				case "MR_LEFT":
+				{
+					// expand +x face
+					piece.Offsets[1] = new Vector3(0f, -taper, -taper);
+					piece.Offsets[3] = new Vector3(0f, taper, -taper);
+					piece.Offsets[7] = new Vector3(0f, taper, taper);
+					piece.Offsets[5] = new Vector3(0f, -taper, taper);
+					break;
+				}
+				case "MR_RIGHT": // expand -x face
+				{
+					piece.Offsets[4] = new Vector3(0f, -taper, taper);
+					piece.Offsets[6] = new Vector3(0f, taper, taper);
+					piece.Offsets[2] = new Vector3(0f, taper, -taper);
+					piece.Offsets[0] = new Vector3(0f, -taper, -taper);
+					break;
+				}
+				case "MR_BACK": // expand +z face
+				{
+					piece.Offsets[5] = new Vector3(taper, -taper, 0f);
+					piece.Offsets[7] = new Vector3(taper, taper, 0f);
+					piece.Offsets[6] = new Vector3(-taper, taper, 0f);
+					piece.Offsets[4] = new Vector3(-taper, -taper, 0f);
+					break;
+				}
+				case "MR_FRONT": // expand -z face
+				{
+					piece.Offsets[0] = new Vector3(-taper, -taper, 0f);
+					piece.Offsets[2] = new Vector3(-taper, taper, 0f);
+					piece.Offsets[3] = new Vector3(taper, taper, 0f);
+					piece.Offsets[1] = new Vector3(taper, -taper, 0f);
+					break;
+				}
+				case "MR_BOTTOM": // expand +y face
+				{
+					piece.Offsets[7] = new Vector3(taper, 0f, taper);
+					piece.Offsets[3] = new Vector3(taper, 0f, -taper);
+					piece.Offsets[2] = new Vector3(-taper, 0f, -taper);
+					piece.Offsets[6] = new Vector3(-taper, 0f, taper);
+					break;
+				}
+				case "MR_TOP": // expand -y face
+				{
+					piece.Offsets[5] = new Vector3(taper, 0f, taper);
+					piece.Offsets[4] = new Vector3(-taper, 0f, taper);
+					piece.Offsets[0] = new Vector3(-taper, 0f, -taper);
+					piece.Offsets[1] = new Vector3(taper, 0f, -taper);
+					break;
+				}
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+
+	// defaultScopeModel[0].addShapeBox(0F, 5F, -0.5F, 1, 2, 1, 0F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, -0.5F, -0.5F, -0.375F, 0F, -0.5F, -0.375F, 0F, -0.5F, -0.375F, -0.5F, -0.5F, -0.375F); // Box 12
+	//private static readonly Regex AddShapeBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
+	private static readonly Regex AddShapeBoxRegex = CreateRegex("%var%\\[%index%\\].addShapeBox\\(%31xFloat%\\);");
+	public static bool MatchAddShapeBox(TurboRig rig, string line)
+	{
+		Match match = AddShapeBoxRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+
+			float x = ParseFloat(match.Groups[3].Value);
+			float y = ParseFloat(match.Groups[4].Value);
+			float z = ParseFloat(match.Groups[5].Value);
+			float w = ParseFloat(match.Groups[6].Value);
+			float h = ParseFloat(match.Groups[7].Value);
+			float d = ParseFloat(match.Groups[8].Value);
+			piece.Pos = new Vector3(x, y, z);
+			piece.Dim = new Vector3(w, h, d);
+
+			// floats[9] What is this? Scale?
+
+			for (int i = 0; i < 8; i++)
+			{
+				int iPermuted = aiPermutation[i];
+				piece.Offsets[i] = new Vector3(
+					ParseFloat(match.Groups[10 + iPermuted * 3 + 0].Value),
+					ParseFloat(match.Groups[10 + iPermuted * 3 + 1].Value),
+					ParseFloat(match.Groups[10 + iPermuted * 3 + 2].Value));
+				if ((i & 0x1) == 0) piece.Offsets[i].x *= -1;
+				if ((i & 0x2) == 0) piece.Offsets[i].y *= -1;
+				if ((i & 0x4) == 0) piece.Offsets[i].z *= -1;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	// gunModel[4].setRotationPoint(0F, 1F, 0F);
+	private static readonly Regex SetRotationPointRegex = CreateRegex("%var%\\[%index%\\].setRotationPoint(%3xFloat%);");
+	public static bool MatchSetRotationPoint(TurboRig rig, string line)
+	{
+		Match match = SetRotationPointRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+			float x = ParseFloat(match.Groups[3].Value);
+			float y = ParseFloat(match.Groups[4].Value);
+			float z = ParseFloat(match.Groups[5].Value);
+			piece.Origin = new Vector3(x, y, z);
+
+			return true;
+		}
+		return false;
+	}
+
+	// gunModel[4].rotateAngleZ = -0.5F;
+	private static readonly Regex SetRotateAngleRegex = CreateRegex("%var%\\[%index%\\].rotateAngle(X|Y|Z)\\s*=\\s*%1xFloat%;");
+	public static bool MatchSetRotateAngle(TurboRig rig, string line)
+	{
+		Match match = SetRotateAngleRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+
+			string axis = match.Groups[3].Value;
+			float angle = ParseFloat(match.Groups[4].Value);
+			switch(axis)
+			{
+				case "X": piece.Euler.x = angle * Mathf.Rad2Deg; break;
+				case "Y": piece.Euler.y = angle * Mathf.Rad2Deg; break;
+				case "Z": piece.Euler.z = angle * Mathf.Rad2Deg; break;
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+// gunModel[4].doMirror(false, true, true);
+private static readonly Regex DoMirrorRegex = CreateRegex("%var%\\[%index%\\].doMirror\\s*\\(%3xBool%\\);");
+	public static bool MatchDoMirror(TurboRig rig, string line)
+	{
+		Match match = DoMirrorRegex.Match(line);
+		if (match.Success)
+		{
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index = int.Parse(match.Groups[2].Value);
+			TurboModel section = rig.GetOrCreateSection(partName);
+			TurboPiece piece = section.GetIndexedPiece(index);
+
+			piece.DoMirror(bool.Parse(match.Groups[3].Value),
+							bool.Parse(match.Groups[4].Value),
+							bool.Parse(match.Groups[5].Value));
+
+			return true;
+		}
+		return false;
+	}
+
+	// translateAll();
+	//private static readonly Regex TranslateAllRegex = new Regex("translateAll\\s*\\(([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*\\)\\s*;");
+	private static readonly Regex TranslateAllRegex = CreateRegex("translateAll(\\s*%3xFloat%);");
+	public static bool MatchTranslateAll(TurboRig rig, string line)
+	{
+		Match match = TranslateAllRegex.Match(line);
+		if (match.Success)
+		{
+			float x = ParseFloat(match.Groups[1].Value);
+			float y = ParseFloat(match.Groups[2].Value); 
+			float z = ParseFloat(match.Groups[3].Value);
+
+			foreach (TurboModel section in rig.Sections)
+			{
+				foreach (TurboPiece piece in section.Pieces)
+				{
+					if (piece != null)
+					{
+						piece.Origin.x += x;
+						piece.Origin.y += y;
+						piece.Origin.z += z;
+					}
+				}
+			}
+
+			foreach (AttachPoint ap in rig.AttachPoints)
+			{
+				ap.position -= new Vector3(x, y, z);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	// flipAll();
+	private static readonly Regex FlipAllRegex = new Regex("flipAll");
+	public static bool MatchFlipAll(TurboRig rig, string line)
+	{
+		Match match = FlipAllRegex.Match(line);
+		if (match.Success)
+		{
+			foreach (TurboModel section in rig.Sections)
+			{
+				foreach (TurboPiece piece in section.Pieces)
+				{
+					piece.DoMirror(false, true, true);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	// gunSlideDistance = 0.0f;
+	//private static readonly Regex FloatParamRegex = new Regex("\\s*([a-zA-Z0-9_]*)\\s*=\\s*([-0-9.]*)[fF]?;");
+	private static readonly Regex FloatParamRegex = CreateRegex("%var%\\s*=\\s*%1xFloat%;");
+	public static bool MatchFloatParam(TurboRig rig, string line)
+	{
+		Match match = FloatParamRegex.Match(line);
+		if (match.Success)
+		{
+			string parameterName = match.Groups[1].Value;
+			string value = match.Groups[2].Value;
+			rig.AnimationParameters.Add(new AnimationParameter()
+			{
+				key = parameterName,
+				isVec3 = false,
+				floatValue = ParseFloat(value)
+			});
+			return true;
+		}
+		return false;
+	}
+
+	// scopeAttachPoint = new Vector3f(3.5F / 16F, 5F / 16F, 0F);
+	//private static readonly Regex Vec3ParamRegex = new Regex("\\s*([a-zA-Z0-9_]*)\\s*=\\s*new Vector3f\\s*\\(([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*\\);");
+	private static readonly Regex Vec3ParamRegex = CreateRegex("%var%\\s*=\\s*new Vector3f(%3xFloat%);");
+	public static bool MatchVec3Param(TurboRig rig, string line)
+	{
+		Match match = Vec3ParamRegex.Match(line);
+		if (match.Success)
+		{
+			string parameterName = match.Groups[1].Value;
+			string xValue = match.Groups[2].Value;
+			string yValue = match.Groups[3].Value;
+			string zValue = match.Groups[4].Value;
+			rig.AnimationParameters.Add(new AnimationParameter()
+			{
+				key = parameterName,
+				isVec3 = true,
+				vec3Value = new Vector3(
+					ParseFloat(xValue),
+					ParseFloat(yValue),
+					ParseFloat(zValue))
+			});
+			return true;
+		}
+		return false;
+	}
+
+	
+
+
+	// Accepts standard 0f, 0, 3.f etc, OR "16F / 16F" style
+	// // TODO: OR "30f * 180f / 3.14159f"
+	private static readonly Regex FloatDivRegex = new Regex("([-0-9.Ff]*)\\s*\\/\\s*([-0-9.Ff]*)");
+	public static float ParseFloat(string value)
+	{
+		Match match = FloatDivRegex.Match(value);
+		if (match.Success)
+		{
+		 /// TODO:!
+			return float.Parse(match.Groups[1].Value) / float.Parse(match.Groups[2].Value);
+		}
+		return float.Parse(value.Replace("f", "").Replace("F", ""));
 	}
 }

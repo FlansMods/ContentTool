@@ -130,22 +130,27 @@ public class TurboPiecePreview : MinecraftModelPreview
 	private static readonly Color[] Faces = new Color[]
 	{
 		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.25f, 0.5f, 1.0f),
+		new Color(0.5f, 0.25f, 1.0f),
+		new Color(1f, 0.5f, 0.25f),
+		new Color(1f, 0.25f, 0.5f),
+		new Color(0.25f, 1f, 0.5f),
+		new Color(0.5f, 1f, 0.25f),
 	};
 	private static readonly Color[] Outlines = new Color[]
 	{
+		new Color(0.5f, 0.75f, 1.0f),
 		new Color(0.75f, 0.5f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
+		new Color(1f, 0.75f, 0.5f),
+		new Color(1f, 0.5f, 0.75f),
+		new Color(0.5f, 1f, 0.75f),
+		new Color(0.75f, 1f, 0.5f),
 	};
-
+	public void ResetTexture()
+	{
+		DestroyImmediate(PieceTexture);
+		PieceTexture = null;
+		GenerateMesh();
+	}
 	private void CreateFreshUVMap(Texture2D texture)
 	{
 		int x = Mathf.FloorToInt(Piece.Dim.x);

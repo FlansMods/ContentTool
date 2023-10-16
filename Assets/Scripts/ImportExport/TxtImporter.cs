@@ -214,35 +214,11 @@ public static class TxtImport
 		}
 	}
 
-	public static void ImportFromModel(string line, EDefinitionType type, Model model, InfoType target)
+	public static void ImportFromModel(string line, EDefinitionType type, InfoType target)
 	{
 		switch(type)
 		{
-			case EDefinitionType.gun: GunTypeImporter.inst.ImportFromModel((GunType)target, model, line); break;
-
-/*
-			case EDefinitionType.part: return PartTypeImporter.inst.ImportFromModel(file);
-			case EDefinitionType.bullet: return BulletTypeImporter.inst.Import(file);
-			case EDefinitionType.attachment: return AttachmentTypeImporter.inst.Import(file);
-			case EDefinitionType.grenade: return GrenadeTypeImporter.inst.Import(file);
-			
-			case EDefinitionType.aa: return AAGunTypeImporter.inst.Import(file);
-			case EDefinitionType.vehicle: return VehicleTypeImporter.inst.Import(file);
-			case EDefinitionType.plane: return PlaneTypeImporter.inst.Import(file);
-			case EDefinitionType.mechaItem: return MechaItemTypeImporter.inst.Import(file);
-			case EDefinitionType.mecha: return MechaTypeImporter.inst.Import(file);
-			case EDefinitionType.tool: return ToolTypeImporter.inst.Import(file);
-			case EDefinitionType.armour: return ArmourTypeImporter.inst.Import(file);
-			case EDefinitionType.armourBox: return ArmourBoxTypeImporter.inst.Import(file);
-			case EDefinitionType.box: return GunBoxTypeImporter.inst.Import(file);
-			case EDefinitionType.playerClass: return PlayerClassTypeImporter.inst.Import(file);
-			case EDefinitionType.team: return TeamTypeImporter.inst.Import(file);
-			case EDefinitionType.itemHolder: return ItemHolderTypeImporter.inst.Import(file);
-			case EDefinitionType.rewardBox: return RewardBoxTypeImporter.inst.Import(file);
-			case EDefinitionType.loadout: return LoadoutPoolTypeImporter.inst.Import(file);
-
-			default: return null;
-			*/
+			//case EDefinitionType.gun: GunTypeImporter.inst.ImportFromModel((GunType)target, model, line); break;
 		}
 	}
 }

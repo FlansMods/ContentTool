@@ -74,7 +74,6 @@ public class Model
 				Dim = this.Dim,
 				Origin = this.Origin,
 				Euler = this.Euler,
-				Shape = this.Shape,
 				Offsets = new Vector3[] {
 					Offsets[0], Offsets[1], Offsets[2], Offsets[3],
 					Offsets[4], Offsets[5], Offsets[6], Offsets[7],

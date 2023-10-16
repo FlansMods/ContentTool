@@ -17,6 +17,12 @@ public abstract class ShapeboxHandle : MinecraftBoundsHandle
 	public const float HANDLE_SIZE = 0.25f;
 
 	// Definitions
+	public Vector3 Max {
+		get { return center + Dimensions * 0.5f; }
+	}
+	public Vector3 Min {
+		get { return center - Dimensions * 0.5f; }
+	}
 	public Vector3 Origin
 	{
 		get { return center - Dimensions * 0.5f; }
@@ -33,14 +39,20 @@ public abstract class ShapeboxHandle : MinecraftBoundsHandle
 		this.center = center;
 		Dimensions = size;
 	}
+	public void SetMinAndMax(Vector3 min, Vector3 max)
+	{
+		center = (min + max) / 2f;
+		Dimensions = max - min;
+	}
+	public void SetOffsets(Vector3[] offsets)
+	{
+		for (int i = 0; i < 8; i++)
+			Offsets[i] = offsets[i];
+	}
 	public int GetVertexIndex(int x, int y, int z) { return x + y * 2 + z * 4; }
 	public Vector3 GetVertexPos(int x, int y, int z) { return GetVerts()[GetVertexIndex(x, y, z)]; }
-	public void SetVertexPos(int x, int y, int z, Vector3 position)
-	{
-		position -= Origin;
-		position -= new Vector3(x * Dimensions.x, y * Dimensions.y, z * Dimensions.z);
-		Offsets[GetVertexIndex(x, y, z)] = position;
-	}
+	public Vector3 GetVertexPos(int index) { return GetVerts()[index]; }
+
 	public Vector3[] GetVerts() 
 	{
 		Vector3[] verts = new Vector3[8];
@@ -149,43 +161,50 @@ public abstract class ShapeboxHandle : MinecraftBoundsHandle
 			}
 		}
 		bool changed = EditorGUI.EndChangeCheck();
-
-
 		// detect if any handles got hotControl
 		if (previousHotControl != GUIUtility.hotControl && GUIUtility.hotControl != 0)
 		{
 			CachedBounds = CurrentBounds;
 		}
-
-		// update if changed
-		if (changed)
-		{
-			float snapIncrement = 1.0f;
-			if (Event.current.shift)
-				snapIncrement = 0.25f;
-
-			// TODO: Only apply snap to modified components
-			for(int i = 0; i < Offsets.Length; i++)
-			{
-				Offsets[i] = Snap(Offsets[i], snapIncrement);
-			}
-
-			SetOriginAndDims(Snap(Origin, snapIncrement), Snap(Dimensions, snapIncrement));
-
-
-			// determine which handle changed to apply any further modifications
-			/*
-			center = (max + min) * 0.5f;
-			Dimensions = max - min;
-			for (int i = 0, count = OffsetControlIDs.Length; i < count; ++i)
-			{
-				if (GUIUtility.hotControl == OffsetControlIDs[i])
-					BoundsIncOffsets = OnHandleChanged((HandleDirection)i, BoundsIncOffsetsOnClick, BoundsIncOffsets);
-			}
-			*/
-		}
 	}
 	protected abstract void DrawSubHandles(bool isInsideCameraBox);
+
+	protected void ApplyChangesWithSnapping(Vector3 min, Vector3 max)
+	{
+		float snapIncrement = 1.0f;
+		if (Event.current.shift)
+			snapIncrement = 0.25f;
+
+		if (!Mathf.Approximately(min.x, Min.x))
+			min.x = Snap(min.x, snapIncrement);
+		if (!Mathf.Approximately(min.y, Min.y))
+			min.y = Snap(min.y, snapIncrement);
+		if (!Mathf.Approximately(min.z, Min.z))
+			min.z = Snap(min.z, snapIncrement);
+		if (!Mathf.Approximately(max.x, Max.x))
+			max.x = Snap(max.x, snapIncrement);
+		if (!Mathf.Approximately(max.y, Max.y))
+			max.y = Snap(max.y, snapIncrement);
+		if (!Mathf.Approximately(max.z, Max.z))
+			max.z = Snap(max.z, snapIncrement);
+
+		SetMinAndMax(min, max);
+	}
+
+	public void SetVertexPosWithSnap(int x, int y, int z, Vector3 position)
+	{
+		Vector3 oldPos = GetVertexPos(x, y, z);
+		if ((position - oldPos).sqrMagnitude <= 0.00001f)
+			return;
+
+		float snapIncrement = 1.0f;
+		if (Event.current.shift)
+			snapIncrement = 0.25f;
+
+		position -= Origin;
+		position -= new Vector3(x * Dimensions.x, y * Dimensions.y, z * Dimensions.z);
+		Offsets[GetVertexIndex(x, y, z)] = Snap(position, snapIncrement);
+	}
 
 	private bool ExitBecauseOfAlt()
 	{

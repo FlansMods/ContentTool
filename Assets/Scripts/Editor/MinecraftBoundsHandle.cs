@@ -177,6 +177,18 @@ public abstract class MinecraftBoundsHandle : PrimitiveBoundsHandle
 		}
 	}
 
+	protected float Snap(float input, float snapIncrement)
+	{
+		return Mathf.Round(input / snapIncrement) * snapIncrement;
+	}
+
+	protected Vector3 Snap1D(Vector3 input, float snapIncrement, Vector3 snapDirection)
+	{
+		float component = Vector3.Dot(input, snapDirection);
+		Vector3 remainder = input - (snapDirection * component);
+		return remainder + snapDirection * Snap(component, snapIncrement);
+	}
+
 	protected Vector3 Snap(Vector3 input, float snapIncrement)
 	{
 		return new Vector3(

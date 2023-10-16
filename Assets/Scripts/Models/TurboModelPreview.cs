@@ -87,7 +87,7 @@ public class TurboModelPreview : MinecraftModelPreview
 	public TurboPiecePreview AddChild()
 	{
 		Section.AddChild();
-		return GetChild(Section.pieces.Length - 1);
+		return GetChild(Section.Pieces.Count - 1);
 	}
 
 	public TurboPiecePreview GetChild(int index)
@@ -118,7 +118,7 @@ public class TurboModelPreview : MinecraftModelPreview
 	{
 		if (Section == null)
 			return;
-		for(int i = 0; i < Section.pieces.Length; i++)
+		for(int i = 0; i < Section.Pieces.Count; i++)
 		{
 			TurboPiecePreview piecePreview = GetChild(i);		
 			if (piecePreview == null)

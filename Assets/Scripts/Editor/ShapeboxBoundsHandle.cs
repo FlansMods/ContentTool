@@ -44,8 +44,7 @@ public class ShapeboxBoundsHandle : ShapeboxHandle
 		FaceHandles(ref min, ref max, isInsideCameraBox);
 		//EdgeHandles(ref min, ref max, isInsideCameraBox);
 
-		center = (max + min) * 0.5f;
-		Dimensions = max - min;
+		ApplyChangesWithSnapping(min, max);
 	}
 
 	private void FaceHandles(ref Vector3 min, ref Vector3 max, bool isCameraInsideBox)
