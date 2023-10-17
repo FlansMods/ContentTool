@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: uzi_ammo
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -23,32 +23,16 @@ MonoBehaviour:
     icon: mini_uzi_ammo
     textureX: 0
     textureY: 0
-    sections:
-    - partName: bullet
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -0.5, y: -1.5, z: -0.5}
-        Dim: {x: 1, y: 3, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: uzi_ammo
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 2800000, guid: 412cf0c465c57b840a467179b1db634b, type: 3}
   AdditionalTextures: []
-  gravityFactor: 0.25
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 5
     tags:
@@ -57,27 +41,40 @@ MonoBehaviour:
   shootStats:
     verticalRecoil: 3
     horizontalRecoil: 0
-    spread: 3
+    spread: 0
     spreadPattern: 1
-    hitscan: 1
     speed: 0
     bulletCount: 1
     spinSpeed: 360
     breaksMaterials: []
     penetrationPower: 1
-    trailParticles: 
     impact:
       decal: 
       damageToTarget: 8
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
       knockback: 0
+      potionEffectOnTarget: 
+      splashDamage: 0
       splashDamageRadius: 0
       splashDamageFalloff: 1
+      potionEffectOnSplash: 
       setFireToTarget: 0
       fireSpreadRadius: 0
       fireSpreadAmount: 0
+      explosionRadius: 0
       hitSounds: []
+      onImpactActions: []
+    hitscan: 1
+    fuseTime: 0
+    gravityFactor: 0.25
+    sticky: 0
+    turnRate: 0.5
+    dragInAir: 0.01
+    trailParticles: 
+    secondsBetweenTrailParticles: 0.25
+    dragInWater: 0.2
+    waterParticles: 
   onShootActions: []
   onClipEmptyActions: []
   onReloadActions: []

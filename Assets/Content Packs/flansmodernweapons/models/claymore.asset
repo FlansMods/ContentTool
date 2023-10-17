@@ -12,30 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: claymore
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
-  Textures:
-  - Key: default
-    Location:
-      Namespace: flansmodernweapons
-      ID: claymore
-    Texture: {fileID: 2800000, guid: ee2918c21f13a474cad592fa3e290f5e, type: 3}
+  Textures: []
   Icon:
     Namespace: minecraft
     ID: null
-  TextureX: 0
-  TextureY: 0
+  TextureX: 16
+  TextureY: 16
   Sections:
-  - partName: claymore
-    pieces:
+  - PartName: claymore
+    Pieces:
     - textureU: 0
       textureV: 0
       Pos: {x: -1, y: 2, z: -4}
       Dim: {x: 2, y: 4, z: 8}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -51,7 +42,6 @@ MonoBehaviour:
       Dim: {x: 0, y: 4, z: 8}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -62,22 +52,4 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints:
-  - name: barrel
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: slide
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: grip
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+  AttachPoints: []

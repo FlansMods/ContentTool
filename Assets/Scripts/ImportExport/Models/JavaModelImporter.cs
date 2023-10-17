@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -155,7 +156,7 @@ public static class JavaModelImporter
 		if (line.StartsWith("{") || line.StartsWith("}")) return;
 		if (line.StartsWith("package")) return;
 
-		 // After this point, every line should have a ; in it so add further lines until we get it
+		// After this point, every line should have a ; in it so add further lines until we get it
 		while (!line.Contains(";"))
 		{
 			// Get a new line, strip it, skip comments
@@ -184,205 +185,278 @@ public static class JavaModelImporter
 			return;
 		}
 
-		if(MatchNewMRTurbo(rig, line))
+		if (MatchPieceOperation(rig, line))
 		{ }
-		else if (MatchAddBox(rig, line))
+		else if(MatchPieceSetValue(rig, line))
 		{ }
-		else if (MatchAddShapeBox(rig, line))
+		else if(MatchSetParameter(rig, line))
 		{ }
-		else if(MatchAddTrapezoid(rig, line))
+		else if(MatchSetVec3Parameter(rig, line))
 		{ }
-		else if (MatchDoMirror(rig, line))
+		else if (MatchNewMRTurbo(rig, line))
 		{ }
-		else if (MatchSetRotateAngle(rig, line))
+		else if(MatchPiece2DOperation(rig, line))
 		{ }
-		else if (MatchSetRotationPoint(rig, line))
+		else if(MatchNewMR2DTurbo(rig, line))
 		{ }
-		else if (MatchTranslateAll(rig, line))
-		{ }
-		else if (MatchFlipAll(rig, line))
-		{ }
-		else if (MatchFloatParam(rig, line))
-		{ }
-		else if(MatchVec3Param(rig, line))
+		else if (MatchGlobalFunc(rig, line))
 		{ }
 
+		// Throwaway safe-ignore lines
+		else if (MatchArrayInitializerTurbo(rig, line) || line.Contains("for") || line.Contains("GlStateManager"))
+		{  }
+		else
+		{
+			Debug.LogError($"Could not parse '{line}' in {file.name}");
+		}
 
-		if(optionalType != null)
+
+		if (optionalType != null)
 		{
 			// Auto-import anim parameters
 			// TODO: Check we covered this case
 			TxtImport.ImportFromModel(line, DefinitionTypes.GetFromObject(optionalType), optionalType);
 			return;
 		}
-
-		if(line.Contains("for") || line.Contains("GlStateManager"))
-			return;
-
-		Debug.Assert(false, "Hit bad line in model (" + file.name + "): " + line);
 	}
-
 	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
 	//private static readonly Regex NewMRTurboRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*=\\s*new ModelRendererTurbo\\(\\s*this\\s*,\\s*([0-9]*)\\s*,\\s*([0-9]*)\\s*,\\s*[a-zA-Z,0-9\\s]*\\);");
-	private static readonly Regex NewMRTurboRegex = CreateRegex("%var%\\[%index%\\] = new ModelRendererTurbo(this, %2xFloat%, textureX, textureY);");
+	private static readonly Regex ArrayInitializerRegex = new Regex($"{VariableNameCapture}\\s*=\\s*new\\s*ModelRenderer(?:Turbo)?\\[{IntCapture}\\];");
+	public static bool MatchArrayInitializerTurbo(TurboRig rig, string line)
+	{ 
+		return ArrayInitializerRegex.Match(line).Success;
+	}
+
+	private static readonly Regex NewMR2DRegex = new Regex("([a-zA-Z0-9_]*)Model(?:s)?\\[([0-9]*)\\]\\[([0-9]*)\\]\\s*=\\s*new ModelRenderer(?:Turbo)?\\s*\\(this,\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
+	public static bool MatchNewMR2DTurbo(TurboRig rig, string line)
+	{
+		Match match = NewMR2DRegex.Match(line);
+		if (match.Success)
+		{
+			// Get the right section
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index_0 = int.Parse(match.Groups[2].Value);
+			int index_1 = int.Parse(match.Groups[3].Value);
+			TurboModel section = rig.GetOrCreateSection($"{partName}_{index_0}");
+
+			// Set the right piece UVs
+			List<float> floats = ResolveParameters(match.Groups[4].Value, 2);
+			if (floats.Count == 2)
+			{
+				int u = Mathf.FloorToInt(floats[0]);
+				int v = Mathf.FloorToInt(floats[1]);
+				section.SetIndexedTextureUV(index_1, u, v);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static readonly Regex NewMRRegex = new Regex("([a-zA-Z0-9_]*)Model(?:s)?\\[([0-9]*)\\]\\s*=\\s*new ModelRenderer(?:Turbo)?\\s*\\(this,\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
 	public static bool MatchNewMRTurbo(TurboRig rig, string line)
 	{
-		Match match = NewMRTurboRegex.Match(line);
+		Match match = NewMRRegex.Match(line);
 		if (match.Success)
 		{
-			string partName = Utils.ConvertPartName(match.Groups[0].Value);
-			int index = int.Parse(match.Groups[1].Value);
-			int u = int.Parse(match.Groups[2].Value);
-			int v = int.Parse(match.Groups[3].Value);
-
-			TurboModel section = rig.GetOrCreateSection(partName);
-			section.SetIndexedTextureUV(index, u, v);
-			return true;
-		}
-		return false;
-	}
-
-	// defaultScopeModel[0].addBox(-2F, 4.5F, -0.5F, 6, 1, 1);
-	//private static readonly Regex AddBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
-	private static readonly Regex AddBoxRegex = CreateRegex("%var%\\[%index%\\].addBox\\(%6xFloat%\\);"); 
-	public static bool MatchAddBox(TurboRig rig, string line)
-	{
-		Match match = AddBoxRegex.Match(line);
-		if (match.Success)
-		{
+			// Get the right section
 			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			int index = int.Parse(match.Groups[2].Value);
-			float x = ParseFloat(match.Groups[3].Value);
-			float y = ParseFloat(match.Groups[4].Value);
-			float z = ParseFloat(match.Groups[5].Value);
-			float w = ParseFloat(match.Groups[6].Value);
-			float h = ParseFloat(match.Groups[7].Value);
-			float d = ParseFloat(match.Groups[8].Value);
-
 			TurboModel section = rig.GetOrCreateSection(partName);
-			TurboPiece piece = section.GetIndexedPiece(index);
-			piece.Pos = new Vector3(x, y, z);
-			piece.Dim = new Vector3(w, h, d);
-			return true;
-		}
-		return false;
-	}
-
-	// defaultScopeModel[0].addBox(-2F, 4.5F, -0.5F, 6, 1, 1);
-	//private static readonly Regex AddBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
-	private static readonly Regex AddTrapezoidRegex = CreateRegex("%var%\\[%index%\\].addTrapezoid\\(%8xFloat%,\\s*(MR_[A-Z]*)\\);");
-	public static bool MatchAddTrapezoid(TurboRig rig, string line)
-	{
-		Match match = AddTrapezoidRegex.Match(line);
-		if (match.Success)
-		{
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			// Get the right piece
 			int index = int.Parse(match.Groups[2].Value);
-			float x = ParseFloat(match.Groups[3].Value);
-			float y = ParseFloat(match.Groups[4].Value);
-			float z = ParseFloat(match.Groups[5].Value);
-			float w = ParseFloat(match.Groups[6].Value);
-			float h = ParseFloat(match.Groups[7].Value);
-			float d = ParseFloat(match.Groups[8].Value);
-			float expand = ParseFloat(match.Groups[9].Value);
-			float taper = ParseFloat(match.Groups[10].Value);
-			string eDirection = match.Groups[11].Value;
-
-			TurboModel section = rig.GetOrCreateSection(partName);
-			TurboPiece piece = section.GetIndexedPiece(index);
-			piece.Pos = new Vector3(x - expand, y - expand, z - expand);
-			piece.Dim = new Vector3(w + 2 * expand, h + 2 * expand, d + 2 * expand);
-
-			switch(eDirection)
+			List<float> floats = ResolveParameters(match.Groups[3].Value, 2);
+			if (floats.Count == 2)
 			{
-				case "MR_LEFT":
+				int u = Mathf.FloorToInt(floats[0]);
+				int v = Mathf.FloorToInt(floats[1]);
+				section.SetIndexedTextureUV(index, u, v);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static readonly Regex PieceOperation2DRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\]\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
+	public static bool MatchPiece2DOperation(TurboRig rig, string line)
+	{
+		Match match = PieceOperation2DRegex.Match(line);
+		if (match.Success)
+		{
+			// Get the right section
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			int index_0 = int.Parse(match.Groups[2].Value);
+			int index_1 = int.Parse(match.Groups[3].Value);
+			TurboModel section = rig.GetOrCreateSection($"{partName}_{index_0}");
+
+			// Get the right piece
+			TurboPiece piece = section.GetIndexedPiece(index_1);
+
+			// Then run the function
+			string function = match.Groups[4].Value;
+			string parameters = match.Groups[5].Value;
+			switch (function)
+			{
+				case "addBox": return AddBox(piece, parameters);
+				case "addTrapezoid": return AddTrapezoid(piece, parameters);
+				case "addShapeBox": return AddShapebox(piece, parameters);
+				case "addShape3D": return AddShape3D(piece, parameters);
+				case "setRotationPoint": return SetRotationPoint(piece, parameters);
+				case "setPosition": return SetPosition(piece, parameters);
+				case "doMirror": return DoMirror(piece, parameters);
+				// This is fine to skip
+				case "render": return true;
+				default:
 				{
-					// expand +x face
-					piece.Offsets[1] = new Vector3(0f, -taper, -taper);
-					piece.Offsets[3] = new Vector3(0f, taper, -taper);
-					piece.Offsets[7] = new Vector3(0f, taper, taper);
-					piece.Offsets[5] = new Vector3(0f, -taper, taper);
-					break;
-				}
-				case "MR_RIGHT": // expand -x face
-				{
-					piece.Offsets[4] = new Vector3(0f, -taper, taper);
-					piece.Offsets[6] = new Vector3(0f, taper, taper);
-					piece.Offsets[2] = new Vector3(0f, taper, -taper);
-					piece.Offsets[0] = new Vector3(0f, -taper, -taper);
-					break;
-				}
-				case "MR_BACK": // expand +z face
-				{
-					piece.Offsets[5] = new Vector3(taper, -taper, 0f);
-					piece.Offsets[7] = new Vector3(taper, taper, 0f);
-					piece.Offsets[6] = new Vector3(-taper, taper, 0f);
-					piece.Offsets[4] = new Vector3(-taper, -taper, 0f);
-					break;
-				}
-				case "MR_FRONT": // expand -z face
-				{
-					piece.Offsets[0] = new Vector3(-taper, -taper, 0f);
-					piece.Offsets[2] = new Vector3(-taper, taper, 0f);
-					piece.Offsets[3] = new Vector3(taper, taper, 0f);
-					piece.Offsets[1] = new Vector3(taper, -taper, 0f);
-					break;
-				}
-				case "MR_BOTTOM": // expand +y face
-				{
-					piece.Offsets[7] = new Vector3(taper, 0f, taper);
-					piece.Offsets[3] = new Vector3(taper, 0f, -taper);
-					piece.Offsets[2] = new Vector3(-taper, 0f, -taper);
-					piece.Offsets[6] = new Vector3(-taper, 0f, taper);
-					break;
-				}
-				case "MR_TOP": // expand -y face
-				{
-					piece.Offsets[5] = new Vector3(taper, 0f, taper);
-					piece.Offsets[4] = new Vector3(-taper, 0f, taper);
-					piece.Offsets[0] = new Vector3(-taper, 0f, -taper);
-					piece.Offsets[1] = new Vector3(taper, 0f, -taper);
-					break;
+					Debug.LogWarning($"Unknown piece operation '{function}' in line '{line}'");
+					return false;
 				}
 			}
 
+		}
+		return false;
+	}
+
+	private static readonly Regex PieceOperationRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
+	public static bool MatchPieceOperation(TurboRig rig, string line)
+	{
+		Match match = PieceOperationRegex.Match(line);
+		if (match.Success)
+		{
+			// Get the right section
+			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			TurboModel section = rig.GetOrCreateSection(partName);
+
+			// Get the right piece
+			int index = int.Parse(match.Groups[2].Value);
+			TurboPiece piece = section.GetIndexedPiece(index);
+
+			// Then run the function
+			string function = match.Groups[3].Value;
+			string parameters = match.Groups[4].Value;
+
+			switch(function)
+			{
+				case "addBox": return AddBox(piece, parameters);
+				case "addTrapezoid": return AddTrapezoid(piece, parameters);
+				case "addShapeBox": return AddShapebox(piece, parameters);
+				case "addShape3D": return AddShape3D(piece, parameters);
+				case "setRotationPoint": return SetRotationPoint(piece, parameters);
+				case "setPosition": return SetPosition(piece, parameters);
+				case "doMirror": return DoMirror(piece, parameters);
+				// This is fine to skip
+				case "render": return true;
+				default:
+				{ 
+					Debug.LogWarning($"Unknown piece operation '{function}' in line '{line}'");
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static bool AddBox(TurboPiece piece, string parameters)
+	{
+		List<float> floats = ResolveParameters(parameters);
+		if(floats.Count == 6)
+		{
+			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
+			piece.Dim = new Vector3(floats[3], floats[4], floats[5]);
+			return true;
+		}
+		else if(floats.Count == 7)
+		{
+			float ex = floats[6];
+			piece.Pos = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
+			piece.Dim = new Vector3(floats[3]+2*ex, floats[4]+2*ex, floats[5]+2*ex);
 			return true;
 		}
 		return false;
 	}
 
-
-	// defaultScopeModel[0].addShapeBox(0F, 5F, -0.5F, 1, 2, 1, 0F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, 0F, 0F, -0.375F, -0.5F, -0.5F, -0.375F, 0F, -0.5F, -0.375F, 0F, -0.5F, -0.375F, -0.5F, -0.5F, -0.375F); // Box 12
-	//private static readonly Regex AddShapeBoxRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*\\.addBox\\s*\\(\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*,\\s*([\\-0-9.\\/Ff]*)\\s*\\);");
-	private static readonly Regex AddShapeBoxRegex = CreateRegex("%var%\\[%index%\\].addShapeBox\\(%31xFloat%\\);");
-	public static bool MatchAddShapeBox(TurboRig rig, string line)
+	public static bool AddTrapezoid(TurboPiece piece, string parameters)
 	{
-		Match match = AddShapeBoxRegex.Match(line);
-		if (match.Success)
+		List<float> floats = ResolveParameters(parameters, 8);
+		if (floats.Count == 8)
 		{
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			int index = int.Parse(match.Groups[2].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
-			TurboPiece piece = section.GetIndexedPiece(index);
+			float ex = floats[6];
+			float taper = floats[7];
+			piece.Pos = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
+			piece.Dim = new Vector3(floats[3] + 2 * ex, floats[4] + 2 * ex, floats[5] + 2 * ex);
 
-			float x = ParseFloat(match.Groups[3].Value);
-			float y = ParseFloat(match.Groups[4].Value);
-			float z = ParseFloat(match.Groups[5].Value);
-			float w = ParseFloat(match.Groups[6].Value);
-			float h = ParseFloat(match.Groups[7].Value);
-			float d = ParseFloat(match.Groups[8].Value);
-			piece.Pos = new Vector3(x, y, z);
-			piece.Dim = new Vector3(w, h, d);
+			if (parameters.Contains("MR_LEFT"))
+			{
+				// expand +x face
+				piece.Offsets[1] = new Vector3(0f, -taper, -taper);
+				piece.Offsets[3] = new Vector3(0f, taper, -taper);
+				piece.Offsets[7] = new Vector3(0f, taper, taper);
+				piece.Offsets[5] = new Vector3(0f, -taper, taper);
+			}
+			else if (parameters.Contains("MR_RIGHT"))
+			{
+				// expand -x face
+				piece.Offsets[4] = new Vector3(0f, -taper, taper);
+				piece.Offsets[6] = new Vector3(0f, taper, taper);
+				piece.Offsets[2] = new Vector3(0f, taper, -taper);
+				piece.Offsets[0] = new Vector3(0f, -taper, -taper);
+			}
+			else if (parameters.Contains("MR_BACK"))
+			{
+				// expand +z face
+				piece.Offsets[5] = new Vector3(taper, -taper, 0f);
+				piece.Offsets[7] = new Vector3(taper, taper, 0f);
+				piece.Offsets[6] = new Vector3(-taper, taper, 0f);
+				piece.Offsets[4] = new Vector3(-taper, -taper, 0f);
+			}
+			else if (parameters.Contains("MR_FRONT"))
+			{
+				// expand - z face
+				piece.Offsets[0] = new Vector3(-taper, -taper, 0f);
+				piece.Offsets[2] = new Vector3(-taper, taper, 0f);
+				piece.Offsets[3] = new Vector3(taper, taper, 0f);
+				piece.Offsets[1] = new Vector3(taper, -taper, 0f);
+			}
+			else if (parameters.Contains("MR_BOTTOM"))
+			{
+				// expand +y face
+				piece.Offsets[7] = new Vector3(taper, 0f, taper);
+				piece.Offsets[3] = new Vector3(taper, 0f, -taper);
+				piece.Offsets[2] = new Vector3(-taper, 0f, -taper);
+				piece.Offsets[6] = new Vector3(-taper, 0f, taper);
+			}
+			else if (parameters.Contains("MR_TOP"))
+			{
+				// expand -y face
+				piece.Offsets[5] = new Vector3(taper, 0f, taper);
+				piece.Offsets[4] = new Vector3(-taper, 0f, taper);
+				piece.Offsets[0] = new Vector3(-taper, 0f, -taper);
+				piece.Offsets[1] = new Vector3(taper, 0f, -taper);
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public static bool AddShape3D(TurboPiece piece, string parameters)
+	{
+		// TODO: Shape3D
+		return true;
+	}
 
-			// floats[9] What is this? Scale?
-
+	public static bool AddShapebox(TurboPiece piece, string parameters)
+	{
+		List<float> floats = ResolveParameters(parameters);
+		if (floats.Count == 31)
+		{
+			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
+			piece.Dim = new Vector3(floats[3], floats[4], floats[5]);
+			// ignore expand = floats[6]
 			for (int i = 0; i < 8; i++)
 			{
 				int iPermuted = aiPermutation[i];
 				piece.Offsets[i] = new Vector3(
-					ParseFloat(match.Groups[10 + iPermuted * 3 + 0].Value),
-					ParseFloat(match.Groups[10 + iPermuted * 3 + 1].Value),
-					ParseFloat(match.Groups[10 + iPermuted * 3 + 2].Value));
+					floats[7 + iPermuted * 3 + 0],
+					floats[7 + iPermuted * 3 + 1],
+					floats[7 + iPermuted * 3 + 2]);
 				if ((i & 0x1) == 0) piece.Offsets[i].x *= -1;
 				if ((i & 0x2) == 0) piece.Offsets[i].y *= -1;
 				if ((i & 0x4) == 0) piece.Offsets[i].z *= -1;
@@ -392,170 +466,205 @@ public static class JavaModelImporter
 		return false;
 	}
 
-	// gunModel[4].setRotationPoint(0F, 1F, 0F);
-	private static readonly Regex SetRotationPointRegex = CreateRegex("%var%\\[%index%\\].setRotationPoint(%3xFloat%);");
-	public static bool MatchSetRotationPoint(TurboRig rig, string line)
+	public static bool SetPosition(TurboPiece piece, string parameters)
 	{
-		Match match = SetRotationPointRegex.Match(line);
-		if (match.Success)
+		List<float> floats = ResolveParameters(parameters);
+		if (floats.Count == 3)
 		{
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			int index = int.Parse(match.Groups[2].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
-			TurboPiece piece = section.GetIndexedPiece(index);
-			float x = ParseFloat(match.Groups[3].Value);
-			float y = ParseFloat(match.Groups[4].Value);
-			float z = ParseFloat(match.Groups[5].Value);
-			piece.Origin = new Vector3(x, y, z);
-
+			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
 			return true;
 		}
 		return false;
 	}
-
-	// gunModel[4].rotateAngleZ = -0.5F;
-	private static readonly Regex SetRotateAngleRegex = CreateRegex("%var%\\[%index%\\].rotateAngle(X|Y|Z)\\s*=\\s*%1xFloat%;");
-	public static bool MatchSetRotateAngle(TurboRig rig, string line)
+	public static bool SetRotationPoint(TurboPiece piece, string parameters)
 	{
-		Match match = SetRotateAngleRegex.Match(line);
+		List<float> floats = ResolveParameters(parameters);
+		if (floats.Count == 3)
+		{
+			piece.Origin = new Vector3(floats[0], floats[1], floats[2]);
+			return true;
+		}
+		return false;
+	}
+	public static bool DoMirror(TurboPiece piece, string parameters)
+	{
+		string[] boolParams = parameters.Split(',');
+		if(boolParams.Length == 3)
+		{
+			piece.DoMirror(bool.Parse(boolParams[0]), bool.Parse(boolParams[1]), bool.Parse(boolParams[2]));
+			return true;
+		}
+		return false;
+	}
+	
+
+
+	private static readonly Regex PieceSetValueRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)].([a-zA-Z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*);");
+	public static bool MatchPieceSetValue(TurboRig rig, string line)
+	{
+		Match match = PieceSetValueRegex.Match(line);
 		if (match.Success)
 		{
+			// Get the right section
 			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			int index = int.Parse(match.Groups[2].Value);
 			TurboModel section = rig.GetOrCreateSection(partName);
+
+			// Get the right piece
+			int index = int.Parse(match.Groups[2].Value);
 			TurboPiece piece = section.GetIndexedPiece(index);
 
-			string axis = match.Groups[3].Value;
-			float angle = ParseFloat(match.Groups[4].Value);
-			switch(axis)
+			// Then run the function
+			string field = match.Groups[3].Value;
+			string setValue = match.Groups[4].Value;
+
+			switch (field)
 			{
-				case "X": piece.Euler.x = angle * Mathf.Rad2Deg; break;
-				case "Y": piece.Euler.y = angle * Mathf.Rad2Deg; break;
-				case "Z": piece.Euler.z = angle * Mathf.Rad2Deg; break;
-			}
-
-			return true;
-		}
-		return false;
-	}
-
-// gunModel[4].doMirror(false, true, true);
-private static readonly Regex DoMirrorRegex = CreateRegex("%var%\\[%index%\\].doMirror\\s*\\(%3xBool%\\);");
-	public static bool MatchDoMirror(TurboRig rig, string line)
-	{
-		Match match = DoMirrorRegex.Match(line);
-		if (match.Success)
-		{
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			int index = int.Parse(match.Groups[2].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
-			TurboPiece piece = section.GetIndexedPiece(index);
-
-			piece.DoMirror(bool.Parse(match.Groups[3].Value),
-							bool.Parse(match.Groups[4].Value),
-							bool.Parse(match.Groups[5].Value));
-
-			return true;
-		}
-		return false;
-	}
-
-	// translateAll();
-	//private static readonly Regex TranslateAllRegex = new Regex("translateAll\\s*\\(([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*\\)\\s*;");
-	private static readonly Regex TranslateAllRegex = CreateRegex("translateAll(\\s*%3xFloat%);");
-	public static bool MatchTranslateAll(TurboRig rig, string line)
-	{
-		Match match = TranslateAllRegex.Match(line);
-		if (match.Success)
-		{
-			float x = ParseFloat(match.Groups[1].Value);
-			float y = ParseFloat(match.Groups[2].Value); 
-			float z = ParseFloat(match.Groups[3].Value);
-
-			foreach (TurboModel section in rig.Sections)
-			{
-				foreach (TurboPiece piece in section.Pieces)
+				case "rotateAngleX": return SetRotateAngleX(piece, setValue);
+				case "rotateAngleY": return SetRotateAngleY(piece, setValue);
+				case "rotateAngleZ": return SetRotateAngleZ(piece, setValue);
+				case "flip": return SetFlip(piece, setValue);
+				default:
 				{
-					if (piece != null)
-					{
-						piece.Origin.x += x;
-						piece.Origin.y += y;
-						piece.Origin.z += z;
-					}
+					Debug.LogWarning($"Unknown piece set value '{field}' in line '{line}'");
+					return false;
 				}
 			}
-
-			foreach (AttachPoint ap in rig.AttachPoints)
-			{
-				ap.position -= new Vector3(x, y, z);
-			}
+		}
+		return false;
+	}
+	public static bool SetRotateAngleX(TurboPiece piece, string setValue)
+	{
+		List<float> floats = ResolveParameters(setValue, 1);
+		if (floats.Count == 1)
+		{
+			piece.Euler.x = floats[0] * Mathf.Rad2Deg;
 			return true;
 		}
 		return false;
 	}
-
-	// flipAll();
-	private static readonly Regex FlipAllRegex = new Regex("flipAll");
-	public static bool MatchFlipAll(TurboRig rig, string line)
+	public static bool SetRotateAngleY(TurboPiece piece, string setValue)
 	{
-		Match match = FlipAllRegex.Match(line);
+		List<float> floats = ResolveParameters(setValue, 1);
+		if (floats.Count == 1)
+		{
+			piece.Euler.y = floats[0] * Mathf.Rad2Deg;
+			return true;
+		}
+		return false;
+	}
+	public static bool SetRotateAngleZ(TurboPiece piece, string setValue)
+	{
+		List<float> floats = ResolveParameters(setValue, 1);
+		if (floats.Count == 1)
+		{
+			piece.Euler.z = floats[0] * Mathf.Rad2Deg;
+			return true;
+		}
+		return false;
+	}
+	public static bool SetFlip(TurboPiece piece, string setValue)
+	{
+		bool flip = bool.Parse(setValue);
+		// TODO: Hmm, what should this do?		
+		return true;
+	}
+	private static readonly Regex GlobalFuncRegex = new Regex("([A-Za-z]*)\\s*\\(([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
+	public static bool MatchGlobalFunc(TurboRig rig, string line)
+	{
+		Match match = GlobalFuncRegex.Match(line);
 		if (match.Success)
 		{
-			foreach (TurboModel section in rig.Sections)
+			// Run the function
+			string function = Utils.ConvertPartName(match.Groups[1].Value);
+			string parameters = match.Groups[2].Value;
+
+			switch (function)
 			{
-				foreach (TurboPiece piece in section.Pieces)
+				case "translateAll": return TranslateAll(rig, parameters);
+				case "flipAll": return FlipAll(rig);
+				// This is fine to skip
+				case "render": return true;
+				case "scale": return true;
+				default:
 				{
-					piece.DoMirror(false, true, true);
+					Debug.LogWarning($"Unknown global function '{function}' in line '{line}'");
+					return false;
 				}
 			}
+		}
+		return false;
+	}
+	public static bool TranslateAll(TurboRig rig, string parameters)
+	{
+		List<float> floats = ResolveParameters(parameters);
+		if (floats.Count == 3)
+		{
+			rig.TranslateAll(floats[0], floats[1], floats[2]);
 			return true;
 		}
 		return false;
 	}
-
-	// gunSlideDistance = 0.0f;
-	//private static readonly Regex FloatParamRegex = new Regex("\\s*([a-zA-Z0-9_]*)\\s*=\\s*([-0-9.]*)[fF]?;");
-	private static readonly Regex FloatParamRegex = CreateRegex("%var%\\s*=\\s*%1xFloat%;");
-	public static bool MatchFloatParam(TurboRig rig, string line)
+	public static bool FlipAll(TurboRig rig)
 	{
-		Match match = FloatParamRegex.Match(line);
+		rig.FlipAll();
+		return true;
+	}
+
+	private static readonly Regex SetParameterRegex = new Regex("([A-Za-z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s_]*);");
+	public static bool MatchSetParameter(TurboRig rig, string line)
+	{
+		Match match = SetParameterRegex.Match(line);
 		if (match.Success)
 		{
-			string parameterName = match.Groups[1].Value;
+			// Find the parameter and set it
+			string parameter = match.Groups[1].Value;
 			string value = match.Groups[2].Value;
-			rig.AnimationParameters.Add(new AnimationParameter()
+
+			if (parameter == "animationType")
 			{
-				key = parameterName,
-				isVec3 = false,
-				floatValue = ParseFloat(value)
-			});
-			return true;
+				// Hmm? Send to type?
+				EAnimationType animationType = (EAnimationType)Enum.Parse(typeof(EAnimationType), value.Split('.')[1]);
+				Debug.Log($"Detected animation type {animationType} in line '{line}'");
+				return true;
+			}
+			else
+			{
+				List<float> floats = ResolveParameters(value, 1);
+				if (floats.Count == 1)
+				{
+					rig.AnimationParameters.Add(new AnimationParameter()
+					{
+						key = Utils.ToLowerWithUnderscores(parameter),
+						isVec3 = false,
+						floatValue = floats[0]
+					});
+					return true;
+				}
+			}
 		}
 		return false;
 	}
 
-	// scopeAttachPoint = new Vector3f(3.5F / 16F, 5F / 16F, 0F);
-	//private static readonly Regex Vec3ParamRegex = new Regex("\\s*([a-zA-Z0-9_]*)\\s*=\\s*new Vector3f\\s*\\(([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*,\\s*([-0-9.\\/Ff]*)\\s*\\);");
-	private static readonly Regex Vec3ParamRegex = CreateRegex("%var%\\s*=\\s*new Vector3f(%3xFloat%);");
-	public static bool MatchVec3Param(TurboRig rig, string line)
+	private static readonly Regex SetVec3ParameterRegex = new Regex("([A-Za-z]*)\\s*=\\s*new\\s*Vector3f\\s*\\(([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
+	public static bool MatchSetVec3Parameter(TurboRig rig, string line)
 	{
-		Match match = Vec3ParamRegex.Match(line);
+		Match match = SetVec3ParameterRegex.Match(line);
 		if (match.Success)
 		{
-			string parameterName = match.Groups[1].Value;
-			string xValue = match.Groups[2].Value;
-			string yValue = match.Groups[3].Value;
-			string zValue = match.Groups[4].Value;
-			rig.AnimationParameters.Add(new AnimationParameter()
+			// Find the parameter and set it
+			string parameter = match.Groups[1].Value;
+			string value = match.Groups[2].Value;
+			List<float> floats = ResolveParameters(value, 3);
+			if (floats.Count == 3)
 			{
-				key = parameterName,
-				isVec3 = true,
-				vec3Value = new Vector3(
-					ParseFloat(xValue),
-					ParseFloat(yValue),
-					ParseFloat(zValue))
-			});
-			return true;
+				rig.AnimationParameters.Add(new AnimationParameter()
+				{
+					key = Utils.ToLowerWithUnderscores(parameter),
+					isVec3 = true,
+					vec3Value = new Vector3(floats[0], floats[1], floats[2]),
+				});
+				return true;
+			}
 		}
 		return false;
 	}
@@ -575,5 +684,63 @@ private static readonly Regex DoMirrorRegex = CreateRegex("%var%\\[%index%\\].do
 			return float.Parse(match.Groups[1].Value) / float.Parse(match.Groups[2].Value);
 		}
 		return float.Parse(value.Replace("f", "").Replace("F", ""));
+	}
+
+	private static List<float> ResolveParameters(string parameters, int max = 100)
+	{
+		parameters = parameters.Replace("(float)Math.PI", "3.14159265");
+		List<float> splits = new List<float>();
+		float accumulated = 0.0f;
+		bool divideMode = false;
+		bool multiplyMode = false;
+		int currentFloatStart = 0;
+		for (int ch = 0; ch < parameters.Length + 1; ch++)
+		{
+			char nextChar = ch == parameters.Length ? ',' : parameters[ch];
+			if (('0' <= nextChar && nextChar <= '9') || nextChar == '.')
+				continue;
+			if (nextChar == '-')
+			{
+				if (currentFloatStart != ch)
+					Debug.LogWarning($"Found - char mid-float in {parameters} at index:{ch}");
+				continue;
+			}
+
+			// At this point, we should finish the float we are on
+			if (ch > currentFloatStart)
+			{
+				float component = 0.0f;
+				string floatToParse = parameters.Substring(currentFloatStart, ch - currentFloatStart);
+				if (!float.TryParse(floatToParse, out component))
+				{
+					Debug.LogError($"Failed to parse '{floatToParse}' as a float from parameters '{parameters}'");
+				}
+				if (multiplyMode)
+					accumulated *= component;
+				else if (divideMode)
+					accumulated /= component;
+				else
+					accumulated = component;
+				multiplyMode = false;
+				divideMode = false;
+			}
+			currentFloatStart = ch + 1;
+
+			if (nextChar == '*')
+				multiplyMode = true;
+			if (nextChar == '/')
+				divideMode = true;
+			if (nextChar == ',')
+			{
+				splits.Add(accumulated);
+				accumulated = 0.0f;
+			}
+			if (nextChar == ')')
+				break;
+			if (splits.Count >= max)
+				break;
+		}
+
+		return splits;
 	}
 }

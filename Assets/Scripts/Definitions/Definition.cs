@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public abstract class Definition : ScriptableObject
+public abstract class Definition : ScriptableObject, IVerifiableAsset
 {
 	public Model Model;
 	public Texture2D Skin;
@@ -25,6 +26,46 @@ public abstract class Definition : ScriptableObject
 			if (Utils.ToLowerWithUnderscores(tex.name) == name)
 				return tex.icon;
 		return null;
+	}
+
+	public virtual void GetVerifications(List<Verification> verifications)
+	{
+		if (LocalisedNames.Count < 1)
+			verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
+		if (name != Utils.ToLowerWithUnderscores(name))
+		{
+			verifications.Add(Verification.Failure(
+				$"Definition {name} does not have a Minecraft-compliant name",
+				() =>
+				{
+					name = Utils.ToLowerWithUnderscores(name);
+				})
+			);
+		}
+
+		if(ExpectsModel())
+		{
+			ResourceLocation resLoc = this.GetLocation();
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{resLoc.IDWithoutPrefixes()}.asset";
+			MinecraftModel mcModel = AssetDatabase.LoadAssetAtPath<MinecraftModel>(modelPath);
+			if (mcModel == null)
+				verifications.Add(Verification.Failure(
+					$"Definition {name} does not have a matching model at {modelPath}"));
+		}
+	}
+
+	public bool ExpectsModel()
+	{
+		if (this is AnimationDefinition
+		|| this is ClassDefinition
+		|| this is LoadoutPoolDefinition
+		|| this is MagazineDefinition
+		|| this is MaterialDefinition
+		|| this is NpcDefinition
+		|| this is TeamDefinition)
+			return false;
+
+		return true;
 	}
 
 	[System.Serializable]

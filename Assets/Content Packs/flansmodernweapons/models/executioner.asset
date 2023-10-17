@@ -12,40 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: executioner
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
-  Textures:
-  - Key: default
-    Location:
-      Namespace: flansmodernweapons
-      ID: executioner
-    Texture: {fileID: 2800000, guid: 52ff49998c1c6994dab90a4244a06686, type: 3}
-  - Key: executioner_chaos
-    Location:
-      Namespace: flansmodernweapons
-      ID: executioner_chaos
-    Texture: {fileID: 2800000, guid: 89eac772356fd824b8d8adee43b36d5d, type: 3}
-  - Key: executioner_order
-    Location:
-      Namespace: flansmodernweapons
-      ID: executioner_order
-    Texture: {fileID: 2800000, guid: 54bd5b7272c099d4e90b160838b387ea, type: 3}
+  Textures: []
   Icon:
     Namespace: minecraft
     ID: null
   TextureX: 64
   TextureY: 32
   Sections:
-  - partName: body
-    pieces:
+  - PartName: body
+    Pieces:
     - textureU: 1
       textureV: 1
       Pos: {x: -4, y: 1, z: -1}
       Dim: {x: 2, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
       - {x: 0, y: -0, z: -0}
@@ -61,7 +42,6 @@ MonoBehaviour:
       Dim: {x: 4, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
       - {x: 0, y: -0, z: -0}
@@ -77,7 +57,6 @@ MonoBehaviour:
       Dim: {x: 2, y: 1, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: 0.125}
       - {x: 0, y: -0, z: 0.125}
@@ -93,7 +72,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 1, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -109,7 +87,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -119,15 +96,14 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-  - partName: ammo_0
-    pieces:
+  - PartName: ammo_0
+    Pieces:
     - textureU: 33
       textureV: 9
       Pos: {x: 1.9, y: 4, z: -1}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: 0.1, z: 0.1}
       - {x: 0, y: 0.1, z: 0.1}
@@ -143,7 +119,6 @@ MonoBehaviour:
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: 0.1, z: 0.1}
       - {x: 0, y: 0.1, z: 0.1}
@@ -153,15 +128,14 @@ MonoBehaviour:
       - {x: 0, y: 0.1, z: -0.1}
       - {x: -0, y: -0.1, z: -0.1}
       - {x: 0, y: -0.1, z: -0.1}
-  - partName: breakAction
-    pieces:
+  - PartName: break_action
+    Pieces:
     - textureU: 1
       textureV: 9
       Pos: {x: 3, y: 3, z: -1}
       Dim: {x: 4, y: 1, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: 0.125}
       - {x: 0, y: -0, z: 0.125}
@@ -177,57 +151,37 @@ MonoBehaviour:
       Dim: {x: 6, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: 0.050000004}
-      - {x: 0, y: -0, z: 0.050000004}
-      - {x: -0, y: 0, z: 0.050000004}
-      - {x: 0, y: 0, z: 0.050000004}
-      - {x: -0, y: -0, z: -0.050000004}
-      - {x: 0, y: -0, z: -0.050000004}
-      - {x: -0, y: 0, z: -0.050000004}
-      - {x: 0, y: 0, z: -0.050000004}
+      - {x: -0, y: -0, z: 0.05}
+      - {x: 0, y: -0, z: 0.05}
+      - {x: -0, y: 0, z: 0.05}
+      - {x: 0, y: 0, z: 0.05}
+      - {x: -0, y: -0, z: -0.05}
+      - {x: 0, y: -0, z: -0.05}
+      - {x: -0, y: 0, z: -0.05}
+      - {x: 0, y: 0, z: -0.05}
     - textureU: 1
       textureV: 17
       Pos: {x: 2, y: 4, z: 0}
       Dim: {x: 6, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: 0.050000004}
-      - {x: 0, y: -0, z: 0.050000004}
-      - {x: -0, y: 0, z: 0.050000004}
-      - {x: 0, y: 0, z: 0.050000004}
-      - {x: -0, y: -0, z: -0.050000004}
-      - {x: 0, y: -0, z: -0.050000004}
-      - {x: -0, y: 0, z: -0.050000004}
-      - {x: 0, y: 0, z: -0.050000004}
+      - {x: -0, y: -0, z: 0.05}
+      - {x: 0, y: -0, z: 0.05}
+      - {x: -0, y: 0, z: 0.05}
+      - {x: 0, y: 0, z: 0.05}
+      - {x: -0, y: -0, z: -0.05}
+      - {x: 0, y: -0, z: -0.05}
+      - {x: -0, y: 0, z: -0.05}
+      - {x: 0, y: 0, z: -0.05}
   AnimationParameters:
-  - key: breakAngle
+  - key: break_angle
     isVec3: 0
     floatValue: 60
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: barrelBreakPoint
+  - key: barrel_break_point
     isVec3: 1
     floatValue: 0
     vec3Value: {x: 0.1875, y: 0.125, z: 0}
-  AttachPoints:
-  - name: barrel
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: slide
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: grip
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+  AttachPoints: []

@@ -12,30 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: long_barrel
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
-  Textures:
-  - Key: default
-    Location:
-      Namespace: flansmodernweapons
-      ID: long_barrel
-    Texture: {fileID: 2800000, guid: a3a45e6dc4f36f5469883e72908cc63e, type: 3}
+  Textures: []
   Icon:
     Namespace: minecraft
     ID: null
   TextureX: 32
   TextureY: 2
   Sections:
-  - partName: attachment
-    pieces:
+  - PartName: attachment
+    Pieces:
     - textureU: 0
       textureV: 0
       Pos: {x: 0, y: -0.5, z: -0.5}
       Dim: {x: 12, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -51,7 +42,6 @@ MonoBehaviour:
       Dim: {x: 0.5, y: 1, z: 0.5}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -62,22 +52,4 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints:
-  - name: barrel
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: slide
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: grip
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+  AttachPoints: []

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: mw_medic_bag
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -23,47 +23,16 @@ MonoBehaviour:
     icon: mwmedic_bag
     textureX: 0
     textureY: 0
-    sections:
-    - partName: bag
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -3, y: 0, z: -6}
-        Dim: {x: 6, y: 6, z: 6}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: -0, y: -0, z: -0}
-        - {x: 0, y: -0, z: -0}
-        - {x: -0, y: 0, z: -0}
-        - {x: 0, y: 0, z: -0}
-        - {x: -0, y: -0, z: 0}
-        - {x: 0, y: -0, z: 0}
-        - {x: 0.1, y: -1, z: 0}
-        - {x: -0.5, y: -1, z: 0}
-      - textureU: 0
-        textureV: 12
-        Pos: {x: -3, y: 0, z: 0}
-        Dim: {x: 6, y: 6, z: 6}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: -0, y: -0, z: -0}
-        - {x: 0, y: -0, z: -0}
-        - {x: 0.1, y: -1, z: -0}
-        - {x: -0.5, y: -1, z: -0}
-        - {x: -0, y: -0, z: 0}
-        - {x: 0, y: -0, z: 0}
-        - {x: -0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: mw_medic_bag
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: e8b0b1d3f6c76724dabe972536c85f9e, type: 3}
   Icon: {fileID: 2800000, guid: b520dd847029c464796a11565ec1d3a3, type: 3}
   AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -138,12 +107,17 @@ MonoBehaviour:
     multiplierVsPlayers: 1
     multiplierVsVehicles: 0
     knockback: 0
+    potionEffectOnTarget: 
+    splashDamage: 0
     splashDamageRadius: 0
     splashDamageFalloff: 0
+    potionEffectOnSplash: 
     setFireToTarget: 0
     fireSpreadRadius: 0
     fireSpreadAmount: 0
+    explosionRadius: 0
     hitSounds: []
+    onImpactActions: []
   lifetimeAfterDetonation: 0
   smokeParticles:
   - explode

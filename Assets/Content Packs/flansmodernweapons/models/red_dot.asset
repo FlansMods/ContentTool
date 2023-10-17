@@ -12,30 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: red_dot
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
-  Textures:
-  - Key: default
-    Location:
-      Namespace: flansmodernweapons
-      ID: red_dot_sight
-    Texture: {fileID: 2800000, guid: 89f5ce26fe011194c8e5de280e353c6f, type: 3}
+  Textures: []
   Icon:
     Namespace: minecraft
     ID: null
   TextureX: 128
   TextureY: 32
   Sections:
-  - partName: attachment
-    pieces:
+  - PartName: attachment
+    Pieces:
     - textureU: 0
       textureV: 0
       Pos: {x: -16, y: 0, z: -8}
       Dim: {x: 32, y: 3, z: 16}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -51,7 +42,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 14, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -67,7 +57,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 14, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -83,7 +72,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 1, z: 16}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -99,7 +87,6 @@ MonoBehaviour:
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -110,22 +97,4 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints:
-  - name: barrel
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: slide
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: grip
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+  AttachPoints: []

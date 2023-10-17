@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: phantek_auto_12
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
   Textures:
   - Key: default
     Location:
@@ -31,21 +28,25 @@ MonoBehaviour:
       Namespace: flansvendersgame
       ID: phantek_auto_12_undergrowth
     Texture: {fileID: 2800000, guid: 4735eccdd62826745b0547c74dec3a2b, type: 3}
+  - Key: 
+    Location:
+      Namespace: flansvendersgame
+      ID: 
+    Texture: {fileID: 0}
   Icon:
     Namespace: minecraft
     ID: null
   TextureX: 64
   TextureY: 64
   Sections:
-  - partName: body
-    pieces:
+  - PartName: body
+    Pieces:
     - textureU: 1
       textureV: 1
       Pos: {x: 0, y: 2, z: -1}
       Dim: {x: 4, y: 3, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -61,13 +62,12 @@ MonoBehaviour:
       Dim: {x: 2, y: 4, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: -0}
-      - {x: 0, y: -0.5, z: -0}
-      - {x: 1, y: 0, z: -0}
-      - {x: 1, y: 0, z: -0}
-      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.5, z: 0}
+      - {x: 1, y: 0, z: 0}
+      - {x: 1, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
       - {x: 0, y: -0.5, z: 0}
       - {x: 1, y: 0, z: 0}
       - {x: 1, y: 0, z: 0}
@@ -77,15 +77,14 @@ MonoBehaviour:
       Dim: {x: 8, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0.75, z: -0}
-      - {x: 0, y: -0, z: 0.5}
-      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -0.75, z: 0}
       - {x: 0, y: 0, z: 0.5}
-      - {x: -0, y: -0.75, z: 0}
-      - {x: 0, y: -0, z: -0.5}
-      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0.5}
+      - {x: 0, y: -0.75, z: 0}
+      - {x: 0, y: 0, z: -0.5}
+      - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: -0.5}
     - textureU: 57
       textureV: 1
@@ -93,14 +92,13 @@ MonoBehaviour:
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: 0.375}
-      - {x: 0, y: -0, z: 0.375}
+      - {x: 0, y: 0, z: 0.375}
+      - {x: 0, y: 0, z: 0.375}
       - {x: 0.5, y: 0, z: 0.375}
       - {x: 0, y: 0, z: 0.375}
-      - {x: -0, y: -0, z: -0.375}
-      - {x: 0, y: -0, z: -0.375}
+      - {x: 0, y: 0, z: -0.375}
+      - {x: 0, y: 0, z: -0.375}
       - {x: 0.5, y: 0, z: -0.375}
       - {x: 0, y: 0, z: -0.375}
     - textureU: 1
@@ -109,7 +107,6 @@ MonoBehaviour:
       Dim: {x: 2, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -125,95 +122,89 @@ MonoBehaviour:
       Dim: {x: 1, y: 5, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: 0.75, y: -0, z: -0}
-      - {x: 0, y: -0, z: -0}
-      - {x: 0.75, y: 0, z: -0}
-      - {x: 0, y: 0, z: -0}
-      - {x: 0.75, y: -0, z: 0}
-      - {x: 0, y: -0, z: 0}
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
       - {x: 0.75, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
     - textureU: 9
       textureV: 25
       Pos: {x: 0, y: -2, z: -0.5}
       Dim: {x: 1, y: 3, z: 1}
-      Origin: {x: 3, y: -1.8499999, z: 0}
+      Origin: {x: 3, y: -1.85, z: 0}
       Euler: {x: 0, y: 0, z: -101}
-      Shape: 1
       Offsets:
-      - {x: 0.75, y: -0, z: -0}
-      - {x: 0, y: -0, z: -0}
-      - {x: 0.75, y: 0, z: -0}
-      - {x: 0, y: 0, z: -0}
-      - {x: 0.75, y: -0, z: 0}
-      - {x: 0, y: -0, z: 0}
       - {x: 0.75, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-  - partName: barrel
-    pieces:
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0.75, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: barrel
+    Pieces:
     - textureU: 1
       textureV: 9
-      Pos: {x: 14, y: 3.1, z: -0.5}
+      Pos: {x: 0, y: -0.4, z: -0.5}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: 0.1, z: 0.1}
       - {x: 0, y: 0.1, z: 0.1}
-      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
       - {x: 0, y: -0.1, z: 0.1}
-      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: 0.1}
       - {x: 0, y: 0.1, z: -0.1}
-      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
       - {x: 0, y: -0.1, z: -0.1}
-  - partName: sights
-    pieces:
+      - {x: 0, y: -0.1, z: -0.1}
+  - PartName: sights
+    Pieces:
     - textureU: 57
       textureV: 17
       Pos: {x: 0, y: 5, z: -0.5}
       Dim: {x: 1, y: 2, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: 0.375}
-      - {x: 0, y: -0, z: 0.375}
+      - {x: 0, y: 0, z: 0.375}
+      - {x: 0, y: 0, z: 0.375}
       - {x: 0.5, y: -0.5, z: 0.375}
       - {x: 0, y: -0.5, z: 0.375}
-      - {x: -0, y: -0, z: -0.375}
-      - {x: 0, y: -0, z: -0.375}
+      - {x: 0, y: 0, z: -0.375}
+      - {x: 0, y: 0, z: -0.375}
       - {x: 0.5, y: -0.5, z: -0.375}
       - {x: 0, y: -0.5, z: -0.375}
-  - partName: stock
-    pieces:
+  - PartName: stock
+    Pieces:
     - textureU: 25
       textureV: 9
-      Pos: {x: -7, y: 3, z: -1}
+      Pos: {x: -8, y: -1, z: -1}
       Dim: {x: 7, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -2, z: -0}
-      - {x: 0, y: -0.5, z: -0}
-      - {x: -0, y: 0, z: -0}
-      - {x: 0, y: 0, z: -0}
-      - {x: -0, y: -2, z: 0}
+      - {x: 0, y: -2, z: 0}
       - {x: 0, y: -0.5, z: 0}
-      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-  - partName: ammo_0
-    pieces:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 0}
+      - {x: 0, y: -0.5, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: ammo_0
+    Pieces:
     - textureU: 49
       textureV: 9
       Pos: {x: 4, y: -3, z: -1}
       Dim: {x: 2, y: 6, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -229,15 +220,14 @@ MonoBehaviour:
       Dim: {x: 2, y: 6, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: 1.75, z: -0}
-      - {x: 0, y: 1.75, z: -0}
-      - {x: -0, y: -1.75, z: -0}
-      - {x: 0, y: -1.75, z: -0}
-      - {x: -0, y: -0, z: 0}
-      - {x: 0, y: -0, z: 0}
-      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 1.75, z: 0}
+      - {x: 0, y: 1.75, z: 0}
+      - {x: 0, y: -1.75, z: 0}
+      - {x: 0, y: -1.75, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
     - textureU: 33
       textureV: 17
@@ -245,15 +235,14 @@ MonoBehaviour:
       Dim: {x: 2, y: 6, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
-      - {x: -0, y: -0, z: -0}
-      - {x: 0, y: -0, z: -0}
-      - {x: -0, y: 0, z: -0}
-      - {x: 0, y: 0, z: -0}
-      - {x: -0, y: 1.75, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
       - {x: 0, y: 1.75, z: 0}
-      - {x: -0, y: -1.75, z: 0}
+      - {x: 0, y: 1.75, z: 0}
+      - {x: 0, y: -1.75, z: 0}
       - {x: 0, y: -1.75, z: 0}
   AnimationParameters:
   - key: gunSlideDistance
@@ -269,7 +258,7 @@ MonoBehaviour:
     position: {x: 1, y: 4, z: 0}
   - name: barrel
     attachedTo: body
-    position: {x: 18, y: 3.5, z: 0}
+    position: {x: 14, y: 4, z: 0}
   - name: grip
     attachedTo: body
     position: {x: 11, y: 3, z: 0}

@@ -98,7 +98,6 @@ public class DefinitionImporter : MonoBehaviour
 		Debug.Log($"Importing {packName}");
 
 		pack.name = modName;
-		pack.ModName = modName;
 
 		TYPE_LOOKUP = new Dictionary<string, InfoType>[DefinitionTypes.NUM_TYPES];
 		//MODEL_LOOKUP = new Dictionary<string, Model>[DefinitionTypes.NUM_TYPES];

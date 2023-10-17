@@ -84,7 +84,7 @@ public class TurboPieceCornersEditorTool : MinecraftModelEditorTool<TurboPiecePr
 }
 
 [CustomEditor(typeof(TurboPiecePreview))]
-public class TurboPieceEditor : Editor
+public class TurboPiecePreviewEditor : Editor
 {
 	private Editor ChildEditor = null;
 

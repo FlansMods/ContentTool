@@ -111,6 +111,38 @@ public class TurboRig : MinecraftModel
 		return defaultValue;
 	}
 
+	public void TranslateAll(float x, float y, float z)
+	{
+		foreach (TurboModel section in Sections)
+		{
+			foreach (TurboPiece piece in section.Pieces)
+			{
+				if (piece != null)
+				{
+					piece.Origin.x += x;
+					piece.Origin.y += y;
+					piece.Origin.z += z;
+				}
+			}
+		}
+
+		foreach (AttachPoint ap in AttachPoints)
+		{
+			ap.position -= new Vector3(x, y, z);
+		}
+	}
+
+	public void FlipAll()
+	{
+		foreach (TurboModel section in Sections)
+		{
+			foreach (TurboPiece piece in section.Pieces)
+			{
+				piece.DoMirror(false, true, true);
+			}
+		}
+	}
+
 	public AttachPoint GetOrCreate(string name)
 	{
 		foreach (AttachPoint point in AttachPoints)
@@ -268,7 +300,7 @@ public class TurboRig : MinecraftModel
 			{
 				builder.Current.Add(kvp.Key, kvp.Location.ResolveWithSubdir("skins"));
 			}
-			builder.Current.Add("default", ID.ResolveWithSubdir("skins"));
+			builder.Current.Add("default", this.GetLocation().ResolveWithSubdir("skins"));
 			builder.Current.Add("particle", $"minecraft:block/iron_block");
 		}
 		using (builder.Indentation("animations"))

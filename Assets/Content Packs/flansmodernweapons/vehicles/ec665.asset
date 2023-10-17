@@ -27,9 +27,12 @@ MonoBehaviour:
     name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: c774e440cb3330244bc730de836b9949, type: 3}
   Icon: {fileID: 2800000, guid: 41b43f8a912ca7a4f8759740c5171314, type: 3}
   AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -215,7 +218,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 1
@@ -306,7 +309,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 4

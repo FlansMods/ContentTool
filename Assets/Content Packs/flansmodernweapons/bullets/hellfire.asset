@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: hellfire
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -21,66 +21,18 @@ MonoBehaviour:
     west: 
     bottom: 
     icon: hellfire
-    textureX: 64
-    textureY: 32
-    sections:
-    - partName: bullet
-      pieces:
-      - textureU: 60
-        textureV: 0
-        Pos: {x: -0.5, y: -10, z: -0.5}
-        Dim: {x: 1, y: 20, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 55
-        textureV: 0
-        Pos: {x: -1, y: -10, z: 0}
-        Dim: {x: 2, y: 1, z: 0}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 55
-        textureV: 2
-        Pos: {x: 0, y: -10, z: -1}
-        Dim: {x: 0, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: hellfire
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: 6bf363589942e264c9d56369992f083b, type: 3}
   Icon: {fileID: 2800000, guid: 889db2e7d5e33924ab51f42716ffd44c, type: 3}
   AdditionalTextures: []
-  gravityFactor: 1
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 24
     tags:
@@ -90,27 +42,40 @@ MonoBehaviour:
   shootStats:
     verticalRecoil: 3
     horizontalRecoil: 0
-    spread: 3
+    spread: 0
     spreadPattern: 1
-    hitscan: 1
     speed: 0
     bulletCount: 1
     spinSpeed: 360
     breaksMaterials: []
     penetrationPower: 1
-    trailParticles: 
     impact:
       decal: 
       damageToTarget: 8
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
       knockback: 0
+      potionEffectOnTarget: 
+      splashDamage: 0
       splashDamageRadius: 0
       splashDamageFalloff: 1
+      potionEffectOnSplash: 
       setFireToTarget: 0
       fireSpreadRadius: 0
       fireSpreadAmount: 0
+      explosionRadius: 0
       hitSounds: []
+      onImpactActions: []
+    hitscan: 1
+    fuseTime: 0
+    gravityFactor: 1
+    sticky: 0
+    turnRate: 0.5
+    dragInAir: 0.01
+    trailParticles: 
+    secondsBetweenTrailParticles: 0.25
+    dragInWater: 0.2
+    waterParticles: 
   onShootActions: []
   onClipEmptyActions: []
   onReloadActions: []

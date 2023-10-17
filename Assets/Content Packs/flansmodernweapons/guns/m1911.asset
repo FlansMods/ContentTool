@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: m1911
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -21,99 +21,18 @@ MonoBehaviour:
     west: 
     bottom: 
     icon: colt45
-    textureX: 32
-    textureY: 16
-    sections:
-    - partName: gun
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -1, y: 0, z: -1}
-        Dim: {x: 3, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 20
-        textureV: 0
-        Pos: {x: -2, y: -2, z: -1}
-        Dim: {x: 3, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 6
-        Pos: {x: -1, y: 2, z: -1}
-        Dim: {x: 8, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 9
-        Pos: {x: -0.5, y: 3.5, z: -0.5}
-        Dim: {x: 8, y: 1, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    - partName: ammo
-      pieces:
-      - textureU: 14
-        textureV: 0
-        Pos: {x: -1, y: -1.8, z: -0.5}
-        Dim: {x: 2, y: 4, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: m1911
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: 89177262f1349f64bafe4de43a8442a8, type: 3}
   Icon: {fileID: 2800000, guid: fc65daa4d69c8c746919882f8b3f0b6b, type: 3}
   AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -124,7 +43,15 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 0.375
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.375
@@ -157,7 +84,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0.375
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.375
@@ -171,7 +106,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     loadOne:
-      duration: 0.375
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.375
@@ -185,7 +128,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     end:
-      duration: 0.375
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.375
@@ -202,16 +153,48 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     eject:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     loadOne:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     end:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
   primary:
     canActUnderwater: 1
@@ -222,6 +205,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 3
       duration: 0.05
@@ -256,7 +240,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 6
@@ -315,6 +299,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 4
       duration: 0
@@ -347,6 +332,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -368,9 +354,11 @@ MonoBehaviour:
     - usp_ammo
     - usp_poison_ammo
     matchByTags: []
+    baseCostToSwap: 0
   secondaryMagazines:
     matchByNames: []
     matchByTags: []
+    baseCostToSwap: 0
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []

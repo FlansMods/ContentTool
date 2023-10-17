@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
 
 public static class Utils
@@ -175,5 +177,20 @@ public static class Utils
 			case "breakAction": return "break_action";
 			default: return partName;
 		}
+	}
+
+    private static Regex ResourceLocator = new Regex(".*Assets\\/Content Packs\\/([a-zA-Z0-9]*)\\/([a-zA-Z0-9_\\/]*)\\.([a-z]*)");
+    public static ResourceLocation GetLocation(this Object asset)
+    {
+        string path = AssetDatabase.GetAssetPath(asset);
+        Match match = ResourceLocator.Match(path);
+        if(match.Success)
+        {
+            string modName = match.Groups[1].Value;
+            string assetName = match.Groups[2].Value;
+            return new ResourceLocation(modName, assetName);
+        }
+        Debug.LogWarning($"Could not resolve the path {path} as a resource location");
+        return new ResourceLocation("minecraft", "null");
 	}
 }

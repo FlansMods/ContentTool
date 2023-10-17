@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: grenade_launcher_incendiary_ammo
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -23,49 +23,16 @@ MonoBehaviour:
     icon: grenade_launcher_incendiary_ammo
     textureX: 0
     textureY: 0
-    sections:
-    - partName: body
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -1, y: -1, z: -1}
-        Dim: {x: 2, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: -89.99999, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    - partName: head
-      pieces:
-      - textureU: 8
-        textureV: 0
-        Pos: {x: -0.5, y: -0.5, z: 0.5}
-        Dim: {x: 1, y: 1, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: -89.99999, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: grenade_launcher_incendiary_ammo
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: 85a14f27d7a7fbc4ab7b6fc949f35456, type: 3}
   Icon: {fileID: 2800000, guid: df55e5676506efc468c0b424c13bd3e2, type: 3}
   AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 16
     tags:
@@ -110,12 +77,17 @@ MonoBehaviour:
     multiplierVsPlayers: 1
     multiplierVsVehicles: 0
     knockback: 0
+    potionEffectOnTarget: 
+    splashDamage: 0
     splashDamageRadius: 1
     splashDamageFalloff: 0
+    potionEffectOnSplash: 
     setFireToTarget: 3
     fireSpreadRadius: 3
     fireSpreadAmount: 3
+    explosionRadius: 0
     hitSounds: []
+    onImpactActions: []
   lifetimeAfterDetonation: 0
   smokeParticles:
   - explode

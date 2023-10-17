@@ -73,6 +73,8 @@ public class ModelEditingRig : MonoBehaviour
 
 	public void Update()
 	{
+		if (WorkingCopy != null && EditorUtility.IsDirty(WorkingCopy))
+			IsDirty = true;
         RefreshMeshes();
 	}
 
@@ -440,6 +442,7 @@ public class ModelEditingRig : MonoBehaviour
             JsonUtility.FromJsonOverwrite(json, ModelOpenedForEdit);
             EditorUtility.SetDirty(ModelOpenedForEdit);
             AssetDatabase.SaveAssets();
+			Debug.Log($"Saved {WorkingCopy} to {AssetDatabase.GetAssetPath(ModelOpenedForEdit)}");
 
 			IsDirty = false;
         }

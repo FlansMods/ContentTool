@@ -12,45 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: m1887
   m_EditorClassIdentifier: 
-  ID:
-    Namespace: minecraft
-    ID: null
-  Textures:
-  - Key: default
-    Location:
-      Namespace: flansmodernweapons
-      ID: m1887
-    Texture: {fileID: 2800000, guid: 5d2473c2e2f8b0145b617278af11509f, type: 3}
-  - Key: m1887_black
-    Location:
-      Namespace: flansmodernweapons
-      ID: m1887_black
-    Texture: {fileID: 2800000, guid: 18425a6e69e393f4b952693505ea11e6, type: 3}
-  - Key: m1887_jungle
-    Location:
-      Namespace: flansmodernweapons
-      ID: m1887_jungle
-    Texture: {fileID: 2800000, guid: 26cc5166f738c2c4c908e67f49774faa, type: 3}
-  - Key: m1887_birch
-    Location:
-      Namespace: flansmodernweapons
-      ID: m1887_birch
-    Texture: {fileID: 2800000, guid: b53b65bbea9aa574eb285fffb291141f, type: 3}
+  Textures: []
   Icon:
     Namespace: minecraft
     ID: null
   TextureX: 64
   TextureY: 16
   Sections:
-  - partName: body
-    pieces:
+  - PartName: body
+    Pieces:
     - textureU: 0
       textureV: 0
       Pos: {x: 0, y: 3, z: -1}
       Dim: {x: 3, y: 2, z: 2}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
       - {x: 0, y: -0, z: -0}
@@ -66,23 +42,21 @@ MonoBehaviour:
       Dim: {x: 2, y: 1, z: 2}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
-      - {x: -1, y: -0, z: -0}
+      - {x: -0, y: -0, z: -0}
       - {x: -0, y: 0, z: -0}
       - {x: 0, y: 0, z: -0}
       - {x: -0, y: -0, z: 0}
-      - {x: -1, y: -0, z: 0}
+      - {x: -0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
     - textureU: 0
       textureV: 4
-      Pos: {x: 3, y: 3.05, z: -0.45000002}
-      Dim: {x: 7, y: 0.90000004, z: 0.90000004}
+      Pos: {x: 3, y: 3.05, z: -0.45}
+      Dim: {x: 7, y: 0.9, z: 0.9}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -94,11 +68,10 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - textureU: 0
       textureV: 6
-      Pos: {x: 3, y: 4.05, z: -0.45000002}
-      Dim: {x: 10, y: 0.90000004, z: 0.90000004}
+      Pos: {x: 3, y: 4.05, z: -0.45}
+      Dim: {x: 10, y: 0.9, z: 0.9}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -114,7 +87,6 @@ MonoBehaviour:
       Dim: {x: 5, y: 1.5, z: 1.5}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -124,15 +96,14 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-  - partName: stock
-    pieces:
+  - PartName: stock
+    Pieces:
     - textureU: 18
       textureV: 0
       Pos: {x: -2, y: 1, z: -1}
       Dim: {x: 2, y: 2, z: 2}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
       - {x: 0, y: 1, z: -0}
@@ -148,7 +119,6 @@ MonoBehaviour:
       Dim: {x: 6, y: 3, z: 2}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 1
       Offsets:
       - {x: -0, y: -0, z: -0}
       - {x: 0, y: 1, z: -0}
@@ -158,15 +128,14 @@ MonoBehaviour:
       - {x: 0, y: 1, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-  - partName: ammo_0
-    pieces:
+  - PartName: ammo_0
+    Pieces:
     - textureU: 0
       textureV: 14
       Pos: {x: 1, y: 3, z: -0.5}
       Dim: {x: 2, y: 1, z: 1}
       Origin: {x: 0, y: -0.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
-      Shape: 0
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -177,69 +146,72 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters:
-  - key: gunSlideDistance
+  - key: scope_attach_point
+    isVec3: 1
+    floatValue: 0
+    vec3Value: {x: 0.3125, y: 0.3125, z: 0}
+  - key: stock_attach_point
+    isVec3: 1
+    floatValue: 0
+    vec3Value: {x: 0, y: 0.1875, z: 0}
+  - key: barrel_attach_point
+    isVec3: 1
+    floatValue: 0
+    vec3Value: {x: 1.125, y: 0.25, z: 0}
+  - key: grip_attach_point
+    isVec3: 1
+    floatValue: 0
+    vec3Value: {x: 0.5625, y: 0.140625, z: 0}
+  - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.5
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: pumpDelayAfterReload
+  - key: pump_delay_after_reload
     isVec3: 0
     floatValue: 86
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: pumpDelay
+  - key: pump_delay
     isVec3: 0
     floatValue: 7
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: pumpTime
+  - key: pump_time
     isVec3: 0
     floatValue: 12
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: pumpHandleDistance
+  - key: grip_is_on_pump
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: pump_handle_distance
     isVec3: 0
     floatValue: -0.25
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: spinPoint
+  - key: spinning_cocking
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: spin_point
     isVec3: 1
     floatValue: 0
     vec3Value: {x: 0.0625, y: 0.125, z: 0}
-  - key: numBulletsInReloadAnimation
+  - key: num_bullets_in_reload_animation
     isVec3: 0
     floatValue: 5
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: tiltGunTime
+  - key: tilt_gun_time
     isVec3: 0
-    floatValue: 0.15900001
+    floatValue: 0.159
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: unloadClipTime
+  - key: unload_clip_time
     isVec3: 0
     floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: loadClipTime
+  - key: load_clip_time
     isVec3: 0
     floatValue: 0.708
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: untiltGunTime
+  - key: untilt_gun_time
     isVec3: 0
-    floatValue: 0.13300002
+    floatValue: 0.133
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints:
-  - name: scope
-    attachedTo: body
-    position: {x: 5, y: 5.5, z: 0}
-  - name: stock
-    attachedTo: body
-    position: {x: 0, y: 3.5, z: 0}
-  - name: barrel
-    attachedTo: body
-    position: {x: 18, y: 4.5, z: 0}
-  - name: grip
-    attachedTo: pump
-    position: {x: 9, y: 2.75, z: 0}
-  - name: slide
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+  AttachPoints: []

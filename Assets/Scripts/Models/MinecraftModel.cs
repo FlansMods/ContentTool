@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MinecraftModel : ScriptableObject
+public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 {
 	[System.Serializable]
 	public class NamedTexture
@@ -60,11 +60,29 @@ public abstract class MinecraftModel : ScriptableObject
 			return Textures[0];
 		return null;
 	}
-
-	public ResourceLocation ID = new ResourceLocation();
 	public List<NamedTexture> Textures = new List<NamedTexture>();
 
     public virtual void FixNamespaces() { }
     public abstract bool ExportToJson(QuickJSONBuilder builder);
     public abstract bool ExportInventoryVariantToJson(QuickJSONBuilder builder);
+
+	public virtual void GetVerifications(List<Verification> verifications)
+	{
+		List<Texture2D> textureRefs = new List<Texture2D>();
+		foreach(NamedTexture texture in Textures)
+		{
+			if(texture.Texture == null)
+			{
+				verifications.Add(Verification.Neutral($"Texture missing at {texture.Location}, could be from another mod"));
+			}
+			else
+			{
+				if(textureRefs.Contains(texture.Texture))
+					verifications.Add(Verification.Neutral($"Texture {texture.Texture} referenced twice in model"));
+				else
+					textureRefs.Add(texture.Texture);
+				verifications.Add(Verification.Success($"Texture {texture.Location} located"));
+			}
+		}
+	}
 }

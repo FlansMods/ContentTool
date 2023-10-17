@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: m72law
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -21,109 +21,13 @@ MonoBehaviour:
     west: 
     bottom: 
     icon: m72law
-    textureX: 64
-    textureY: 16
-    sections:
-    - partName: gun
-      pieces:
-      - textureU: 0
-        textureV: 10
-        Pos: {x: -12, y: 1, z: -1.5}
-        Dim: {x: 26, y: 3, z: 3}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 7
-        Pos: {x: -12, y: 4, z: -1}
-        Dim: {x: 3, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 0
-        Pos: {x: 0, y: 4, z: -1}
-        Dim: {x: 14, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 3
-        Pos: {x: 0, y: 5, z: -0.5}
-        Dim: {x: 1, y: 2, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    - partName: ammo
-      pieces: []
-    name: m72law
-    animations:
-    - key: gunSlideDistance
-      isVec3: 0
-      floatValue: 0.5
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: tiltGunTime
-      isVec3: 0
-      floatValue: 0.4
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: unloadClipTime
-      isVec3: 0
-      floatValue: 0.1
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: loadClipTime
-      isVec3: 0
-      floatValue: 0.1
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: untiltGunTime
-      isVec3: 0
-      floatValue: 0.4
-      vec3Value: {x: 0, y: 0, z: 0}
-    attachPoints:
-    - name: scope
-      attachedTo: body
-      position: {x: 1.5, y: 5, z: 0}
-    - name: barrel
-      attachedTo: body
-      position: {x: 18, y: 4, z: 0}
-    - name: stock
-      attachedTo: body
-      position: {x: -1, y: 1, z: 0}
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: f869532cf781c0e4eb3f31d67e92f428, type: 3}
   Icon: {fileID: 2800000, guid: e303abc566e17b640ae7e6539417742d, type: 3}
   AdditionalTextures:
@@ -133,6 +37,8 @@ MonoBehaviour:
   - name: M72LAW_Blue_Icon
     texture: {fileID: 2800000, guid: 60b3397e796ebd04d902d9074b1dd375, type: 3}
     icon: {fileID: 0}
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -140,11 +46,21 @@ MonoBehaviour:
   paints:
     paintjobs:
     - textureName: m72law_blue
+      paintBucketsRequired: 1
+      entitlementKey: 
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 0
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0
@@ -158,10 +74,37 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0
-      actions: []
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
+      actions:
+      - actionType: 2
+        duration: 0
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
     loadOne:
-      duration: 0
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0
@@ -175,7 +118,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     end:
-      duration: 0
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0
@@ -192,16 +143,48 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     eject:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     loadOne:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     end:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
   primary:
     canActUnderwater: 1
@@ -212,6 +195,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 3
       duration: 0.05
@@ -246,7 +230,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 1
@@ -327,6 +311,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 4
       duration: 0
@@ -359,6 +344,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -375,9 +361,11 @@ MonoBehaviour:
     matchByNames:
     - m72law_ammo
     matchByTags: []
+    baseCostToSwap: 0
   secondaryMagazines:
     matchByNames: []
     matchByTags: []
+    baseCostToSwap: 0
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []
@@ -419,4 +407,4 @@ MonoBehaviour:
     attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   modelParts: []
-  animationSet: flansmod:end_loaded
+  animationSet: 

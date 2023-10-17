@@ -36,7 +36,7 @@ public class CubeModel : MinecraftModel
 
 	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
 	{
-		builder.Current.Add("parent", ID.ResolveWithSubdir("block"));
+		builder.Current.Add("parent", this.GetLocation().ResolveWithSubdir("block"));
 		using (builder.Indentation("display"))
 		{
 			using (builder.Indentation("thirdperson"))
@@ -47,5 +47,10 @@ public class CubeModel : MinecraftModel
 			}
 		}
 		return true;
+	}
+
+	public override void GetVerifications(List<Verification> verifications)
+	{
+		base.GetVerifications(verifications);
 	}
 }

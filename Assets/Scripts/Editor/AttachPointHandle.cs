@@ -77,7 +77,7 @@ public class AttachPointHandle : MinecraftBoundsHandle
 				Handles.DrawWireCube(Origins[i] + Directions[i] * (1.5f), (Vector3.one + Directions[i] * 6.0f) * HANDLE_SIZE);
 
 				EditorGUI.BeginChangeCheck();
-				Origins[i] = Slider3D(ControlIDs[i], Origins[i], Vector3.forward, Vector3.right, HANDLE_SIZE, false);
+				Vector3 modified = Slider3D(ControlIDs[i], Origins[i], Vector3.forward, Vector3.right, HANDLE_SIZE, false);
 				bool changed = EditorGUI.EndChangeCheck();
 
 				if (changed)
@@ -85,7 +85,15 @@ public class AttachPointHandle : MinecraftBoundsHandle
 					float snapIncrement = 1.0f;
 					if (Event.current.shift)
 						snapIncrement = 0.25f;
-					Origins[i] = Snap(Origins[i], snapIncrement);
+
+					Vector3 delta = modified - Origins[i];
+					if (!Mathf.Approximately(delta.x, 0))
+						modified.x = Snap(modified.x, snapIncrement);
+					if (!Mathf.Approximately(delta.y, 0))
+						modified.y = Snap(modified.y, snapIncrement);
+					if (!Mathf.Approximately(delta.z, 0))
+						modified.z = Snap(modified.z, snapIncrement);
+					Origins[i] = modified;
 				}
 			}
 		}

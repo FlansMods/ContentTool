@@ -177,13 +177,11 @@ public class FlansModToolbox : EditorWindow
 			case Model.ModelType.Custom:
 			{
 				BlockbenchModel bbModel = CreateInstance<BlockbenchModel>();
-				bbModel.ID = new ResourceLocation(model.customModelLocation);
 				return bbModel;
 			}
 			case Model.ModelType.Item:
 			{
 				ItemModel itemModel = CreateInstance<ItemModel>();
-				itemModel.ID = new ResourceLocation(model.icon);
 				return itemModel;
 			}
 		}

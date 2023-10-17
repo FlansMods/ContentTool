@@ -27,9 +27,12 @@ MonoBehaviour:
     name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 2800000, guid: c481e1f9d134dc64fa3d0d6bf0ba1fbd, type: 3}
   AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -40,7 +43,15 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1.25
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 1.25
@@ -73,7 +84,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 1.25
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 1.25
@@ -87,7 +106,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     loadOne:
-      duration: 1.25
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 1.25
@@ -101,7 +128,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     end:
-      duration: 1.25
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 1.25
@@ -118,16 +153,48 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     eject:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     loadOne:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     end:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
   primary:
     canActUnderwater: 1
@@ -138,6 +205,7 @@ MonoBehaviour:
     repeatDelay: 0.25
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 3
       duration: 0.25
@@ -172,7 +240,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 10
@@ -231,6 +299,7 @@ MonoBehaviour:
     repeatDelay: 0.25
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions: []
   lookAt:
     canActUnderwater: 1
@@ -241,6 +310,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -257,9 +327,11 @@ MonoBehaviour:
     matchByNames:
     - hydra70ammo
     matchByTags: []
+    baseCostToSwap: 0
   secondaryMagazines:
     matchByNames: []
     matchByTags: []
+    baseCostToSwap: 0
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []

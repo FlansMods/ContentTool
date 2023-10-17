@@ -97,12 +97,15 @@ public class ModelPreivewer : MonoBehaviour
 
 	public void SetTexture(Texture2D texture)
 	{
-		material = new Material(material);
-		material.name = texture.name;
-		material.SetTexture("_MainTex", texture);
-		foreach(MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+		if (texture != null)
 		{
-			mr.sharedMaterial = material;		
+			material = new Material(material);
+			material.name = texture.name;
+			material.SetTexture("_MainTex", texture);
+			foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+			{
+				mr.sharedMaterial = material;
+			}
 		}
 	}
 

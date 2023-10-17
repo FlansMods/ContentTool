@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rpg
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -21,193 +21,13 @@ MonoBehaviour:
     west: 
     bottom: 
     icon: rpg
-    textureX: 64
-    textureY: 16
-    sections:
-    - partName: gun
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -14, y: 2.5, z: -1}
-        Dim: {x: 22, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 4
-        Pos: {x: -15, y: 2, z: -1.5}
-        Dim: {x: 1, y: 3, z: 3}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 8
-        textureV: 4
-        Pos: {x: -5, y: 2, z: -1.5}
-        Dim: {x: 8, y: 3, z: 3}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 13
-        Pos: {x: 0, y: 0, z: -0.5}
-        Dim: {x: 1, y: 2, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 4
-        textureV: 11
-        Pos: {x: 4, y: -1, z: -0.5}
-        Dim: {x: 1, y: 4, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    - partName: ammo
-      pieces:
-      - textureU: 14
-        textureV: 12
-        Pos: {x: -1.5, y: 0, z: -1.5}
-        Dim: {x: 3, y: 1, z: 3}
-        Origin: {x: 8, y: 3.5, z: 0}
-        Euler: {x: 0, y: 0, z: -89.99999}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 26
-        textureV: 9
-        Pos: {x: -2, y: 1, z: -2}
-        Dim: {x: 4, y: 3, z: 4}
-        Origin: {x: 8, y: 3.5, z: 0}
-        Euler: {x: 0, y: 0, z: -89.99999}
-        Shape: 1
-        Offsets:
-        - {x: 1, y: 0, z: 1}
-        - {x: -1, y: 0, z: 1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: -1}
-        - {x: -1, y: 0, z: -1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 38
-        textureV: 6
-        Pos: {x: -2, y: 4, z: -2}
-        Dim: {x: 4, y: 3, z: 4}
-        Origin: {x: 8, y: 3.5, z: 0}
-        Euler: {x: 0, y: 0, z: -89.99999}
-        Shape: 1
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: 1}
-        - {x: -1, y: 0, z: 1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: -1}
-        - {x: -1, y: 0, z: -1}
-      - textureU: 38
-        textureV: 5
-        Pos: {x: -0.5, y: -4, z: -0.5}
-        Dim: {x: 1, y: 4, z: 1}
-        Origin: {x: 8, y: 3.5, z: 0}
-        Euler: {x: 0, y: 0, z: -89.99999}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: rpg
-    animations:
-    - key: gunSlideDistance
-      isVec3: 0
-      floatValue: 0.5
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: tiltGunTime
-      isVec3: 0
-      floatValue: 0.4
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: unloadClipTime
-      isVec3: 0
-      floatValue: 0.1
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: loadClipTime
-      isVec3: 0
-      floatValue: 0.1
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: untiltGunTime
-      isVec3: 0
-      floatValue: 0.4
-      vec3Value: {x: 0, y: 0, z: 0}
-    - key: itemFrameOffset
-      isVec3: 1
-      floatValue: 0
-      vec3Value: {x: 0.25, y: 0, z: 0}
-    attachPoints:
-    - name: scope
-      attachedTo: body
-      position: {x: 1.5, y: 5, z: 0}
-    - name: barrel
-      attachedTo: body
-      position: {x: 18, y: 4, z: 0}
-    - name: stock
-      attachedTo: body
-      position: {x: -1, y: 1, z: 0}
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
+    animations: []
+    attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: d5a1b02ad131ece4786c5072d987e8cf, type: 3}
   Icon: {fileID: 2800000, guid: cc9ffe982b8de3e46a34d329938f5556, type: 3}
   AdditionalTextures:
@@ -217,6 +37,8 @@ MonoBehaviour:
   - name: RPG_Creeper_Icon
     texture: {fileID: 2800000, guid: 059324da86a55d340bb2312d2cf37a32, type: 3}
     icon: {fileID: 0}
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -224,14 +46,24 @@ MonoBehaviour:
   paints:
     paintjobs:
     - textureName: rpg_creeper
+      paintBucketsRequired: 1
+      entitlementKey: 
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1.6
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
-        duration: 1.6
+        duration: 1
         sounds: []
         itemStack: 
         modifiers: []
@@ -261,13 +93,40 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0.4
-      actions: []
-    loadOne:
-      duration: 0.4
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
-        duration: 0.4
+        duration: 1
+        sounds: []
+        itemStack: 
+        modifiers: []
+        fovFactor: 1.25
+        scopeOverlay: 
+        anim: reload_eject
+        toolLevel: 1
+        harvestSpeed: 1
+        reach: 1
+    loadOne:
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
+      actions:
+      - actionType: 2
+        duration: 1
         sounds: []
         itemStack: 
         modifiers: []
@@ -278,10 +137,18 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     end:
-      duration: 1.6
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
-        duration: 1.6
+        duration: 1
         sounds: []
         itemStack: 
         modifiers: []
@@ -295,16 +162,48 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     eject:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     loadOne:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     end:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
   primary:
     canActUnderwater: 1
@@ -315,6 +214,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 3
       duration: 0.05
@@ -349,7 +249,7 @@ MonoBehaviour:
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
-      - Stat: damage_to_target
+      - Stat: impact_damage
         Filter: 
         Add: 0
         Multiply: 1
@@ -408,6 +308,7 @@ MonoBehaviour:
     repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 4
       duration: 0
@@ -440,6 +341,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -456,9 +358,11 @@ MonoBehaviour:
     matchByNames:
     - rpg_ammo
     matchByTags: []
+    baseCostToSwap: 0
   secondaryMagazines:
     matchByNames: []
     matchByTags: []
+    baseCostToSwap: 0
   startSpinUpActions: []
   reachMaxSpinActions: []
   startSpinDownActions: []
@@ -500,4 +404,4 @@ MonoBehaviour:
     attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   modelParts: []
-  animationSet: flansmod:end_loaded
+  animationSet: 

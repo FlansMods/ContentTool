@@ -51,8 +51,39 @@ public class ResourceLocation
         return Namespace.Length > 0 && ID.Length > 0;
     }
 
+    public string IDWithoutPrefixes()
+    {
+        int lastSlash = ID.LastIndexOf('/');
+        if (lastSlash == -1)
+            return ID;
+        return ID.Substring(lastSlash+1);
+    }
+
+	public override bool Equals(object obj)
+	{
+		if(obj is ResourceLocation resLoc)
+        {
+            return resLoc.Namespace == Namespace && resLoc.ID == ID;
+        }
+        return false;
+	}
+
+    public static bool operator==(ResourceLocation a, ResourceLocation b)
+    {
+        return a.Namespace == b.Namespace && a.ID == b.ID;
+    }
+	public static bool operator !=(ResourceLocation a, ResourceLocation b)
+	{
+		return a.Namespace != b.Namespace || a.ID != b.ID;
+	}
+
+    public static bool IsSameObjectGroup(ResourceLocation a, ResourceLocation b)
+    {
+        return a.Namespace == b.Namespace && a.IDWithoutPrefixes() == b.IDWithoutPrefixes();
+	}
+
 #if UNITY_EDITOR
-    private static List<string> namespaces = null;
+	private static List<string> namespaces = null;
 	public static ResourceLocation EditorField(ResourceLocation src)
     {
 		if (namespaces == null)

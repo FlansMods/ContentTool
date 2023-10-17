@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class TurboRigBoundsEditorTool
-{
-    
-}
-
 [CustomEditor(typeof(TurboRigPreview))]
-public class TurboRigEditor : Editor
+public class TurboRigPreviewEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{

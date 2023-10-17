@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rpg_ammo
   m_EditorClassIdentifier: 
   Model:
-    Type: 1
+    Type: 3
     top: 
     north: 
     east: 
@@ -21,66 +21,18 @@ MonoBehaviour:
     west: 
     bottom: 
     icon: rpgammo
-    textureX: 64
-    textureY: 32
-    sections:
-    - partName: bullet
-      pieces:
-      - textureU: 14
-        textureV: 12
-        Pos: {x: -1.5, y: 0, z: -1.5}
-        Dim: {x: 3, y: 1, z: 3}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 26
-        textureV: 9
-        Pos: {x: -2, y: 1, z: -2}
-        Dim: {x: 4, y: 3, z: 4}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: 1, y: 0, z: 1}
-        - {x: -1, y: 0, z: 1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: -1}
-        - {x: -1, y: 0, z: -1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 38
-        textureV: 6
-        Pos: {x: -2, y: 4, z: -2}
-        Dim: {x: 4, y: 3, z: 4}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: 1}
-        - {x: -1, y: 0, z: 1}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 1, y: 0, z: -1}
-        - {x: -1, y: 0, z: -1}
-    name: rpg_ammo
+    textureX: 0
+    textureY: 0
+    sections: []
+    name: 
     animations: []
     attachPoints: []
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: d5a1b02ad131ece4786c5072d987e8cf, type: 3}
   Icon: {fileID: 2800000, guid: ca90f1e00e9a3bc409e87463cd6249e5, type: 3}
   AdditionalTextures: []
-  gravityFactor: 0.25
+  LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 2
     tags:
@@ -90,27 +42,40 @@ MonoBehaviour:
   shootStats:
     verticalRecoil: 3
     horizontalRecoil: 0
-    spread: 3
+    spread: 0
     spreadPattern: 1
-    hitscan: 1
     speed: 0
     bulletCount: 1
     spinSpeed: 360
     breaksMaterials: []
     penetrationPower: 1
-    trailParticles: 
     impact:
       decal: 
       damageToTarget: 8
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
       knockback: 0
+      potionEffectOnTarget: 
+      splashDamage: 0
       splashDamageRadius: 0
       splashDamageFalloff: 1
+      potionEffectOnSplash: 
       setFireToTarget: 0
       fireSpreadRadius: 0
       fireSpreadAmount: 0
+      explosionRadius: 0
       hitSounds: []
+      onImpactActions: []
+    hitscan: 1
+    fuseTime: 0
+    gravityFactor: 0.25
+    sticky: 0
+    turnRate: 0.5
+    dragInAir: 0.01
+    trailParticles: 
+    secondsBetweenTrailParticles: 0.25
+    dragInWater: 0.2
+    waterParticles: 
   onShootActions: []
   onClipEmptyActions: []
   onReloadActions: []

@@ -35,6 +35,20 @@ public class ContentPackEditor : Editor
 				}
 			}
 
+			Dictionary<Object, List<Verification>> multiVerify = new Dictionary<Object, List<Verification>>();
+			List<Verification> packIssues = new List<Verification>();
+			pack.GetVerifications(packIssues);
+			multiVerify.Add(pack, packIssues);
+			foreach(Definition def in pack.Content)
+			{
+				List<Verification> verifications = new List<Verification>();
+				def.GetVerifications(verifications);
+				if (verifications.Count == 0)
+					verifications.Add(Verification.Success($"{def.name} has no outstanding issues."));
+				multiVerify.Add(def, verifications);
+			}
+			GUIVerify.VerificationsBox(multiVerify);
+
 			if(GUILayout.Button("Export"))
 			{
 				DefinitionImporter importExport = FindObjectOfType<DefinitionImporter>();
