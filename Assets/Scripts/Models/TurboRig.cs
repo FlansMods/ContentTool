@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Model;
 
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
 public class TurboRig : MinecraftModel
@@ -284,6 +285,35 @@ public class TurboRig : MinecraftModel
 			builder.Current.Add("translation", JSONHelpers.ToJSON(euler));
 			builder.Current.Add("scale", JSONHelpers.ToJSON(scale));
 		}
+	}
+
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		if (other is TurboRig otherRig)
+		{
+			if (Sections.Count != otherRig.Sections.Count)
+				return false;
+			for(int i = 0; i < Sections.Count; i++)
+			{
+				if (!Sections[i].IsUVMapSame(otherRig.Sections[i]))
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	public Vector2Int GetMaxUV()
+	{
+		Vector2Int max = Vector2Int.zero;
+		foreach (TurboModel section in Sections)
+		{
+			Vector2Int sectionMax = section.GetMaxUV();
+			if (sectionMax.x > max.x)
+				max.x = sectionMax.x;
+			if (sectionMax.y > max.y)
+				max.y = sectionMax.y;
+		}
+		return max;
 	}
 
 	public override bool ExportToJson(QuickJSONBuilder builder)

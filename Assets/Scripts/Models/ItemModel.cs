@@ -19,6 +19,11 @@ public class ItemModel : MinecraftModel
 		return Icon;
 	}
 
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		return other is ItemModel;
+	}
+
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("parent", $"item/generated");

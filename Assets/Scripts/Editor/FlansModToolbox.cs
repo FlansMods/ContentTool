@@ -13,22 +13,229 @@ public class FlansModToolbox : EditorWindow
         EditorWindow.GetWindow(typeof(FlansModToolbox));
     }
 
-	private ModelPreivewer ModelPreviewerInst = null;
 	private DefinitionImporter DefinitionImporter = null;
+	private List<ContentPack> Packs 
+	{
+		get	
+		{
+			if (DefinitionImporter == null)
+				DefinitionImporter = FindObjectOfType<DefinitionImporter>();
+			return DefinitionImporter.Packs;
+		}
+	}
+	private enum Tab
+	{
+		ContentPacks,
+		Models,
+	}
+	private static readonly string[] TabNames = new string[]
+	{
+		"Content Packs",
+		"Models"
+	};
 
-	private string SelectedContentPackName = "";
+	private Tab SelectedTab = Tab.ContentPacks;
+	
 
 	private string recipeFolder = "";
 	private string copyFromMat = "iron";
 	private string copyToMat = "aluminium";
 
-    void OnGUI()
+	void OnGUI()
 	{
-		recipeFolder = GUILayout.TextField(recipeFolder);
-		copyFromMat = GUILayout.TextField(copyFromMat);
-		copyToMat = GUILayout.TextField(copyToMat);
+		//recipeFolder = GUILayout.TextField(recipeFolder);
+		//copyFromMat = GUILayout.TextField(copyFromMat);
+		//copyToMat = GUILayout.TextField(copyToMat);
 
-		if(GUILayout.Button("Run"))
+
+		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames);
+		switch (SelectedTab)
+		{
+			case Tab.ContentPacks:
+				ContentPacksTab();
+				break;
+			case Tab.Models:
+				ModelsTab();
+				break;
+		}
+	}
+
+	private int SelectedContentPackIndex = -1;
+	private string SelectedContentPackName { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex].ModName : "None"; } }
+	private ContentPack SelectedContentPack { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex] : null; } }
+
+	private void ContentPacksTab()
+	{
+		GUILayout.Label("Select Content Pack");
+		List<string> packNames = new List<string>();
+		packNames.Add("None");
+		for (int i = 0; i < Packs.Count; i++)
+		{
+			ContentPack pack = Packs[i];
+			packNames.Add(pack.ModName);
+		}
+		SelectedContentPackIndex = EditorGUILayout.Popup(SelectedContentPackIndex+1, packNames.ToArray()) - 1;
+		EditorGUILayout.ObjectField(SelectedContentPack, typeof(ContentPack), false);
+		GUILayout.Label(" ------------ ");
+	}
+
+	private List<ModelEditingRig> ActiveRigs = null;
+	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
+	private int SelectedRigIndex = 0;
+	private void ModelsTab()
+	{
+		List<string> modelNames = new List<string>();
+		ActiveRigs.Clear();
+		foreach (ModelEditingRig rig in FindObjectsOfType<ModelEditingRig>())
+		{
+			ActiveRigs.Add(rig);
+			modelNames.Add(rig.ModelOpenedForEdit != null ? rig.ModelOpenedForEdit.name : "No model opened");
+		}
+
+		int rigIndex = GUILayout.SelectionGrid(SelectedRigIndex, modelNames.ToArray(), 3);
+		if(rigIndex != SelectedRigIndex)
+		{
+			SelectedRigIndex = rigIndex;
+			Selection.SetActiveObjectWithContext(SelectedRig, this);
+		}
+
+		if(GUILayout.Button("Create New Rig"))
+		{
+			GameObject newGO = new GameObject("ModelRig");
+			newGO.AddComponent<ModelEditingRig>();
+		}
+
+		var RIG_COL_X = GUILayout.Width(64);
+		var MODEL_COL_X = GUILayout.Width(64);
+		var ATTACH_COL_X = GUILayout.Width(128);
+		var AP_COL_X = GUILayout.Width(64);
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Rig", RIG_COL_X);
+		GUILayout.Label("Model", MODEL_COL_X);
+		GUILayout.Label("Attachment", ATTACH_COL_X);
+		GUILayout.Label("AP", AP_COL_X);
+		GUILayout.EndHorizontal();
+
+		for (int i = 0; i < ActiveRigs.Count; i++)
+		{
+			ModelEditingRig rig = ActiveRigs[i];
+			GUILayout.BeginHorizontal();
+			//if(GUILayout.Button("Inspect", GUILayout.Width(32)))
+			//{
+			//	SelectedRigIndex = i;
+			//	Selection.SetActiveObjectWithContext(rig, this);
+			//}
+			EditorGUILayout.ObjectField(rig, typeof(ModelEditingRig), false, RIG_COL_X);
+			Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, MODEL_COL_X);
+			if(changedModel != rig.ModelOpenedForEdit)
+				rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
+
+			AttachPoseDropdown(rig, ATTACH_COL_X);
+			AttachPointDropdown(rig, AP_COL_X);
+
+			GUILayout.EndHorizontal();
+		}
+	}
+
+	private static readonly string[] APDefaults = new string[] {
+		"NotAttached",
+		"DefaultPose",
+		"Alex_RightHandPose",
+		"Alex_LeftHandPose",
+		"Steve_RightHandPose",
+		"Steve_LeftHandPose",
+		"GUIPose",
+	};
+
+	private void AttachPoseDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
+	{
+		List<string> APs = new List<string>(APDefaults);
+		
+		// First, check if this is attached to one of our known parents
+		int selectedIndex = 0;
+		if (rig.transform.parent != null)
+		{
+			selectedIndex = APs.IndexOf(rig.transform.parent.name);
+			if (selectedIndex == -1)
+				selectedIndex = 0;
+		}
+
+		// Then check if this is attached to another rig
+		int myRigIndex = 0;
+		for (int index = 0; index < ActiveRigs.Count; index++)
+		{
+			ModelEditingRig attachToRig = ActiveRigs[index];
+			if (attachToRig != rig)
+			{
+				APs.Add($"{attachToRig.name}_{index}");
+				if (rig.transform.parent != null && rig.transform.parent.GetComponentInParent<ModelEditingRig>() == attachToRig)
+					selectedIndex = APs.Count - 1;
+			}
+			else
+				myRigIndex = index;
+		}
+		
+		int changedIndex = EditorGUILayout.Popup(selectedIndex, APs.ToArray(), options);
+		if(changedIndex != selectedIndex)
+		{
+			Transform attachTo = null;
+			if (changedIndex >= APDefaults.Length)
+			{
+				int relativeIndex = changedIndex - APDefaults.Length;
+				if (relativeIndex >= myRigIndex)
+					relativeIndex++;
+				attachTo = ActiveRigs[relativeIndex].transform;
+			}
+			else
+				attachTo = GameObject.Find(APs[changedIndex])?.transform;
+			rig.transform.SetParent(attachTo);
+			rig.transform.localPosition = Vector3.zero;
+			rig.transform.localRotation = Quaternion.identity;
+			rig.transform.localScale = Vector3.one;
+		}
+	}
+
+	private void AttachPointDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
+	{
+		Transform parent = rig.transform.parent;
+		ModelEditingRig parentRig = parent?.GetComponentInParent<ModelEditingRig>();
+		if (parentRig != null && parentRig.WorkingCopy is TurboRig turbo)
+		{
+			List<string> apNames = new List<string>();
+			int attachedTo = 0;
+			apNames.Add("none");
+			for(int i = 0; i < turbo.AttachPoints.Count; i++)
+			{
+				AttachPoint ap = turbo.AttachPoints[i];
+				apNames.Add(ap.name);
+				if (ap.name == parent.name)
+					attachedTo = i+1;
+			}
+			int changedAttachedTo = EditorGUILayout.Popup(attachedTo, apNames.ToArray(), options);
+			if(changedAttachedTo != attachedTo)
+			{
+				Transform newParent = parentRig.transform;
+				if(changedAttachedTo != 0)
+				{
+					newParent = parentRig.transform.FindRecursive(turbo.AttachPoints[changedAttachedTo - 1].name);
+				}
+				rig.transform.SetParent(newParent);
+				rig.transform.localPosition = Vector3.zero;
+				rig.transform.localRotation = Quaternion.identity;
+				rig.transform.localScale = Vector3.one;
+			}
+		}
+		else
+		{ 
+			EditorGUI.BeginDisabledGroup(true);
+			EditorGUILayout.Popup(0, new string[] { "N/A" }, options);
+			EditorGUI.EndDisabledGroup();
+		}
+	}
+
+		/*
+		if (GUILayout.Button("Run"))
 		{
 			foreach(string file in Directory.EnumerateFiles(recipeFolder))
 			{
@@ -43,16 +250,6 @@ public class FlansModToolbox : EditorWindow
 			}
 		}
 
-		
-
-		if(ModelPreviewerInst == null)
-		{
-			ModelPreviewerInst = FindObjectOfType<ModelPreivewer>();
-		}
-		if(DefinitionImporter == null)
-		{
-			DefinitionImporter = FindObjectOfType<DefinitionImporter>();
-		}
 
 		if(DefinitionImporter != null)
 		{
@@ -113,10 +310,9 @@ public class FlansModToolbox : EditorWindow
 		{
 			GUILayout.Label("Test");
 		}
+		*/
 
-    }
-
-	private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
+		private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
 	{
 		switch (model.Type)
 		{

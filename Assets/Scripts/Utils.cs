@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -193,4 +194,17 @@ public static class Utils
         Debug.LogWarning($"Could not resolve the path {path} as a resource location");
         return new ResourceLocation("minecraft", "null");
 	}
+
+    public static Transform FindRecursive(this Transform t, string name)
+    {
+		if (t.name == name)
+			return t;
+		foreach (Transform child in t)
+        {
+            Transform childSearch = child.FindRecursive(name);
+            if (childSearch != null)
+                return childSearch;
+        }
+        return null;
+    }
 }

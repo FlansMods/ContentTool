@@ -13,6 +13,11 @@ public class BlockbenchModel : MinecraftModel
 		return false;
 	}
 
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		return other is BlockbenchModel;
+	}
+
 	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
 	{
 		return false;

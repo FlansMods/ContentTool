@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Model;
+using static System.Collections.Specialized.BitVector32;
 
 [System.Serializable]
 public class TurboModel
@@ -10,6 +11,20 @@ public class TurboModel
 	public string PartName = "";
 	public List<TurboPiece> Pieces = new List<TurboPiece>();
 
+	public bool IsUVMapSame(TurboModel other)
+	{
+		if (other.PartName != PartName)
+			return false;
+		if (other.Pieces.Count != Pieces.Count)
+			return false;
+		for(int i = 0; i < Pieces.Count; i++)
+		{
+			if (!Pieces[i].IsUVMapSame(other.Pieces[i]))
+				return false;
+		}
+
+		return true;
+	}
 
 	// These two functions are guaranteed to construct the shapes at the specified index
 	public void SetIndexedTextureUV(int index, int u, int v)
@@ -29,7 +44,19 @@ public class TurboModel
 			AddChild();
 		return Pieces[index];
 	}
-
+	public Vector2Int GetMaxUV()
+	{
+		Vector2Int max = Vector2Int.zero;
+		foreach(TurboPiece piece in Pieces)
+		{
+			Vector2Int pieceMax = piece.MaxUV;
+			if (pieceMax.x > max.x)
+				max.x = pieceMax.x;
+			if (pieceMax.y > max.y)
+				max.y = pieceMax.y;
+		}
+		return max;
+	}
 
 	public TurboPiece GetPiece(int index)
 	{

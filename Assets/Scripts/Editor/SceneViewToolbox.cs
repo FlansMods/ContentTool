@@ -18,6 +18,12 @@ public class SceneViewToolbox : Overlay
 		root.Add(new Button(SaveChangesAs) { text = "Save As..." });
 		root.Add(new Button(DiscardChanges) { text = "Discard" });
 
+		root.Add(new Label() { text = "-- Texture --" });
+		root.Add(new Button() { text = "Create New" });
+		root.Add(new Button() { text = "Save" });
+		root.Add(new Button() { text = "Save As..." });
+
+
 		root.Add(new Label() { text = "-- Preview --" });
 		root.Add(new Button(SelectDefault) { text = "Default" });
 		root.Add(new Button(SelectFirst) { text = "First Person" });
@@ -51,6 +57,18 @@ public class SceneViewToolbox : Overlay
 	public void DiscardChanges()
 	{
 		GetCurrentRig()?.Button_Discard();
+	}
+	public void CreateNewTexture()
+	{
+		GetCurrentRig()?.Button_CreateNewTexture();
+	}
+	public void SaveTexture()
+	{
+		GetCurrentRig()?.Button_SaveTexture();
+	}
+	public void SaveTextureAs()
+	{
+		GetCurrentRig()?.Button_SaveTextureAs();
 	}
 	public void SelectFirst()
 	{

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 {
+	public abstract bool IsUVMapSame(MinecraftModel other);
+
 	[System.Serializable]
 	public class NamedTexture
 	{

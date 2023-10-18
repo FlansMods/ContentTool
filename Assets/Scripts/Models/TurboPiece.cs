@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Model;
 
 [System.Serializable]
 public class TurboPiece
@@ -15,6 +16,18 @@ public class TurboPiece
 
 	// For shapeboxes
 	public Vector3[] Offsets = new Vector3[8];
+
+	public bool IsUVMapSame(TurboPiece other)
+	{
+		if (other.Dim != Dim)
+			return false;
+		if (other.textureU != textureU)
+			return false;
+		if (other.textureV != textureV)
+			return false;
+
+		return true;
+	}
 
 	public TurboPiece Copy()
 	{
@@ -67,6 +80,9 @@ public class TurboPiece
 		}
 	}
 
+	public Vector2Int MinUV { get { return new Vector2Int(textureU, textureV); } }
+	public Vector2Int MaxUV { get { return MinUV + BoxUVSize; } }
+	public Vector2Int BoxUVSize { get { return GetBoxUVSize(); } }
 	public Vector2Int GetBoxUVSize()
 	{
 		int x = Mathf.CeilToInt(Dim.x), y = Mathf.CeilToInt(Dim.y), z = Mathf.CeilToInt(Dim.z);

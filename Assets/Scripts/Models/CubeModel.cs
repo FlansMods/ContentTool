@@ -34,6 +34,11 @@ public class CubeModel : MinecraftModel
 		return true;
 	}
 
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		return other is CubeModel;
+	}
+
 	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("parent", this.GetLocation().ResolveWithSubdir("block"));

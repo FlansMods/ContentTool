@@ -471,8 +471,27 @@ public class ModelEditingRig : MonoBehaviour
                 DestroyImmediate(preview.gameObject);
     }
 
-    #if UNITY_EDITOR
-    public void Editor_Toolbox()
+	public void SaveTexture()
+	{
+		
+	}
+
+	public void SaveTextureAs(string newTexturePath)
+	{
+		string newTextureName = newTexturePath;
+		newTextureName = newTextureName.Substring(
+			newTextureName.LastIndexOf('/') + 1,
+			newTextureName.LastIndexOf('.') - (newTextureName.LastIndexOf('/') + 1));
+
+		if (UVCalculator.StitchWithExistingUV(WorkingCopy, Preview, newTextureName))
+		{
+			Debug.Log($"Saved new skin as {newTextureName}:'{newTexturePath}'");
+		}
+		else Debug.LogError($"Failed to save new skin as {newTextureName} at {newTexturePath}");
+	}
+
+	#if UNITY_EDITOR
+	public void Editor_Toolbox()
     {
 		if (GUILayout.Button("Load..."))
 			Button_OpenModel();
@@ -489,7 +508,7 @@ public class ModelEditingRig : MonoBehaviour
 		EditorGUI.EndDisabledGroup();
 	}
 
-    public void Button_OpenModel()
+    public void Button_OpenModel(string loadPath = null)
     {
 		bool canLoad = true;
 		if (WorkingCopy != null && IsDirty)
@@ -511,7 +530,8 @@ public class ModelEditingRig : MonoBehaviour
 
 		if (canLoad)
 		{
-			string loadPath = EditorUtility.OpenFilePanelWithFilters("", "Assets/Content Packs", new string[] { "Imported Model", "asset" });
+			if(loadPath == null)
+				loadPath = EditorUtility.OpenFilePanelWithFilters("", "Assets/Content Packs", new string[] { "Imported Model", "asset" });
 			if (loadPath != null && loadPath.Length > 0)
 			{
 				loadPath = loadPath.Substring(loadPath.IndexOf("Assets"));
@@ -533,6 +553,11 @@ public class ModelEditingRig : MonoBehaviour
 	{
 		if (WorkingCopy != null && IsDirty)
 		{
+			if(!WorkingCopy.IsUVMapSame(ModelOpenedForEdit))
+			{
+				if (!EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {WorkingCopy.name}? The model UV has changed, so skins other than the currently active one will be invalid.", "Yes", "No"))
+					return;
+			}
 			EditorGUI.BeginDisabledGroup(IsDirty);
 			SaveChanges();
 			EditorGUI.EndDisabledGroup();
@@ -553,8 +578,32 @@ public class ModelEditingRig : MonoBehaviour
     {
 		if (WorkingCopy != null)
 		{
-			if (!EditorUtility.DisplayDialog("Are you sure?", $"Are you sure you want to discard changes to {WorkingCopy.name}", "Yes", "No"))
+			if (EditorUtility.DisplayDialog("Are you sure?", $"Are you sure you want to discard changes to {WorkingCopy.name}", "Yes", "No"))
 				DiscardChanges();
+		}
+	}
+
+	public void Button_CreateNewTexture()
+	{
+		
+	}
+
+	public void Button_SaveTexture()
+	{
+		if(!WorkingCopy.IsUVMapSame(ModelOpenedForEdit))
+		{
+			if (EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {SelectedSkin}? The model UV has changed, so other skins will not match the mapping.", "Yes", "No"))
+				SaveTexture();
+		}
+	}
+
+	public void Button_SaveTextureAs()
+	{
+		if (WorkingCopy != null && SelectedSkin.Length > 0)
+		{
+			string savePath = EditorUtility.SaveFilePanelInProject(SelectedSkin, "new_skin", "asset", "Save Skin As...");
+			if (savePath != null && savePath.Length > 0)
+				SaveTextureAs(savePath);
 		}
 	}
     #endif

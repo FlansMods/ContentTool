@@ -5,6 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Minecraft Models/MultiModel")]
 public class MultiModel : MinecraftModel
 {
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		if(other is MultiModel multi)
+		{
+			return multi.FirstPersonModel.IsUVMapSame(FirstPersonModel)
+			&& multi.ThirdPersonModel.IsUVMapSame(ThirdPersonModel)
+			&& multi.HeadModel.IsUVMapSame(HeadModel)
+			&& multi.GroundModel.IsUVMapSame(GroundModel)
+			&& multi.FixedModel.IsUVMapSame(FixedModel)
+			&& multi.GUIModel.IsUVMapSame(GUIModel);
+		}
+		return false;
+	}
+
 	public MinecraftModel FirstPersonModel;
 	public MinecraftModel ThirdPersonModel;
 	public MinecraftModel HeadModel;

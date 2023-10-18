@@ -45,8 +45,12 @@ public class ResourceLocation
 	{
         return $"{Namespace}:{ID}";
     }
+	public override int GetHashCode()
+	{
+        return Namespace.GetHashCode() ^ ID.GetHashCode();
+	}
 
-    public bool IsValid()
+	public bool IsValid()
     {
         return Namespace.Length > 0 && ID.Length > 0;
     }
