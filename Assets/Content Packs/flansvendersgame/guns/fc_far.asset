@@ -20,7 +20,7 @@ MonoBehaviour:
     south: 
     west: 
     bottom: 
-    icon: 
+    icon: fc_far
     textureX: 64
     textureY: 128
     sections:
@@ -468,7 +468,16 @@ MonoBehaviour:
       isVec3: 0
       floatValue: 0.3125
       vec3Value: {x: 0, y: 0, z: 0}
-    attachPoints: []
+    attachPoints:
+    - name: scope
+      attachedTo: body
+      position: {x: 0.25, y: 3.5, z: 0}
+    - name: barrel
+      attachedTo: body
+      position: {x: 27.5, y: 2.5, z: 0}
+    - name: grip
+      attachedTo: body
+      position: {x: 11, y: 1, z: 0}
     customModelLocation: 
   Skin: {fileID: 2800000, guid: 6322c251a441a0345b3f108e42cb63c8, type: 3}
   Icon: {fileID: 2800000, guid: db98c8908dc951241bee379b7565c284, type: 3}
@@ -699,7 +708,7 @@ MonoBehaviour:
       - Stat: impact_damage
         Filter: 
         Add: 0
-        Multiply: 10
+        Multiply: 15
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
@@ -825,7 +834,7 @@ MonoBehaviour:
   gripAttachments:
     allowlist: []
     allowAll: 1
-    numAttachmentSlots: 0
+    numAttachmentSlots: 1
     attachToMesh: body
     attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
