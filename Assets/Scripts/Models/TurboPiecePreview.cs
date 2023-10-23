@@ -311,4 +311,36 @@ public class TurboPiecePreview : MinecraftModelPreview
 			PieceTexture.Apply();
 		}
 	}
+
+	public void RefreshInInspector()
+    {
+		TurboPiecePreview preview = this;
+		if (preview == null)
+			return;
+
+		if (preview.Piece == null)
+		{
+			GUILayout.Label("Invalid piece!");
+			return;
+		}
+
+		preview.transform.localPosition = preview.Piece.Origin;
+
+		if (preview.Piece.Offsets.Length != 8)
+			preview.Piece.Offsets = new Vector3[8];
+
+
+
+		if (GUILayout.Button("Duplicate"))
+			preview.Duplicate();
+
+		Texture2D tex = preview.GetTemporaryTexture();
+		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
+		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
+
+		if (GUILayout.Button("Clear Texture"))
+		{
+			preview.ResetTexture();
+		}
+	}
 }

@@ -100,6 +100,7 @@ public class TurboPiecePreviewEditor : Editor
 			return;
 		}
 
+		preview.transform.localPosition = preview.Piece.Origin;
 		preview.SetPos(EditorGUILayout.Vector3Field("Rotation Origin", preview.transform.localPosition));
 		preview.SetEuler(EditorGUILayout.Vector3Field("Euler Angles", preview.transform.localEulerAngles));
 		
