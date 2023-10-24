@@ -41,6 +41,11 @@ public class ResourceLocation
         ID = id;
     }
 
+    public ResourceLocation Clone()
+    {
+        return new ResourceLocation(Namespace, ID);
+    }
+
 	public override string ToString()
 	{
         return $"{Namespace}:{ID}";
@@ -87,27 +92,111 @@ public class ResourceLocation
 	}
 
 #if UNITY_EDITOR
-	private static List<string> namespaces = null;
-	public static ResourceLocation EditorField(ResourceLocation src)
+    public T Load<T>(string subfolder = "") where T : Object
     {
-		if (namespaces == null)
+        if (Namespace == "minecraft")
         {
-			namespaces = new List<string>
-			{
-				"minecraft",
-				"flansmod"
-			};
-			DefinitionImporter importer = Object.FindObjectOfType<DefinitionImporter>();
-            if(importer != null)
-            {
-                foreach (ContentPack pack in importer.Packs)
-                    namespaces.Add(pack.ModName);
-            }
+            Debug.Log($"Did not load {this} asset from minecraft namespace.");
+            return null;
         }
 
+        string extension = "asset";
+        if (typeof(T) == typeof(Texture2D))
+            extension = "png";
+        string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{ID}.{extension}";
+
+        T asset = AssetDatabase.LoadAssetAtPath<T>(path);
+        if (asset != null)
+            return asset;
+
+        Debug.LogError($"Failed to load {path} as {typeof(T)}");
+        return null;
+    }
+
+    // Namespace caching
+	private static List<string> _Namespaces = null;
+    public static List<string> Namespaces 
+    { 
+        get 
+        {
+			if (_Namespaces == null)
+			{
+				_Namespaces = new List<string>
+			    {
+				    "minecraft",
+				    "flansmod"
+			    };
+				DefinitionImporter importer = Object.FindObjectOfType<DefinitionImporter>();
+				if (importer != null)
+				{
+					foreach (ContentPack pack in importer.Packs)
+						_Namespaces.Add(pack.ModName);
+				}
+			}
+            return _Namespaces;
+		} 
+    }
+
+
+    public static ResourceLocation EditorObjectField<T>(ResourceLocation src) where T : Object
+    {
+        return EditorObjectField<T>(src, src.Load<T>());
+    }
+
+	public static ResourceLocation EditorObjectField<T>(ResourceLocation src, T currentObject) where T : Object
+    {
+        ResourceLocation result = src.Clone();
+		
+
+		GUILayout.BeginHorizontal();
+		string editedNamespace = EditorGUILayout.DelayedTextField(result.Namespace, GUILayout.MinWidth(64));
+		if (editedNamespace != result.Namespace && !Namespaces.Contains(editedNamespace))
+		{
+			bool register = EditorUtility.DisplayDialog(
+				"New namespace",
+				$"Do you want to register {editedNamespace} as a new namespace?",
+				"Yes", "No");
+
+			if (register)
+			{
+				Namespaces.Add(editedNamespace);
+				result.Namespace = editedNamespace;
+			}
+			else
+			{
+				// Do anything?
+			}
+
+		}
+
+		int index = Namespaces.IndexOf(editedNamespace);
+		int editedSelection = EditorGUILayout.Popup(index, Namespaces.ToArray(), GUILayout.MinWidth(16));
+		if (editedSelection != -1 && editedSelection != index)
+		{
+			result.Namespace = Namespaces[editedSelection];
+		}
+
+        if(result.Namespace == "minecraft")
+        {
+			result.ID = GUILayout.TextField(result.ID, GUILayout.MinWidth(64)).ToLower().Replace(" ", "_");
+		}
+        else 
+        {
+            Object changedObject = EditorGUILayout.ObjectField(currentObject, typeof(T), false);
+            if(changedObject != currentObject)
+            {
+                result = changedObject.GetLocation();
+            }
+        }
+		GUILayout.EndHorizontal();
+        return result;
+	}
+	public static ResourceLocation EditorField(ResourceLocation src)
+    {
+		ResourceLocation result = src.Clone();
         GUILayout.BeginHorizontal();
-        string editedNamespace = EditorGUILayout.DelayedTextField(src.Namespace, GUILayout.MinWidth(64));
-        if(editedNamespace != src.Namespace && !namespaces.Contains(editedNamespace))
+        string editedNamespace = EditorGUILayout.DelayedTextField(result.Namespace, GUILayout.MinWidth(64));
+        if(editedNamespace != result.Namespace && !Namespaces.Contains(editedNamespace))
         {
             bool register = EditorUtility.DisplayDialog(
                 "New namespace",
@@ -116,8 +205,8 @@ public class ResourceLocation
 
             if(register)
             {
-                namespaces.Add(editedNamespace);
-                src.Namespace = editedNamespace;
+				Namespaces.Add(editedNamespace);
+				result.Namespace = editedNamespace;
             }
             else
             {
@@ -126,17 +215,17 @@ public class ResourceLocation
 
 		}
 
-        int index = namespaces.IndexOf(editedNamespace);
-        int editedSelection = EditorGUILayout.Popup(index, namespaces.ToArray(), GUILayout.MinWidth(16));
+        int index = Namespaces.IndexOf(editedNamespace);
+        int editedSelection = EditorGUILayout.Popup(index, Namespaces.ToArray(), GUILayout.MinWidth(16));
         if(editedSelection != -1 && editedSelection != index)
         {
-            src.Namespace = namespaces[editedSelection];
+			result.Namespace = Namespaces[editedSelection];
         }
 
-        src.ID = GUILayout.TextField(src.ID, GUILayout.MinWidth(64)).ToLower().Replace(" ", "_");
+		result.ID = GUILayout.TextField(result.ID, GUILayout.MinWidth(64)).ToLower().Replace(" ", "_");
         GUILayout.EndHorizontal();
 
-        return src;
+        return result;
 	}
 #endif
 }

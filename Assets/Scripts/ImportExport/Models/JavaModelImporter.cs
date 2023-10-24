@@ -661,7 +661,7 @@ public static class JavaModelImporter
 				{
 					key = Utils.ToLowerWithUnderscores(parameter),
 					isVec3 = true,
-					vec3Value = new Vector3(floats[0], floats[1], floats[2]),
+					vec3Value = new Vector3(floats[0] * 16f, floats[1] * 16f, floats[2] * 16f),
 				});
 				return true;
 			}

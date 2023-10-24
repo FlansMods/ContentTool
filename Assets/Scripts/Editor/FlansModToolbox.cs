@@ -79,7 +79,7 @@ public class FlansModToolbox : EditorWindow
 		GUILayout.Label(" ------------ ");
 	}
 
-	private List<ModelEditingRig> ActiveRigs = null;
+	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
 	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
 	private void ModelsTab()
@@ -106,7 +106,7 @@ public class FlansModToolbox : EditorWindow
 		}
 
 		var RIG_COL_X = GUILayout.Width(64);
-		var MODEL_COL_X = GUILayout.Width(64);
+		var MODEL_COL_X = GUILayout.Width(128);
 		var ATTACH_COL_X = GUILayout.Width(128);
 		var AP_COL_X = GUILayout.Width(64);
 
