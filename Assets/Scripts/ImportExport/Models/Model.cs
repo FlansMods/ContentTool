@@ -325,6 +325,45 @@ public class Model
 		return null;
 	}
 
+	public TurboRig GetTurboRig()
+    {
+		TurboRig mod = new TurboRig();
+
+		mod.TextureX = textureX;
+		mod.TextureY = textureY;
+
+		foreach (Section s in sections)
+		{
+			TurboModel s2 = new TurboModel();
+			s2.PartName = s.partName;
+
+			int count = s.pieces.Length;
+			TurboPiece[] parts = new TurboPiece[count];
+
+			for (int i = 0; i < count; i++)
+			{
+
+				TurboPiece p = s.pieces[i].CopyAsTurbo();
+				//Piece p = new Piece();
+				//TurboPiece tp = s.pieces[i];
+				//p.textureU = tp.textureU;
+				//p.textureV = tp.textureV;
+				//p.Shape = EShape.ShapeBox;
+				//p.Pos = tp.Pos;
+				//p.Dim = tp.Dim;
+				//p.Origin = tp.Origin;
+				//p.Offsets = tp.Offsets;
+				//p.Euler = tp.Euler;
+
+				parts[i] = p;
+			}
+			s2.Pieces.AddRange(parts);
+			mod.Sections.Add(s2);
+		}
+
+		return mod;
+    }
+
 	public float GetFloatParamOrDefault(string key, float defaultValue)
 	{
 		TryGetFloatParam(key, out float f, defaultValue);

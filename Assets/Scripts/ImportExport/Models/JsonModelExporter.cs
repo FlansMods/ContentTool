@@ -287,15 +287,15 @@ public static class JsonModelExporter
 								using(builder.Tabulation("uv"))
 								{
 									int[] uvs = wrapper.GetIntUV(wrapper.textureU, wrapper.textureV, face);
+									builder.CurrentTable.Add((float)uvs[2] / texX);//Re-order indicies
+									builder.CurrentTable.Add((float)uvs[3] / texY);
 									builder.CurrentTable.Add((float)uvs[0] / texX);
 									builder.CurrentTable.Add((float)uvs[1] / texY);
-									builder.CurrentTable.Add((float)uvs[2] / texX);
-									builder.CurrentTable.Add((float)uvs[3] / texY);
 								}
 								if(face == EFace.up)
-									builder.Current.Add("rotation", 180);
+									builder.Current.Add("rotation", 90); //Alter rotations
 								if(face == EFace.down)
-									builder.Current.Add("rotation", 90);
+									builder.Current.Add("rotation", 0);
 								builder.Current.Add("texture", "#default");
 							}
 						};
@@ -304,8 +304,8 @@ public static class JsonModelExporter
 						buildUVs(wrapper, "east", EFace.east, model.textureX, model.textureY);
 						buildUVs(wrapper, "south", EFace.south, model.textureX, model.textureY);
 						buildUVs(wrapper, "west", EFace.west, model.textureX, model.textureY);
-						buildUVs(wrapper, "up", EFace.up, model.textureX, model.textureY);
-						buildUVs(wrapper, "down", EFace.down, model.textureX, model.textureY);
+						buildUVs(wrapper, "up", EFace.down, model.textureX, model.textureY); //Swap up and down
+						buildUVs(wrapper, "down", EFace.up, model.textureX, model.textureY);
 					}
 				}
 			}
