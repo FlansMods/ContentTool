@@ -654,7 +654,7 @@ MonoBehaviour:
       loudness: 150
       actions:
       - actionType: 2
-        duration: 0.2
+        duration: 0.5
         sounds: []
         itemStack: 
         modifiers: []
@@ -739,20 +739,20 @@ MonoBehaviour:
     canBeOverriden: 1
     twoHanded: 1
     repeatMode: 2
-    repeatDelay: 0.05
+    repeatDelay: 0.028
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
     actions:
     - actionType: 3
-      duration: 0.75
+      duration: 0.028
       sounds: []
       itemStack: 
       modifiers:
       - Stat: vertical_recoil
         Filter: 
         Add: 0
-        Multiply: 2
+        Multiply: 5
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
@@ -780,7 +780,7 @@ MonoBehaviour:
       - Stat: impact_damage
         Filter: 
         Add: 0
-        Multiply: 4
+        Multiply: 6
         SetValue: 
         ApplyToPrimary: 1
         ApplyToSecondary: 0
@@ -797,6 +797,17 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 5
+    - actionType: 2
+      duration: 0.75
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: shoot
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
     - actionType: 1
       duration: 0
       sounds:
@@ -816,47 +827,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-    - actionType: 2
-      duration: 0.75
-      sounds: []
-      itemStack: 
-      modifiers: []
-      fovFactor: 1.25
-      scopeOverlay: 
-      anim: shoot
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
   secondary:
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
     twoHanded: 1
     repeatMode: 1
-    repeatDelay: 0.75
+    repeatDelay: 0.6
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
     actions:
-    - actionType: 4
+    - actionType: 5
       duration: 0
       sounds: []
       itemStack: 
       modifiers: []
-      fovFactor: 2
-      scopeOverlay: 
+      fovFactor: 6
+      scopeOverlay: mwbarrett
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
-    - actionType: 2
-      duration: 0
-      sounds: []
-      itemStack: 
-      modifiers: []
-      fovFactor: 1.25
-      scopeOverlay: 
-      anim: aim_down_sights
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
@@ -932,4 +921,4 @@ MonoBehaviour:
     attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   modelParts: []
-  animationSet: flansmod:g11
+  animationSet: flansvendersgame:g11
