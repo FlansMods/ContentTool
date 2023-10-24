@@ -77,6 +77,7 @@ public abstract class MinecraftModelEditor : Editor
 	{
 		if (target is MinecraftModel mcModel)
 		{
+			GUILayout.Label("Minecraft Model Settings", FlanStyles.BoldLabel);
 			List<Verification> verifications = new List<Verification>();
 			ResourceLocation resLoc = mcModel.GetLocation();
 			GUILayout.Label(resLoc.ToString());
@@ -153,6 +154,8 @@ public abstract class MinecraftModelEditor : Editor
 					}
 
 					EditorGUI.BeginChangeCheck();
+					FlanStyles.HorizontalLine();
+					GUILayout.Label("Default Inspector", FlanStyles.BoldLabel);
 					base.OnInspectorGUI();
 					if (EditorGUI.EndChangeCheck())
 						RefreshMatches(pack, resLoc, mcModel);
@@ -189,4 +192,21 @@ public class BlockbenchModelEditor : MinecraftModelEditor
 [CustomEditor(typeof(ItemModel))]
 public class ItemModelEditor : MinecraftModelEditor
 {
+	public override void OnInspectorGUI()
+	{
+		base.OnInspectorGUI();
+
+		FlanStyles.HorizontalLine();
+		GUILayout.Label("Item Settings", FlanStyles.BoldLabel);
+
+		if(target is ItemModel itemModel)
+		{
+			ResourceLocation changedLocation = ResourceLocation.EditorObjectField<Texture2D>(itemModel.IconLocation);
+			if(changedLocation != itemModel.IconLocation)
+			{
+				itemModel.IconLocation = changedLocation;
+				itemModel.Icon = changedLocation.Load<Texture2D>();
+			}
+		}
+	}
 }

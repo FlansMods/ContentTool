@@ -8,6 +8,21 @@ public class ItemModel : MinecraftModel
 {
 	public ResourceLocation IconLocation;
 	public Texture2D Icon;
+	public List<Variant> Variants;
+	[System.Serializable]
+	public class Variant
+	{
+		public string Conditional = "CustomModelData";
+		public string Value = "1";
+		public ResourceLocation IconLocation;
+		public Texture2D Icon;
+	}
+
+	public override void GetVerifications(List<Verification> verifications)
+	{
+		base.GetVerifications(verifications);
+		// TODO: Check for skins
+	}
 
 	public Texture2D GetIcon()
 	{

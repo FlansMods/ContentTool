@@ -208,3 +208,67 @@ public static class Utils
         return null;
     }
 }
+public static class FlanStyles
+{
+	public static readonly GUIStyle BoldLabel = GUI.skin.label.Clone()
+				.WithFontStyle(FontStyle.Bold);
+
+	public static GUIStyle Clone(this GUIStyle style)
+	{
+		return new GUIStyle(style);
+	}
+	public static GUIStyle WithFontSize(this GUIStyle style, int fontSize)
+	{
+		style.fontSize = fontSize;
+		return style;
+	}
+	public static GUIStyle WithFontStyle(this GUIStyle style, FontStyle fontStyle)
+	{
+		style.fontStyle = fontStyle;
+		return style;
+	}
+	public static GUIStyle WithTextColour(this GUIStyle style, Color colour)
+	{
+		style.normal.textColor = colour;
+		return style;
+	}
+	public static GUIStyle WithAlignment(this GUIStyle style, TextAnchor alignment)
+	{
+		style.alignment = alignment;
+		return style;
+	}
+	public static GUIStyle WithMargin(this GUIStyle style, RectOffset rectOffset)
+	{
+		style.margin = rectOffset;
+		return style;
+	}
+	public static GUIStyle WithPressedStyle(this GUIStyle style)
+	{
+		style.hover = style.active;
+		style.normal = style.active;
+		return style;
+	}
+
+	// Spacer styles
+	public static GUIStyle horizontalLine = new GUIStyle()
+	{
+		normal = new GUIStyleState()
+		{
+			background = EditorGUIUtility.whiteTexture,
+		},
+		margin = new RectOffset(0, 0, 4, 4),
+		fixedHeight = 3,
+	};
+
+	public static void BigSpacer()
+	{
+		GUILayout.Space(12.0f);
+		FlanStyles.HorizontalLine();
+		GUILayout.Space(12.0f);
+	}
+
+	public static void HorizontalLine()
+	{
+		GUILayout.Box(GUIContent.none, horizontalLine);
+	}
+}
