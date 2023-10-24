@@ -26,12 +26,12 @@ public class FlansModToolbox : EditorWindow
 	private enum Tab
 	{
 		ContentPacks,
-		Models,
+		Rigs,
 	}
 	private static readonly string[] TabNames = new string[]
 	{
 		"Content Packs",
-		"Models"
+		"Rig Editor",
 	};
 
 	private Tab SelectedTab = Tab.ContentPacks;
@@ -43,19 +43,14 @@ public class FlansModToolbox : EditorWindow
 
 	void OnGUI()
 	{
-		//recipeFolder = GUILayout.TextField(recipeFolder);
-		//copyFromMat = GUILayout.TextField(copyFromMat);
-		//copyToMat = GUILayout.TextField(copyToMat);
-
-
 		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames);
 		switch (SelectedTab)
 		{
 			case Tab.ContentPacks:
 				ContentPacksTab();
 				break;
-			case Tab.Models:
-				ModelsTab();
+			case Tab.Rigs:
+				RigsTab();
 				break;
 		}
 	}
@@ -66,7 +61,7 @@ public class FlansModToolbox : EditorWindow
 
 	private void ContentPacksTab()
 	{
-		GUILayout.Label("Select Content Pack");
+		FlanStyles.BigHeader("Content Packs");
 		List<string> packNames = new List<string>();
 		packNames.Add("None");
 		for (int i = 0; i < Packs.Count; i++)
@@ -76,13 +71,24 @@ public class FlansModToolbox : EditorWindow
 		}
 		SelectedContentPackIndex = EditorGUILayout.Popup(SelectedContentPackIndex+1, packNames.ToArray()) - 1;
 		EditorGUILayout.ObjectField(SelectedContentPack, typeof(ContentPack), false);
-		GUILayout.Label(" ------------ ");
 	}
 
 	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
 	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
-	private void ModelsTab()
+	private RigsSubTab SubTab = RigsSubTab.Models;
+	private enum RigsSubTab 
+	{
+		Models,
+		Animations,
+		Skins,
+	}
+	private static readonly string[] SubTabNames = new string[] {
+		"Model",
+		"Animations",
+		"Skin",
+	};
+	private void RigsTab()
 	{
 		List<string> modelNames = new List<string>();
 		ActiveRigs.Clear();
@@ -92,14 +98,9 @@ public class FlansModToolbox : EditorWindow
 			modelNames.Add(rig.ModelOpenedForEdit != null ? rig.ModelOpenedForEdit.name : "No model opened");
 		}
 
-		int rigIndex = GUILayout.SelectionGrid(SelectedRigIndex, modelNames.ToArray(), 3);
-		if(rigIndex != SelectedRigIndex)
-		{
-			SelectedRigIndex = rigIndex;
-			Selection.SetActiveObjectWithContext(SelectedRig, this);
-		}
+		FlanStyles.BigHeader("Rig Editor");
 
-		if(GUILayout.Button("Create New Rig"))
+		if (GUILayout.Button("Create New Rig"))
 		{
 			GameObject newGO = new GameObject("ModelRig");
 			newGO.AddComponent<ModelEditingRig>();
@@ -115,6 +116,7 @@ public class FlansModToolbox : EditorWindow
 		GUILayout.Label("Model", MODEL_COL_X);
 		GUILayout.Label("Attachment", ATTACH_COL_X);
 		GUILayout.Label("AP", AP_COL_X);
+		GUILayout.Label("Select");
 		GUILayout.EndHorizontal();
 
 		for (int i = 0; i < ActiveRigs.Count; i++)
@@ -127,15 +129,147 @@ public class FlansModToolbox : EditorWindow
 			//	Selection.SetActiveObjectWithContext(rig, this);
 			//}
 			EditorGUILayout.ObjectField(rig, typeof(ModelEditingRig), false, RIG_COL_X);
-			Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, MODEL_COL_X);
-			if(changedModel != rig.ModelOpenedForEdit)
-				rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
+			ModelButton(rig, MODEL_COL_X);
 
 			AttachPoseDropdown(rig, ATTACH_COL_X);
 			AttachPointDropdown(rig, AP_COL_X);
 
+			EditorGUI.BeginDisabledGroup(SelectedRigIndex == i);
+			if (GUILayout.Button("Select"))
+			{
+				SelectedRigIndex = i;
+				Selection.SetActiveObjectWithContext(SelectedRig, this);
+			}
+			EditorGUI.EndDisabledGroup();
+
 			GUILayout.EndHorizontal();
 		}
+
+		
+		EditorGUI.BeginDisabledGroup(SelectedRig == null);
+		if(SelectedRig != null)
+			FlanStyles.BigHeader($"{SelectedRig.name} [{SelectedRig.ModelName}]");
+		SubTab = (RigsSubTab)GUILayout.Toolbar((int)SubTab, SubTabNames);
+		switch(SubTab)
+		{
+			case RigsSubTab.Models:
+				ModelsTab();
+				break;
+			case RigsSubTab.Animations:
+				AnimationsTab();
+				break;
+			case RigsSubTab.Skins:
+				SkinsTab();
+				break;
+		}
+		EditorGUI.EndDisabledGroup();
+	}
+
+	private void ModelsTab()
+	{
+		if (SelectedRig == null)
+			return;
+
+		ModelButton(SelectedRig);
+	}
+
+	private Editor AnimationSubEditor = null;
+	private bool AnimationEditorFoldout = false;
+	private Vector2 AnimationSubEditorScroll = Vector2.zero;
+	private void AnimationsTab()
+	{
+		if (SelectedRig == null)
+			return;
+
+		SelectedRig.ApplyAnimation = GUILayout.Toggle(SelectedRig.ApplyAnimation, "Preview Animations");
+		AnimationButton(SelectedRig);
+
+		GUILayout.BeginHorizontal();
+		if (GUILayout.Button(EditorGUIUtility.IconContent("PlayButton")))
+			SelectedRig.Playing = true;
+		if (GUILayout.Button(EditorGUIUtility.IconContent("PauseButton")))
+			SelectedRig.Playing = false;
+		GUILayout.EndHorizontal();
+
+	
+
+		float animProgress = SelectedRig.GetPreviewProgressSeconds();
+		float animDuration = SelectedRig.GetPreviewDurationSeconds();
+
+		GUILayout.Label($"[*] Previews ({animProgress.ToString("0.00")}/{animDuration.ToString("0.00")})");
+
+		int previewIndex = -1;
+		float animParameter = 0.0f;
+		int count = SelectedRig.PreviewSequences.Count;
+		ModelEditingRig.AnimPreviewEntry animPreview = SelectedRig.GetCurrentPreviewEntry(out previewIndex, out animParameter);
+		if (animPreview != null)
+		{
+			float previewDurationSeconds = SelectedRig.GetDurationSecondsOf(animPreview);
+			float currentSeconds = animParameter * previewDurationSeconds;
+			int previewDurationTicks = SelectedRig.GetDurationTicksOf(animPreview);
+			int currentTicks = Mathf.FloorToInt(currentSeconds * 20f);
+			if (animPreview.IsSequence)
+				GUILayout.Label($"[{previewIndex+1}/{count}] Sequence - {animPreview.Name} ({currentSeconds.ToString("0.00")} / {previewDurationSeconds.ToString("0.00")}) | ({currentTicks}t / {previewDurationTicks}t)");
+			else
+				GUILayout.Label($"[{previewIndex+1}/{count}] Frame - {animPreview.Name} ({currentSeconds.ToString("0.00")} / {previewDurationSeconds.ToString("0.00")}) | ({currentTicks}t / {previewDurationTicks}t)");
+		}
+
+		float edited = GUILayout.HorizontalSlider(animProgress, 0f, animDuration);
+		if (!Mathf.Approximately(edited, animProgress))
+			SelectedRig.SetPreviewProgressSeconds(edited);
+
+		GUILayout.Space(16);
+
+		GUILayout.BeginHorizontal();
+		//RectOffset oldOffsets = GUI.skin.button.border;
+		//GUI.skin.button.border = new RectOffset();
+		
+		for (int i = 0; i < SelectedRig.PreviewSequences.Count; i++)
+		{
+			float previewSeconds = SelectedRig.GetDurationSecondsOf(i);
+			float guiWidth = Screen.width * previewSeconds / animDuration;
+			if(GUILayout.Button(SelectedRig.PreviewSequences[i].Name, GUILayout.Width(guiWidth)))
+			{
+				SelectedRig.SetPreviewIndex(i);
+			}
+		}
+		//GUI.skin.button.border = oldOffsets;
+		GUILayout.EndHorizontal();
+
+		AnimationEditorFoldout = EditorGUILayout.Foldout(AnimationEditorFoldout, "Animation Editor");
+		if(AnimationEditorFoldout)
+		{
+			if(AnimationSubEditor == null || AnimationSubEditor.target != SelectedRig.SelectedAnimation)
+			{
+				AnimationSubEditor = Editor.CreateEditor(SelectedRig.SelectedAnimation);
+			}
+			if (AnimationSubEditor != null)
+			{
+				//AnimationSubEditorScroll = GUILayout.BeginScrollView(AnimationSubEditorScroll);
+				AnimationSubEditor.OnInspectorGUI();
+				//GUILayout.EndScrollView();
+			}
+		}
+	}
+
+	private void SkinsTab()
+	{
+		if (SelectedRig == null)
+			return;
+	}
+
+	private void ModelButton(ModelEditingRig rig, params GUILayoutOption[] options)
+	{
+		Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, options);
+		if (changedModel != rig.ModelOpenedForEdit)
+			rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
+	}
+
+	private void AnimationButton(ModelEditingRig rig, params GUILayoutOption[] options)
+	{
+		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(AnimationDefinition), false, options);
+		if (changedAnim != rig.SelectedAnimation)
+			rig.Button_ApplyAnimation(AssetDatabase.GetAssetPath(changedAnim));
 	}
 
 	private static readonly string[] APDefaults = new string[] {

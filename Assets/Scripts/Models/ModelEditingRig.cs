@@ -39,20 +39,125 @@ public class ModelEditingRig : MonoBehaviour
 			return namedTexture.Texture;
 		return null;
 	}
+	public string ModelName { get { return ModelOpenedForEdit == null ? "None" : ModelOpenedForEdit.name; } }
 
 	[Header("Animations")]
     public bool ApplyAnimation = false;
     public AnimationDefinition SelectedAnimation = null;
-	private DateTime AnimStartTime = DateTime.Now;
+	private DateTime LastEditorTick = DateTime.Now;
+	private float AnimProgressSeconds = 0.0f;
 	[System.Serializable]
 	public class AnimPreviewEntry
 	{
 		public bool IsSequence = false;
 		public string Name = "";
-		public int Duration = 0;
+		public int DurationTicks = 0;
 	}
 	public bool Playing = false;
 	public List<AnimPreviewEntry> PreviewSequences = new List<AnimPreviewEntry>();
+	public SequenceDefinition GetSequence(string sequenceName)
+	{
+		if(SelectedAnimation != null)
+		{
+			foreach (SequenceDefinition seq in SelectedAnimation.sequences)
+				if (seq.name == sequenceName)
+					return seq;
+		}
+		return null;
+	}
+	public KeyframeDefinition GetKeyframe(string keyframeName)
+	{
+		if (SelectedAnimation != null)
+		{
+			foreach (KeyframeDefinition keyframe in SelectedAnimation.keyframes)
+				if (keyframe.name == keyframeName)
+					return keyframe;
+		}
+		return null;
+	}
+	public float GetPreviewProgressSeconds()
+	{
+		return AnimProgressSeconds;
+	}
+	public int GetPreviewProgressTicks()
+	{
+		return Mathf.CeilToInt(AnimProgressSeconds * 20f);
+	}
+	public float GetPreviewDurationSeconds()
+	{
+		return GetPreviewDurationTicks() / 20f;
+	}
+	public int GetPreviewDurationTicks()
+	{
+		int time = 0;
+		foreach(AnimPreviewEntry preview in PreviewSequences)
+		{
+			if(preview.IsSequence)
+			{
+				SequenceDefinition seq = GetSequence(preview.Name);
+				if (seq != null)
+					time += seq.ticks;
+			}
+			else
+			{
+				time += preview.DurationTicks;
+			}
+		}
+		return time;
+	}
+	public void SetPreviewProgressTicks(int ticks)
+	{
+		AnimProgressSeconds = ticks / 20.0f;
+	}
+	public void SetPreviewProgressSeconds(float seconds)
+	{
+		AnimProgressSeconds = seconds;
+	}
+	public void SetPreviewIndex(int index)
+	{
+		AnimProgressSeconds = 0.0f;
+		for (int i = 0; i < index; i++)
+			AnimProgressSeconds += GetDurationSecondsOf(PreviewSequences[i]);
+	}
+	public float GetDurationSecondsOf(int previewIndex)
+	{
+		return GetDurationTicksOf(PreviewSequences[previewIndex]) / 20f;
+	}
+	public float GetDurationSecondsOf(AnimPreviewEntry entry)
+	{
+		return GetDurationTicksOf(entry) / 20f;
+	}
+	public int GetDurationTicksOf(AnimPreviewEntry entry)
+	{
+		if (entry.IsSequence)
+		{
+			SequenceDefinition sequence = FindSequence(entry.Name);
+			return GetSequenceLengthTicks(sequence);
+		}
+		else
+		{
+			return entry.DurationTicks;
+		}
+	}
+	public AnimPreviewEntry GetCurrentPreviewEntry(out int index, out float parameter)
+	{
+		float progressInSeconds = GetPreviewProgressSeconds();
+		for (int i = 0; i < PreviewSequences.Count; i++)
+		{
+			float durationSeconds = GetDurationSecondsOf(PreviewSequences[i]); 
+			if (progressInSeconds < durationSeconds)
+			{
+				index = i;
+				parameter = progressInSeconds / durationSeconds;
+				return PreviewSequences[i];
+			}
+
+			progressInSeconds -= durationSeconds;
+		}
+		index = -1;
+		parameter = 0.0f;
+		return null;
+	}
 
 
 	public void SetDirty()
@@ -84,8 +189,14 @@ public class ModelEditingRig : MonoBehaviour
 		{
 			AnimPreviewEntry entry = null;
 
-			TimeSpan timeSinceStart = DateTime.Now - AnimStartTime;
-			float progress = 20f * (float)(timeSinceStart.TotalMilliseconds / 1000d);
+			if (Playing)
+			{
+				TimeSpan timeToAdd = DateTime.Now - LastEditorTick;
+				AnimProgressSeconds += (float)(timeToAdd.TotalMilliseconds / 1000d);
+			}
+			LastEditorTick = DateTime.Now;
+
+			float progressInTicks = AnimProgressSeconds * 20f;
 
 			SequenceDefinition sequence = null;
 			KeyframeDefinition keyframe = null;
@@ -97,22 +208,22 @@ public class ModelEditingRig : MonoBehaviour
 				{
 					sequence = FindSequence(PreviewSequences[i].Name);
 					keyframe = null;
-					duration = GetSequenceLength(sequence);
+					duration = GetSequenceLengthTicks(sequence);
 				}
 				else
 				{
 					sequence = null;
 					keyframe = FindKeyframe(PreviewSequences[i].Name);
-					duration = PreviewSequences[i].Duration;
+					duration = PreviewSequences[i].DurationTicks;
 				}
 
-				if (progress < duration)
+				if (progressInTicks < duration)
 					break;
 
-				progress -= duration;
+				progressInTicks -= duration;
 				if (i == PreviewSequences.Count - 1)
 				{
-					AnimStartTime = DateTime.Now;
+					AnimProgressSeconds -= GetPreviewDurationSeconds();
 				}
 			}
 
@@ -122,7 +233,7 @@ public class ModelEditingRig : MonoBehaviour
 			}
 			else if (sequence != null)
 			{
-				SequenceEntryDefinition[] segment = GetSegment(sequence, progress);
+				SequenceEntryDefinition[] segment = GetSegment(sequence, progressInTicks);
 				float segmentDuration = segment[1].tick - segment[0].tick;
 
 				// If it is valid, let's animate it
@@ -132,7 +243,7 @@ public class ModelEditingRig : MonoBehaviour
 					KeyframeDefinition to = FindKeyframe(segment[1].frame);
 					if (from != null && to != null)
 					{
-						float linearParameter = (progress - segment[0].tick) / segmentDuration;
+						float linearParameter = (progressInTicks - segment[0].tick) / segmentDuration;
 						linearParameter = Mathf.Clamp(linearParameter, 0f, 1f);
 						float outputParameter = linearParameter;
 
@@ -257,10 +368,10 @@ public class ModelEditingRig : MonoBehaviour
 				return sequence;
 		return null;
 	}
-	private float GetSequenceLength(SequenceDefinition sequenceDefinition)
+	private int GetSequenceLengthTicks(SequenceDefinition sequenceDefinition)
 	{
 		if (sequenceDefinition == null)
-			return 0f;
+			return 0;
 		int highestTick = 0;
 		foreach (SequenceEntryDefinition entry in sequenceDefinition.frames)
 		{
@@ -508,7 +619,27 @@ public class ModelEditingRig : MonoBehaviour
 		EditorGUI.EndDisabledGroup();
 	}
 
-    public void Button_OpenModel(string loadPath = null)
+	public void Button_ApplyAnimation(string loadPath = null)
+	{
+		if (SelectedAnimation != null)
+		{
+			// Maybe?
+		}
+
+		if (loadPath == null)
+			loadPath = EditorUtility.OpenFilePanelWithFilters("", "Assets/Content Packs", new string[] { "Imported Animation", "asset" });
+		if (loadPath != null && loadPath.Length > 0)
+		{
+			loadPath = loadPath.Substring(loadPath.IndexOf("Assets"));
+			AnimationDefinition anim = AssetDatabase.LoadAssetAtPath<AnimationDefinition>(loadPath);
+			if(anim != null)
+				SelectedAnimation = anim;
+			else Debug.LogError($"Could not load animation at {loadPath}");
+		}
+	}
+
+
+	public void Button_OpenModel(string loadPath = null)
     {
 		bool canLoad = true;
 		if (WorkingCopy != null && IsDirty)

@@ -79,8 +79,8 @@ public class AnimationEditor : Editor
 		if(instance != null)
 		{
 			DebugRender();
+			/*
 			Previewer.Anim = instance;
-
 			GUILayout.Label("Debug Tools");
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Play"))
@@ -131,17 +131,8 @@ public class AnimationEditor : Editor
 			//GUILayout.EndHorizontal();
 
 
-			// Acquire names for dropdowns
-			List<string> sequenceNames = new List<string>(instance.sequences.Length);
-			for(int i = 0; i < instance.sequences.Length; i++)
-			{
-				sequenceNames.Add(instance.sequences[i].name);
-			}
-			List<string> frameNames = new List<string>(instance.keyframes.Length);
-			for(int i = 0; i < instance.keyframes.Length; i++)
-			{
-				frameNames.Add(instance.keyframes[i].name);
-			}
+			
+			
 
 
 
@@ -185,12 +176,24 @@ public class AnimationEditor : Editor
 				}
 			}
 			GUILayout.EndHorizontal();
+			*/
+
+			// Acquire names for dropdowns
+			List<string> sequenceNames = new List<string>(instance.sequences.Length);
+			for (int i = 0; i < instance.sequences.Length; i++)
+			{
+				sequenceNames.Add(instance.sequences[i].name);
+			}
+			List<string> frameNames = new List<string>(instance.keyframes.Length);
+			for (int i = 0; i < instance.keyframes.Length; i++)
+			{
+				frameNames.Add(instance.keyframes[i].name);
+			}
+
+
 
 			KeyframeEditor(frameNames, instance);
-
 			SequenceEditor(frameNames, instance);
-
-
 
 			GUILayout.Label(Previewer.DebugOutput);
 			if(GUI.changed)
@@ -214,8 +217,8 @@ public class AnimationEditor : Editor
 			}
 		}
 
+		FlanStyles.BigHeader("Keyframe Editor");
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("Keyframe Editor");
 		if(GUILayout.Button("New Keyframe"))
 		{
 			Undo.RecordObject(instance, instance.name);
@@ -413,8 +416,8 @@ public class AnimationEditor : Editor
 
 	private void SequenceEditor(List<string> frameNames, AnimationDefinition instance)
 	{
+		FlanStyles.BigHeader("Animation Sequence Editor");
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("Animation Sequence Editor");
 		if(GUILayout.Button("New Sequence"))
 		{
 			Undo.RecordObject(instance, instance.name);

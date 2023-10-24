@@ -271,4 +271,28 @@ public static class FlanStyles
 	{
 		GUILayout.Box(GUIContent.none, horizontalLine);
 	}
+
+
+	public static GUIStyle BigHeaderBGStyle = new GUIStyle()
+	{
+		normal = new GUIStyleState()
+		{
+			background = EditorGUIUtility.whiteTexture,
+		},
+		margin = new RectOffset(0, 0, 0, 0),
+		fixedHeight = 32,
+	};
+	public static readonly GUIStyle BigHeaderTextStyle = GUI.skin.label.Clone()
+				.WithFontStyle(FontStyle.Bold)
+                .WithFontSize(24);
+	public static void BigHeader(string text)
+    {
+        Color old = GUI.color;
+        GUI.color = Color.gray;
+		GUILayout.Box(GUIContent.none, BigHeaderBGStyle);
+        Rect lastRect = GUILayoutUtility.GetLastRect();
+        GUI.color = Color.white;
+        GUI.Label(lastRect, text, BigHeaderTextStyle);
+        GUI.color = old;
+	}
 }
