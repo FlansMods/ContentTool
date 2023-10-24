@@ -46,6 +46,19 @@ public class TurboRig : MinecraftModel
 		return Sections[Sections.Count - 1];
 	}
 
+	public void DuplicateSection(string partName)
+	{
+		for(int i = 0; i < Sections.Count; i++)
+		{
+			if(Sections[i].PartName == partName)
+			{
+				TurboModel copy = Sections[i].Copy();
+				copy.PartName = $"{copy.PartName}-";
+				Sections.Insert(i+1, copy);
+				return;
+			}
+		}
+	}
 	public void DuplicateSection(int index)
 	{
 		if (0 <= index && index < Sections.Count)
@@ -56,6 +69,12 @@ public class TurboRig : MinecraftModel
 		}
 	}
 
+	public void DeleteSection(string partName)
+	{
+		for (int i = Sections.Count - 1; i >= 0; i--)
+			if (Sections[i].PartName == partName)
+				Sections.RemoveAt(i);
+	}
 	public void DeleteSection(int index)
 	{
 		Sections.RemoveAt(index);

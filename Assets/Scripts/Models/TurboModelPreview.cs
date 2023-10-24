@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using static Model;
 
 public class TurboModelPreview : MinecraftModelPreview
 {
 	private TurboRigPreview _Parent = null;
-	private TurboRigPreview Parent 
+	public TurboRigPreview Parent 
 	{
 		get 
 		{
@@ -26,14 +28,46 @@ public class TurboModelPreview : MinecraftModelPreview
 	}
 
 
+
 	public string PartName = "";
 
 	public override MinecraftModel GetModel()
 	{
 		return Parent?.GetModel();
 	}
-
-
+	public override MinecraftModelPreview GetParent() { return Parent; }
+	public override IEnumerable<MinecraftModelPreview> GetChildren()
+	{
+		foreach(Transform t in transform)
+		{
+			TurboPiecePreview piecePreview = t.GetComponent<TurboPiecePreview>();
+			if (piecePreview != null)
+				yield return piecePreview;
+		}
+	}
+	public override bool CanDelete() { return true; }
+	public override bool CanDuplicate() { return true; }
+	public override void Delete()
+	{
+		Parent?.DeleteSection(PartName);
+	}
+	public override void Duplicate()
+	{
+		Parent?.DuplicateSection(PartName);
+	}
+	public override void Compact_Editor_GUI()
+	{
+		GUILayout.BeginHorizontal();
+		string changedName = EditorGUILayout.DelayedTextField(PartName);
+		if(changedName != PartName)
+		{
+			Undo.RecordObject(Parent.Rig, "Renamed model part");
+			Section.PartName = changedName;
+			PartName = changedName;
+			name = $"{PartName}";
+		}
+		GUILayout.EndHorizontal();
+	}
 
 	public void DeleteChild(int index)
 	{

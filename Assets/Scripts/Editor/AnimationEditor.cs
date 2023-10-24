@@ -38,16 +38,6 @@ public class AnimationEditor : Editor
 		return foldouts[i];
 	}
 
-	public ModelPreivewer Previewer = null;
-
-	public void DebugRender()
-	{
-		if(Previewer == null)
-		{
-			Previewer = FindObjectOfType<ModelPreivewer>();
-		}
-	}
-
 	public List<string> DefinitionNames = new List<string>();
 
 	public void RefreshAssetCache()
@@ -78,106 +68,6 @@ public class AnimationEditor : Editor
 		AnimationDefinition instance = (AnimationDefinition)target;
 		if(instance != null)
 		{
-			DebugRender();
-			/*
-			Previewer.Anim = instance;
-			GUILayout.Label("Debug Tools");
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Play"))
-				PlayPreview();
-
-			if(GUILayout.Button("Pause"))
-				PausePreview();
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Preview model:");
-			Previewer.Def = (GunDefinition)EditorGUILayout.ObjectField(Previewer.Def, typeof(GunDefinition), false);
-			if(GUILayout.Button("Refresh"))
-			{
-				RefreshAssetCache();
-			}
-			EditorGUILayout.Popup(0, DefinitionNames.ToArray());
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Preview skin:");
-			if(	Previewer.Def != null && Previewer.Def is GunDefinition gun)
-			{
-				int selected = -1;
-				string[] skinNames = new string[gun.paints.paintjobs.Length + 1];
-				for(int i = 0; i < skinNames.Length - 1; i++)
-				{
-					skinNames[i] = gun.paints.paintjobs[i].textureName;
-					if(skinNames[i].ToLower() == Previewer.Skin.ToLower())
-					{
-						selected = i;
-					}
-				}
-				skinNames[skinNames.Length - 1] = gun.name;
-				selected = EditorGUILayout.Popup(selected, skinNames);
-				if(selected >= 0 && skinNames[selected] != Previewer.Skin)
-				{
-					Previewer.SetSkin(skinNames[selected]);
-				}
-			}
-			//Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);
-			GUILayout.EndHorizontal();
-
-
-			//GUILayout.BeginHorizontal();
-			//GUILayout.Label("Preview anim:");
-			//Previewer.Anim = (AnimationDefinition)EditorGUILayout.ObjectField(Previewer.Anim, typeof(AnimationDefinition), false);
-			//GUILayout.EndHorizontal();
-
-
-			
-			
-
-
-
-			GUILayout.BeginVertical();
-			{
-				GUILayout.BeginHorizontal();
-				GUILayout.Label("Preview sequences:");
-				if(GUILayout.Button("+"))
-					Previewer.PreviewSequences.Add("sequence");
-				GUILayout.EndHorizontal();
-
-				int sequenceToDelete = -1;
-				for(int i = 0; i < Previewer.PreviewSequences.Count; i++)
-				{
-					GUILayout.BeginHorizontal();
-					int index = sequenceNames.IndexOf(Previewer.PreviewSequences[i]);
-					index = EditorGUILayout.Popup(index, sequenceNames.ToArray());
-					if(index >= 0 && sequenceNames[index] != Previewer.PreviewSequences[i])
-					{
-						Previewer.PreviewFrame = "";
-						Previewer.PreviewSequences[i] = sequenceNames[index];
-					}
-					if(GUILayout.Button("-"))
-						sequenceToDelete = i;
-					GUILayout.EndHorizontal();
-				}
-				if(sequenceToDelete != -1)
-					Previewer.PreviewSequences.RemoveAt(sequenceToDelete);
-				
-			}
-			GUILayout.EndVertical();
-			GUILayout.BeginHorizontal();
-			{
-				GUILayout.Label("Preview frame:");
-				int index = frameNames.IndexOf(Previewer.PreviewFrame);
-				index = EditorGUILayout.Popup(index, frameNames.ToArray());
-				if(index >= 0 && frameNames[index] != Previewer.PreviewFrame)
-				{
-					Previewer.PreviewSequences.Clear();
-					Previewer.PreviewFrame = frameNames[index];
-				}
-			}
-			GUILayout.EndHorizontal();
-			*/
-
 			// Acquire names for dropdowns
 			List<string> sequenceNames = new List<string>(instance.sequences.Length);
 			for (int i = 0; i < instance.sequences.Length; i++)
@@ -190,12 +80,8 @@ public class AnimationEditor : Editor
 				frameNames.Add(instance.keyframes[i].name);
 			}
 
-
-
 			KeyframeEditor(frameNames, instance);
 			SequenceEditor(frameNames, instance);
-
-			GUILayout.Label(Previewer.DebugOutput);
 			if(GUI.changed)
 			{
 				EditorUtility.SetDirty(instance);
@@ -596,15 +482,5 @@ public class AnimationEditor : Editor
 
 
 
-	}
-
-	private void PlayPreview()
-	{
-		Previewer.Playing = true;
-	}
-
-	private void PausePreview()
-	{
-		Previewer.Playing = false;
 	}
 }

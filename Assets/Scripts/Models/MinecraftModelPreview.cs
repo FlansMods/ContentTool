@@ -21,7 +21,16 @@ public abstract class MinecraftModelPreview : MonoBehaviour
 		}
 	}
 
-	public virtual Vector3 SetPos(Vector3 localPos)
+	public virtual string Compact_Editor_Header() { return name; }
+	public virtual void Compact_Editor_GUI() { }
+	public virtual MinecraftModelPreview GetParent() { return null; }
+	public virtual IEnumerable<MinecraftModelPreview> GetChildren() { yield break; }
+	public virtual bool CanDelete() { return false; }
+	public virtual bool CanDuplicate() { return false; }
+	public virtual void Delete() { }
+	public virtual void Duplicate() { }
+
+	public virtual Vector3 SetOrigin(Vector3 localPos)
 	{
 		return transform.localPosition = new Vector3(
 				   Mathf.Floor(localPos.x / SnapSetting) * SnapSetting,
@@ -39,6 +48,8 @@ public abstract class MinecraftModelPreview : MonoBehaviour
 	{
 		return Model;
 	}
+
+
 
 	public void SetModel(MinecraftModel model)
 	{

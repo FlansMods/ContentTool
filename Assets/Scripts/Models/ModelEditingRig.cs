@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,13 +15,9 @@ public class ModelEditingRig : MonoBehaviour
     //[HideInInspector]
     public MinecraftModel ModelOpenedForEdit = null;
     //[HideInInspector]
-	public MinecraftModel WorkingCopy = null;
+	//public MinecraftModel WorkingCopy = null;
 
 	public MinecraftModelPreview Preview = null;
-
-
-    // Preview models
-    public bool IsDirty = false;
 
 	// Currently assuming single texture skinning only
 	[Header("Skins")]
@@ -28,8 +25,8 @@ public class ModelEditingRig : MonoBehaviour
     public string SelectedSkin = "default";
 	public MinecraftModel.NamedTexture GetNamedTexture() 
 	{ 
-		if(WorkingCopy != null)
-			return WorkingCopy.GetNamedTexture(SelectedSkin);
+		if(ModelOpenedForEdit != null)
+			return ModelOpenedForEdit.GetNamedTexture(SelectedSkin);
 		return null;
 	}
 	public Texture2D GetTexture2D()
@@ -54,6 +51,8 @@ public class ModelEditingRig : MonoBehaviour
 		public int DurationTicks = 0;
 	}
 	public bool Playing = false;
+	public bool Looping = false;
+	public bool StepThrough = false;
 	public List<AnimPreviewEntry> PreviewSequences = new List<AnimPreviewEntry>();
 	public SequenceDefinition GetSequence(string sequenceName)
 	{
@@ -159,13 +158,6 @@ public class ModelEditingRig : MonoBehaviour
 		return null;
 	}
 
-
-	public void SetDirty()
-	{
-		IsDirty = true;
-		//EditorUtility.SetDirty(WorkingCopy);
-	}
-
 	public void OnEnable()
 	{
 		EditorApplication.update += UpdateAnims;
@@ -178,18 +170,31 @@ public class ModelEditingRig : MonoBehaviour
 
 	public void Update()
 	{
-		if (WorkingCopy != null && EditorUtility.IsDirty(WorkingCopy))
-			IsDirty = true;
         RefreshMeshes();
+	}
+	public void PressPlay()
+	{
+		if (StepThrough)
+			AnimProgressSeconds += 1f / 20f;
+		else
+			Playing = true;
+	}
+	public void PressPause()
+	{
+		Playing = false;
+	}
+	public void PressBack()
+	{
+		AnimProgressSeconds = 0.0f;
 	}
 
 	public void UpdateAnims()
 	{
-		if (Playing && PreviewSequences.Count > 0)
+		if (ApplyAnimation && PreviewSequences.Count > 0)
 		{
 			AnimPreviewEntry entry = null;
 
-			if (Playing)
+			if (Playing && !StepThrough)
 			{
 				TimeSpan timeToAdd = DateTime.Now - LastEditorTick;
 				AnimProgressSeconds += (float)(timeToAdd.TotalMilliseconds / 1000d);
@@ -223,7 +228,10 @@ public class ModelEditingRig : MonoBehaviour
 				progressInTicks -= duration;
 				if (i == PreviewSequences.Count - 1)
 				{
-					AnimProgressSeconds -= GetPreviewDurationSeconds();
+					if (Looping)
+						AnimProgressSeconds -= GetPreviewDurationSeconds();
+					else
+						AnimProgressSeconds = GetPreviewDurationSeconds();
 				}
 			}
 
@@ -285,7 +293,21 @@ public class ModelEditingRig : MonoBehaviour
 			else 
 			{
 				// Found neither matching frame nor sequence, default pose?
+				SetDefaultPose();
 			}
+		}
+		else
+		{
+			SetDefaultPose();
+		}
+	}
+	private void SetDefaultPose()
+	{
+		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
+		{
+			section.transform.localPosition = Vector3.zero;
+			section.transform.localRotation = Quaternion.identity;
+			section.transform.localScale = Vector3.one;
 		}
 	}
 
@@ -408,18 +430,18 @@ public class ModelEditingRig : MonoBehaviour
 
 	public void RefreshMeshes()
     {
-        if (WorkingCopy == null)
+        if (ModelOpenedForEdit == null)
             return;
 
-		if (WorkingCopy is CubeModel cubeModel)
+		if (ModelOpenedForEdit is CubeModel cubeModel)
 		{
 			Preview = CreatePreviewObject(cubeModel, false);
 		}
-		else if (WorkingCopy is ItemModel itemModel)
+		else if (ModelOpenedForEdit is ItemModel itemModel)
 		{
 			Preview = CreatePreviewObject(itemModel, false);
 		}
-		else if (WorkingCopy is TurboRig turboRig)
+		else if (ModelOpenedForEdit is TurboRig turboRig)
 		{
 			Preview = CreatePreviewObject(turboRig, false);
 		}
@@ -486,49 +508,39 @@ public class ModelEditingRig : MonoBehaviour
 
 	public void OpenModel(MinecraftModel model)
     {
-		if (WorkingCopy != null)
+		if (ModelOpenedForEdit != null)
 		{
 			DiscardChanges();
 		}
 
 		ModelOpenedForEdit = model;
         
-        if(WorkingCopy == null)
-        {
-            WorkingCopy = (MinecraftModel)ScriptableObject.CreateInstance(model.GetType());
-            
-            string json = JsonUtility.ToJson(model);
-            JsonUtility.FromJsonOverwrite(json, WorkingCopy);
-            WorkingCopy.name = $"{ModelOpenedForEdit.name}_editing";
-
-            RefreshMeshes();
-
-			MinecraftModel.NamedTexture DefaultTexture = model.GetDefaultTexture();
-			if(DefaultTexture != null)
-				foreach (TurboPiecePreview piece in GetComponentsInChildren<TurboPiecePreview>())
-				{
-					piece.CopyExistingTexture(DefaultTexture.Texture);
-				}
-		}
+        RefreshMeshes();
+		MinecraftModel.NamedTexture DefaultTexture = model.GetDefaultTexture();
+		if(DefaultTexture != null)
+			foreach (TurboPiecePreview piece in GetComponentsInChildren<TurboPiecePreview>())
+			{
+				piece.CopyExistingTexture(DefaultTexture.Texture);
+			}
     }
 
 	private void PreSaveStep()
 	{
-		if(WorkingCopy != null)
+		if(ModelOpenedForEdit != null)
 		{
-			UVCalculator.AutoUV(WorkingCopy, Preview, SelectedSkin);
+			UVCalculator.AutoUV(ModelOpenedForEdit, Preview, SelectedSkin);
 		}
 	}
 
     public void SaveAs(string newAssetPath)
     {
-		if (WorkingCopy != null)
+		if (ModelOpenedForEdit != null)
 		{
 			PreSaveStep();
 
 			// Serialize-copy our model
-			MinecraftModel SaveAsCopy = (MinecraftModel)ScriptableObject.CreateInstance(WorkingCopy.GetType());
-			string json = JsonUtility.ToJson(WorkingCopy);
+			MinecraftModel SaveAsCopy = (MinecraftModel)ScriptableObject.CreateInstance(ModelOpenedForEdit.GetType());
+			string json = JsonUtility.ToJson(ModelOpenedForEdit);
 			JsonUtility.FromJsonOverwrite(json, SaveAsCopy);
 
             // Save to disk
@@ -537,25 +549,22 @@ public class ModelEditingRig : MonoBehaviour
 
             // Then re-establish the new connection
             ModelOpenedForEdit = AssetDatabase.LoadAssetAtPath<MinecraftModel>(newAssetPath);
-            WorkingCopy.name = $"{ModelOpenedForEdit.name}_editing";
-
-			IsDirty = false;
 		}
 	}
 
     public void SaveChanges()
     {
-        if (WorkingCopy != null && ModelOpenedForEdit != null)
+        if (ModelOpenedForEdit != null)
         {
 			PreSaveStep();
 
-			string json = JsonUtility.ToJson(WorkingCopy);
-            JsonUtility.FromJsonOverwrite(json, ModelOpenedForEdit);
-            EditorUtility.SetDirty(ModelOpenedForEdit);
-            AssetDatabase.SaveAssets();
-			Debug.Log($"Saved {WorkingCopy} to {AssetDatabase.GetAssetPath(ModelOpenedForEdit)}");
-
-			IsDirty = false;
+			//string json = JsonUtility.ToJson(WorkingCopy);
+            //JsonUtility.FromJsonOverwrite(json, ModelOpenedForEdit);
+            //EditorUtility.SetDirty(ModelOpenedForEdit);
+            //AssetDatabase.SaveAssets();
+			//Debug.Log($"Saved {WorkingCopy} to {AssetDatabase.GetAssetPath(ModelOpenedForEdit)}");
+			//
+			//IsDirty = false;
         }
         else Debug.LogError("Can't save changes without an open model");
 	}
@@ -564,8 +573,6 @@ public class ModelEditingRig : MonoBehaviour
     {
         SaveChanges();
         ModelOpenedForEdit = null;
-        WorkingCopy = null;
-
 		foreach (MinecraftModelPreview preview in GetComponentsInChildren<MinecraftModelPreview>())
 			if (preview != null)
 				DestroyImmediate(preview.gameObject);
@@ -574,9 +581,6 @@ public class ModelEditingRig : MonoBehaviour
     public void DiscardChanges()
     {
         ModelOpenedForEdit = null;
-        WorkingCopy = null;
-		IsDirty = false;
-
         foreach (MinecraftModelPreview preview in GetComponentsInChildren<MinecraftModelPreview>())
             if (preview != null)
                 DestroyImmediate(preview.gameObject);
@@ -594,7 +598,7 @@ public class ModelEditingRig : MonoBehaviour
 			newTextureName.LastIndexOf('/') + 1,
 			newTextureName.LastIndexOf('.') - (newTextureName.LastIndexOf('/') + 1));
 
-		if (UVCalculator.StitchWithExistingUV(WorkingCopy, Preview, newTextureName))
+		if (UVCalculator.StitchWithExistingUV(ModelOpenedForEdit, Preview, newTextureName))
 		{
 			Debug.Log($"Saved new skin as {newTextureName}:'{newTexturePath}'");
 		}
@@ -607,7 +611,7 @@ public class ModelEditingRig : MonoBehaviour
 		if (GUILayout.Button("Load..."))
 			Button_OpenModel();
 
-		EditorGUI.BeginDisabledGroup(WorkingCopy == null);
+		EditorGUI.BeginDisabledGroup(ModelOpenedForEdit == null);
 		{
 			if (GUILayout.Button("Save"))
 				Button_Save();
@@ -642,7 +646,7 @@ public class ModelEditingRig : MonoBehaviour
 	public void Button_OpenModel(string loadPath = null)
     {
 		bool canLoad = true;
-		if (WorkingCopy != null && IsDirty)
+		if (ModelOpenedForEdit != null && EditorUtility.IsDirty(ModelOpenedForEdit))
 		{
 			int result = EditorUtility.DisplayDialogComplex(
 				"Unsaved changes",
@@ -682,14 +686,15 @@ public class ModelEditingRig : MonoBehaviour
 
     public void Button_Save()
 	{
-		if (WorkingCopy != null && IsDirty)
+		if (ModelOpenedForEdit != null && EditorUtility.IsDirty(ModelOpenedForEdit))
 		{
-			if(!WorkingCopy.IsUVMapSame(ModelOpenedForEdit))
+			if(!ModelOpenedForEdit.IsUVMapSame(ModelOpenedForEdit))
 			{
-				if (!EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {WorkingCopy.name}? The model UV has changed, so skins other than the currently active one will be invalid.", "Yes", "No"))
+				if (!EditorUtility.DisplayDialog("Model UV Mapping Changed!", 
+					$"Are you sure you want to save {ModelOpenedForEdit.name}? The model UV has changed, so skins other than the currently active one will be invalid.", "Yes", "No"))
 					return;
 			}
-			EditorGUI.BeginDisabledGroup(IsDirty);
+			EditorGUI.BeginDisabledGroup(EditorUtility.IsDirty(ModelOpenedForEdit));
 			SaveChanges();
 			EditorGUI.EndDisabledGroup();
 		}
@@ -697,9 +702,9 @@ public class ModelEditingRig : MonoBehaviour
 
     public void Button_SaveAs()
     {
-		if (WorkingCopy != null)
+		if (ModelOpenedForEdit != null)
 		{
-			string savePath = EditorUtility.SaveFilePanelInProject(WorkingCopy.name, "new_model", "asset", "Save Model As...");
+			string savePath = EditorUtility.SaveFilePanelInProject(ModelOpenedForEdit.name, "new_model", "asset", "Save Model As...");
 			if (savePath != null && savePath.Length > 0)
 				SaveAs(savePath);
 		}
@@ -707,9 +712,9 @@ public class ModelEditingRig : MonoBehaviour
 
     public void Button_Discard()
     {
-		if (WorkingCopy != null)
+		if (ModelOpenedForEdit != null)
 		{
-			if (EditorUtility.DisplayDialog("Are you sure?", $"Are you sure you want to discard changes to {WorkingCopy.name}", "Yes", "No"))
+			if (EditorUtility.DisplayDialog("Are you sure?", $"Are you sure you want to discard changes to {ModelOpenedForEdit.name}", "Yes", "No"))
 				DiscardChanges();
 		}
 	}
@@ -721,16 +726,13 @@ public class ModelEditingRig : MonoBehaviour
 
 	public void Button_SaveTexture()
 	{
-		if(!WorkingCopy.IsUVMapSame(ModelOpenedForEdit))
-		{
-			if (EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {SelectedSkin}? The model UV has changed, so other skins will not match the mapping.", "Yes", "No"))
-				SaveTexture();
-		}
+		if (EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {SelectedSkin}? The model UV has changed, so other skins will not match the mapping.", "Yes", "No"))
+			SaveTexture();
 	}
 
 	public void Button_SaveTextureAs()
 	{
-		if (WorkingCopy != null && SelectedSkin.Length > 0)
+		if (ModelOpenedForEdit != null && SelectedSkin.Length > 0)
 		{
 			string savePath = EditorUtility.SaveFilePanelInProject(SelectedSkin, "new_skin", "asset", "Save Skin As...");
 			if (savePath != null && savePath.Length > 0)
