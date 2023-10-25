@@ -45,7 +45,7 @@ public class ModelEditingRigEditor : Editor
 
 		rig.Editor_Toolbox();
 
-		EditorGUI.BeginDisabledGroup(rig.WorkingCopy == null);
+		EditorGUI.BeginDisabledGroup(rig.ModelOpenedForEdit == null);
 		{
 			EditorGUI.BeginChangeCheck();
 			// --------------------------------------------------------------------------------
@@ -54,11 +54,11 @@ public class ModelEditingRigEditor : Editor
 			rig.ApplySkin = GUILayout.Toggle(rig.ApplySkin, "Skins");
 			EditorGUI.BeginDisabledGroup(!rig.ApplySkin);
 			{
-				if (rig.WorkingCopy != null)
+				if (rig.ModelOpenedForEdit != null)
 				{
-					for(int i = 0; i < rig.WorkingCopy.Textures.Count; i++)
+					for(int i = 0; i < rig.ModelOpenedForEdit.Textures.Count; i++)
 					{
-						MinecraftModel.NamedTexture tex = rig.WorkingCopy.Textures[i];
+						MinecraftModel.NamedTexture tex = rig.ModelOpenedForEdit.Textures[i];
 						GUILayout.BeginHorizontal(); 
 						tex.Key = GUILayout.TextField(tex.Key);
 						tex.Texture = (Texture2D)EditorGUILayout.ObjectField(tex.Texture, typeof(Texture2D), false);
@@ -87,7 +87,7 @@ public class ModelEditingRigEditor : Editor
 
 			if(EditorGUI.EndChangeCheck())
 			{
-				rig.SetDirty();
+				EditorUtility.SetDirty(rig.ModelOpenedForEdit);
 			}
 		}
 		EditorGUI.EndDisabledGroup();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ using UnityEngine;
 public class TurboPiecePreview : MinecraftModelPreview
 {
 	private TurboModelPreview _Parent = null;
-	private TurboModelPreview Parent
+	public TurboModelPreview Parent
 	{
 		get
 		{
@@ -17,17 +18,89 @@ public class TurboPiecePreview : MinecraftModelPreview
 			return _Parent;
 		}
 	}
+	public TurboPiece Piece
+	{
+		get
+		{
+			if (Parent != null && Parent.Section != null)
+				return Parent.Section.GetPiece(PartIndex);
+			return null;
+		}
+	}
 	public int PartIndex = 0;
-
 	private Texture2D PieceTexture = null;
 	private Vector3Int lastDims = new Vector3Int();
-
 	public override MinecraftModel GetModel()
 	{
 		return Parent?.GetModel();
 	}
+	public override MinecraftModelPreview GetParent() { return Parent; }
 
-	public void Duplicate()
+#if UNITY_EDITOR
+	public override string Compact_Editor_Header()
+	{
+		int numOffsets = Piece.NumOffsetVertices();
+		if (numOffsets == 0)
+			return $"Box {name} [{Piece.Dim.x}x{Piece.Dim.y}x{Piece.Dim.z}]";
+		return $"ShapeBox {name} [{Piece.Dim.x}x{Piece.Dim.y}x{Piece.Dim.z}] + {numOffsets} Edits";
+	}
+	public override void Compact_Editor_GUI()
+	{
+		transform.localPosition = Piece.Origin;
+		if (Piece.Offsets.Length != 8)
+			Piece.Offsets = new Vector3[8];
+
+		// Basic box settings
+		Vector3 newOrigin = FlanStyles.CompactVector3Field("Rotation Origin", transform.localPosition);
+		Vector3 newEuler = FlanStyles.CompactVector3Field("Euler Angles", transform.localEulerAngles);
+		Vector3 newPos = FlanStyles.CompactVector3Field("Cube Offset", Piece.Pos);
+		Vector3 newDim = FlanStyles.CompactVector3Field("Dimensions", Piece.Dim);
+		if(!newOrigin.Approximately(transform.localPosition)
+		|| !newEuler.Approximately(transform.localEulerAngles)
+		|| !newPos.Approximately(Piece.Pos)
+		|| !newDim.Approximately(Piece.Dim))
+		{
+			Undo.RecordObject(Parent.Parent.Rig, "Modified Box transform/size");
+			SetOrigin(newOrigin);
+			SetEuler(newEuler);
+			SetPos(newPos);
+			SetDim(newDim);
+			EditorUtility.SetDirty(Parent.Parent.Rig);
+		}
+
+		// Shapebox corner fields
+		Vector3[] newOffsets = new Vector3[8];
+		bool anyOffsetChanged = false;
+		for (int i = 0; i < 8; i++)
+		{
+			newOffsets[i] = FlanStyles.CompactVector3Field($"Offset {i}", Piece.Offsets[i]);
+			if (!newOffsets[i].Approximately(Piece.Offsets[i]))
+				anyOffsetChanged = true;
+		}
+		if(anyOffsetChanged)
+		{
+			Undo.RecordObject(Parent.Parent.Rig, "Modified ShapeBox corners");
+			for(int i = 0; i < 8; i++)
+			{
+				Piece.Offsets[i] = newOffsets[i];
+			}
+			EditorUtility.SetDirty(Parent.Parent.Rig);
+		}
+
+		// Texture
+		Texture2D tex = GetTemporaryTexture();
+		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
+		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
+		
+	}
+	#endif
+	public override bool CanDelete() { return true; }
+	public override bool CanDuplicate() { return true; }
+	public override void Delete()
+	{
+		Parent?.DeleteChild(PartIndex);
+	}
+	public override void Duplicate()
 	{
 		Parent?.DuplicateChild(PartIndex);
 	}
@@ -37,9 +110,11 @@ public class TurboPiecePreview : MinecraftModelPreview
 		base.Update();
 	}
 
-	public override Vector3 SetPos(Vector3 localPos)
+
+
+	public override Vector3 SetOrigin(Vector3 localPos)
 	{
-		Vector3 resultPos = base.SetPos(localPos);
+		Vector3 resultPos = base.SetOrigin(localPos);
 		if (Piece != null)
 			Piece.Origin = resultPos;
 		return resultPos;
@@ -53,15 +128,18 @@ public class TurboPiecePreview : MinecraftModelPreview
 		return resultEuler;
 	}
 
-	public TurboPiece Piece 
-	{ 
-		get 
-		{
-			if (Parent != null && Parent.Section != null)
-				return Parent.Section.GetPiece(PartIndex);
-			return null;
-		} 
+	public void SetPos(Vector3 pos)
+	{
+		if(Piece != null)
+			Piece.Pos = pos;	
 	}
+
+	public void SetDim(Vector3 dim)
+	{
+		if (Piece != null)
+			Piece.Dim = dim;
+	}
+
 
 	public Texture2D GetTemporaryTexture()
 	{

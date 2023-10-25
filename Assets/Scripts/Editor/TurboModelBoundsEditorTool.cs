@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class TurboModelBoundsEditorTool
-{
-
-}
-
 [CustomEditor(typeof(TurboModelPreview))]
 public class TurboModelEditor : Editor
 { 

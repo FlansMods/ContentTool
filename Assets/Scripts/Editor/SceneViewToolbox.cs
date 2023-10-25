@@ -38,9 +38,9 @@ public class SceneViewToolbox : Overlay
 	public string CurrentRigName()
 	{
 		ModelEditingRig currentRig = GetCurrentRig();
-		if (currentRig == null || currentRig.WorkingCopy == null)
+		if (currentRig == null || currentRig.ModelOpenedForEdit == null)
 			return "N/A";
-		return currentRig.WorkingCopy.name;
+		return currentRig.ModelOpenedForEdit.name;
 	}
 	public void LoadModel()
 	{

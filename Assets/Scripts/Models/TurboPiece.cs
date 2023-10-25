@@ -17,6 +17,22 @@ public class TurboPiece
 	// For shapeboxes
 	public Vector3[] Offsets = new Vector3[8];
 
+	public int NumOffsetVertices()
+	{
+		int numOffsets = 0;
+		for (int i = 0; i < 8; i++)
+			if (Offsets[i].sqrMagnitude > 0.00001f)
+				numOffsets++;
+		return numOffsets;
+	}
+	public bool IsBox()
+	{
+		for (int i = 0; i < 8; i++)
+			if (Offsets[i].sqrMagnitude > 0.00001f)
+				return false;
+		return true;
+	}
+
 	public bool IsUVMapSame(TurboPiece other)
 	{
 		if (other.Dim != Dim)

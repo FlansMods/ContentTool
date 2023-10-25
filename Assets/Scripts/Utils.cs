@@ -207,6 +207,10 @@ public static class Utils
         }
         return null;
     }
+    public static bool Approximately(this Vector3 a, Vector3 b)
+    {
+        return Mathf.Approximately((a - b).sqrMagnitude, 0f);
+    }
 }
 public static class FlanStyles
 {
@@ -271,4 +275,49 @@ public static class FlanStyles
 	{
 		GUILayout.Box(GUIContent.none, horizontalLine);
 	}
+
+
+    public static readonly GUIStyle BorderlessButton = GUI.skin.button.Clone()
+            .WithMargin(new RectOffset(0, 0, 0, 0));
+	public static readonly GUIStyle SelectedTextStyle = GUI.skin.label.Clone()
+			.WithFontStyle(FontStyle.Bold);
+    public static void SelectedLabel(string text, params GUILayoutOption[] options)
+    {
+		Color old = GUI.color;
+		GUI.color = Color.green;
+        GUILayout.Label(text, SelectedTextStyle, options);
+		GUI.color = old;
+	}
+	public static GUIStyle BigHeaderBGStyle = new GUIStyle()
+	{
+		normal = new GUIStyleState()
+		{
+			background = EditorGUIUtility.whiteTexture,
+		},
+		margin = new RectOffset(0, 0, 0, 0),
+		fixedHeight = 32,
+	};
+	public static readonly GUIStyle BigHeaderTextStyle = GUI.skin.label.Clone()
+				.WithFontStyle(FontStyle.Bold)
+                .WithFontSize(24);
+	public static void BigHeader(string text)
+    {
+        Color old = GUI.color;
+        GUI.color = Color.gray;
+		GUILayout.Box(GUIContent.none, BigHeaderBGStyle);
+        Rect lastRect = GUILayoutUtility.GetLastRect();
+        GUI.color = Color.white;
+        GUI.Label(lastRect, text, BigHeaderTextStyle);
+        GUI.color = old;
+	}
+
+	private static readonly GUILayoutOption Vec3_Name_Width = GUILayout.Width(128);
+	public static Vector3 CompactVector3Field(string label, Vector3 value)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(label, Vec3_Name_Width);
+        Vector3 ret = EditorGUILayout.Vector3Field("", value);
+		GUILayout.EndHorizontal();
+        return ret;
+    }
 }

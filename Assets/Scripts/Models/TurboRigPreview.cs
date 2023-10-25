@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -7,16 +8,38 @@ public class TurboRigPreview : MinecraftModelPreview
 {
 	public TurboRig Rig { get { return Model as TurboRig; } }
 
+
+
 	public void DeleteSection(int index)
 	{
 		DestroyImmediate(GetChild(Rig.Sections[index].PartName).gameObject);
 		Rig.DeleteSection(index);
+	}
+	public void DeleteSection(string partName)
+	{
+		DestroyImmediate(GetChild(partName).gameObject);
+		Rig.DeleteSection(partName);
+	}
+	public override IEnumerable<MinecraftModelPreview> GetChildren()
+	{
+		foreach(TurboModel section in Rig.Sections)
+		{
+			TurboModelPreview sectionPreview = GetChild(section.PartName);
+			if (sectionPreview != null)
+				yield return sectionPreview;
+		}
 	}
 
 	public TurboModelPreview DuplicateSection(int index)
 	{
 		string newName = $"{Rig.Sections[index].PartName}-";
 		Rig.DuplicateSection(index);
+		return GetChild(newName);
+	}
+	public TurboModelPreview DuplicateSection(string partName)
+	{
+		string newName = $"{partName}-";
+		Rig.DuplicateSection(partName);
 		return GetChild(newName);
 	}
 
