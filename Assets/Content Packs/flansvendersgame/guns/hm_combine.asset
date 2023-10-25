@@ -20,242 +20,542 @@ MonoBehaviour:
     south: 
     west: 
     bottom: 
-    icon: acr
+    icon: hm_combine
     textureX: 64
-    textureY: 16
+    textureY: 64
     sections:
-    - partName: gun
+    - partName: body
       pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: 0, y: 3, z: -1}
-        Dim: {x: 8, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 4
-        Pos: {x: 0, y: 0, z: -1}
-        Dim: {x: 2, y: 3, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: -0, y: -0, z: -0}
-        - {x: 0, y: -0.5, z: -0}
-        - {x: 1, y: 0, z: -0}
-        - {x: 1, y: 0, z: -0}
-        - {x: -0, y: -0, z: 0}
-        - {x: 0, y: -0.5, z: 0}
-        - {x: 1, y: 0, z: 0}
-        - {x: 1, y: 0, z: 0}
-      - textureU: 8
-        textureV: 4
-        Pos: {x: 5, y: 2, z: -1}
-        Dim: {x: 3, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 9
-        Pos: {x: 8, y: 3, z: -1}
-        Dim: {x: 6, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 13
-        Pos: {x: 14, y: 3.1, z: -0.4}
-        Dim: {x: 4, y: 0.8, z: 0.8}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 10
-        textureV: 13
-        Pos: {x: 14, y: 4.1, z: -0.4}
-        Dim: {x: 1, y: 0.8, z: 0.8}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    - partName: defaultStock
-      pieces:
-      - textureU: 20
-        textureV: 0
-        Pos: {x: -8, y: 1, z: -1}
-        Dim: {x: 1, y: 3.5, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 26
-        textureV: 0
-        Pos: {x: -7, y: 1, z: -1}
-        Dim: {x: 2, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 1
-        Offsets:
-        - {x: -0, y: -0, z: -0}
-        - {x: -1, y: -0, z: -0}
-        - {x: -0, y: 0, z: -0}
-        - {x: 0, y: 0, z: -0}
-        - {x: -0, y: -0, z: 0}
-        - {x: -1, y: -0, z: 0}
-        - {x: -0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 18
-        textureV: 6
-        Pos: {x: -7, y: 3, z: -1}
-        Dim: {x: 7, y: 2, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
+      - textureU: 1
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: -1, y: 0, z: 0.5}
         Euler: {x: 0, y: 0, z: 0}
         Shape: 1
         Offsets:
         - {x: -0, y: -0, z: -0}
         - {x: 0, y: -0, z: -0}
-        - {x: -0, y: -0.5, z: -0}
+        - {x: -0, y: 0, z: -0}
         - {x: 0, y: 0, z: -0}
         - {x: -0, y: -0, z: 0}
         - {x: 0, y: -0, z: 0}
-        - {x: -0, y: -0.5, z: 0}
+        - {x: -0, y: 0, z: 0}
         - {x: 0, y: 0, z: 0}
-    - partName: ammo
-      pieces:
-      - textureU: 16
-        textureV: 10
-        Pos: {x: 5.5, y: -2, z: -1}
-        Dim: {x: 2, y: 4, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 1
+        Pos: {x: 0, y: -0, z: -1}
+        Dim: {x: 4, y: 0, z: 1}
+        Origin: {x: -2, y: -1.5, z: 0.5}
         Euler: {x: 0, y: 0, z: 0}
         Shape: 1
         Offsets:
-        - {x: 0.25, y: -0.25, z: 0.25}
-        - {x: 0.5, y: -0, z: 0.25}
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: -0.5, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: -0.5, y: 0, z: 0}
+      - textureU: 25
+        textureV: 1
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 2, y: 1, z: 2}
+        Origin: {x: -3.5, y: 0, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: 0.2}
+        - {x: 0, y: -0, z: 0.2}
+        - {x: -0, y: 0, z: 0.2}
+        - {x: 0, y: 0, z: 0.2}
+        - {x: -0, y: -0, z: -0.2}
+        - {x: 0, y: -0, z: -0.2}
+        - {x: -0, y: 0, z: -0.2}
+        - {x: 0, y: 0, z: -0.2}
+      - textureU: 41
+        textureV: 1
+        Pos: {x: 0, y: -3, z: -2}
+        Dim: {x: 3, y: 3, z: 2}
+        Origin: {x: -4.5, y: -1, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0.5, y: -0, z: 0.2}
+        - {x: -1.5, y: -0.5, z: 0.2}
+        - {x: 1, y: 0, z: 0.2}
+        - {x: 0, y: 0, z: 0.2}
+        - {x: -0.5, y: -0, z: -0.2}
+        - {x: -1.5, y: -0.5, z: -0.2}
+        - {x: 1, y: 0, z: -0.2}
+        - {x: 0, y: 0, z: -0.2}
+      - textureU: 1
+        textureV: 9
+        Pos: {x: 0, y: -3, z: -2}
+        Dim: {x: 5, y: 3, z: 2}
+        Origin: {x: -3.5, y: 3, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 9
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 18, y: 1, z: 2}
+        Origin: {x: -3.5, y: 4, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
         - {x: -0, y: 0, z: 0.25}
         - {x: 0, y: 0, z: 0.25}
-        - {x: 0.25, y: -0.25, z: -0.25}
-        - {x: 0.5, y: -0, z: -0.25}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
         - {x: -0, y: 0, z: -0.25}
         - {x: 0, y: 0, z: -0.25}
-    name: acr
-    animations:
-    - key: gunSlideDistance
-      isVec3: 0
-      floatValue: 0.5
-      vec3Value: {x: 0, y: 0, z: 0}
+      - textureU: 1
+        textureV: 17
+        Pos: {x: 0, y: -4, z: -2}
+        Dim: {x: 2, y: 4, z: 2}
+        Origin: {x: -5.5, y: 4, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.5, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: -0.5, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: 0.5, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: -0.5, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 17
+        Pos: {x: 0, y: -4, z: -2}
+        Dim: {x: 4, y: 4, z: 2}
+        Origin: {x: 1.5, y: 2, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: 0.5, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: -0.5, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: 0.5, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: -0.5, y: 0, z: 0}
+      - textureU: 33
+        textureV: 17
+        Pos: {x: 0, y: -2, z: -2}
+        Dim: {x: 10, y: 2, z: 2}
+        Origin: {x: 4.5, y: 3, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0.5, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: 0.5, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 0.5, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 33
+        textureV: 33
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 3, y: 1, z: 1}
+        Origin: {x: 1.5, y: 3, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0.5, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0.5, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0.5, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0.5, y: 0, z: 0}
+      - textureU: 41
+        textureV: 33
+        Pos: {x: 0, y: -1, z: -3}
+        Dim: {x: 2, y: 1, z: 3}
+        Origin: {x: 5.5, y: 2.5, z: 1.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 1, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 1, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 1
+        textureV: 41
+        Pos: {x: 0, y: -1, z: -3}
+        Dim: {x: 2, y: 1, z: 3}
+        Origin: {x: 5.5, y: 1.5, z: 1.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 41
+        Pos: {x: 0, y: -2, z: -3}
+        Dim: {x: 11, y: 2, z: 3}
+        Origin: {x: 7.5, y: 2.5, z: 1.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: -0.5, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: -0.5, y: 0, z: 0}
+      - textureU: 1
+        textureV: 49
+        Pos: {x: 0, y: -2, z: -3}
+        Dim: {x: 6, y: 2, z: 3}
+        Origin: {x: 12.5, y: 4.5, z: 1.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: -0, z: -0}
+        - {x: 2, y: 0, z: 0.5}
+        - {x: -0.5, y: 0, z: 0.5}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: -0, z: 0}
+        - {x: 2, y: 0, z: -0.5}
+        - {x: -0.5, y: 0, z: -0.5}
+      - textureU: 9
+        textureV: 41
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 17.5, y: 4.25, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 1
+        textureV: 57
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 18, y: 1, z: 1}
+        Origin: {x: -3.5, y: 4.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 49
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: -3.5, y: 5.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 41
+        textureV: 49
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 2, y: 1, z: 1}
+        Origin: {x: 12.5, y: 5.5, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    - partName: barrel
+      pieces:
+      - textureU: 49
+        textureV: 41
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 3, y: 1, z: 1}
+        Origin: {x: 18, y: 3, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 25
+        textureV: 49
+        Pos: {x: 0, y: -2, z: -2}
+        Dim: {x: 3, y: 2, z: 2}
+        Origin: {x: 21, y: 3.5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: 0.25, z: 0.25}
+        - {x: 0, y: 0.25, z: 0.25}
+        - {x: -0, y: -0.25, z: 0.25}
+        - {x: 0, y: -0.25, z: 0.25}
+        - {x: -0, y: 0.25, z: -0.25}
+        - {x: 0, y: 0.25, z: -0.25}
+        - {x: -0, y: -0.25, z: -0.25}
+        - {x: 0, y: -0.25, z: -0.25}
+    - partName: stock
+      pieces:
+      - textureU: 1
+        textureV: 25
+        Pos: {x: 0, y: -3, z: -2}
+        Dim: {x: 2, y: 3, z: 2}
+        Origin: {x: -7.5, y: 3.5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 57
+        textureV: 1
+        Pos: {x: 0, y: -2, z: -1}
+        Dim: {x: 2, y: 2, z: 1}
+        Origin: {x: -9.5, y: 2.75, z: 0.5}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: 0.5, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: 0.5, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: 0.5, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+      - textureU: 17
+        textureV: 25
+        Pos: {x: 0, y: -2, z: -2}
+        Dim: {x: 6, y: 2, z: 2}
+        Origin: {x: -15, y: 2.25, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: 0.25}
+        - {x: 0, y: -0, z: 0.25}
+        - {x: 0.5, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+        - {x: 0.5, y: -0, z: -0.25}
+        - {x: 0, y: -0, z: -0.25}
+        - {x: 0.5, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+      - textureU: 41
+        textureV: 25
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 2, y: 1, z: 2}
+        Origin: {x: -15, y: 3.25, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: 0.25}
+        - {x: 0, y: -0, z: 0.25}
+        - {x: 0.5, y: 0, z: 0.25}
+        - {x: -0.5, y: 0, z: 0.25}
+        - {x: 0.5, y: -0, z: -0.25}
+        - {x: 0, y: -0, z: -0.25}
+        - {x: 0.5, y: 0, z: -0.25}
+        - {x: -0.5, y: 0, z: -0.25}
+      - textureU: 1
+        textureV: 33
+        Pos: {x: 0, y: -2, z: -2}
+        Dim: {x: 3, y: 2, z: 2}
+        Origin: {x: -15, y: 0.25, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: 0.25}
+        - {x: -1, y: -0, z: 0.25}
+        - {x: 0.5, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+        - {x: 0.5, y: -0, z: -0.25}
+        - {x: -1, y: -0, z: -0.25}
+        - {x: 0.5, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+      - textureU: 17
+        textureV: 33
+        Pos: {x: 0, y: -1, z: -2}
+        Dim: {x: 4, y: 1, z: 2}
+        Origin: {x: -12, y: 3.5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0.25, z: -0}
+        - {x: 0, y: -0.25, z: -0}
+        - {x: -0, y: -0.25, z: -0}
+        - {x: 0, y: 0.5, z: -0}
+        - {x: -0, y: -0.25, z: 0}
+        - {x: 0, y: -0.25, z: 0}
+        - {x: -0, y: -0.25, z: 0}
+        - {x: 0, y: 0.5, z: 0}
+    - partName: ammo_0
+      pieces:
+      - textureU: 49
+        textureV: 49
+        Pos: {x: 0, y: -3, z: -2}
+        Dim: {x: 3, y: 3, z: 2}
+        Origin: {x: 1.75, y: -1.5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.25, y: -0, z: 0.25}
+        - {x: 0.25, y: 0.25, z: 0.25}
+        - {x: -0, y: 0, z: 0.25}
+        - {x: 0, y: 0, z: 0.25}
+        - {x: 0.25, y: -0, z: -0.25}
+        - {x: 0.25, y: 0.25, z: -0.25}
+        - {x: -0, y: 0, z: -0.25}
+        - {x: 0, y: 0, z: -0.25}
+      - textureU: 41
+        textureV: 57
+        Pos: {x: 0, y: -3, z: -2}
+        Dim: {x: 3, y: 3, z: 2}
+        Origin: {x: 2, y: -4.5, z: 1}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: 0.5, y: -0, z: 0.25}
+        - {x: 0.5, y: 0.75, z: 0.25}
+        - {x: -0, y: 0, z: 0.25}
+        - {x: 0, y: 0.25, z: 0.25}
+        - {x: 0.5, y: -0, z: -0.25}
+        - {x: 0.5, y: 0.75, z: -0.25}
+        - {x: -0, y: 0, z: -0.25}
+        - {x: 0, y: 0.25, z: -0.25}
+    - partName: slide
+      pieces:
+      - textureU: 49
+        textureV: 33
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 4, y: 1, z: 1}
+        Origin: {x: 1.5, y: 3, z: 0.19999981}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: -0.5, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: -0.5, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: -0.5, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: -0.5, y: 0, z: 0}
+      - textureU: 57
+        textureV: 25
+        Pos: {x: 0, y: -1, z: -1}
+        Dim: {x: 1, y: 1, z: 1}
+        Origin: {x: 4, y: 3, z: -0.8000002}
+        Euler: {x: 0, y: 0, z: 0}
+        Shape: 1
+        Offsets:
+        - {x: -0, y: -0, z: -0}
+        - {x: 0, y: -0, z: -0}
+        - {x: -0, y: 0, z: -0}
+        - {x: 0, y: 0, z: -0}
+        - {x: -0, y: -0, z: 0}
+        - {x: 0, y: -0, z: 0}
+        - {x: -0, y: 0, z: 0}
+        - {x: 0, y: 0, z: 0}
+    name: 
+    animations: []
     attachPoints:
-    - name: scope
-      attachedTo: body
-      position: {x: 3.5, y: 5, z: 0}
-    - name: stock
-      attachedTo: body
-      position: {x: 1, y: 4, z: 0}
     - name: barrel
       attachedTo: body
-      position: {x: 18, y: 3.5, z: 0}
+      position: {x: 18, y: 2.5, z: 0}
     - name: grip
       attachedTo: body
-      position: {x: 11, y: 3, z: 0}
+      position: {x: 11.75, y: 0.5, z: 0}
+    - name: stock
+      attachedTo: body
+      position: {x: -5.75, y: 2, z: 0}
+    - name: scope
+      attachedTo: body
+      position: {x: 2, y: 4.5, z: 0}
+    customModelLocation: 
   Skin: {fileID: 2800000, guid: 8525165572fe1854cbf5cb33b52f70b8, type: 3}
   Icon: {fileID: 2800000, guid: 1a487541f50a26c45bc37196dd2302e6, type: 3}
-  AdditionalTextures:
-  - name: hm_combine_aquatic
-    texture: {fileID: 2800000, guid: c545ba7d238c1dc4bb3064964b153664, type: 3}
-    icon: {fileID: 2800000, guid: a80b498382c03dc4989af74ed5e675d6, type: 3}
-  - name: hm_combine_electric
-    texture: {fileID: 2800000, guid: 44574578e9d367f4d9f422ac63a32417, type: 3}
-    icon: {fileID: 2800000, guid: 004e20b29beec6c40aedd85c7561f1c3, type: 3}
-  - name: hm_combine_quack_quack
-    texture: {fileID: 2800000, guid: be1438c57755d654bb72c49faaf4b589, type: 3}
-    icon: {fileID: 2800000, guid: 315438e0900151b4b820291e2f489996, type: 3}
-  - name: hm_combine_red
-    texture: {fileID: 2800000, guid: 4902b82350dbe95409aee6e128749f85, type: 3}
-    icon: {fileID: 2800000, guid: 45ec95563a201c742a516d1fe9befa57, type: 3}
-  - name: hm_combine_royal_green
-    texture: {fileID: 2800000, guid: 70da56f132bad9c46a5663a21b15bca5, type: 3}
-    icon: {fileID: 2800000, guid: ddf8c8f7b43d442419c045c4dc4ce0c1, type: 3}
+  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: HM Combine
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
     - flansmod:gun
   paints:
-    paintjobs:
-    - textureName: hm_combine_aquatic
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: hm_combine_electric
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: hm_combine_quack_quack
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: hm_combine_red
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: hm_combine_royal_green
-      paintBucketsRequired: 1
-      entitlementKey: 
+    paintjobs: []
   primaryReload:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 0.5
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.5
@@ -288,7 +588,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     eject:
-      duration: 0.5
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.5
@@ -302,7 +610,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     loadOne:
-      duration: 0.5
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.5
@@ -316,7 +632,15 @@ MonoBehaviour:
         harvestSpeed: 1
         reach: 1
     end:
-      duration: 0.5
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions:
       - actionType: 2
         duration: 0.5
@@ -333,16 +657,48 @@ MonoBehaviour:
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     start:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     eject:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     loadOne:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
     end:
-      duration: 1
+      canActUnderwater: 1
+      canActUnderOtherLiquid: 0
+      canBeOverriden: 0
+      twoHanded: 0
+      repeatMode: 1
+      repeatDelay: 0
+      repeatCount: 0
+      spinUpDuration: 1
+      loudness: 150
       actions: []
   primary:
     canActUnderwater: 1
@@ -353,6 +709,7 @@ MonoBehaviour:
     repeatDelay: 0.1
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 3
       duration: 0.1
@@ -446,6 +803,7 @@ MonoBehaviour:
     repeatDelay: 0.1
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 4
       duration: 0
@@ -478,6 +836,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -509,28 +868,28 @@ MonoBehaviour:
     allowAll: 1
     numAttachmentSlots: 1
     attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
+    attachPoint: {x: 18, y: 2.5, z: 0}
     hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
     attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
+    attachPoint: {x: 11.75, y: 0.5, z: 0}
     hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
     attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
+    attachPoint: {x: -5.75, y: 2, z: 0}
     hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 1
     attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
+    attachPoint: {x: 2, y: 4.5, z: 0}
     hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
