@@ -651,6 +651,9 @@ MonoBehaviour:
     - name: barrel
       attachedTo: body
       position: {x: 30.75, y: 3, z: 0}
+    - name: grip
+      attachedTo: body
+      position: {x: 11.5, y: 1, z: 0}
     customModelLocation: 
   Skin: {fileID: 2800000, guid: 3a046730e285c3449b960217121308b0, type: 3}
   Icon: {fileID: 2800000, guid: 878096471c98d0449959903d0c78f4d2, type: 3}
@@ -1007,9 +1010,9 @@ MonoBehaviour:
   gripAttachments:
     allowlist: []
     allowAll: 1
-    numAttachmentSlots: 0
+    numAttachmentSlots: 1
     attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
+    attachPoint: {x: 11.5, y: 1, z: 0}
     hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
