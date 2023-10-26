@@ -45,6 +45,19 @@ public class Verification
 			Message = msg
 		};
 	}
+
+	public static VerifyType GetWorstState(List<Verification> verifications)
+	{
+		VerifyType result = VerifyType.Pass;
+		foreach (Verification v in verifications)
+		{
+			if (v.Type == VerifyType.Fail)
+				return VerifyType.Fail;
+			if (v.Type == VerifyType.Neutral)
+				result = VerifyType.Neutral;
+		}
+		return result;
+	}
 }
 
 public interface IVerifiableAsset
@@ -104,6 +117,17 @@ public static class GUIVerify
 		}
 		Internal_VerificationsSummary(allSucceeded);
 		return pressedAnyQuickFix;
+	}
+
+	public static void VerificationIcon(List<Verification> verifications)
+	{
+		VerifyType type = Verification.GetWorstState(verifications);
+		switch(type)
+		{
+			case VerifyType.Pass: GUILayout.Label(TickTexture, GUILayout.Width(16)); break;
+			case VerifyType.Neutral: GUILayout.Label(NeutralTexture, GUILayout.Width(16)); break;
+			case VerifyType.Fail: GUILayout.Label(CrossTexture, GUILayout.Width(16)); break;
+		}
 	}
 
 	private static void Internal_VerificationsHeader()

@@ -12,34 +12,11 @@ public class ContentPackEditor : Editor
 		ContentPack pack = (ContentPack)target;
 		if(pack != null)
 		{
-			if(GUILayout.Button("Auto-Add"))
-			{
-				pack.Content.Clear();
-				foreach(string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{pack.name}/", "*.asset", SearchOption.AllDirectories))
-				{
-					if (assetPath.EndsWith($"{pack.name}.asset"))
-						continue;
-				//}
-				//foreach(string assetGUID in AssetDatabase.FindAssets($"dir:{pack.name} t:Definition"))
-				//{
-				//	string assetPath = AssetDatabase.GUIDToAssetPath(assetGUID);
-					Definition def = AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
-					if(def != null)
-					{
-						pack.Content.Add(def);
-					}
-					else
-					{
-						Debug.LogError($"Failed to load asset at path {assetPath}");
-					}
-				}
-			}
-
 			Dictionary<Object, List<Verification>> multiVerify = new Dictionary<Object, List<Verification>>();
 			List<Verification> packIssues = new List<Verification>();
 			pack.GetVerifications(packIssues);
 			multiVerify.Add(pack, packIssues);
-			foreach(Definition def in pack.Content)
+			foreach(Definition def in pack.AllContent)
 			{
 				List<Verification> verifications = new List<Verification>();
 				def.GetVerifications(verifications);

@@ -25,7 +25,7 @@ public abstract class MinecraftModelEditor : Editor
 	private void RefreshMatches(ContentPack pack, ResourceLocation resLoc, MinecraftModel mcModel)
 	{
 		RelatedDefinitions = new List<Definition>();
-		foreach (Definition def in pack.Content)
+		foreach (Definition def in pack.AllContent)
 		{
 			if (ResourceLocation.IsSameObjectGroup(def.GetLocation(), resLoc))
 				RelatedDefinitions.Add(def);

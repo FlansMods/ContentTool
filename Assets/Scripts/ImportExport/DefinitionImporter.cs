@@ -10,6 +10,22 @@ using UnityEngine;
 
 public class DefinitionImporter : MonoBehaviour
 {
+	private static DefinitionImporter _inst = null;
+	public static DefinitionImporter inst
+	{
+		get
+		{
+			if (_inst == null)
+				_inst = FindObjectOfType<DefinitionImporter>();
+			if(_inst == null)
+			{
+				GameObject go = new GameObject("DefinitionImporter");
+				_inst = go.AddComponent<DefinitionImporter>();
+			}
+			return _inst;
+		}
+	}
+
 	public const string IMPORT_ROOT = "Import/Content Packs";
 	public const string MODEL_IMPORT_ROOT = "Import/Java Models";
 	public const string ASSET_ROOT = "Assets/Content Packs";
@@ -215,10 +231,10 @@ public class DefinitionImporter : MonoBehaviour
 					VerifyDefinition(def, pack);
 					EditorUtility.SetDirty(def);
 					AssetDatabase.SaveAssetIfDirty(def);
-					pack.Content.Add(def);
 				}
 			}
 		}
+		pack.ForceRefreshAssets();
 	}
 
 	private Texture2D ImportTexture(string packName, string textureName)
@@ -647,7 +663,7 @@ public class DefinitionImporter : MonoBehaviour
 		if(!Directory.Exists(langExportFolder))
 			Directory.CreateDirectory(langExportFolder);
 
-		foreach(Definition def in pack.Content)
+		foreach(Definition def in pack.AllContent)
 		{
 			string item_name = Utils.ToLowerWithUnderscores(def.name);
 
@@ -897,7 +913,7 @@ public class DefinitionImporter : MonoBehaviour
 				}
 			}
 		}
-		foreach(Definition def in pack.Content)
+		foreach(Definition def in pack.AllContent)
 		{
 			foreach(Definition.LocalisedName locName in def.LocalisedNames)
 			{

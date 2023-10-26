@@ -36,6 +36,28 @@ public class TurboPiecePreview : MinecraftModelPreview
 	}
 	public override MinecraftModelPreview GetParent() { return Parent; }
 
+	private static readonly int[] OldVertexOrder = new int[] {
+		7, // V1 = +x, +y, +z
+		6, // V2 = -x, +y, +z
+		2, // V3 = -x, +y, -z
+		3, // V4 = +x, +y, -z
+		5, // V5 = +x, -y, +z
+		4, // V6 = -x, -y, +z
+		0, // V7 = -x, -y, -z
+		1, // V8 = +x, -y, -z
+	};
+
+	private static readonly string[] VertexNames = new string[] {
+		"Offset 1 (+x, +y, +z)",
+		"Offset 2 (-x, +y, +z)",
+		"Offset 3 (-x, +y, -z)",
+		"Offset 4 (+x, +y, -z)",
+		"Offset 5 (+x, -y, +z)",
+		"Offset 6 (-x, -y, +z)",
+		"Offset 7 (-x, -y, -z)",
+		"Offset 8 (+x, -y, -z)",
+	};
+
 #if UNITY_EDITOR
 	public override string Compact_Editor_Header()
 	{
@@ -73,8 +95,9 @@ public class TurboPiecePreview : MinecraftModelPreview
 		bool anyOffsetChanged = false;
 		for (int i = 0; i < 8; i++)
 		{
-			newOffsets[i] = FlanStyles.CompactVector3Field($"Offset {i}", Piece.Offsets[i]);
-			if (!newOffsets[i].Approximately(Piece.Offsets[i]))
+			int TransmutedVertexIndex = OldVertexOrder[i];
+			newOffsets[TransmutedVertexIndex] = FlanStyles.CompactVector3Field(VertexNames[i], Piece.Offsets[TransmutedVertexIndex]);
+			if (!newOffsets[TransmutedVertexIndex].Approximately(Piece.Offsets[TransmutedVertexIndex]))
 				anyOffsetChanged = true;
 		}
 		if(anyOffsetChanged)
@@ -87,11 +110,30 @@ public class TurboPiecePreview : MinecraftModelPreview
 			EditorUtility.SetDirty(Parent.Parent.Rig);
 		}
 
+		
+		
+	}
+	public override void Compact_Editor_Texture_GUI()
+	{
+		GUILayout.BeginHorizontal();
+
+		GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 15));
+
+		GUILayout.BeginVertical(GUILayout.Width(100));
+		GUILayout.Label($"Box [{Piece.Dim.x}x{Piece.Dim.y}x{Piece.Dim.z}]");
+		GUILayout.Label($"Tex [{Piece.GetBoxUVSize().x}x{Piece.GetBoxUVSize().y}]");
+		
+		if (GUILayout.Button("Reset"))
+		{
+			CreateFreshUVMap(PieceTexture);
+		}
+		GUILayout.EndVertical();
+
 		// Texture
 		Texture2D tex = GetTemporaryTexture();
-		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
+		GUILayout.Label("", GUILayout.Width(tex.width * TextureZoomLevel), GUILayout.Height(tex.height * TextureZoomLevel));
 		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
-		
+		GUILayout.EndHorizontal();
 	}
 	#endif
 	public override bool CanDelete() { return true; }
@@ -110,6 +152,24 @@ public class TurboPiecePreview : MinecraftModelPreview
 		base.Update();
 	}
 
+	public void OnDrawGizmosSelected()
+	{
+		Vector3[] verts = Piece.GetVerts();
+		Vector3 center = Vector3.zero;
+		for (int i = 0; i < 8; i++)
+			center += verts[i];
+		center /= 8;
+
+		for(int i = 0; i < 8; i++)
+		{
+			Vector3 outwardDir = (verts[i] - center).normalized;
+			Gizmos.DrawLine(
+				transform.TransformPoint(verts[i]),
+				transform.TransformPoint(verts[i] + outwardDir * 1.0f));
+			Gizmos.DrawIcon(transform.TransformPoint(verts[i] + outwardDir * 1.2f), $"Vertex_{i+1}.png");
+
+		}
+	}
 
 
 	public override Vector3 SetOrigin(Vector3 localPos)

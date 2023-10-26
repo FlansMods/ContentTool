@@ -92,29 +92,38 @@ public class ResourceLocation
 	}
 
 #if UNITY_EDITOR
-    public T Load<T>(string subfolder = "") where T : Object
+    public bool TryLoad<T>(out T result, string subfolder = "") where T : Object
     {
-        if (Namespace == "minecraft")
-        {
-            Debug.Log($"Did not load {this} asset from minecraft namespace.");
-            return null;
-        }
+		if (Namespace == NEW_NAMESPACE || Namespace == "minecraft")
+		{
+            result = null;
+            return false;
+		}
 
-        string extension = "asset";
-        if (typeof(T) == typeof(Texture2D))
-            extension = "png";
-        string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{ID}.{extension}";
+		string extension = "asset";
+		if (typeof(T) == typeof(Texture2D))
+			extension = "png";
+           
+		string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{ID}.{extension}";
+		if (ID.Contains(subfolder))
+			path = $"Assets/Content Packs/{Namespace}/{ID}.{extension}";
 
-        T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-        if (asset != null)
-            return asset;
+		result = AssetDatabase.LoadAssetAtPath<T>(path);
+        return result != null;
+	}
 
-        Debug.LogError($"Failed to load {path} as {typeof(T)}");
+	public T Load<T>(string subfolder = "") where T : Object
+    {
+        if (TryLoad(out T result, subfolder))
+            return result;
+
+        Debug.LogError($"Failed to load {this} as {typeof(T)}");
         return null;
     }
 
     // Namespace caching
 	private static List<string> _Namespaces = null;
+    private const string NEW_NAMESPACE = "new ...";
     public static List<string> Namespaces 
     { 
         get 
@@ -132,55 +141,100 @@ public class ResourceLocation
 					foreach (ContentPack pack in importer.Packs)
 						_Namespaces.Add(pack.ModName);
 				}
+                _Namespaces.Add(NEW_NAMESPACE);
 			}
             return _Namespaces;
 		} 
     }
 
 
-    public static ResourceLocation EditorObjectField<T>(ResourceLocation src) where T : Object
+    public static ResourceLocation EditorObjectField<T>(ResourceLocation src, string subfolder = "") where T : Object
     {
-        return EditorObjectField<T>(src, src.Load<T>());
+        src.TryLoad(out T result, subfolder);
+        return EditorObjectField<T>(src, result, subfolder);
     }
 
-	public static ResourceLocation EditorObjectField<T>(ResourceLocation src, T currentObject) where T : Object
+    public static string NamespaceField(string ns)
+    {
+		if (ns == NEW_NAMESPACE)
+		{
+			string editedNamespace = EditorGUILayout.DelayedTextField("");
+			if (editedNamespace.Length > 0)
+			{
+				//bool register = EditorUtility.DisplayDialog(
+				//	"New namespace",
+				//	$"Do you want to register {editedNamespace} as a new namespace?",
+				//	"Yes", "No");
+
+				if (!Namespaces.Contains(editedNamespace))
+					Namespaces.Insert(Namespaces.Count - 1, editedNamespace);
+				ns = editedNamespace;
+			}
+		}
+		else
+		{
+			int index = Namespaces.IndexOf(ns);
+			int editedSelection = EditorGUILayout.Popup(index, Namespaces.ToArray());
+			if (editedSelection != -1 && editedSelection != index)
+			{
+				ns = Namespaces[editedSelection];
+			}
+		}
+        return ns;
+	}
+
+    public static string IDField(string ns, string id, string subfolder = "")
+    {
+        if (Namespaces.Contains(ns) && ns != "minecraft" && ns != NEW_NAMESPACE)
+        {
+            List<string> possibleIDs = new List<string>();
+            ContentPack pack = DefinitionImporter.inst.FindContentPack(ns);
+            int selectedIndex = -1;
+			if (pack != null)
+            {
+                if (subfolder.Length == 0)
+                {
+                    possibleIDs.AddRange(pack.AllIDs);
+                    selectedIndex = possibleIDs.IndexOf(id);
+
+				}
+                else
+                {
+                    foreach (string option in pack.AllIDs)
+                        if (option.Contains(subfolder))
+                        {
+                            string trunc = option.Substring(option.IndexOf(subfolder) + subfolder.Length + 1);
+                            possibleIDs.Add(trunc);
+                            if (option == id)
+                                selectedIndex = possibleIDs.Count - 1;
+						}
+                }
+            }
+
+			selectedIndex = EditorGUILayout.Popup(selectedIndex, possibleIDs.ToArray());
+            if (selectedIndex < 0)
+                return id;
+            if (subfolder.Length > 0)
+                return $"{subfolder}/{possibleIDs[selectedIndex]}";
+            return possibleIDs[selectedIndex];
+        }
+		return GUILayout.TextField(id).ToLower().Replace(" ", "_");
+	}
+
+	public static ResourceLocation EditorObjectField<T>(ResourceLocation src, T currentObject, string subfolder = "") where T : Object
     {
         ResourceLocation result = src.Clone();
 		
-
 		GUILayout.BeginHorizontal();
-		string editedNamespace = EditorGUILayout.DelayedTextField(result.Namespace, GUILayout.MinWidth(64));
-		if (editedNamespace != result.Namespace && !Namespaces.Contains(editedNamespace))
-		{
-			bool register = EditorUtility.DisplayDialog(
-				"New namespace",
-				$"Do you want to register {editedNamespace} as a new namespace?",
-				"Yes", "No");
 
-			if (register)
-			{
-				Namespaces.Add(editedNamespace);
-				result.Namespace = editedNamespace;
-			}
-			else
-			{
-				// Do anything?
-			}
+        // Namespace
+        result.Namespace = NamespaceField(result.Namespace);
+        GUILayout.Label(":", GUILayout.Width(8));
+        // ID
+        result.ID = IDField(result.Namespace, result.ID, subfolder);
 
-		}
-
-		int index = Namespaces.IndexOf(editedNamespace);
-		int editedSelection = EditorGUILayout.Popup(index, Namespaces.ToArray(), GUILayout.MinWidth(16));
-		if (editedSelection != -1 && editedSelection != index)
-		{
-			result.Namespace = Namespaces[editedSelection];
-		}
-
-        if(result.Namespace == "minecraft")
-        {
-			result.ID = GUILayout.TextField(result.ID, GUILayout.MinWidth(64)).ToLower().Replace(" ", "_");
-		}
-        else 
+		// Interactive field
+		if (result.Namespace != "minecraft" && result.Namespace != NEW_NAMESPACE)
         {
             Object changedObject = EditorGUILayout.ObjectField(currentObject, typeof(T), false);
             if(changedObject != currentObject)
@@ -191,39 +245,13 @@ public class ResourceLocation
 		GUILayout.EndHorizontal();
         return result;
 	}
-	public static ResourceLocation EditorField(ResourceLocation src)
+	public static ResourceLocation EditorField(ResourceLocation src, string subfolder = "")
     {
 		ResourceLocation result = src.Clone();
         GUILayout.BeginHorizontal();
-        string editedNamespace = EditorGUILayout.DelayedTextField(result.Namespace, GUILayout.MinWidth(64));
-        if(editedNamespace != result.Namespace && !Namespaces.Contains(editedNamespace))
-        {
-            bool register = EditorUtility.DisplayDialog(
-                "New namespace",
-                $"Do you want to register {editedNamespace} as a new namespace?", 
-                "Yes", "No");
-
-            if(register)
-            {
-				Namespaces.Add(editedNamespace);
-				result.Namespace = editedNamespace;
-            }
-            else
-            {
-                // Do anything?
-            }
-
-		}
-
-        int index = Namespaces.IndexOf(editedNamespace);
-        int editedSelection = EditorGUILayout.Popup(index, Namespaces.ToArray(), GUILayout.MinWidth(16));
-        if(editedSelection != -1 && editedSelection != index)
-        {
-			result.Namespace = Namespaces[editedSelection];
-        }
-
-		result.ID = GUILayout.TextField(result.ID, GUILayout.MinWidth(64)).ToLower().Replace(" ", "_");
-        GUILayout.EndHorizontal();
+        result.Namespace = NamespaceField(result.Namespace); 
+        result.ID = IDField(result.Namespace, result.ID, subfolder);
+		GUILayout.EndHorizontal();
 
         return result;
 	}

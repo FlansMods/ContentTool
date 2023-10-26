@@ -183,16 +183,25 @@ public static class Utils
     private static Regex ResourceLocator = new Regex(".*Assets\\/Content Packs\\/([a-zA-Z0-9]*)\\/([a-zA-Z0-9_\\/]*)\\.([a-z]*)");
     public static ResourceLocation GetLocation(this Object asset)
     {
-        string path = AssetDatabase.GetAssetPath(asset);
-        Match match = ResourceLocator.Match(path);
-        if(match.Success)
+        if(!TryGetLocation(asset, out ResourceLocation location))
         {
-            string modName = match.Groups[1].Value;
-            string assetName = match.Groups[2].Value;
-            return new ResourceLocation(modName, assetName);
-        }
-        Debug.LogWarning($"Could not resolve the path {path} as a resource location");
-        return new ResourceLocation("minecraft", "null");
+			Debug.LogWarning($"Could not resolve the path to {asset} as a resource location");
+		}
+		return location;
+	}
+    public static bool TryGetLocation(this Object asset, out ResourceLocation location)
+    {
+		string path = AssetDatabase.GetAssetPath(asset);
+		Match match = ResourceLocator.Match(path);
+		if (match.Success)
+		{
+			string modName = match.Groups[1].Value;
+			string assetName = match.Groups[2].Value;
+			location = new ResourceLocation(modName, assetName);
+            return true;
+		}
+		location = new ResourceLocation("minecraft", "null");
+        return false;
 	}
 
     public static Transform FindRecursive(this Transform t, string name)

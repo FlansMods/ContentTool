@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Security.Cryptography;
+using UnityEditor.Build;
+using Unity.VisualScripting;
 
 public class FlansModToolbox : EditorWindow
 {
@@ -55,8 +57,8 @@ public class FlansModToolbox : EditorWindow
 	void OnGUI()
 	{
 		scroller = GUILayout.BeginScrollView(scroller);
-
-		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames);
+		GUILayout.BeginVertical();
+		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames, GUILayout.MaxWidth(Screen.width));
 		switch (SelectedTab)
 		{
 			case Tab.ContentPacks:
@@ -66,14 +68,14 @@ public class FlansModToolbox : EditorWindow
 				RigsTab();
 				break;
 		}
-
+		GUILayout.EndVertical();
 		GUILayout.EndScrollView();
 	}
 
 	private int SelectedContentPackIndex = -1;
 	private string SelectedContentPackName { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex].ModName : "None"; } }
 	private ContentPack SelectedContentPack { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex] : null; } }
-
+	private Editor ContentPackEditor = null;
 	private void ContentPacksTab()
 	{
 		FlanStyles.BigHeader("Content Packs");
@@ -86,6 +88,15 @@ public class FlansModToolbox : EditorWindow
 		}
 		SelectedContentPackIndex = EditorGUILayout.Popup(SelectedContentPackIndex+1, packNames.ToArray()) - 1;
 		EditorGUILayout.ObjectField(SelectedContentPack, typeof(ContentPack), false);
+
+		if(ContentPackEditor == null || ContentPackEditor.target != SelectedContentPack)
+		{
+			ContentPackEditor = Editor.CreateEditor(SelectedContentPack);
+		}
+		if(ContentPackEditor != null)
+		{
+			ContentPackEditor.OnInspectorGUI();
+		}
 	}
 
 	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
@@ -373,10 +384,123 @@ public class FlansModToolbox : EditorWindow
 		EditorGUI.EndDisabledGroup();
 	}
 
+	private static readonly List<float> TextureZoomSettings = new List<float>(new float[] { 0, 1, 2, 4, 8, 16, 32, 64 });
+	private static readonly string[] TextureZoomSettingNames = new string[] { "Auto", "1", "2", "4", "8", "16", "32", "64" };
+	private List<int> ExpandedTextures = new List<int>();
+	private void RenderTextureAutoWidth(Texture texture)
+	{
+		if (MinecraftModelPreview.TextureZoomLevel == 0)
+		{
+			float scale = (float)(Screen.width - 10) / texture.width;
+			GUILayout.Label(GUIContent.none,
+							GUILayout.Width(texture.width * scale),
+							GUILayout.Height(texture.height * scale));
+		}
+		else
+		{
+			GUILayout.Label(GUIContent.none,
+							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
+							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
+		}
+		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
+	}
 	private void SkinsTab()
 	{
 		if (SelectedRig == null)
 			return;
+
+		GUILayout.Label("Texture Zoom Level", FlanStyles.BoldLabel);
+		int oldIndex = TextureZoomSettings.IndexOf(MinecraftModelPreview.TextureZoomLevel);
+		int newIndex = GUILayout.Toolbar(oldIndex, TextureZoomSettingNames);
+		MinecraftModelPreview.TextureZoomLevel = TextureZoomSettings[newIndex];
+
+		FlanStyles.BigHeader("Skins");
+		GUILayout.Label(SelectedRig.SelectedSkin);
+		if(SelectedRig.Preview is TurboRigPreview turboPreview)
+		{
+			// Draw a box for each texture
+			for(int i = 0; i < turboPreview.Rig.Textures.Count; i++)
+			{
+				MinecraftModel.NamedTexture texture = turboPreview.Rig.Textures[i];
+				List<Verification> verifications = new List<Verification>();
+				texture.GetVerifications(verifications);
+				bool oldExpanded = ExpandedTextures.Contains(i);
+
+				GUILayout.BeginHorizontal();
+				bool newExpanded = EditorGUILayout.Foldout(oldExpanded, GUIContent.none);
+				if (oldExpanded && !newExpanded)
+					ExpandedTextures.Remove(i);
+				else if (newExpanded && !oldExpanded)
+					ExpandedTextures.Add(i);
+				GUILayout.Label($"[{i}]", GUILayout.Width(32));
+				GUIVerify.VerificationIcon(verifications);
+
+				texture.Location = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+				GUILayout.EndHorizontal();
+
+				if(newExpanded)
+				{
+					if (texture.Texture != null)
+					{
+						RenderTextureAutoWidth(texture.Texture);
+					}
+				}
+			}
+
+			// And a row for "add new"
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("[+]", GUILayout.Width(32)))
+			{
+				turboPreview.Rig.Textures.Add(new MinecraftModel.NamedTexture()
+				{
+					Key = "new_skin",
+					Location = new ResourceLocation(turboPreview.Rig.GetLocation().Namespace, "null"),
+					Texture = null,
+				});
+			}
+			GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+		}
+
+
+
+		FlanStyles.BigHeader("UV Mapping");
+
+		GUILayout.BeginHorizontal();
+		
+
+		//MinecraftModelPreview.TextureZoomLevel = Mathf.Clamp(EditorGUILayout.FloatField(MinecraftModelPreview.TextureZoomLevel), 1f, 256f);
+		//MinecraftModelPreview.TextureZoomLevel = EditorGUILayout.Slider(MinecraftModelPreview.TextureZoomLevel, 1f, 256f);
+		GUILayout.EndHorizontal();
+		InitialSkinNode(SelectedRig.Preview);
+	}
+	private List<string> SkinNodeFoldouts = new List<string>();
+	private void InitialSkinNode(MinecraftModelPreview preview)
+	{
+		SkinNode(preview, "");
+	}
+	private void SkinNode(MinecraftModelPreview preview, string path)
+	{
+		if (preview == null || EditorGUI.indentLevel > 16) 
+			return;
+		string childPath = $"{path}/{preview.name}";
+		bool foldout = SkinNodeFoldouts.Contains(childPath);
+		bool newFoldout = EditorGUILayout.Foldout(foldout, preview.name);
+		if (newFoldout && !foldout)
+			SkinNodeFoldouts.Add(childPath);
+		else if (!newFoldout && foldout)
+			SkinNodeFoldouts.Remove(childPath);
+
+		if (newFoldout)
+		{
+			preview.Compact_Editor_Texture_GUI();
+			EditorGUI.indentLevel++;
+			foreach (MinecraftModelPreview child in preview.GetChildren())
+			{
+				SkinNode(child, childPath);
+			}
+			EditorGUI.indentLevel--;
+		}
 	}
 
 	private void ModelButton(ModelEditingRig rig, params GUILayoutOption[] options)

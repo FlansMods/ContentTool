@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
 public abstract class MinecraftModelPreview : MonoBehaviour
 {
+	public static float TextureZoomLevel = 16;
 	protected MinecraftModel Model = null;
 	protected MeshRenderer MR = null;
 	protected MeshFilter MF = null;
@@ -23,6 +24,7 @@ public abstract class MinecraftModelPreview : MonoBehaviour
 
 	public virtual string Compact_Editor_Header() { return name; }
 	public virtual void Compact_Editor_GUI() { }
+	public virtual void Compact_Editor_Texture_GUI() { }
 	public virtual MinecraftModelPreview GetParent() { return null; }
 	public virtual IEnumerable<MinecraftModelPreview> GetChildren() { yield break; }
 	public virtual bool CanDelete() { return false; }

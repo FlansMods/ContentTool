@@ -7,11 +7,19 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 	public abstract bool IsUVMapSame(MinecraftModel other);
 
 	[System.Serializable]
-	public class NamedTexture
+	public class NamedTexture : IVerifiableAsset
 	{
 		public string Key;
 		public ResourceLocation Location;
 		public Texture2D Texture;
+
+		public void GetVerifications(List<Verification> verifications)
+		{
+			if (Texture == null)
+				verifications.Add(Verification.Failure("Texture is null"));
+			if (Key == null || Key.Length == 0)
+				verifications.Add(Verification.Failure("Key is empty"));
+		}
 	}
 
 	public void AddTexture(string key, string modID, Texture2D texture)
