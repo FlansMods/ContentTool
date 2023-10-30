@@ -51,7 +51,7 @@ public class AnimationEditor : Editor
 			if(obj is Definition def)
 			{
 				Debug.Log($"Found {def} at {defPath}");
-				if(def != null && def.Model != null)
+				if(def != null)
 				{
 					DefinitionNames.Add(defPath);
 				}

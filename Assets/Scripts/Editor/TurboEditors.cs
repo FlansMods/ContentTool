@@ -216,6 +216,20 @@ public abstract class MinecraftModelEditor : Editor
 
 		ModellingNode(root, "", true);
 	}
+	public void AttachPointNode(TurboAttachPointPreview ap)
+	{
+		MinecraftModelPreview parent = ap.Parent;
+		if (parent != null)
+		{
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
+				Selection.activeObject = parent;
+			GUILayout.Label($"Parent: {parent}");
+			GUILayout.EndHorizontal();
+		}
+
+
+	}
 
 	private const float MODELLING_BUTTON_X = 32f;
 	private void ModellingNode(MinecraftModelPreview node, string parentPath, bool alwaysExpanded = false)
@@ -379,6 +393,32 @@ public abstract class MinecraftModelEditor : Editor
 	{
 		ModelEditingRig[] rigs = Object.FindObjectsOfType<ModelEditingRig>();
 		return rigs.Length > 0 ? rigs[0] : null;
+	}
+}
+
+[CustomEditor(typeof(TurboAttachPointPreview))]
+public class TurboAttachPointPreviewEditor : Editor
+{
+	private Editor RigEditor = null;
+
+	public override void OnInspectorGUI()
+	{
+		TurboAttachPointPreview preview = (TurboAttachPointPreview)target;
+		if (preview == null || preview.Parent == null || preview.Parent.Rig == null)
+		{
+			GUILayout.Label("No Model Selected");
+			return;
+		}
+
+		if (RigEditor == null || RigEditor.target != preview.Parent.Rig)
+			RigEditor = CreateEditor(preview.Parent.Rig);
+		if (RigEditor is TurboRigEditor rigEditor)
+		{
+			rigEditor.AttachPointNode(preview);
+		}
+
+		preview.LockPartPositions = GUILayout.Toggle(preview.LockPartPositions, "Lock Positions (pieces will stay still by altering their origins)");
+		preview.LockAttachPoints = GUILayout.Toggle(preview.LockAttachPoints, "Lock Attach Points (if other APs are attached to this one, they are fixed)");
 	}
 }
 

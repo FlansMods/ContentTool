@@ -58,6 +58,11 @@ public class Verification
 		}
 		return result;
 	}
+
+	public override string ToString()
+	{
+		return $"[{Type}] {Message}";
+	}
 }
 
 public interface IVerifiableAsset

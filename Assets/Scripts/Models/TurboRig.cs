@@ -163,6 +163,12 @@ public class TurboRig : MinecraftModel
 		}
 	}
 
+	public void GetSectionNames(List<string> names)
+	{
+		foreach(TurboModel section in Sections)
+			names.Add(section.PartName);
+	}
+
 	public AttachPoint GetOrCreate(string name)
 	{
 		foreach (AttachPoint point in AttachPoints)
@@ -171,7 +177,7 @@ public class TurboRig : MinecraftModel
 		AttachPoint point1 = new AttachPoint()
 		{
 			name = name,
-			attachedTo = "body",
+			attachedTo = "none",
 			position = Vector3.zero,
 		};
 		AttachPoints.Add(point1);
@@ -184,6 +190,26 @@ public class TurboRig : MinecraftModel
 				return point;
 		return null;
 	}
+	public string GetAttachedTo(string key)
+	{
+		foreach (AttachPoint point in AttachPoints)
+			if (point.name == key)
+				return point.attachedTo;
+		return "none";
+	}
+	public Vector3 GetAttachmentOffset(string key)
+	{
+		foreach (AttachPoint point in AttachPoints)
+			if (point.name == key)
+				return point.position;
+		return Vector3.zero;
+	}
+	public void RemoveAttachment(string key)
+	{
+		for (int i = AttachPoints.Count - 1; i >= 0; i--)
+			if (AttachPoints[i].name == key)
+				AttachPoints.RemoveAt(i);
+	}
 	public void SetAttachment(string name, string attachedTo)
 	{
 		AttachPoint ap = GetOrCreate(name);
@@ -192,7 +218,7 @@ public class TurboRig : MinecraftModel
 	public void SetAttachmentOffset(string name, Vector3 offset)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		ap.position = offset * 16f;
+		ap.position = offset;
 	}
 
 	public Model convertToModel()
@@ -477,31 +503,6 @@ public class TurboRig : MinecraftModel
 			}
 		}
 
-		return true;
-	}
-
-	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
-	{
-		builder.Current.Add("parent", $"item/generated");
-		using (builder.Indentation("textures"))
-		{
-			builder.Current.Add("layer0", Icon.ResolveWithSubdir("item"));
-		}
-		using (builder.Indentation("display"))
-		{
-			using (builder.Indentation("thirdperson"))
-			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(-90f, 0f, 0f)));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 1f, -3f)));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(0.55f, 0.55f, 0.55f)));
-			}
-			using (builder.Indentation("firstperson"))
-			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(0f, -135f, 25f)));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 4f, 2f)));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(1.7f, 1.7f, 1.7f)));
-			}
-		}
 		return true;
 	}
 

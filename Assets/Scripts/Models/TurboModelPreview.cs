@@ -57,7 +57,7 @@ public class TurboModelPreview : MinecraftModelPreview
 	}
 	public override void Compact_Editor_GUI()
 	{
-		GUILayout.BeginHorizontal();
+		//GUILayout.BeginHorizontal();
 		string changedName = EditorGUILayout.DelayedTextField(PartName);
 		if(changedName != PartName)
 		{
@@ -66,7 +66,32 @@ public class TurboModelPreview : MinecraftModelPreview
 			PartName = changedName;
 			name = $"{PartName}";
 		}
-		GUILayout.EndHorizontal();
+
+		// Attach Point setting
+		string ap = Parent.Rig.GetAttachedTo(PartName);
+		List<string> apNames = new List<string>(new string[] { "none" });
+		Parent.Rig.GetSectionNames(apNames);
+		int index = apNames.IndexOf(ap);
+		int changedIndex = EditorGUILayout.Popup("Attached to:", index, apNames.ToArray());
+		if(changedIndex != index)
+		{
+			Undo.RecordObject(Parent.Rig, "Changed attachment of part");
+			if (changedIndex == 0)
+				Parent.Rig.RemoveAttachment(PartName);
+			Parent.Rig.SetAttachment(PartName, apNames[changedIndex]);
+		}
+
+		// Attachment offset
+		Vector3 offset = Parent.Rig.GetAttachmentOffset(PartName);
+		Vector3 changedOffset = EditorGUILayout.Vector3Field("Offset:", offset);
+		if(!Mathf.Approximately((offset - changedOffset).sqrMagnitude, 0f))
+		{
+			Undo.RecordObject(Parent.Rig, "Offset part attachment");
+			Parent.Rig.SetAttachmentOffset(PartName, changedOffset);
+			UpdateAttachmentPosition();
+		}
+
+		//GUILayout.EndHorizontal();
 	}
 
 	public void DeleteChild(int index)
@@ -159,6 +184,27 @@ public class TurboModelPreview : MinecraftModelPreview
 				continue;
 
 			piecePreview.Refresh();
+		}
+	}
+
+	public void UpdateAttachmentPosition()
+	{
+		string parentSectionName = Parent.Rig.GetAttachedTo(PartName);
+		Vector3 offset = Parent.Rig.GetAttachmentOffset(PartName);
+		if (parentSectionName == "none")
+		{
+			transform.SetParent(Parent.transform);
+			transform.localPosition = offset;
+		}
+		else
+		{
+			TurboModelPreview parentPreview = Parent.GetAndUpdateChild(parentSectionName);
+			if (parentPreview != null)
+			{
+				
+				transform.SetParent(parentPreview.transform);
+				transform.localPosition = offset;
+			}
 		}
 	}
 }

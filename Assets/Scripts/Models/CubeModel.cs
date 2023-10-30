@@ -39,21 +39,6 @@ public class CubeModel : MinecraftModel
 		return other is CubeModel;
 	}
 
-	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
-	{
-		builder.Current.Add("parent", this.GetLocation().ResolveWithSubdir("block"));
-		using (builder.Indentation("display"))
-		{
-			using (builder.Indentation("thirdperson"))
-			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(10f, -45f, 170f)));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 1.5f, -2.75f)));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(0.375f, 0.375f, 0.375f)));
-			}
-		}
-		return true;
-	}
-
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);

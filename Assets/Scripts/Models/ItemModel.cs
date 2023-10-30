@@ -63,10 +63,4 @@ public class ItemModel : MinecraftModel
 		}
 		return true;
 	}
-
-
-	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
-	{
-		return false;
-	}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 {
-	public abstract bool IsUVMapSame(MinecraftModel other);
+
 
 	[System.Serializable]
 	public class NamedTexture : IVerifiableAsset
@@ -72,9 +72,22 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 	}
 	public List<NamedTexture> Textures = new List<NamedTexture>();
 
-    public virtual void FixNamespaces() { }
+	public abstract bool IsUVMapSame(MinecraftModel other);
+	public virtual void FixNamespaces() { }
     public abstract bool ExportToJson(QuickJSONBuilder builder);
-    public abstract bool ExportInventoryVariantToJson(QuickJSONBuilder builder);
+	public virtual IEnumerable<MinecraftModel> GetChildren() { yield break; }
+
+	public void BuildExportTree(ExportTree tree)
+	{
+		tree.Asset = this;
+		tree.AssetRelativeExportPath = this.GetLocation().GetPrefixes();
+		foreach (MinecraftModel model in GetChildren())
+		{
+			ExportTree childBranch = new ExportTree();
+			model.BuildExportTree(childBranch);
+			tree.Children.Add(childBranch);
+		}
+	}
 
 	public virtual void GetVerifications(List<Verification> verifications)
 	{

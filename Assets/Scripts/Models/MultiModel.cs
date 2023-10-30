@@ -26,6 +26,24 @@ public class MultiModel : MinecraftModel
 	public MinecraftModel FixedModel;
 	public MinecraftModel GUIModel;
 
+	private List<MinecraftModel> ModelSet = new List<MinecraftModel>();
+	private void RefreshModelSet()
+	{
+		ModelSet.Clear();
+		if (FirstPersonModel != null && !ModelSet.Contains(FirstPersonModel))
+			ModelSet.Add(FirstPersonModel);
+		if (ThirdPersonModel != null && !ModelSet.Contains(ThirdPersonModel))
+			ModelSet.Add(ThirdPersonModel);
+		if (HeadModel != null && !ModelSet.Contains(HeadModel))
+			ModelSet.Add(HeadModel);
+		if (GroundModel != null && !ModelSet.Contains(GroundModel))
+			ModelSet.Add(GroundModel);
+		if (FixedModel != null && !ModelSet.Contains(FixedModel))
+			ModelSet.Add(FixedModel);
+		if (GUIModel != null && !ModelSet.Contains(GUIModel))
+			ModelSet.Add(GUIModel);
+	}
+
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("loader", "flansmod:multimodel");
@@ -38,8 +56,10 @@ public class MultiModel : MinecraftModel
 		return true;
 	}
 
-	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
+	public override IEnumerable<MinecraftModel> GetChildren() 
 	{
-		return false;
+		RefreshModelSet();
+		foreach (MinecraftModel model in ModelSet)
+			yield return model;
 	}
 }

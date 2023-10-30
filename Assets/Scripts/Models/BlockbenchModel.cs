@@ -17,9 +17,4 @@ public class BlockbenchModel : MinecraftModel
 	{
 		return other is BlockbenchModel;
 	}
-
-	public override bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
-	{
-		return false;
-	}
 }

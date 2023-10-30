@@ -166,7 +166,7 @@ public class TurboPiecePreview : MinecraftModelPreview
 			Gizmos.DrawLine(
 				transform.TransformPoint(verts[i]),
 				transform.TransformPoint(verts[i] + outwardDir * 1.0f));
-			Gizmos.DrawIcon(transform.TransformPoint(verts[i] + outwardDir * 1.2f), $"Vertex_{i+1}.png");
+			Gizmos.DrawIcon(transform.TransformPoint(verts[i] + outwardDir * 1.2f), $"Vertex_{OldVertexOrder[i] + 1}.png");
 
 		}
 	}
@@ -244,6 +244,9 @@ public class TurboPiecePreview : MinecraftModelPreview
 			ResizeUV(lastDims, uvDims);
 			lastDims = uvDims;
 		}
+
+		transform.localPosition = Piece.Origin;
+		transform.localEulerAngles = Piece.Euler;
 	}
 
 	public void CopyExistingTexture(Texture2D full)

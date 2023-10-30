@@ -41,7 +41,7 @@ public static class UVCalculator
 		Vector2Int maxBounds = new Vector2Int(16, 16);
 		foreach (TurboModel section in rig.Sections)
 		{
-			TurboModelPreview modelPreview = preview.GetChild(section.PartName);
+			TurboModelPreview modelPreview = preview.GetAndUpdateChild(section.PartName);
 			if(modelPreview == null)
 			{
 				Debug.LogError($"Section {section.PartName} did not have a valid preview");

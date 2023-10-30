@@ -67,6 +67,13 @@ public class ResourceLocation
             return ID;
         return ID.Substring(lastSlash+1);
     }
+    public string GetPrefixes()
+    {
+		int lastSlash = ID.LastIndexOf('/');
+		if (lastSlash == -1)
+			return "";
+		return ID.Substring(0, lastSlash);
+	}
 
 	public override bool Equals(object obj)
 	{

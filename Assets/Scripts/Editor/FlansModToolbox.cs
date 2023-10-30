@@ -37,11 +37,13 @@ public class FlansModToolbox : EditorWindow
 	}
 	private enum Tab
 	{
+		Import,
 		ContentPacks,
 		Rigs,
 	}
 	private static readonly string[] TabNames = new string[]
 	{
+		"Import",
 		"Content Packs",
 		"Rig Editor",
 	};
@@ -61,6 +63,9 @@ public class FlansModToolbox : EditorWindow
 		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames, GUILayout.MaxWidth(Screen.width));
 		switch (SelectedTab)
 		{
+			case Tab.Import:
+				ImportTab();
+				break;
 			case Tab.ContentPacks:
 				ContentPacksTab();
 				break;
@@ -72,6 +77,172 @@ public class FlansModToolbox : EditorWindow
 		GUILayout.EndScrollView();
 	}
 
+	// -------------------------------------------------------------------------------------------------------
+	#region Import Tab
+	// -------------------------------------------------------------------------------------------------------
+	private enum ImportSubTab
+	{
+		
+	}
+	private int SelectedImportPackIndex = 0;
+	private List<string> ImportFoldouts = new List<string>();
+	private void ImportTab()
+	{
+		DefinitionImporter inst = DefinitionImporter.inst;
+		// TODO: Timer on this
+		inst.CheckInit();
+
+		foreach (string sourcePack in inst.UnimportedPacks)
+		{
+			string packFoldoutPath = $"{sourcePack}";
+			GUILayout.BeginHorizontal();
+			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
+			GUILayout.Label("t", GUILayout.Width(32));
+			GUILayout.EndHorizontal();
+			if (packFoldout)
+			{
+				EditorGUI.indentLevel++;
+				// TODO:Sort by type
+				Dictionary<string, string> importMap = CreateImportMap(sourcePack);
+				// tODO: Gather import data "will this override existing etc"
+				foreach(var kvp in importMap)
+				{
+					string importFoldoutPath = $"{sourcePack}/{kvp.Key}";
+					if (NestedFoldout(importFoldoutPath, kvp.Key))
+					{
+						EditorGUI.indentLevel++;
+						GUILayout.Label(kvp.Value);
+						EditorGUI.indentLevel--;
+					}
+				}
+
+				EditorGUI.indentLevel--;
+			}
+		}
+	}
+
+	private Dictionary<string, string> CreateImportMap(string importFolder)
+	{
+		Dictionary<string, string> importMap = new Dictionary<string, string>();
+		string modName = Utils.ToLowerWithUnderscores(importFolder);
+		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+		{
+			EDefinitionType defType = (EDefinitionType)i;
+			DirectoryInfo dir = new DirectoryInfo($"{DefinitionImporter.IMPORT_ROOT}/{importFolder}/{defType.Folder()}");
+			if (dir.Exists)
+			{
+				foreach (FileInfo file in dir.EnumerateFiles())
+				{
+					string shortName = Utils.ToLowerWithUnderscores(file.Name.Split(".")[0]);
+					importMap.Add(
+						$"{importFolder}/{defType.Folder()}/{file.Name}",
+						$"{modName}/{defType.OutputFolder()}/{shortName}.asset");
+				}
+			}
+		}
+		return importMap;
+	}
+
+	/*
+	private void p()
+	{
+
+
+		// Back to front? Should be imports
+
+		foreach (ContentPack pack in inst.Packs)
+		{
+			string packPath = $"{pack.name}";
+
+			List<string> originalAssetPaths = new List<string>();
+			bool hasOriginalImportFolder = false;
+			if (inst.UnimportedPacks.Contains(pack.name))
+			{
+				hasOriginalImportFolder = true;
+			}
+
+			if (NestedFoldout(packPath, pack.name))
+			{
+				EditorGUI.indentLevel++;
+
+				GUILayout.Label($"Pack: {pack.name}", FlanStyles.BoldLabel);
+				GUILayout.Label(hasOriginalImportFolder ? $"Matching source assets at Import/Content Packs/{pack.name}" : "No matching assets in Import/Content Packs", FlanStyles.BoldLabel);
+
+				string defsPath = $"{packPath}/Definitions";
+				if(NestedFoldout(defsPath, "Definitions"))
+				{
+					EditorGUI.indentLevel++;
+					foreach (var kvp in pack.GetSortedContent())
+					{
+						string typePath = $"{defsPath}/{kvp.Key}";
+						if (NestedFoldout(typePath, kvp.Key.ToString()))
+						{
+							EditorGUI.indentLevel++;
+							foreach (Definition def in kvp.Value)
+							{
+								ContentNode(def, pack.name);
+							}
+							EditorGUI.indentLevel--;
+						}
+					}
+					
+					EditorGUI.indentLevel--;
+				}
+				string modelsPath = $"{packPath}/Models";
+				if (NestedFoldout(modelsPath, "Models"))
+				{
+
+				}
+				EditorGUI.indentLevel--;
+			}
+			
+		}
+
+
+		// Import location
+		FolderSelector("Export Location", inst.ExportRoot, "Assets/Export");
+	}
+	*/
+	private void ContentNode(Definition def, string parentPath)
+	{
+		string path = $"{parentPath}/{def.name}";
+		if(NestedFoldout(path, def.name))
+		{ 
+			
+		}
+	}
+	private bool NestedFoldout(string path, string label)
+	{
+		bool oldFoldout = ImportFoldouts.Contains(path);
+		bool newFoldout = EditorGUILayout.Foldout(oldFoldout, label);
+		if (newFoldout && !oldFoldout)
+			ImportFoldouts.Add(path);
+		else if (oldFoldout && !newFoldout)
+			ImportFoldouts.Remove(path);
+		return newFoldout;
+	}
+
+
+
+	private string FolderSelector(string label, string folder, string defaultLocation)
+	{
+		GUILayout.Label(label);
+		GUILayout.BeginHorizontal();
+		folder = EditorGUILayout.DelayedTextField(folder);
+		if(GUILayout.Button(EditorGUIUtility.IconContent("d_Profiler.Open")))
+			folder = EditorUtility.OpenFolderPanel("Select resources root folder", folder, "");
+		if (GUILayout.Button(EditorGUIUtility.IconContent("d_preAudioLoopOff")))
+			folder = defaultLocation;
+		GUILayout.EndHorizontal();
+		return folder;
+	}
+	#endregion
+	// -------------------------------------------------------------------------------------------------------
+
+
+	// -------------------------------------------------------------------------------------------------------
+	#region Content Packs Tab
+	// -------------------------------------------------------------------------------------------------------
 	private int SelectedContentPackIndex = -1;
 	private string SelectedContentPackName { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex].ModName : "None"; } }
 	private ContentPack SelectedContentPack { get { return SelectedContentPackIndex >= 0 ? Packs[SelectedContentPackIndex] : null; } }
@@ -98,7 +269,13 @@ public class FlansModToolbox : EditorWindow
 			ContentPackEditor.OnInspectorGUI();
 		}
 	}
+	#endregion
+	// -------------------------------------------------------------------------------------------------------
 
+
+	// -------------------------------------------------------------------------------------------------------
+	#region Rigs Tab
+	// -------------------------------------------------------------------------------------------------------
 	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
 	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
@@ -613,85 +790,11 @@ public class FlansModToolbox : EditorWindow
 		}
 	}
 
-		/*
-		if (GUILayout.Button("Run"))
-		{
-			foreach(string file in Directory.EnumerateFiles(recipeFolder))
-			{
-				
-				if(file.Contains($"part_fab_{copyFromMat}"))
-				{
-					string jsonText = File.ReadAllText(file);
-					jsonText = jsonText.Replace(copyFromMat, copyToMat);
-					File.WriteAllText(file.Replace(copyFromMat, copyToMat), jsonText);
-					Debug.Log($"Writing to {file.Replace(copyFromMat, copyToMat)}");
-				}
-			}
-		}
+	#endregion
+	// -------------------------------------------------------------------------------------------------------
 
 
-		if(DefinitionImporter != null)
-		{
-			// Pack selector
-			GUILayout.Label("Select Content Pack");
-			List<string> packNames = new List<string>();
-			packNames.Add("None");
-			int selectedPackIndex = 0;
-			for(int i = 0; i < DefinitionImporter.Packs.Count; i++)
-			{
-				ContentPack pack = DefinitionImporter.Packs[i];
-				packNames.Add(pack.ModName);
-				if(pack.ModName == SelectedContentPackName)
-				{
-					selectedPackIndex = i + 1;
-				}
-			}
-			selectedPackIndex = EditorGUILayout.Popup(selectedPackIndex, packNames.ToArray());
-			SelectedContentPackName = selectedPackIndex == 0 ? "" : DefinitionImporter.Packs[selectedPackIndex - 1].ModName;
-			GUILayout.Label(" ------------ ");
-			// ---
-
-
-			if(selectedPackIndex >= 1)
-			{
-				ContentPack pack = DefinitionImporter.Packs[selectedPackIndex - 1];
-				
-			}
-
-			if (GUILayout.Button("Update Models"))
-			{
-				foreach (ContentPack pack in DefinitionImporter.Packs)
-				{
-					string modelsPath = $"{DefinitionImporter.ASSET_ROOT}/{pack.ModName}/models";
-					if (!Directory.Exists(modelsPath))
-						Directory.CreateDirectory(modelsPath);
-					foreach (Definition def in pack.Content)
-					{
-						if(def.Model != null)
-						{
-							MinecraftModel updatedModel = UpdateModel(def.Model, pack, def);
-							if(updatedModel != null)
-							{
-								updatedModel.name = def.name;
-								if (updatedModel.name == null || updatedModel.name.Length == 0)
-								{
-									updatedModel.name = "unknown";
-								}
-								AssetDatabase.CreateAsset(updatedModel, $"{modelsPath}/{updatedModel.name}.asset");
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if(ModelPreviewerInst != null)
-		{
-			GUILayout.Label("Test");
-		}
-		*/
-
-		private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
+	private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
 	{
 		switch (model.Type)
 		{

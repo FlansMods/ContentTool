@@ -47,6 +47,15 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 				yield return tex;
 		}
 	}
+	public IEnumerable<MinecraftModel> AllModels
+	{
+		get
+		{
+			Refresh();
+			foreach (MinecraftModel model in Models)
+				yield return model;
+		}
+	}
 	public IEnumerable<string> AllIDs
 	{
 		get
@@ -55,6 +64,19 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			foreach (string id in IDs)
 				yield return id;
 		}
+	}
+	public Dictionary<ENewDefinitionType, List<Definition>> GetSortedContent()
+	{
+		Refresh();
+		Dictionary<ENewDefinitionType, List<Definition>> content = new Dictionary<ENewDefinitionType, List<Definition>>();
+		foreach(Definition def in Content)
+		{
+			ENewDefinitionType type = DefinitionTypes.GetFromObject(def);
+			if (!content.ContainsKey(type))
+				content.Add(type, new List<Definition>());
+			content[type].Add(def);
+		}
+		return content;
 	}
 
 	private void Refresh(bool force = false)
@@ -115,15 +137,24 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 		}
 	}
 
-	public bool HasContent(string shortName)
+	public bool TryGetContent(string shortName, out Definition result)
 	{
 		shortName = Utils.ToLowerWithUnderscores(shortName);
-		if(Content != null)
-			foreach(Definition def in Content)
-				if(def != null)
-					if(def.name == shortName)
+		if (Content != null)
+			foreach (Definition def in Content)
+				if (def != null)
+					if (def.name == shortName)
+					{
+						result = def;
 						return true;
+					}
+		result = null;
 		return false;
+	}
+
+	public bool HasContent(string shortName)
+	{
+		return TryGetContent(shortName, out Definition ignore);
 	}
 
 	public virtual void GetVerifications(List<Verification> verifications)

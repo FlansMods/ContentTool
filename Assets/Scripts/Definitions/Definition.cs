@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Definition : ScriptableObject, IVerifiableAsset
 {
-	public Model Model;
+	//public Model Model;
 	public Texture2D Skin;
 	public Texture2D Icon;
 
