@@ -10,7 +10,7 @@ public class BlockbenchModel : MinecraftModel
 
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
-		return false;
+		return base.ExportToJson(builder);
 	}
 
 	public override bool IsUVMapSame(MinecraftModel other)

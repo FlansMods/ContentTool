@@ -79,6 +79,14 @@ public static class GUIVerify
 	public static Texture2D TickTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/tick.png");
 	public static Texture2D NeutralTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/neutral.png");
 	public static Texture2D CrossTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/cross.png");
+
+	public static GUILayoutOption[] OBJECT_FIELD_OPTIONS = new GUILayoutOption[] { GUILayout.Width(128) };
+	public static GUILayoutOption[] STATUS_ICON_OPTIONS = new GUILayoutOption[] { GUILayout.Width(16) };
+	public static GUILayoutOption[] DESCRIPTION_OPTIONS { get { return new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width - 128 - 16 - 96 - 8) }; } }
+	public static GUILayoutOption[] QUICK_FIX_BUTTON_OPTIONS = new GUILayoutOption[] { GUILayout.Width(96) };
+
+
+
 	public static bool VerificationsBox(IVerifiableAsset asset)
 	{
 		List<Verification> verifications = new List<Verification>();
@@ -113,7 +121,7 @@ public static class GUIVerify
 			Internal_VerificationsBox(kvp.Value, 
 				out bool instanceSuccess, 
 				out bool instancePressedAny, 
-				() => { EditorGUILayout.ObjectField(kvp.Key, kvp.Key.GetType(), false, GUILayout.Width(128)); }
+				() => { EditorGUILayout.ObjectField(kvp.Key, kvp.Key.GetType(), false, OBJECT_FIELD_OPTIONS); }
 			);
 			if (!instanceSuccess)
 				allSucceeded = false;
@@ -129,9 +137,9 @@ public static class GUIVerify
 		VerifyType type = Verification.GetWorstState(verifications);
 		switch(type)
 		{
-			case VerifyType.Pass: GUILayout.Label(TickTexture, GUILayout.Width(16)); break;
-			case VerifyType.Neutral: GUILayout.Label(NeutralTexture, GUILayout.Width(16)); break;
-			case VerifyType.Fail: GUILayout.Label(CrossTexture, GUILayout.Width(16)); break;
+			case VerifyType.Pass: GUILayout.Label(TickTexture, STATUS_ICON_OPTIONS); break;
+			case VerifyType.Neutral: GUILayout.Label(NeutralTexture, STATUS_ICON_OPTIONS); break;
+			case VerifyType.Fail: GUILayout.Label(CrossTexture, STATUS_ICON_OPTIONS); break;
 		}
 	}
 
@@ -171,19 +179,19 @@ public static class GUIVerify
 			}
 			switch (verification.Type)
 			{
-				case VerifyType.Pass: GUILayout.Label(TickTexture, GUILayout.Width(16)); break;
-				case VerifyType.Neutral: GUILayout.Label(NeutralTexture, GUILayout.Width(16)); break;
+				case VerifyType.Pass: GUILayout.Label(TickTexture, STATUS_ICON_OPTIONS); break;
+				case VerifyType.Neutral: GUILayout.Label(NeutralTexture, STATUS_ICON_OPTIONS); break;
 				case VerifyType.Fail:
 					{
 						
-						GUILayout.Label(CrossTexture, GUILayout.Width(16));
+						GUILayout.Label(CrossTexture, STATUS_ICON_OPTIONS);
 						break;
 					}
 			}
-			GUILayout.Label(verification.Message);
+			GUILayout.Label(verification.Message, DESCRIPTION_OPTIONS);
 			if (verification.Func != null)
 			{
-				if (GUILayout.Button("Quick-Fix", GUILayout.Width(96)))
+				if (GUILayout.Button("Quick-Fix", QUICK_FIX_BUTTON_OPTIONS))
 				{
 					verification.Func.Invoke();
 					pressedAnyQuickFix = true;
@@ -195,8 +203,8 @@ public static class GUIVerify
 	private static void Internal_VerificationsSummary(bool pass)
 	{
 		GUILayout.BeginHorizontal();
-		GUILayout.Label(pass ? TickTexture : CrossTexture, GUILayout.Width(16));
-		GUILayout.Label(pass ? "All verifications passed." : "Verification issues!");
+		GUILayout.Label(pass ? TickTexture : CrossTexture, STATUS_ICON_OPTIONS);
+		GUILayout.Label(pass ? "All verifications passed." : "Verification issues!", DESCRIPTION_OPTIONS);
 		GUILayout.EndHorizontal();
 	}
 

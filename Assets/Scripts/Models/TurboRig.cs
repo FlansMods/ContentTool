@@ -292,12 +292,40 @@ public class TurboRig : MinecraftModel
 		return mod;
     }
 
+	public override bool IsUVMapSame(MinecraftModel other)
+	{
+		if (other is TurboRig otherRig)
+		{
+			if (Sections.Count != otherRig.Sections.Count)
+				return false;
+			for (int i = 0; i < Sections.Count; i++)
+			{
+				if (!Sections[i].IsUVMapSame(otherRig.Sections[i]))
+					return false;
+			}
+		}
+
+		return true;
+	}
+	public Vector2Int GetMaxUV()
+	{
+		Vector2Int max = Vector2Int.zero;
+		foreach (TurboModel section in Sections)
+		{
+			Vector2Int sectionMax = section.GetMaxUV();
+			if (sectionMax.x > max.x)
+				max.x = sectionMax.x;
+			if (sectionMax.y > max.y)
+				max.y = sectionMax.y;
+		}
+		return max;
+	}
+
 	#endregion
 	// --------------------------------------------------------------------------
 
-
 	// --------------------------------------------------------------------------
-	#region JSON Export
+	#region Poses
 	// --------------------------------------------------------------------------
 	private void CalculateGUIPose(out Vector3 scale, out Vector3 offset, out Vector3 euler)
 	{
@@ -318,12 +346,88 @@ public class TurboRig : MinecraftModel
 
 		offset = -center / 16f;
 		float maxDim = Mathf.Max(size.x, size.y, size.z) * 2f;
-		scale = Vector3.one / maxDim;
-		euler = new Vector3(-30f, 160f, 45f);
-		offset = Quaternion.Euler(euler) * offset;
-		offset /= maxDim;
+		if (maxDim <= 0.00001f)
+		{
+			scale = Vector3.one;
+			euler = Vector3.zero;
+			offset = Vector3.zero;
+		}
+		else
+		{
+			scale = Vector3.one / maxDim;
+			euler = new Vector3(-30f, 160f, 45f);
+			offset = Quaternion.Euler(euler) * offset;
+			offset /= maxDim;
+		}
 	}
+	public override void AddDefaultTransforms()
+	{
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.FIRST_PERSON_RIGHT_HAND,
+			Position = new Vector3(8f, -7f, -13f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
+			Scale = Vector3.one,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.FIRST_PERSON_LEFT_HAND,
+			Position = new Vector3(-8f, -7f, -13f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
+			Scale = Vector3.one,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.THIRD_PERSON_RIGHT_HAND,
+			Position = new Vector3(0f, 3.25f, 0f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
+			Scale = Vector3.one,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.THIRD_PERSON_LEFT_HAND,
+			Position = new Vector3(0f, 3.75f, 0f),
+			Rotation = Quaternion.Euler(0f, -90f, 0f),
+			Scale = Vector3.one,
+		});
 
+		CalculateGUIPose(out Vector3 scale, out Vector3 offset, out Vector3 euler);
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.GUI,
+			Position = offset,
+			Rotation = Quaternion.Euler(euler),
+			Scale = scale,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.HEAD,
+			Position = Vector3.zero,
+			Rotation = Quaternion.Euler(-90f, 0f, 0f),
+			Scale = Vector3.one,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.GROUND,
+			Position = new Vector3(0f, 0.15f, 0f),
+			Rotation = Quaternion.identity,
+			Scale = Vector3.one / 16f,
+		});
+		Transforms.Add(new ItemTransform()
+		{
+			Type = ItemTransformType.FIXED,
+			Position = new Vector3(0.5f, 0.5f, 0f),
+			Rotation = Quaternion.Euler(0f, 160f, 0f),
+			Scale = Vector3.one,
+		});
+	}
+	#endregion
+	// --------------------------------------------------------------------------
+
+
+	// --------------------------------------------------------------------------
+	#region JSON Export
+	// --------------------------------------------------------------------------
 	public bool ExportSectionToJson(QuickJSONBuilder builder, string part)
 	{
 		TurboModel section = GetSection(part);
@@ -391,47 +495,6 @@ public class TurboRig : MinecraftModel
 		}
 		return true;
 	}
-
-
-	private void WriteItemTransforms(QuickJSONBuilder builder, string key, Vector3 pos, Vector3 euler, Vector3 scale)
-	{
-		using (builder.Indentation(key))
-		{
-			builder.Current.Add("rotation", JSONHelpers.ToJSON(pos));
-			builder.Current.Add("translation", JSONHelpers.ToJSON(euler));
-			builder.Current.Add("scale", JSONHelpers.ToJSON(scale));
-		}
-	}
-
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		if (other is TurboRig otherRig)
-		{
-			if (Sections.Count != otherRig.Sections.Count)
-				return false;
-			for(int i = 0; i < Sections.Count; i++)
-			{
-				if (!Sections[i].IsUVMapSame(otherRig.Sections[i]))
-					return false;
-			}
-		}
-		
-		return true;
-	}
-	public Vector2Int GetMaxUV()
-	{
-		Vector2Int max = Vector2Int.zero;
-		foreach (TurboModel section in Sections)
-		{
-			Vector2Int sectionMax = section.GetMaxUV();
-			if (sectionMax.x > max.x)
-				max.x = sectionMax.x;
-			if (sectionMax.y > max.y)
-				max.y = sectionMax.y;
-		}
-		return max;
-	}
-
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		if (TextureX == 0)
@@ -462,20 +525,6 @@ public class TurboRig : MinecraftModel
 				}
 			}
 		}
-		using (builder.Indentation("display"))
-		{
-
-			WriteItemTransforms(builder, "firstperson_lefthand", new Vector3(0f, 90f, 0f), new Vector3(-8f, -7f, -13f), Vector3.one);
-			WriteItemTransforms(builder, "firstperson_righthand", new Vector3(0f, 90f, 0f), new Vector3(8f, -7f, -13f), Vector3.one);
-			WriteItemTransforms(builder, "thirdperson_lefthand", new Vector3(0f, -90f, 0f), new Vector3(0f, 3.75f, 0f), Vector3.one);
-			WriteItemTransforms(builder, "thirdperson_righthand", new Vector3(0f, 90f, 0f), new Vector3(0f, 3.25f, 0f), Vector3.one);
-
-			CalculateGUIPose(out Vector3 scale, out Vector3 offset, out Vector3 euler);
-			WriteItemTransforms(builder, "gui", euler, offset, scale);
-			WriteItemTransforms(builder, "head", new Vector3(-90f, 0f, 0f), new Vector3(), Vector3.one);
-			WriteItemTransforms(builder, "ground", new Vector3(0f, 0f, 0f), new Vector3(0f, 0.15f, 0f), Vector3.one / 16f);
-			WriteItemTransforms(builder, "fixed", new Vector3(0f, 160f, 0f), new Vector3(0.5f, 0.5f, 0f), Vector3.one);
-		}
 		using (builder.Indentation("parts"))
 		{
 			foreach (TurboModel section in Sections)
@@ -503,9 +552,8 @@ public class TurboRig : MinecraftModel
 			}
 		}
 
-		return true;
+		return base.ExportToJson(builder);
 	}
-
 	#endregion
 	// --------------------------------------------------------------------------
 }

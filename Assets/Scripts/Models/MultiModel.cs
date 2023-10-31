@@ -53,7 +53,7 @@ public class MultiModel : MinecraftModel
 		builder.Current.Add("ground_model", GroundModel.GetLocation().ToString());
 		builder.Current.Add("fixed_model", FixedModel.GetLocation().ToString());
 		builder.Current.Add("gui_model", GUIModel.GetLocation().ToString());
-		return true;
+		return base.ExportToJson(builder);
 	}
 
 	public override IEnumerable<MinecraftModel> GetChildren() 

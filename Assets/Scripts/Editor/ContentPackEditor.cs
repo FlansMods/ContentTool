@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,6 +24,14 @@ public class ContentPackEditor : Editor
 				if (verifications.Count == 0)
 					verifications.Add(Verification.Success($"{def.name} has no outstanding issues."));
 				multiVerify.Add(def, verifications);
+			}
+			foreach(MinecraftModel model in pack.AllModels)
+			{
+				List<Verification> verifications = new List<Verification>();
+				model.GetVerifications(verifications);
+				if (verifications.Count == 0)
+					verifications.Add(Verification.Success($"Model {model.name} has no outstanding issues."));
+				multiVerify.Add(model, verifications);
 			}
 			GUIVerify.VerificationsBox(multiVerify);
 

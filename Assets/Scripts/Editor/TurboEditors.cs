@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static MinecraftModel;
 using static PlasticGui.LaunchDiffParameters;
 
 public abstract class MinecraftModelEditor : Editor
@@ -80,12 +82,14 @@ public abstract class MinecraftModelEditor : Editor
 	{
 		Modelling,
 		Texturing,
+		Posing,
 		Verification,
 		Debug
 	}
 	private static readonly string[] TabNames = new string[] {
 		"Modelling",
 		"Texturing",
+		"Posing",
 		"Verification",
 		"Debug"
 	};
@@ -100,11 +104,17 @@ public abstract class MinecraftModelEditor : Editor
 			CurrentTab = (Tab)GUILayout.Toolbar((int)CurrentTab, TabNames);
 			switch (CurrentTab)
 			{
-				case Tab.Verification:
-					VerificationsTab(mcModel);
-					break;
 				case Tab.Modelling:
 					ModellingTab(mcModel);
+					break;
+				case Tab.Texturing:
+					TexturingTab(mcModel);
+					break;
+				case Tab.Posing:
+					PosingTab(mcModel);
+					break;
+				case Tab.Verification:
+					VerificationsTab(mcModel);
 					break;
 				case Tab.Debug:
 					DebugTab(mcModel);
@@ -171,6 +181,9 @@ public abstract class MinecraftModelEditor : Editor
 		return matchingRig;
 	}
 
+	// ------------------------------------------------------------------------------------
+	#region Modelling Tab
+	// ------------------------------------------------------------------------------------
 	private Editor ModelSubEditor = null;
 	private List<string> SubPieceFoldouts = new List<string>();
 	private void ModellingTab(MinecraftModel mcModel)
@@ -230,7 +243,6 @@ public abstract class MinecraftModelEditor : Editor
 
 
 	}
-
 	private const float MODELLING_BUTTON_X = 32f;
 	private void ModellingNode(MinecraftModelPreview node, string parentPath, bool alwaysExpanded = false)
 	{
@@ -294,8 +306,23 @@ public abstract class MinecraftModelEditor : Editor
 			//	ModelSubEditors.Remove(path);
 		}
 	}
+	#endregion
+	// ------------------------------------------------------------------------------------
 
 
+	// ------------------------------------------------------------------------------------
+	#region Texturing Tab
+	// ------------------------------------------------------------------------------------
+	private void TexturingTab(MinecraftModel mcModel)
+	{
+		// TODO
+	}
+	#endregion
+	// ------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------
+	#region Verification Tab
+	// ------------------------------------------------------------------------------------
 	private void VerificationsTab(MinecraftModel mcModel)
 	{
 		List<Verification> verifications = new List<Verification>();
@@ -368,7 +395,164 @@ public abstract class MinecraftModelEditor : Editor
 		}
 		else GUILayout.Label("Could not locate DefinitionImporter");
 	}
+	#endregion
+	// ------------------------------------------------------------------------------------
 
+
+	// ------------------------------------------------------------------------------------
+	#region Posing Tab
+	// ------------------------------------------------------------------------------------
+	private List<int> PoseFoldouts = new List<int>();
+	private void PosingTab(MinecraftModel model)
+	{
+		ModelEditingRig rig = RigSelector(model);
+
+		int indexToDelete = -1, indexToDuplicate = -1;
+		for(int i = 0; i < model.Transforms.Count; i++)
+		{
+			MinecraftModel.ItemTransform itemTransform = model.Transforms[i];
+			bool foldout = PoseFoldouts.Contains(i);
+			GUILayout.BeginHorizontal();
+			bool isAppliedToRig = rig != null && IsCurrentlyApplied(rig, itemTransform.Type);
+			bool newFoldout = EditorGUILayout.Foldout(foldout, itemTransform.Type.ToString());
+			GUILayout.Label(isAppliedToRig ? $"Previewed on Rig {rig.name}" : "Not Previewed");
+			if (newFoldout && !foldout)
+				PoseFoldouts.Add(i);
+			else if (!newFoldout && foldout)
+				PoseFoldouts.Remove(i);
+
+			int numPossiblePoses = GetNumPoses(itemTransform.Type);
+			if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
+				ApplyPose(rig, itemTransform, 0);
+			if(numPossiblePoses > 1)
+				if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
+					ApplyPose(rig, itemTransform, 1);
+
+			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Duplicate"), GUILayout.Width(MODELLING_BUTTON_X)))
+				indexToDuplicate = i;
+			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Trash"), GUILayout.Width(MODELLING_BUTTON_X)))
+				indexToDelete = i;
+
+			GUILayout.EndHorizontal();
+			
+			if(newFoldout)
+			{
+				EditorGUI.indentLevel++;
+				itemTransform.Type = (ItemTransformType)EditorGUILayout.EnumPopup("Type", itemTransform.Type);
+				
+				Vector3 newPos = EditorGUILayout.Vector3Field("Position", itemTransform.Position);
+				Vector3 newEuler = EditorGUILayout.Vector3Field("Rotation", itemTransform.Rotation.eulerAngles);
+				Vector3 newScale = EditorGUILayout.Vector3Field("Scale", itemTransform.Scale);
+				if(!newPos.Approximately(itemTransform.Position)
+				|| !newEuler.Approximately(itemTransform.Rotation.eulerAngles)
+				|| !newScale.Approximately(itemTransform.Scale))
+				{
+					Undo.RegisterCompleteObjectUndo(model, $"Adjust {itemTransform.Type} pose");
+					itemTransform.Position = newPos;
+					itemTransform.Rotation = Quaternion.Euler(newEuler);
+					itemTransform.Scale = newScale;
+					EditorUtility.SetDirty(model);
+					UpdatePose(rig, itemTransform); 
+				}
+				EditorGUI.indentLevel--;
+			}
+		}
+		if(indexToDuplicate != -1)
+		{
+			Undo.RegisterCompleteObjectUndo(model, $"Duplicated {model.Transforms[indexToDuplicate].Type} pose");
+			ItemTransform clone = new ItemTransform()
+			{
+				Type = model.Transforms[indexToDuplicate].Type,
+				Position = model.Transforms[indexToDuplicate].Position,
+				Rotation = model.Transforms[indexToDuplicate].Rotation,
+				Scale = model.Transforms[indexToDuplicate].Scale,
+			};
+			model.Transforms.Insert(indexToDuplicate + 1, clone);
+			EditorUtility.SetDirty(model);
+		}
+		if (indexToDelete != -1)
+		{
+			Undo.RegisterCompleteObjectUndo(model, $"Deleted {model.Transforms[indexToDelete].Type} pose");
+			model.Transforms.RemoveAt(indexToDelete);
+			EditorUtility.SetDirty(model);
+		}
+		if(GUILayout.Button("+", GUILayout.Width(32)))
+		{
+			Undo.RegisterCompleteObjectUndo(model, $"Added new pose to model");
+			model.Transforms.Add(new ItemTransform());
+			EditorUtility.SetDirty(model);
+		}			
+	}
+	private static string[] GetAttachTransformNames(ItemTransformType transformType)
+	{
+		switch(transformType)
+		{
+			case ItemTransformType.THIRD_PERSON_LEFT_HAND: return new string[] { "Alex_LeftHandPose", "Steve_LeftHandPose" };
+			case ItemTransformType.THIRD_PERSON_RIGHT_HAND: return new string[] { "Alex_RightHandPose", "Steve_RightHandPose" };
+			case ItemTransformType.FIRST_PERSON_LEFT_HAND: return new string[] { "Alex_LeftHandPose", "Steve_LeftHandPose" };
+			case ItemTransformType.FIRST_PERSON_RIGHT_HAND: return new string[] { "Alex_RightHandPose", "Steve_RightHandPose" };
+			case ItemTransformType.GUI: return new string[] { "GUIPose" };
+			case ItemTransformType.GROUND: return new string[] { "GroundItemPose" };
+			case ItemTransformType.NONE:
+			case ItemTransformType.FIXED:
+			default: 
+				return new string[] { "DefaultPose" };
+		}
+	}
+	private int GetNumPoses(ItemTransformType transformType)
+	{
+		return GetAttachTransformNames(transformType).Length;
+	}
+	private bool IsCurrentlyApplied(ModelEditingRig rig, ItemTransformType type)
+	{
+		if (rig.transform.parent == null)
+			return false;
+
+		// We only need to adjust the Unity transform if this is the transform we are currently previewing
+		string[] transformNames = GetAttachTransformNames(type);
+		for (int i = 0; i < transformNames.Length; i++)
+			if (transformNames[i] == rig.transform.parent.name)
+				return true;
+
+		return false;
+	}
+	private void UpdatePose(ModelEditingRig rig, ItemTransform itemTransform)
+	{
+		if(rig != null)
+		{
+			if (!IsCurrentlyApplied(rig, itemTransform.Type))
+				return;
+
+			// So we are attached to this pose, update it
+			rig.transform.localPosition = itemTransform.Position;
+			rig.transform.localRotation = itemTransform.Rotation;
+			rig.transform.localScale = itemTransform.Scale;
+		}
+	}
+	private void ApplyPose(ModelEditingRig rig, ItemTransform itemTransform, int index)
+	{
+		if(rig != null)
+		{
+			string[] transformNames = GetAttachTransformNames(itemTransform.Type);
+			string targetName = transformNames[index];
+
+			Transform attachTo = GameObject.Find(targetName)?.transform;
+			if (attachTo != null)
+			{
+				rig.transform.SetParent(attachTo);
+				rig.transform.localPosition = itemTransform.Position;
+				rig.transform.localRotation = itemTransform.Rotation;
+				rig.transform.localScale = itemTransform.Scale;
+			}
+			else Debug.LogError($"Could not attach rig to {targetName} as it could not be found");
+		}
+	}
+	#endregion
+	// ------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------
+	#region Debug Tab
+	// ------------------------------------------------------------------------------------
 	private void DebugTab(MinecraftModel mcModel)
 	{
 		ResourceLocation resLoc = mcModel.GetLocation();
@@ -388,6 +572,8 @@ public abstract class MinecraftModelEditor : Editor
 			}
 		}
 	}
+	#endregion
+	// ------------------------------------------------------------------------------------
 
 	protected static ModelEditingRig GetCurrentRig()
 	{

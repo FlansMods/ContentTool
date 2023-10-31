@@ -4,7 +4,30 @@ using UnityEngine;
 
 public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 {
+	public List<NamedTexture> Textures = new List<NamedTexture>();
+	public List<ItemTransform> Transforms = new List<ItemTransform>();
 
+	public enum ItemTransformType
+	{
+		NONE,
+		THIRD_PERSON_LEFT_HAND,
+		THIRD_PERSON_RIGHT_HAND,
+		FIRST_PERSON_LEFT_HAND,
+		FIRST_PERSON_RIGHT_HAND,
+		HEAD,
+		GUI,
+		GROUND,
+		FIXED,
+	}
+
+	[System.Serializable]
+	public class ItemTransform
+	{
+		public ItemTransformType Type = ItemTransformType.NONE;
+		public Vector3 Position = Vector3.zero;
+		public Quaternion Rotation = Quaternion.identity;
+		public Vector3 Scale = Vector3.one;
+	}
 
 	[System.Serializable]
 	public class NamedTexture : IVerifiableAsset
@@ -70,11 +93,28 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			return Textures[0];
 		return null;
 	}
-	public List<NamedTexture> Textures = new List<NamedTexture>();
 
 	public abstract bool IsUVMapSame(MinecraftModel other);
 	public virtual void FixNamespaces() { }
-    public abstract bool ExportToJson(QuickJSONBuilder builder);
+    public virtual bool ExportToJson(QuickJSONBuilder builder)
+	{
+		using (builder.Indentation("display"))
+		{
+			using (builder.Indentation("thirdperson"))
+			{
+				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(-90f, 0f, 0f)));
+				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 1f, -3f)));
+				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(0.55f, 0.55f, 0.55f)));
+			}
+			using (builder.Indentation("firstperson"))
+			{
+				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(0f, -135f, 25f)));
+				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 4f, 2f)));
+				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(1.7f, 1.7f, 1.7f)));
+			}
+		}
+		return true;
+	}
 	public virtual IEnumerable<MinecraftModel> GetChildren() { yield break; }
 
 	public void BuildExportTree(ExportTree tree)
@@ -87,6 +127,10 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			model.BuildExportTree(childBranch);
 			tree.Children.Add(childBranch);
 		}
+	}
+	public virtual void AddDefaultTransforms()
+	{
+		Transforms.Add(new ItemTransform());
 	}
 
 	public virtual void GetVerifications(List<Verification> verifications)
@@ -105,6 +149,27 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 				else
 					textureRefs.Add(texture.Texture);
 				verifications.Add(Verification.Success($"Texture {texture.Location} located"));
+			}
+		}
+		if(Transforms.Count == 0)
+		{
+			verifications.Add(Verification.Failure($"Model has no transforms", () => {
+				AddDefaultTransforms();
+			}));
+		}
+		else
+		{
+			verifications.Add(Verification.Success($"Model has {Transforms.Count} transforms"));
+			List<ItemTransformType> foundTypes = new List<ItemTransformType>();
+			for(int i = 0; i < Transforms.Count; i++)
+			{
+				if (foundTypes.Contains(Transforms[i].Type))
+					verifications.Add(Verification.Failure($"Model has a duplicate transform for {Transforms[i].Type}"));
+				else
+					foundTypes.Add(Transforms[i].Type);
+
+				if (Transforms[i].Scale.sqrMagnitude <= 0.00001f)
+					verifications.Add(Verification.Neutral($"{Transforms[i].Type} transform has 0 scale. (This might be intentional)"));
 			}
 		}
 	}
