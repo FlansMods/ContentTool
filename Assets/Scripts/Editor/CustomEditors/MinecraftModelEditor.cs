@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static MinecraftModel;
-using static PlasticGui.LaunchDiffParameters;
 
 public abstract class MinecraftModelEditor : Editor
 {
@@ -33,7 +30,7 @@ public abstract class MinecraftModelEditor : Editor
 				RelatedDefinitions.Add(def);
 		}
 		LinkedTextures = new Dictionary<Texture2D, string>();
-		foreach (MinecraftModel.NamedTexture namedTexture in mcModel.Textures)
+		foreach (NamedTexture namedTexture in mcModel.Textures)
 		{
 			string path = AssetDatabase.GetAssetPath(namedTexture.Texture);
 			int lastSlash = path.LastIndexOf('/');
@@ -131,7 +128,7 @@ public abstract class MinecraftModelEditor : Editor
 
 	private ModelEditingRig RigSelector(MinecraftModel mcModel)
 	{
-		ModelEditingRig[] rigs = Object.FindObjectsOfType<ModelEditingRig>();
+		ModelEditingRig[] rigs = FindObjectsOfType<ModelEditingRig>();
 		ModelEditingRig matchingRig = null;
 		for (int i = 0; i < rigs.Length; i++)
 		{
@@ -231,17 +228,37 @@ public abstract class MinecraftModelEditor : Editor
 	}
 	public void AttachPointNode(TurboAttachPointPreview ap)
 	{
-		MinecraftModelPreview parent = ap.Parent;
-		if (parent != null)
+		MinecraftModelPreview model = ap.Parent;
+		TurboAttachPointPreview apParent = ap.transform.parent.GetComponent<TurboAttachPointPreview>();
+		if(apParent != null)
 		{
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
-				Selection.activeObject = parent;
-			GUILayout.Label($"Parent: {parent}");
+				Selection.activeObject = apParent;
+			GUILayout.Label($"Attached to AP: {apParent}");
+			GUILayout.EndHorizontal();
+		}
+		else if (model != null)
+		{
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
+				Selection.activeObject = model;
+			GUILayout.Label($"Parent: {model}");
 			GUILayout.EndHorizontal();
 		}
 
-
+		foreach(Transform child in ap.transform)
+		{
+			TurboAttachPointPreview apChild = child.GetComponent<TurboAttachPointPreview>();
+			if(apChild != null)
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Label($"Child AP: {apChild.name}");
+				if (GUILayout.Button(EditorGUIUtility.IconContent("AvatarPivot"), GUILayout.Width(MODELLING_BUTTON_X)))
+					Selection.activeObject = apChild;
+				GUILayout.EndHorizontal();
+			}
+		}
 	}
 	private const float MODELLING_BUTTON_X = 32f;
 	private void ModellingNode(MinecraftModelPreview node, string parentPath, bool alwaysExpanded = false)
@@ -308,7 +325,6 @@ public abstract class MinecraftModelEditor : Editor
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------
-
 
 	// ------------------------------------------------------------------------------------
 	#region Texturing Tab
@@ -398,7 +414,6 @@ public abstract class MinecraftModelEditor : Editor
 	#endregion
 	// ------------------------------------------------------------------------------------
 
-
 	// ------------------------------------------------------------------------------------
 	#region Posing Tab
 	// ------------------------------------------------------------------------------------
@@ -414,7 +429,7 @@ public abstract class MinecraftModelEditor : Editor
 			bool foldout = PoseFoldouts.Contains(i);
 			GUILayout.BeginHorizontal();
 			bool isAppliedToRig = rig != null && IsCurrentlyApplied(rig, itemTransform.Type);
-			bool newFoldout = EditorGUILayout.Foldout(foldout, itemTransform.Type.ToString());
+			bool newFoldout = EditorGUILayout.Foldout(foldout, itemTransform.Type.ToNiceString());
 			GUILayout.Label(isAppliedToRig ? $"Previewed on Rig {rig.name}" : "Not Previewed");
 			if (newFoldout && !foldout)
 				PoseFoldouts.Add(i);
@@ -422,11 +437,19 @@ public abstract class MinecraftModelEditor : Editor
 				PoseFoldouts.Remove(i);
 
 			int numPossiblePoses = GetNumPoses(itemTransform.Type);
+			EditorGUI.BeginDisabledGroup(isAppliedToRig);
 			if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
 				ApplyPose(rig, itemTransform, 0);
 			if(numPossiblePoses > 1)
 				if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
 					ApplyPose(rig, itemTransform, 1);
+			EditorGUI.EndDisabledGroup();
+
+			EditorGUI.BeginDisabledGroup(!isAppliedToRig);
+			if (GUILayout.Button(EditorGUIUtility.IconContent("d_SceneViewCamera"), GUILayout.Width(MODELLING_BUTTON_X)))
+				MoveSceneCamera(rig, itemTransform);
+			EditorGUI.EndDisabledGroup();
+
 
 			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Duplicate"), GUILayout.Width(MODELLING_BUTTON_X)))
 				indexToDuplicate = i;
@@ -447,7 +470,7 @@ public abstract class MinecraftModelEditor : Editor
 				|| !newEuler.Approximately(itemTransform.Rotation.eulerAngles)
 				|| !newScale.Approximately(itemTransform.Scale))
 				{
-					Undo.RegisterCompleteObjectUndo(model, $"Adjust {itemTransform.Type} pose");
+					Undo.RegisterCompleteObjectUndo(model, $"Adjust {itemTransform.Type.ToNiceString()} pose");
 					itemTransform.Position = newPos;
 					itemTransform.Rotation = Quaternion.Euler(newEuler);
 					itemTransform.Scale = newScale;
@@ -459,7 +482,7 @@ public abstract class MinecraftModelEditor : Editor
 		}
 		if(indexToDuplicate != -1)
 		{
-			Undo.RegisterCompleteObjectUndo(model, $"Duplicated {model.Transforms[indexToDuplicate].Type} pose");
+			Undo.RegisterCompleteObjectUndo(model, $"Duplicated {model.Transforms[indexToDuplicate].Type.ToNiceString()} pose");
 			ItemTransform clone = new ItemTransform()
 			{
 				Type = model.Transforms[indexToDuplicate].Type,
@@ -472,25 +495,37 @@ public abstract class MinecraftModelEditor : Editor
 		}
 		if (indexToDelete != -1)
 		{
-			Undo.RegisterCompleteObjectUndo(model, $"Deleted {model.Transforms[indexToDelete].Type} pose");
+			Undo.RegisterCompleteObjectUndo(model, $"Deleted {model.Transforms[indexToDelete].Type.ToNiceString()} pose");
 			model.Transforms.RemoveAt(indexToDelete);
 			EditorUtility.SetDirty(model);
 		}
+		if(model.Transforms.Count == 0)
+		{
+			if (GUILayout.Button("Auto-Add Default Poses"))
+			{
+				Undo.RegisterCompleteObjectUndo(model, $"Added default poses to model");
+				model.AddDefaultTransforms();
+				EditorUtility.SetDirty(model);
+			}
+		}
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
 		if(GUILayout.Button("+", GUILayout.Width(32)))
 		{
 			Undo.RegisterCompleteObjectUndo(model, $"Added new pose to model");
 			model.Transforms.Add(new ItemTransform());
 			EditorUtility.SetDirty(model);
-		}			
+		}
+		GUILayout.EndHorizontal();
 	}
 	private static string[] GetAttachTransformNames(ItemTransformType transformType)
 	{
 		switch(transformType)
 		{
-			case ItemTransformType.THIRD_PERSON_LEFT_HAND: return new string[] { "Alex_LeftHandPose", "Steve_LeftHandPose" };
-			case ItemTransformType.THIRD_PERSON_RIGHT_HAND: return new string[] { "Alex_RightHandPose", "Steve_RightHandPose" };
-			case ItemTransformType.FIRST_PERSON_LEFT_HAND: return new string[] { "Alex_LeftHandPose", "Steve_LeftHandPose" };
-			case ItemTransformType.FIRST_PERSON_RIGHT_HAND: return new string[] { "Alex_RightHandPose", "Steve_RightHandPose" };
+			case ItemTransformType.THIRD_PERSON_LEFT_HAND: return new string[] { "Steve_LeftHandPose" };
+			case ItemTransformType.THIRD_PERSON_RIGHT_HAND: return new string[] { "Steve_RightHandPose" };
+			case ItemTransformType.FIRST_PERSON_LEFT_HAND: return new string[] { "FirstPerson_LeftHandPose" };
+			case ItemTransformType.FIRST_PERSON_RIGHT_HAND: return new string[] { "FirstPerson_RightHandPose" };
 			case ItemTransformType.GUI: return new string[] { "GUIPose" };
 			case ItemTransformType.GROUND: return new string[] { "GroundItemPose" };
 			case ItemTransformType.NONE:
@@ -547,6 +582,41 @@ public abstract class MinecraftModelEditor : Editor
 			else Debug.LogError($"Could not attach rig to {targetName} as it could not be found");
 		}
 	}
+	private void MoveSceneCamera(ModelEditingRig rig, ItemTransform itemTransform)
+	{
+		switch(itemTransform.Type)
+		{
+			case ItemTransformType.FIRST_PERSON_LEFT_HAND:
+			case ItemTransformType.FIRST_PERSON_RIGHT_HAND:
+			{
+				GameObject firstPersonOutput = GameObject.Find("FirstPersonOutput");
+				if (firstPersonOutput != null)
+				{
+					SceneView.lastActiveSceneView.LookAt(
+						firstPersonOutput.transform.position,
+						Quaternion.LookRotation(-firstPersonOutput.transform.up, -firstPersonOutput.transform.forward),
+						100f);
+					return;
+				}
+				break;
+			}
+			case ItemTransformType.GUI:
+			{
+					GameObject guiOutput = GameObject.Find("GUIOutput");
+					if (guiOutput != null)
+					{
+						SceneView.lastActiveSceneView.LookAt(
+							guiOutput.transform.position,
+							Quaternion.LookRotation(-guiOutput.transform.up, -guiOutput.transform.forward),
+							32f);
+						return;
+					}
+					break;
+			}
+		}
+
+		SceneView.lastActiveSceneView.LookAt(rig.transform.position);
+	}
 	#endregion
 	// ------------------------------------------------------------------------------------
 
@@ -582,181 +652,9 @@ public abstract class MinecraftModelEditor : Editor
 	}
 }
 
-[CustomEditor(typeof(TurboAttachPointPreview))]
-public class TurboAttachPointPreviewEditor : Editor
-{
-	private Editor RigEditor = null;
-
-	public override void OnInspectorGUI()
-	{
-		TurboAttachPointPreview preview = (TurboAttachPointPreview)target;
-		if (preview == null || preview.Parent == null || preview.Parent.Rig == null)
-		{
-			GUILayout.Label("No Model Selected");
-			return;
-		}
-
-		if (RigEditor == null || RigEditor.target != preview.Parent.Rig)
-			RigEditor = CreateEditor(preview.Parent.Rig);
-		if (RigEditor is TurboRigEditor rigEditor)
-		{
-			rigEditor.AttachPointNode(preview);
-		}
-
-		preview.LockPartPositions = GUILayout.Toggle(preview.LockPartPositions, "Lock Positions (pieces will stay still by altering their origins)");
-		preview.LockAttachPoints = GUILayout.Toggle(preview.LockAttachPoints, "Lock Attach Points (if other APs are attached to this one, they are fixed)");
-	}
-}
-
-[CustomEditor(typeof(TurboRigPreview))]
-public class TurboRigPreviewEditor : Editor
-{
-	private Editor RigEditor = null;
-
-	public override void OnInspectorGUI()
-	{
-		TurboRigPreview preview = (TurboRigPreview)target;
-		if (preview == null || preview.Rig == null)
-		{
-			GUILayout.Label("No Model Selected");
-			return;
-		}
-
-		if (RigEditor == null || RigEditor.target != preview.Rig)
-			RigEditor = CreateEditor(preview.Rig);
-		if (RigEditor != null)
-			RigEditor.OnInspectorGUI();
-	}
-}
-
-[CustomEditor(typeof(TurboModelPreview))]
-public class TurboModelPreviewEditor : Editor
-{
-	private Editor RigEditor = null;
-
-	public override void OnInspectorGUI()
-	{
-		TurboModelPreview preview = (TurboModelPreview)target;
-		if (preview == null || preview.Parent == null || preview.Parent.Rig == null)
-		{
-			GUILayout.Label("No Model Selected");
-			return;
-		}
-
-		if (RigEditor == null || RigEditor.target != preview.Parent.Rig)
-			RigEditor = CreateEditor(preview.Parent.Rig);
-		if (RigEditor is TurboRigEditor rigEditor)
-		{
-			rigEditor.InitialModellingNode(preview);
-		}
-	}
-}
 
 
-[CustomEditor(typeof(TurboPiecePreview))]
-public class TurboPiecePreviewEditor : Editor
-{
-	private Editor RigEditor = null;
-
-	public override void OnInspectorGUI()
-	{
-		TurboPiecePreview preview = (TurboPiecePreview)target;
-		if (preview == null || preview.Parent == null || preview.Parent.Parent == null || preview.Parent.Parent.Rig == null)
-		{
-			GUILayout.Label("No Model Selected");
-			return;
-		}
-
-		if (RigEditor == null || RigEditor.target != preview.Parent.Parent.Rig)
-			RigEditor = CreateEditor(preview.Parent.Parent.Rig);
-		if (RigEditor is TurboRigEditor rigEditor)
-		{
-			rigEditor.InitialModellingNode(preview);
-		}
-	}
-
-	/*
-	public override void OnInspectorGUI()
-	{
-		TurboPiecePreview preview = (TurboPiecePreview)target;
-		if (preview == null)
-			return;
-
-		if (preview.Piece == null)
-		{
-			GUILayout.Label("Invalid piece!");
-			return;
-		}
-
-		preview.transform.localPosition = preview.Piece.Origin;
-		preview.SetPos(EditorGUILayout.Vector3Field("Rotation Origin", preview.transform.localPosition));
-		preview.SetEuler(EditorGUILayout.Vector3Field("Euler Angles", preview.transform.localEulerAngles));
-
-		preview.Piece.Pos = EditorGUILayout.Vector3Field("Cube Offset", preview.Piece.Pos);
-		preview.Piece.Dim = EditorGUILayout.Vector3Field("Dimensions", preview.Piece.Dim);
 
 
-		if (preview.Piece.Offsets.Length != 8)
-			preview.Piece.Offsets = new Vector3[8];
 
-		for (int i = 0; i < 8; i++)
-		{
-			preview.Piece.Offsets[i] = EditorGUILayout.Vector3Field($"Offset {i}", preview.Piece.Offsets[i]);
-		}
 
-		if (GUILayout.Button("Duplicate"))
-			preview.Duplicate();
-
-		Texture2D tex = preview.GetTemporaryTexture();
-		GUILayout.Label("", GUILayout.Width(tex.width * 16), GUILayout.Height(tex.height * 16));
-		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
-
-		if (GUILayout.Button("Clear Texture"))
-		{
-			preview.ResetTexture();
-		}
-	}
-	*/
-}
-
-[CustomEditor(typeof(TurboRig))]
-public class TurboRigEditor : MinecraftModelEditor
-{
-	protected override void Header() { FlanStyles.BigHeader("Turbo Rig Editor"); }
-}
-
-[CustomEditor(typeof(CubeModel))]
-public class CubeModelEditor : MinecraftModelEditor
-{
-	protected override void Header() { FlanStyles.BigHeader("Cube Model Editor"); }
-}
-
-[CustomEditor(typeof(BlockbenchModel))]
-public class BlockbenchModelEditor : MinecraftModelEditor
-{
-	protected override void Header() { FlanStyles.BigHeader("Imported Model Editor"); }
-}
-
-[CustomEditor(typeof(ItemModel))]
-public class ItemModelEditor : MinecraftModelEditor
-{
-	protected override void Header() { FlanStyles.BigHeader("Vanilla Item Icon Editor"); }
-
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI();
-
-		FlanStyles.HorizontalLine();
-		GUILayout.Label("Item Settings", FlanStyles.BoldLabel);
-
-		if(target is ItemModel itemModel)
-		{
-			ResourceLocation changedLocation = ResourceLocation.EditorObjectField<Texture2D>(itemModel.IconLocation);
-			if(changedLocation != itemModel.IconLocation)
-			{
-				itemModel.IconLocation = changedLocation;
-				itemModel.Icon = changedLocation.Load<Texture2D>();
-			}
-		}
-	}
-}

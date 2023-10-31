@@ -10,9 +10,9 @@ using Unity.VisualScripting;
 public class FlansModToolbox : EditorWindow
 {
     [MenuItem ("Flan's Mod/Toolbox")]
-    public static void  ShowWindow () 
+    public static void ShowWindow () 
 	{
-        EditorWindow.GetWindow(typeof(FlansModToolbox));
+        GetWindow(typeof(FlansModToolbox));
     }
 
 	public void OnEnable()
@@ -279,18 +279,7 @@ public class FlansModToolbox : EditorWindow
 	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
 	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
-	private RigsSubTab SubTab = RigsSubTab.Models;
-	private enum RigsSubTab 
-	{
-		Models,
-		Animations,
-		Skins,
-	}
-	private static readonly string[] SubTabNames = new string[] {
-		"Model",
-		"Animations",
-		"Skin",
-	};
+	private Editor SelectedRigEditor = null;
 	private void RigsTab()
 	{
 		List<string> modelNames = new List<string>();
@@ -352,332 +341,15 @@ public class FlansModToolbox : EditorWindow
 		EditorGUI.BeginDisabledGroup(SelectedRig == null);
 		if(SelectedRig != null)
 			FlanStyles.BigHeader($"{SelectedRig.name} [{SelectedRig.ModelName}]");
-		SubTab = (RigsSubTab)GUILayout.Toolbar((int)SubTab, SubTabNames);
-		switch(SubTab)
+		if(SelectedRigEditor == null || SelectedRigEditor.target != SelectedRig)
 		{
-			case RigsSubTab.Models:
-				ModelsTab();
-				break;
-			case RigsSubTab.Animations:
-				AnimationsTab();
-				break;
-			case RigsSubTab.Skins:
-				SkinsTab();
-				break;
+			SelectedRigEditor = Editor.CreateEditor(SelectedRig);
 		}
+		if(SelectedRigEditor != null)
+		{
+			SelectedRigEditor.OnInspectorGUI();
+		}		
 		EditorGUI.EndDisabledGroup();
-	}
-
-	private Editor ModelSubEditor = null;
-	private bool ModelEditorFoldout = false;
-	private void ModelsTab()
-	{
-		if (SelectedRig == null)
-			return;
-
-		ModelButton(SelectedRig);
-		if (SelectedRig.ModelOpenedForEdit != null)
-		{
-			bool dirty = EditorUtility.IsDirty(SelectedRig.ModelOpenedForEdit);
-			GUILayout.Label(dirty ? $"*{SelectedRig.ModelOpenedForEdit.name} has unsaved changes" : $"{SelectedRig.ModelOpenedForEdit.name} has no changes.");
-		}
-
-		EditorGUI.BeginDisabledGroup(SelectedRig.ModelOpenedForEdit == null);
-		ModelEditorFoldout = EditorGUILayout.Foldout(ModelEditorFoldout, "Model Editor");
-		if (ModelEditorFoldout)
-		{
-			if (ModelSubEditor == null || ModelSubEditor.target != SelectedRig.ModelOpenedForEdit)
-			{
-				ModelSubEditor = Editor.CreateEditor(SelectedRig.ModelOpenedForEdit);
-			}
-			if (ModelSubEditor != null)
-			{
-				ModelSubEditor.OnInspectorGUI();
-			}
-		}
-		EditorGUI.EndDisabledGroup();
-	}
-
-	private Editor AnimationSubEditor = null;
-	private bool AnimationEditorFoldout = false;
-	private const int PREVIEW_INDEX_COL_X = 20;
-	private const int PREVIEW_DROPDOWN_COL_X = 128;
-	private const int PREVIEW_DURATION_COL_X = 40;
-	private const int PREVIEW_REMOVE_COL_X = 20;
-	private void AnimationsTab()
-	{
-		if (SelectedRig == null)
-			return;
-
-		SelectedRig.ApplyAnimation = GUILayout.Toggle(SelectedRig.ApplyAnimation, "Preview Animations");
-
-		EditorGUI.BeginDisabledGroup(!SelectedRig.ApplyAnimation);
-		AnimationButton(SelectedRig);
-		if (SelectedRig.SelectedAnimation != null)
-		{
-			bool dirty = EditorUtility.IsDirty(SelectedRig.SelectedAnimation);
-			GUILayout.Label(dirty ? $"*{SelectedRig.SelectedAnimation.name} has unsaved changes" : $"{SelectedRig.SelectedAnimation.name} has no changes.");
-		}
-
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("Animation.PrevKey")))
-			SelectedRig.PressBack();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("PlayButton")))
-			SelectedRig.PressPlay();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("PauseButton")))
-			SelectedRig.PressPause();
-
-		SelectedRig.Looping = GUILayout.Toggle(SelectedRig.Looping, "Repeat");
-		SelectedRig.StepThrough = GUILayout.Toggle(SelectedRig.StepThrough, "Step-by-Step");
-		GUILayout.EndHorizontal();
-
-		List<string> keyframeNames = new List<string>();
-		List<string> sequenceNames = new List<string>();
-		List<string> allNames = new List<string>();
-		if (SelectedRig.SelectedAnimation != null)
-		{
-			foreach (KeyframeDefinition keyframeDef in SelectedRig.SelectedAnimation.keyframes)
-			{
-				keyframeNames.Add(keyframeDef.name);
-				allNames.Add($"Keyframe:{keyframeDef.name}");
-			}
-			foreach (SequenceDefinition sequenceDef in SelectedRig.SelectedAnimation.sequences)
-			{
-				sequenceNames.Add(sequenceDef.name);
-				allNames.Add($"Sequence:{sequenceDef.name}");
-			}
-		}
-
-		float animProgress = SelectedRig.GetPreviewProgressSeconds();
-		float animDuration = SelectedRig.GetPreviewDurationSeconds();
-
-		GUILayout.Label($"[*] Previews ({animProgress.ToString("0.00")}/{animDuration.ToString("0.00")})");
-
-		int previewIndex = -1;
-		float animParameter = 0.0f;
-		ModelEditingRig.AnimPreviewEntry currentPreview = SelectedRig.GetCurrentPreviewEntry(out previewIndex, out animParameter);
-		int indexToRemove = -1;
-
-		// ------------------------------------------------------------------------
-		// For each entry, render the settings and mark it in green/bold if current
-		for (int i = 0; i < SelectedRig.PreviewSequences.Count; i++)
-		{
-			GUILayout.BeginHorizontal();
-			ModelEditingRig.AnimPreviewEntry entry = SelectedRig.PreviewSequences[i];
-			float previewDurationSeconds = SelectedRig.GetDurationSecondsOf(entry);
-			int previewDurationTicks = SelectedRig.GetDurationTicksOf(entry);
-
-			float currentSeconds = animParameter * previewDurationSeconds;
-			int currentTicks = Mathf.FloorToInt(currentSeconds * 20f);
-			if (entry == currentPreview)
-				FlanStyles.SelectedLabel($"[{i + 1}]", GUILayout.Width(PREVIEW_INDEX_COL_X));
-			else
-				GUILayout.Label($"[{i + 1}]", GUILayout.Width(PREVIEW_INDEX_COL_X));
-			string compactName = $"{(entry.IsSequence ? "Sequence" : "Keyframe")}:{entry.Name}";
-			int selectedIndex = allNames.IndexOf(compactName);
-			int modifiedIndex = EditorGUILayout.Popup(selectedIndex, allNames.ToArray(), GUILayout.Width(PREVIEW_DROPDOWN_COL_X));
-			if(selectedIndex != modifiedIndex)
-			{
-				entry.IsSequence = allNames[modifiedIndex].Contains("Sequence:");
-				entry.Name = allNames[modifiedIndex];
-				entry.Name = entry.Name.Substring(entry.Name.IndexOf(":") + 1);
-			}
-
-			EditorGUI.BeginDisabledGroup(entry.IsSequence);
-			int durationTicks = SelectedRig.GetDurationTicksOf(entry);
-			entry.DurationTicks = EditorGUILayout.IntField(durationTicks, GUILayout.Width(PREVIEW_DURATION_COL_X));
-			EditorGUI.EndDisabledGroup();
-
-			if (entry == currentPreview)
-				FlanStyles.SelectedLabel($"({currentSeconds.ToString("0.00")} / {previewDurationSeconds.ToString("0.00")}) | ({currentTicks}t / {previewDurationTicks}t)");
-			else
-				GUILayout.Label($"({previewDurationSeconds.ToString("0.00")}) | ({previewDurationTicks}t)");
-
-			if (GUILayout.Button("-", GUILayout.Width(PREVIEW_REMOVE_COL_X)))
-				indexToRemove = i;
-
-			GUILayout.EndHorizontal();
-		}
-
-		if (indexToRemove != -1)
-			SelectedRig.PreviewSequences.RemoveAt(indexToRemove);
-
-		// ----------------------------------------------------------------------
-		// Extra element that gets "selected" if you are at the end, also an add button
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("+", GUILayout.Width(PREVIEW_INDEX_COL_X)))
-			SelectedRig.PreviewSequences.Add(new ModelEditingRig.AnimPreviewEntry()
-			{
-				Name = "",
-				DurationTicks = 20,
-				IsSequence = false,
-			});
-		if (currentPreview == null)
-		{
-			FlanStyles.SelectedLabel("Finished", GUILayout.Width(PREVIEW_DROPDOWN_COL_X));
-			FlanStyles.SelectedLabel("-", GUILayout.Width(PREVIEW_DURATION_COL_X));
-			FlanStyles.SelectedLabel("");
-		}
-		else
-		{
-			GUILayout.Label("Finished", GUILayout.Width(PREVIEW_DROPDOWN_COL_X));
-			GUILayout.Label("-", GUILayout.Width(PREVIEW_DURATION_COL_X));
-			GUILayout.Label("");
-		}
-		GUILayout.EndHorizontal();
-
-
-		// ----------------------------------------------------------------------
-		// Timeline slider
-		GUILayout.BeginHorizontal();
-		for (int i = 0; i < SelectedRig.PreviewSequences.Count; i++)
-		{
-			float previewSeconds = SelectedRig.GetDurationSecondsOf(i);
-			float guiWidth = Screen.width * previewSeconds / animDuration;
-			if(GUILayout.Button(SelectedRig.PreviewSequences[i].Name, FlanStyles.BorderlessButton, GUILayout.Width(guiWidth)))
-			{
-				SelectedRig.SetPreviewIndex(i);
-			}
-		}
-		GUILayout.EndHorizontal();
-		float edited = GUILayout.HorizontalSlider(animProgress, 0f, animDuration);
-		if (!Mathf.Approximately(edited, animProgress))
-			SelectedRig.SetPreviewProgressSeconds(edited);
-		GUILayout.Space(16);
-		// ----------------------------------------------------------------------
-
-		AnimationEditorFoldout = EditorGUILayout.Foldout(AnimationEditorFoldout, "Animation Editor");
-		if(AnimationEditorFoldout)
-		{
-			if(AnimationSubEditor == null || AnimationSubEditor.target != SelectedRig.SelectedAnimation)
-			{
-				AnimationSubEditor = Editor.CreateEditor(SelectedRig.SelectedAnimation);
-			}
-			if (AnimationSubEditor != null)
-			{
-				AnimationSubEditor.OnInspectorGUI();
-			}
-		}
-		EditorGUI.EndDisabledGroup();
-	}
-
-	private static readonly List<float> TextureZoomSettings = new List<float>(new float[] { 0, 1, 2, 4, 8, 16, 32, 64 });
-	private static readonly string[] TextureZoomSettingNames = new string[] { "Auto", "1", "2", "4", "8", "16", "32", "64" };
-	private List<int> ExpandedTextures = new List<int>();
-	private void RenderTextureAutoWidth(Texture texture)
-	{
-		if (MinecraftModelPreview.TextureZoomLevel == 0)
-		{
-			float scale = (float)(Screen.width - 10) / texture.width;
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * scale),
-							GUILayout.Height(texture.height * scale));
-		}
-		else
-		{
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
-							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
-		}
-		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
-	}
-	private void SkinsTab()
-	{
-		if (SelectedRig == null)
-			return;
-
-		GUILayout.Label("Texture Zoom Level", FlanStyles.BoldLabel);
-		int oldIndex = TextureZoomSettings.IndexOf(MinecraftModelPreview.TextureZoomLevel);
-		int newIndex = GUILayout.Toolbar(oldIndex, TextureZoomSettingNames);
-		MinecraftModelPreview.TextureZoomLevel = TextureZoomSettings[newIndex];
-
-		FlanStyles.BigHeader("Skins");
-		GUILayout.Label(SelectedRig.SelectedSkin);
-		if(SelectedRig.Preview is TurboRigPreview turboPreview)
-		{
-			// Draw a box for each texture
-			for(int i = 0; i < turboPreview.Rig.Textures.Count; i++)
-			{
-				MinecraftModel.NamedTexture texture = turboPreview.Rig.Textures[i];
-				List<Verification> verifications = new List<Verification>();
-				texture.GetVerifications(verifications);
-				bool oldExpanded = ExpandedTextures.Contains(i);
-
-				GUILayout.BeginHorizontal();
-				bool newExpanded = EditorGUILayout.Foldout(oldExpanded, GUIContent.none);
-				if (oldExpanded && !newExpanded)
-					ExpandedTextures.Remove(i);
-				else if (newExpanded && !oldExpanded)
-					ExpandedTextures.Add(i);
-				GUILayout.Label($"[{i}]", GUILayout.Width(32));
-				GUIVerify.VerificationIcon(verifications);
-
-				texture.Location = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
-				GUILayout.EndHorizontal();
-
-				if(newExpanded)
-				{
-					if (texture.Texture != null)
-					{
-						RenderTextureAutoWidth(texture.Texture);
-					}
-				}
-			}
-
-			// And a row for "add new"
-			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("[+]", GUILayout.Width(32)))
-			{
-				turboPreview.Rig.Textures.Add(new MinecraftModel.NamedTexture()
-				{
-					Key = "new_skin",
-					Location = new ResourceLocation(turboPreview.Rig.GetLocation().Namespace, "null"),
-					Texture = null,
-				});
-			}
-			GUILayout.FlexibleSpace();
-			GUILayout.EndHorizontal();
-		}
-
-
-
-		FlanStyles.BigHeader("UV Mapping");
-
-		GUILayout.BeginHorizontal();
-		
-
-		//MinecraftModelPreview.TextureZoomLevel = Mathf.Clamp(EditorGUILayout.FloatField(MinecraftModelPreview.TextureZoomLevel), 1f, 256f);
-		//MinecraftModelPreview.TextureZoomLevel = EditorGUILayout.Slider(MinecraftModelPreview.TextureZoomLevel, 1f, 256f);
-		GUILayout.EndHorizontal();
-		InitialSkinNode(SelectedRig.Preview);
-	}
-	private List<string> SkinNodeFoldouts = new List<string>();
-	private void InitialSkinNode(MinecraftModelPreview preview)
-	{
-		SkinNode(preview, "");
-	}
-	private void SkinNode(MinecraftModelPreview preview, string path)
-	{
-		if (preview == null || EditorGUI.indentLevel > 16) 
-			return;
-		string childPath = $"{path}/{preview.name}";
-		bool foldout = SkinNodeFoldouts.Contains(childPath);
-		bool newFoldout = EditorGUILayout.Foldout(foldout, preview.name);
-		if (newFoldout && !foldout)
-			SkinNodeFoldouts.Add(childPath);
-		else if (!newFoldout && foldout)
-			SkinNodeFoldouts.Remove(childPath);
-
-		if (newFoldout)
-		{
-			preview.Compact_Editor_Texture_GUI();
-			EditorGUI.indentLevel++;
-			foreach (MinecraftModelPreview child in preview.GetChildren())
-			{
-				SkinNode(child, childPath);
-			}
-			EditorGUI.indentLevel--;
-		}
 	}
 
 	private void ModelButton(ModelEditingRig rig, params GUILayoutOption[] options)
@@ -685,13 +357,6 @@ public class FlansModToolbox : EditorWindow
 		Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, options);
 		if (changedModel != rig.ModelOpenedForEdit)
 			rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
-	}
-
-	private void AnimationButton(ModelEditingRig rig, params GUILayoutOption[] options)
-	{
-		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(AnimationDefinition), false, options);
-		if (changedAnim != rig.SelectedAnimation)
-			rig.Button_ApplyAnimation(AssetDatabase.GetAssetPath(changedAnim));
 	}
 
 	private static readonly string[] APDefaults = new string[] {
@@ -707,7 +372,7 @@ public class FlansModToolbox : EditorWindow
 	private void AttachPoseDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
 	{
 		List<string> APs = new List<string>(APDefaults);
-		
+
 		// First, check if this is attached to one of our known parents
 		int selectedIndex = 0;
 		if (rig.transform.parent != null)
@@ -731,9 +396,9 @@ public class FlansModToolbox : EditorWindow
 			else
 				myRigIndex = index;
 		}
-		
+
 		int changedIndex = EditorGUILayout.Popup(selectedIndex, APs.ToArray(), options);
-		if(changedIndex != selectedIndex)
+		if (changedIndex != selectedIndex)
 		{
 			Transform attachTo = null;
 			if (changedIndex >= APDefaults.Length)
@@ -761,18 +426,18 @@ public class FlansModToolbox : EditorWindow
 			List<string> apNames = new List<string>();
 			int attachedTo = 0;
 			apNames.Add("none");
-			for(int i = 0; i < turbo.AttachPoints.Count; i++)
+			for (int i = 0; i < turbo.AttachPoints.Count; i++)
 			{
 				AttachPoint ap = turbo.AttachPoints[i];
 				apNames.Add(ap.name);
 				if (ap.name == parent.name)
-					attachedTo = i+1;
+					attachedTo = i + 1;
 			}
 			int changedAttachedTo = EditorGUILayout.Popup(attachedTo, apNames.ToArray(), options);
-			if(changedAttachedTo != attachedTo)
+			if (changedAttachedTo != attachedTo)
 			{
 				Transform newParent = parentRig.transform;
-				if(changedAttachedTo != 0)
+				if (changedAttachedTo != 0)
 				{
 					newParent = parentRig.transform.FindRecursive(turbo.AttachPoints[changedAttachedTo - 1].name);
 				}
@@ -783,7 +448,7 @@ public class FlansModToolbox : EditorWindow
 			}
 		}
 		else
-		{ 
+		{
 			EditorGUI.BeginDisabledGroup(true);
 			EditorGUILayout.Popup(0, new string[] { "N/A" }, options);
 			EditorGUI.EndDisabledGroup();
@@ -792,7 +457,6 @@ public class FlansModToolbox : EditorWindow
 
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
-
 
 	private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
 	{

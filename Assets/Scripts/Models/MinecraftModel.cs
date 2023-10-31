@@ -100,6 +100,7 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 	{
 		using (builder.Indentation("display"))
 		{
+		// TODO: !Use the new system!
 			using (builder.Indentation("thirdperson"))
 			{
 				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(-90f, 0f, 0f)));
@@ -164,13 +165,33 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			for(int i = 0; i < Transforms.Count; i++)
 			{
 				if (foundTypes.Contains(Transforms[i].Type))
-					verifications.Add(Verification.Failure($"Model has a duplicate transform for {Transforms[i].Type}"));
+					verifications.Add(Verification.Failure($"Model has a duplicate transform for {Transforms[i].Type.ToNiceString()}"));
 				else
 					foundTypes.Add(Transforms[i].Type);
 
 				if (Transforms[i].Scale.sqrMagnitude <= 0.00001f)
-					verifications.Add(Verification.Neutral($"{Transforms[i].Type} transform has 0 scale. (This might be intentional)"));
+					verifications.Add(Verification.Neutral($"{Transforms[i].Type.ToNiceString()} transform has 0 scale. (This might be intentional)"));
 			}
+		}
+	}
+}
+
+public static class ItemTransformTypes
+{
+	public static string ToNiceString(this MinecraftModel.ItemTransformType type)
+	{
+		switch (type)
+		{
+			case MinecraftModel.ItemTransformType.NONE: return "None";
+			case MinecraftModel.ItemTransformType.THIRD_PERSON_LEFT_HAND: return "Third Person, Left Hand";
+			case MinecraftModel.ItemTransformType.THIRD_PERSON_RIGHT_HAND: return "Third Person, Right Hand";
+			case MinecraftModel.ItemTransformType.FIRST_PERSON_LEFT_HAND: return "First Person, Left Hand";
+			case MinecraftModel.ItemTransformType.FIRST_PERSON_RIGHT_HAND: return "First Person, Right Hand";
+			case MinecraftModel.ItemTransformType.HEAD: return "Head";
+			case MinecraftModel.ItemTransformType.GUI: return "GUI";
+			case MinecraftModel.ItemTransformType.GROUND: return "Ground";
+			case MinecraftModel.ItemTransformType.FIXED: return "Fixed";
+			default: return "Unknown";
 		}
 	}
 }

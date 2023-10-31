@@ -366,14 +366,14 @@ public class TurboRig : MinecraftModel
 		{
 			Type = ItemTransformType.FIRST_PERSON_RIGHT_HAND,
 			Position = new Vector3(8f, -7f, -13f),
-			Rotation = Quaternion.Euler(0f, 90f, 0f),
+			Rotation = Quaternion.Euler(0f, -90f, 0f),
 			Scale = Vector3.one,
 		});
 		Transforms.Add(new ItemTransform()
 		{
 			Type = ItemTransformType.FIRST_PERSON_LEFT_HAND,
 			Position = new Vector3(-8f, -7f, -13f),
-			Rotation = Quaternion.Euler(0f, 90f, 0f),
+			Rotation = Quaternion.Euler(0f, -90f, 0f),
 			Scale = Vector3.one,
 		});
 		Transforms.Add(new ItemTransform()
