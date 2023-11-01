@@ -21,11 +21,21 @@ public class TurboRig : MinecraftModel
 
 	public TurboModel GetSection(string key)
 	{
-		foreach (TurboModel section in Sections)
-			if (section.PartName == key)
-				return section;
-		return null;
+		TryGetSection(key, out TurboModel section);
+		return section;
 	}
+	public bool TryGetSection(string key, out TurboModel section)
+	{
+		foreach (TurboModel check in Sections)
+			if (check.PartName == key)
+			{
+				section = check;
+				return true;
+			}
+		section = null;
+		return false;
+	}
+
 	public TurboModel GetOrCreateSection(string key)
 	{
 		foreach (TurboModel section in Sections)
@@ -121,6 +131,15 @@ public class TurboRig : MinecraftModel
 		return false;
 	}
 
+	public void RemoveAnimParameter(string key)
+	{
+		for(int i = AnimationParameters.Count - 1; i >= 0; i--)
+		{
+			if (AnimationParameters[i].key == key)
+				AnimationParameters.RemoveAt(i);
+		}
+	}
+
 	public bool IsAttached(string parent, string child, bool defaultValue = false)
 	{
 		foreach (AttachPoint ap in AttachPoints)
@@ -134,33 +153,16 @@ public class TurboRig : MinecraftModel
 	public void TranslateAll(float x, float y, float z)
 	{
 		foreach (TurboModel section in Sections)
-		{
-			foreach (TurboPiece piece in section.Pieces)
-			{
-				if (piece != null)
-				{
-					piece.Origin.x += x;
-					piece.Origin.y += y;
-					piece.Origin.z += z;
-				}
-			}
-		}
+			section.TranslateAll(x, y, z);
 
 		foreach (AttachPoint ap in AttachPoints)
-		{
 			ap.position -= new Vector3(x, y, z);
-		}
 	}
 
 	public void FlipAll()
 	{
 		foreach (TurboModel section in Sections)
-		{
-			foreach (TurboPiece piece in section.Pieces)
-			{
-				piece.DoMirror(false, true, true);
-			}
-		}
+			section.DoMirror(false, true, true);
 	}
 
 	public void GetSectionNames(List<string> names)
@@ -183,12 +185,21 @@ public class TurboRig : MinecraftModel
 		AttachPoints.Add(point1);
 		return point1;
 	}
+	public bool TryGetAttachPoint(string key, out AttachPoint ap)
+	{
+		foreach (AttachPoint check in AttachPoints)
+			if (check.name == key)
+			{
+				ap = check;
+				return true;
+			}
+		ap = null;
+		return false;
+	}
 	public AttachPoint GetAttachPoint(string key)
 	{
-		foreach (AttachPoint point in AttachPoints)
-			if (point.name == key)
-				return point;
-		return null;
+		TryGetAttachPoint(key, out AttachPoint ap);
+		return ap;
 	}
 	public string GetAttachedTo(string key)
 	{

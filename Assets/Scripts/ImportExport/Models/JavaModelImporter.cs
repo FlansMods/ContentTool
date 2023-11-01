@@ -142,9 +142,36 @@ public static class JavaModelImporter
 
 			ReadLine(rig, file, line, optionalType);
 		}
+
+		// Post-Import fixes
 		if (optionalType != null)
 			rig.name = Utils.ToLowerWithUnderscores(optionalType.shortName);
+		ImportAttachPoint(rig, "scopeAttachPoint", "sights");
+		ImportAttachPoint(rig, "stockAttachPoint", "stock");
+		ImportAttachPoint(rig, "gripAttachPoint", "grip");
+		ImportAttachPoint(rig, "barrelAttachPoint", "barrel");
+		foreach(TurboModel section in rig.Sections)
+		{
+			if(!rig.TryGetAttachPoint(section.PartName, out AttachPoint ap))
+			{
+				rig.SetAttachment(section.PartName, "body");
+			}
+		}
+
 		return rig;
+	}
+
+	private static void ImportAttachPoint(TurboRig rig, string javaOffsetName, string sectionName)
+	{
+		if(rig.TryGetVec3Param(javaOffsetName, out Vector3 value))
+		{
+			if(rig.TryGetSection(sectionName, out TurboModel section))
+			{
+				section.TranslateAll(-value.x, -value.y, -value.z);
+			}
+			rig.SetAttachmentOffset(sectionName, value);
+			rig.RemoveAnimParameter(javaOffsetName);
+		}
 	}
 
 	private static void ReadLine(TurboRig rig, TypeFile file, string line, InfoType optionalType)

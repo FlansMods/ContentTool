@@ -105,4 +105,21 @@ public class TurboModel
 			Pieces.RemoveAt(index);
 		}
 	}
+	public void TranslateAll(float x, float y, float z)
+	{
+		foreach (TurboPiece piece in Pieces)
+		{
+			if (piece != null)
+			{
+				piece.Origin.x += x;
+				piece.Origin.y += y;
+				piece.Origin.z += z;
+			}
+		}
+	}
+	public void DoMirror(bool x, bool y, bool z)
+	{
+		foreach (TurboPiece piece in Pieces)
+			piece.DoMirror(x, y, z);
+	}
 }
