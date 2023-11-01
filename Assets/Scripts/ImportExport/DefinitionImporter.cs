@@ -5,10 +5,12 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Palmmedia.ReportGenerator.Core;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.WSA;
 using static Definition;
-using static UnityEditor.FilePathAttribute;
 
 public class DefinitionImporter : MonoBehaviour
 {
@@ -33,36 +35,372 @@ public class DefinitionImporter : MonoBehaviour
 	public const string ASSET_ROOT = "Assets/Content Packs";
 	public string ExportRoot = "Export";
 
-	public List<ContentPack> Packs = new List<ContentPack>();
-	public List<string> UnimportedPacks = new List<string>();
-
-	public void CheckInit()
+	// ---------------------------------------------------------------------------------------
+	#region Pre-Import Pack storage
+	// ---------------------------------------------------------------------------------------
+	private class PreImportPack
 	{
-		UnimportedPacks.Clear();
-		foreach(DirectoryInfo subDir in new DirectoryInfo(IMPORT_ROOT).EnumerateDirectories())
+		public string PackName;
+		public string RootLocation { get { return $"{IMPORT_ROOT}/{PackName}"; } }
+
+		// Lazy initialize all these things
+		private Dictionary<EDefinitionType, Folder> SubFolders = null;
+		private class Folder
 		{
-			//ContentPack existing = FindContentPack(subDir.Name);
-			//if(existing == null)
+			public List<string> FileNames = null;
+			private Dictionary<string, AdditionalImportInfo> CachedImportInfo = new Dictionary<string, AdditionalImportInfo>();
+
+			public bool TryGetAddtionalImportInfo(string packName, EDefinitionType type, string txtFileName, out List<string> inputs, out List<string> outputs)
 			{
-				UnimportedPacks.Add(subDir.Name);
+				if (FileNames.Contains(txtFileName))
+				{
+					if (!CachedImportInfo.TryGetValue(txtFileName, out AdditionalImportInfo additionalInfo))
+					{
+						additionalInfo = new AdditionalImportInfo();
+
+						// Cache the dependencies of this InfoType by doing a really rough read of the file
+						string[] lines = File.ReadAllLines($"{IMPORT_ROOT}/{packName}/{type.Folder()}/{txtFileName}");
+						string shortName = Utils.ToLowerWithUnderscores(txtFileName.Split('.')[0]);
+						foreach (string line in lines)
+						{
+							string[] splits = line.Split(' ');
+							if (splits[0] == "Icon")
+							{
+								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/textures/items/{splits[1]}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/items/{Utils.ToLowerWithUnderscores(splits[1])}.png");
+							}
+							if (splits[0] == "Texture")
+							{
+								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/skins/{splits[1]}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/skins/{Utils.ToLowerWithUnderscores(splits[1])}.png");
+							}
+							if (splits[0] == "Paintjob")
+							{
+								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/textures/items/{splits[1]}.png");
+								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/skins/{splits[2]}.png");
+
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/items/{Utils.ToLowerWithUnderscores(splits[1])}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/skins/{Utils.ToLowerWithUnderscores(splits[2])}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{Utils.ToLowerWithUnderscores(splits[2])}_icon.asset");
+							}
+							if (splits[0] == "Model" || splits[0] == "DeployedModel")
+							{
+								string[] modelSteps = splits[1].Split('.');
+								if (modelSteps.Length == 2)
+								{
+									additionalInfo.Inputs.Add($"{MODEL_IMPORT_ROOT}/{modelSteps[0]}/{modelSteps[1]}.java");
+									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}.asset");
+									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{shortName}_3d.asset");
+									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{shortName}_icon.asset");
+								}
+							}
+						}
+
+						CachedImportInfo.Add(txtFileName, additionalInfo);
+					}
+					inputs = additionalInfo.Inputs;
+					outputs = additionalInfo.Outputs;
+					return true;
+				}
+
+				inputs = EMPTY_LIST;
+				outputs = EMPTY_LIST;
+				return false;
+			}
+			public bool HasFullImportMap(string packName, EDefinitionType type, bool generate = false)
+			{
+				if (generate)
+				{
+					foreach (string fileName in FileNames)
+						TryGetAddtionalImportInfo(packName, type, fileName, out List<string> inputs, out List<string> outputs);
+					return true;
+				}
+				else
+				{
+					foreach (string fileName in FileNames)
+						if (!CachedImportInfo.ContainsKey(fileName))
+							return false;
+					return true;
+				}
+			}
+			public bool TryGetFullImportCount(out int inputCount, out int outputCount)
+			{
+				inputCount = 0;
+				outputCount = 0;
+				foreach (string fileName in FileNames)
+					if (CachedImportInfo.TryGetValue(fileName, out AdditionalImportInfo info))
+					{
+						inputCount += info.Inputs.Count;
+						outputCount += info.Outputs.Count;
+					}
+					else return false;
+				return true;
+			}
+
+			private class AdditionalImportInfo
+			{
+				public List<string> Inputs = new List<string>();
+				public List<string> Outputs = new List<string>();
+			}
+		}
+		private void CheckInitCache()
+		{
+			if (SubFolders == null)
+			{
+				SubFolders = new Dictionary<EDefinitionType, Folder>();
+				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+				{
+					EDefinitionType defType = (EDefinitionType)i;
+					Dictionary<string, string> defImports = new Dictionary<string, string>();
+					DirectoryInfo dir = new DirectoryInfo($"{RootLocation}/{defType.Folder()}");
+					if (dir.Exists)
+					{
+						List<string> fileNames = new List<string>();
+						foreach (FileInfo file in dir.EnumerateFiles())
+						{
+							fileNames.Add(file.Name);
+						}
+						if (fileNames.Count > 0)
+						{
+							SubFolders.Add(defType, new Folder()
+							{
+								FileNames = fileNames,
+							});
+						}
+					}
+				}
+			}
+		}
+
+		public int GetTotalNumAssets()
+		{
+			CheckInitCache();
+			int count = 0;
+			foreach (var kvp in SubFolders)
+				return count += kvp.Value.FileNames.Count;
+			return count;
+		}
+		public int GetNumAssetsInFolder(EDefinitionType type)
+		{
+			CheckInitCache();
+			if (SubFolders.TryGetValue(type, out Folder folder))
+				return folder.FileNames.Count;
+			return 0;
+		}
+		public IEnumerable<string> GetAllAssetNames()
+		{
+			CheckInitCache();
+			foreach (var kvp in SubFolders)
+				foreach (string fileName in kvp.Value.FileNames)
+					yield return fileName;
+		}
+		public IEnumerable<string> GetAssetNamesInFolder(EDefinitionType type)
+		{
+			CheckInitCache();
+			if (SubFolders.TryGetValue(type, out Folder folder))
+				foreach (string fileName in folder.FileNames)
+					yield return fileName;
+		}
+		public bool TryGetAddtionalImportInfo(string packName, EDefinitionType type, string txtFileName, out List<string> inputs, out List<string> outputs)
+		{
+			CheckInitCache();
+			if (SubFolders.TryGetValue(type, out Folder folder))
+				return folder.TryGetAddtionalImportInfo(packName, type, txtFileName, out inputs, out outputs);
+
+			inputs = EMPTY_LIST;
+			outputs = EMPTY_LIST;
+			return false;
+		}
+		public bool HasFullImportMap(string packName, EDefinitionType type, bool generate = false)
+		{
+			CheckInitCache();
+			if (SubFolders.TryGetValue(type, out Folder folder))
+				return folder.HasFullImportMap(packName, type, generate);
+			return true;
+		}
+		public bool TryGetFullImportCount(EDefinitionType type, out int inputCount, out int outputCount)
+		{
+			CheckInitCache();
+			if (SubFolders.TryGetValue(type, out Folder folder))
+				return folder.TryGetFullImportCount(out inputCount, out outputCount);
+			inputCount = 0;
+			outputCount = 0;
+			return true;
+		}
+	}
+	[SerializeField]
+	private List<PreImportPack> PreImportPacks = null;
+	private void CheckPreImportPacks()
+	{
+		if (PreImportPacks == null) // TODO: Or DateTime check
+		{
+			PreImportPacks = new List<PreImportPack>();
+			foreach (DirectoryInfo subDir in new DirectoryInfo(IMPORT_ROOT).EnumerateDirectories())
+			{
+				PreImportPacks.Add(new PreImportPack() { PackName = subDir.Name });
 			}
 		}
 	}
+	private bool TryGetPreImportPack(string packName, out PreImportPack result)
+	{
+		foreach (PreImportPack pack in PreImportPacks)
+			if (pack.PackName == packName)
+			{
+				result = pack;
+				return true;
+			}
+		result = null;
+		return false;
+	}
+	public List<string> GetPreImportPackNames()
+	{
+		CheckInit();
+		List<string> names = new List<string>(PreImportPacks.Count);
+		foreach(PreImportPack pack in PreImportPacks)
+		{
+			names.Add(pack.PackName);
+		}
+		return names;
+	}
+	public int GetNumAssetsInPack(string packName)
+	{
+		CheckInit();
+		int count = 0;
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+				count += pack.GetNumAssetsInFolder((EDefinitionType)i);
+		}
+		return count;
+	}
+	public int GetNumAssetsInPack(string packName, EDefinitionType type)
+	{
+		CheckInit();
+		if(TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			return pack.GetNumAssetsInFolder(type);
+		}
+		return 0;
+	}
+	private static readonly List<string> EMPTY_LIST = new List<string>();
+	public IEnumerable<string> GetAssetNamesInPack(string packName, EDefinitionType type)
+	{
+		CheckInit();
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			return pack.GetAssetNamesInFolder(type);
+		}
+		return EMPTY_LIST;
+	}
+	public string GetInfoTypeImportPath(string packName, EDefinitionType type, string txtFileName)
+	{
+		return $"{IMPORT_ROOT}/{packName}/{type.Folder()}/{txtFileName}";
+	}
+	public string GetTargetAssetPathFor(string packName, EDefinitionType type, string txtFileName)
+	{
+		return $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{Utils.ToLowerWithUnderscores(txtFileName.Split(".")[0])}.asset";
+	}
+	public bool TryGetImportMap(string packName, EDefinitionType type, string txtFileName, out List<string> inputs, out List<string> outputs)
+	{
+		if(TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			return pack.TryGetAddtionalImportInfo(packName, type, txtFileName, out inputs, out outputs);
+		}
+		inputs = EMPTY_LIST;
+		outputs = EMPTY_LIST;
+		return false;
+	}
+	public bool GenerateFullImportMap(string packName)
+	{
+		return HasFullImportMap(packName, true);
+	}
+	public bool HasFullImportMap(string packName, bool generate = false)
+	{
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			if (generate)
+			{
+				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+					pack.HasFullImportMap(packName, (EDefinitionType)i, generate);
+				return true;
+			}
+			else
+			{
+				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+					if (!pack.HasFullImportMap(packName, (EDefinitionType)i))
+						return false;
+				return true;
+			}
+		}
+		return false;
+	}
+	public bool HasFullImportMap(string packName, EDefinitionType type, bool generate = false)
+	{
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			return pack.HasFullImportMap(packName, type, generate);
+		}
+		return true;
+	}
+	public bool TryGetFullImportCount(string packName, out int inputCount, out int outputCount)
+	{
+		inputCount = 0;
+		outputCount = 0;
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+				if (pack.TryGetFullImportCount((EDefinitionType)i, out int typedInputCount, out int typedOutputCount))
+				{
+					inputCount += typedInputCount;
+					outputCount += typedOutputCount;
+				}
+		}
+		return true;
+	}
 
+	public bool TryGetFullImportCount(string packName, EDefinitionType type, out int inputCount, out int outputCount)
+	{
+		if (TryGetPreImportPack(packName, out PreImportPack pack))
+		{
+			return pack.TryGetFullImportCount(type, out inputCount, out outputCount);
+		}
+		inputCount = 0;
+		outputCount = 0;
+		return true;
+	}
+
+
+	public void Import(string packName, EDefinitionType type, string fileName, bool overwriteExisting = false)
+	{
+				
+	}
+	public void Import(string packName, bool overwriteExisting = false)
+	{
+		
+	}
+
+	#endregion
+	// ---------------------------------------------------------------------------------------
+
+
+	// ---------------------------------------------------------------------------------------
+	#region Loaded Packs
+	// ---------------------------------------------------------------------------------------
+	public List<ContentPack> Packs = new List<ContentPack>();
 
 	public ContentPack FindContentPack(string packName)
 	{
 		// First, see if we already cached it
-		foreach(ContentPack pack in Packs)
-			if(pack != null)
-				if(pack.name == packName)
+		foreach (ContentPack pack in Packs)
+			if (pack != null)
+				if (pack.name == packName)
 					return pack;
-		
+
 		// Second, try to find it in the asset database
-		foreach(string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
+		foreach (string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
 		{
 			ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
-			if(loadedPack != null)
+			if (loadedPack != null)
 			{
 				Packs.Add(loadedPack);
 				return loadedPack;
@@ -72,7 +410,79 @@ public class DefinitionImporter : MonoBehaviour
 		return null;
 	}
 
-	public bool ImportPack(string packName)
+	public void CheckInit()
+	{
+		CheckPreImportPacks();
+
+	}
+
+	#endregion
+	// ---------------------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------------------------
+	#region The Import Process
+	// ---------------------------------------------------------------------------------------
+	public bool ImportPack(string packName, List<Verification> errors, bool overwrite = false)
+	{
+		// Check our name
+		if(packName == null || packName.Length == 0)
+		{
+			errors.Add(Verification.Failure($"Pack name '{packName}' is invalid"));
+			return false;
+		}
+		string sanitisedName = Utils.ToLowerWithUnderscores(packName);
+		if(sanitisedName != packName)
+		{
+			errors.Add(Verification.Failure($"Pack name '{packName}' is not in Minecraft format. Try '{sanitisedName}'.",
+			() => { 
+				Debug.Log($"Copied '{sanitisedName}' to the clipboard"); 
+				GUIUtility.systemCopyBuffer = sanitisedName; 
+			}));
+			return false;
+		}
+
+		// See if this is actually a pack we know about
+		CheckPreImportPacks();
+		if (!TryGetPreImportPack(packName, out PreImportPack inputPack))
+		{
+			errors.Add(Verification.Failure($"Pack name '{packName}' was not found in the Import folder"));
+			return false;
+		}
+
+		// Find the content pack we are importing to
+		ContentPack outputPack = FindContentPack(packName);
+		if(outputPack == null)
+		{
+			outputPack = ScriptableObject.CreateInstance<ContentPack>();
+			AssetDatabase.CreateAsset(outputPack, $"{ASSET_ROOT}/{packName}/{packName}.asset");
+			Packs.Add(outputPack);
+		}
+
+		// For each possible import, import it if it is new, or if we are overwriting
+		GenerateFullImportMap(packName);
+		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+		{
+			EDefinitionType defType = (EDefinitionType)i;
+			foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
+			{
+				if (inputPack.TryGetAddtionalImportInfo(packName, defType, fileName, out List<string> inputFiles, out List<string> outputFiles)
+				{
+					
+				}
+			}
+		}
+
+
+
+
+		return true;
+	}
+	#endregion
+	// ---------------------------------------------------------------------------------------
+
+
+
+	public bool ImportPack(string packName, bool overwrite = false)
 	{
 		string modName = packName;
 		string assetPath = $"{ASSET_ROOT}/{packName}/{packName}.asset";

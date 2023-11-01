@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: minigun
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -706,17 +707,29 @@ MonoBehaviour:
   - key: minigun_barrel_origin
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.5, y: -0.0625, z: 0}
+    vec3Value: {x: 8, y: -1, z: 0}
   - key: spinner_origin
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.3125, y: -0.0625, z: 0.1875}
+    vec3Value: {x: 5, y: -1, z: 3}
   - key: third_person_offset
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: -0.5, y: -0.25, z: 0.0125}
+    vec3Value: {x: -8, y: -4, z: 0.2}
   - key: item_frame_offset
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: -1, y: 0.1875, z: 0}
-  AttachPoints: []
+    vec3Value: {x: -16, y: 3, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: minigunBarrel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: spinner
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

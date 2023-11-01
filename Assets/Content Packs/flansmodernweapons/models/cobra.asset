@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: cobra
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -574,4 +575,25 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: skids
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: tail
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: heliMainRotor_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: heliTailRotor_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: mim23
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -503,4 +504,19 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftTrack
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightTrack
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: turret
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: barrel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

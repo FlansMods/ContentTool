@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: mw_parachute
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -112,4 +113,7 @@ MonoBehaviour:
       - {x: 4, y: 0, z: -4}
       - {x: -4, y: 0, z: -4}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: parachute
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

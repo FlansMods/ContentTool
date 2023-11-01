@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: hk416
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -373,4 +374,16 @@ MonoBehaviour:
       - {x: -0, y: 0, z: -0.2}
       - {x: -1, y: 0, z: -0.2}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: barrel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

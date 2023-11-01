@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: spas
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -232,11 +233,11 @@ MonoBehaviour:
   - key: scope_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.3125, y: 0.3125, z: 0}
+    vec3Value: {x: 5, y: 5, z: 0}
   - key: grip_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.546875, y: 0.125, z: 0}
+    vec3Value: {x: 8.75, y: 2, z: 0}
   - key: pump_delay_after_reload
     isVec3: 0
     floatValue: 115
@@ -277,4 +278,13 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0.133
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: pump
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

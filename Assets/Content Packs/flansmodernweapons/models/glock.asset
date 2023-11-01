@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: glock
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -194,11 +195,11 @@ MonoBehaviour:
   - key: barrel_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.53125, y: 0.25, z: 0}
+    vec3Value: {x: 8.5, y: 4, z: 0}
   - key: scope_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.1875, y: 0.3125, z: 0}
+    vec3Value: {x: 3, y: 5, z: 0}
   - key: scope_is_on_slide
     isVec3: 0
     floatValue: 0
@@ -207,4 +208,13 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0.2
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

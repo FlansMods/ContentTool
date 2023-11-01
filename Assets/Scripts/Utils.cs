@@ -225,6 +225,10 @@ public static class FlanStyles
 {
 	public static readonly GUIStyle BoldLabel = GUI.skin.label.Clone()
 				.WithFontStyle(FontStyle.Bold);
+    public static readonly GUIStyle GreenLabel = GUI.skin.label.Clone()
+        .WithFontStyle(FontStyle.Bold)
+        .WithTextColour(Color.green);
+
 
 	public static GUIStyle Clone(this GUIStyle style)
 	{

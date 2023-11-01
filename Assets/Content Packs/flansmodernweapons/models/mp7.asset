@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: mp7
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -242,4 +243,16 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0.25
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: barrel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

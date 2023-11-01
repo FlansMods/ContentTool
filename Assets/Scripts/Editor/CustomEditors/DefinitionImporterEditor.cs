@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,15 +8,272 @@ using UnityEngine;
 public class DefinitionImporterEditor : Editor
 {	
 	private bool hasDoneInit = false;
+	private enum Tab
+	{
+		NewPack,
+		Reimport,
+	}
+	private string[] TabNames = new string[] {
+		"New Packs",
+		"Re-Importing"
+	};
+	private Tab CurrentTab = Tab.NewPack;
+	private int SelectedImportPackIndex = 0;
+	private List<string> ImportFoldouts = new List<string>();
 
-    public override void OnInspectorGUI()
+	public override void OnInspectorGUI()
 	{
 		DefinitionImporter instance = (DefinitionImporter)target;
-		if(instance != null)
+		if (instance != null)
 		{
-			base.OnInspectorGUI();
+			// TODO: Timer on this
+			instance.CheckInit();
 
-			if(!hasDoneInit)
+			CurrentTab = (Tab)GUILayout.Toolbar((int)CurrentTab, TabNames);
+			switch (CurrentTab)
+			{
+				case Tab.NewPack:
+					NewPackTab(instance);
+					break;
+				case Tab.Reimport:
+					ReimportTab(instance);
+					break;
+			}
+		}
+	}
+
+	private void NewPackTab(DefinitionImporter instance)
+	{
+		foreach (string sourcePack in instance.GetPreImportPackNames())
+		{
+			string packFoldoutPath = $"{sourcePack}";
+			GUILayout.BeginHorizontal();
+			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
+
+			// --- Import Status ---
+			bool alreadyImported = instance.FindContentPack(sourcePack) != null;
+			if(alreadyImported)
+				GUILayout.Label("[Imported]", FlanStyles.GreenLabel, GUILayout.Width(120));
+			else
+				GUILayout.Label("[Not Imported]", FlanStyles.BoldLabel, GUILayout.Width(120));
+
+			// --- Asset Summary ---
+			int assetCount = instance.GetNumAssetsInPack(sourcePack);
+			bool hasFullImportMapForAllTypes = instance.HasFullImportMap(sourcePack);
+			if(hasFullImportMapForAllTypes)
+			{
+				if(instance.TryGetFullImportCount(sourcePack, out int inputCount, out int outputCount))
+				{
+					GUILayout.Label($"[{inputCount}] Input Assets", FlanStyles.GreenLabel, GUILayout.Width(120));
+					GUILayout.Label($"[{outputCount}] Output Assets", FlanStyles.GreenLabel, GUILayout.Width(120));
+				}
+				EditorGUI.BeginDisabledGroup(true);
+				GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32));
+				EditorGUI.EndDisabledGroup();
+			}
+			else
+			{
+				GUILayout.Label($"[?] Input Assets", FlanStyles.BoldLabel, GUILayout.Width(120));
+				GUILayout.Label($"[?] Output Assets", FlanStyles.BoldLabel, GUILayout.Width(120));
+				if (GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32)))
+				{
+					instance.GenerateFullImportMap(sourcePack);
+				}
+			}
+
+			// --- Import (New Only) Button! ---
+			if (GUILayout.Button(EditorGUIUtility.IconContent("Customized"), GUILayout.Width(32)))
+			{
+				instance.ImportPack(sourcePack, false);
+			}
+			// --- Import Button! ---
+			if (GUILayout.Button(EditorGUIUtility.IconContent("Download-Available"), GUILayout.Width(32)))
+			{
+				instance.ImportPack(sourcePack, true);
+			}
+			GUILayout.EndHorizontal();
+
+			if (packFoldout)
+			{
+				EditorGUI.indentLevel++;
+				for(int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+				{
+					EDefinitionType defType = (EDefinitionType)i;
+					int count = instance.GetNumAssetsInPack(sourcePack, defType);
+					if (count > 0)
+					{
+						string typeFoldoutPath = $"{packFoldoutPath}/{defType}";
+						GUILayout.BeginHorizontal();
+						bool typeFoldout = NestedFoldout(typeFoldoutPath, defType.ToString());
+						GUILayout.FlexibleSpace();
+
+						GUILayout.Label($"[{count}] .txt", GUILayout.Width(100));
+						bool hasFullImportMap = instance.HasFullImportMap(sourcePack, defType);
+						if(hasFullImportMap)
+						{
+							// Print an import summary
+							if(instance.TryGetFullImportCount(sourcePack, defType, out int inputCount, out int outputCount))
+							{
+								GUILayout.Label($"[{inputCount}] Input Assets", GUILayout.Width(120));
+								GUILayout.Label($"[{outputCount}] Output Assets", GUILayout.Width(120));
+								EditorGUI.BeginDisabledGroup(true);
+								GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32));
+								EditorGUI.EndDisabledGroup();
+							}
+						}
+						else
+						{
+							GUILayout.Label($"[?] Input Assets", GUILayout.Width(120));
+							GUILayout.Label($"[?] Output Assets", GUILayout.Width(120));
+							if (GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32)))
+							{
+								instance.HasFullImportMap(sourcePack, defType, true);
+							}
+						}
+						if (GUILayout.Button(EditorGUIUtility.IconContent("Download-Available"), GUILayout.Width(32)))
+						{
+
+						}
+						GUILayout.EndHorizontal();
+
+
+						if (typeFoldout)
+						{
+							EditorGUI.indentLevel++;
+							foreach (string txtFileName in instance.GetAssetNamesInPack(sourcePack, defType))
+							{
+								string txtFileFoldoutPath = $"{typeFoldoutPath}/{txtFileName}";
+								bool txtFileFoldout = NestedFoldout(txtFileFoldoutPath, Utils.ToLowerWithUnderscores(txtFileName.Split(".")[0]));
+								if (txtFileFoldout)
+								{
+									EditorGUI.indentLevel++;
+									GUILayout.BeginHorizontal();
+									{
+										List<string> inputMap, outputMap;
+										instance.TryGetImportMap(sourcePack, defType, txtFileName, out inputMap, out outputMap);
+										string targetAsset = instance.GetTargetAssetPathFor(sourcePack, defType, txtFileName);
+
+										GUILayout.Label(GUIContent.none, GUILayout.Width(15 * EditorGUI.indentLevel));
+
+										GUILayout.BeginVertical();
+										GUILayout.Label("File Name: ");
+										if (File.Exists(targetAsset))
+											GUILayout.Label("Already exists at: ", FlanStyles.GreenLabel);
+										else
+											GUILayout.Label("Will import to: ");
+										foreach (string input in inputMap)
+											GUILayout.Label("Extra Input: ");
+										foreach (string output in outputMap)
+										{
+											if (File.Exists(output))
+												GUILayout.Label("Extra already imported at: ", FlanStyles.GreenLabel);
+											else
+												GUILayout.Label("Extra Output: ");
+										}
+										GUILayout.EndVertical();
+
+										GUILayout.BeginVertical();
+										GUILayout.Label(txtFileName);
+
+										if (File.Exists(targetAsset))
+											GUILayout.Label(targetAsset, FlanStyles.GreenLabel);
+										else
+											GUILayout.Label(targetAsset);
+										foreach (string input in inputMap)
+											GUILayout.Label(input);
+										foreach (string output in outputMap)
+										{
+											if (File.Exists(output))
+												GUILayout.Label(output, FlanStyles.GreenLabel);
+											else 
+												GUILayout.Label(output);
+										}
+										GUILayout.EndVertical();
+									}
+									GUILayout.EndHorizontal();
+									EditorGUI.indentLevel--;
+								}
+							}
+							EditorGUI.indentLevel--;
+						}
+					}
+				}
+				EditorGUI.indentLevel--;
+			}
+		}
+	}
+	private void ReimportTab(DefinitionImporter instance)
+	{
+	/*
+		foreach (string sourcePack in instance.UnimportedPacks)
+		{
+			string packFoldoutPath = $"{sourcePack}";
+			GUILayout.BeginHorizontal();
+			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
+			GUILayout.Label("t", GUILayout.Width(32));
+			GUILayout.EndHorizontal();
+			if (packFoldout)
+			{
+				EditorGUI.indentLevel++;
+				// TODO:Sort by type
+				Dictionary<string, string> importMap = instance.CreateImportMap(sourcePack);
+				// tODO: Gather import data "will this override existing etc"
+				foreach (var kvp in importMap)
+				{
+					string importFoldoutPath = $"{sourcePack}/{kvp.Key}";
+					if (NestedFoldout(importFoldoutPath, kvp.Key))
+					{
+						EditorGUI.indentLevel++;
+						GUILayout.Label(kvp.Value);
+						EditorGUI.indentLevel--;
+					}
+				}
+
+				EditorGUI.indentLevel--;
+			}
+		}
+		*/
+	}
+
+	private void ContentNode(Definition def, string parentPath)
+	{
+		string path = $"{parentPath}/{def.name}";
+		if (NestedFoldout(path, def.name))
+		{
+
+		}
+	}
+	private bool NestedFoldout(string path, string label)
+	{
+		bool oldFoldout = ImportFoldouts.Contains(path);
+		bool newFoldout = EditorGUILayout.Foldout(oldFoldout, label);
+		if (newFoldout && !oldFoldout)
+			ImportFoldouts.Add(path);
+		else if (oldFoldout && !newFoldout)
+			ImportFoldouts.Remove(path);
+		return newFoldout;
+	}
+
+	private string FolderSelector(string label, string folder, string defaultLocation)
+	{
+		GUILayout.Label(label);
+		GUILayout.BeginHorizontal();
+		folder = EditorGUILayout.DelayedTextField(folder);
+		if (GUILayout.Button(EditorGUIUtility.IconContent("d_Profiler.Open")))
+			folder = EditorUtility.OpenFolderPanel("Select resources root folder", folder, "");
+		if (GUILayout.Button(EditorGUIUtility.IconContent("d_preAudioLoopOff")))
+			folder = defaultLocation;
+		GUILayout.EndHorizontal();
+		return folder;
+	}
+
+	private void p()
+	{ 
+		{
+			DefinitionImporter instance = (DefinitionImporter)target;
+			//base.OnInspectorGUI();
+
+			if (!hasDoneInit)
 			{
 				instance.CheckInit();
 				hasDoneInit = true;
@@ -52,16 +310,16 @@ public class DefinitionImporterEditor : Editor
 
 			GUILayout.Label("Unimported Packs");
 			
-			foreach(string packName in instance.UnimportedPacks)
-			{
-				GUILayout.BeginHorizontal();
-				if(GUILayout.Button("Import"))
-				{
-					instance.ImportPack(packName);
-				}
-				GUILayout.Label($"> {packName}");
-				GUILayout.EndHorizontal();
-			}
+			//foreach(string packName in instance.UnimportedPacks)
+			//{
+			//	GUILayout.BeginHorizontal();
+			//	if(GUILayout.Button("Import"))
+			//	{
+			//		instance.ImportPack(packName);
+			//	}
+			//	GUILayout.Label($"> {packName}");
+			//	GUILayout.EndHorizontal();
+			//}
 
 		}
 	}

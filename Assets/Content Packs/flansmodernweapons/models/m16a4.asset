@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: m16a4
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -607,17 +608,32 @@ MonoBehaviour:
   - key: barrel_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.8125, y: 0.203125, z: 0}
+    vec3Value: {x: 13, y: 3.25, z: 0}
   - key: stock_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: -0.0625, y: 0.203125, z: 0}
+    vec3Value: {x: -1, y: 3.25, z: 0}
   - key: scope_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.125, y: 0.28125, z: 0}
+    vec3Value: {x: 2, y: 4.5, z: 0}
   - key: grip_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.4375, y: 0.15625, z: 0}
-  AttachPoints: []
+    vec3Value: {x: 7, y: 2.5, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: sights
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

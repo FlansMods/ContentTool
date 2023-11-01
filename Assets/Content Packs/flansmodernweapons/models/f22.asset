@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: f22
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -2155,4 +2156,34 @@ MonoBehaviour:
       - {x: -0, y: -1, z: -1.5}
       - {x: 0, y: -1, z: -1.5}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: nose
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: tail
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: yawFlap
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: bodyWheel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftWingWheel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightWingWheel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: hud
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

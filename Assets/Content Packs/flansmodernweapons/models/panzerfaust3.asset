@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: panzerfaust3
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -256,9 +257,15 @@ MonoBehaviour:
   - key: third_person_offset
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0, y: -0.05, z: -0.2}
+    vec3Value: {x: 0, y: -0.8, z: -3.2}
   - key: item_frame_offset
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.5, y: 0, z: 0}
-  AttachPoints: []
+    vec3Value: {x: 8, y: 0, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

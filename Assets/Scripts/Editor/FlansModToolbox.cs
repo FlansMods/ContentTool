@@ -80,68 +80,21 @@ public class FlansModToolbox : EditorWindow
 	// -------------------------------------------------------------------------------------------------------
 	#region Import Tab
 	// -------------------------------------------------------------------------------------------------------
-	private enum ImportSubTab
-	{
-		
-	}
-	private int SelectedImportPackIndex = 0;
-	private List<string> ImportFoldouts = new List<string>();
+	private Editor DefinitionImporterEditor = null;
 	private void ImportTab()
 	{
 		DefinitionImporter inst = DefinitionImporter.inst;
-		// TODO: Timer on this
-		inst.CheckInit();
-
-		foreach (string sourcePack in inst.UnimportedPacks)
+		if(DefinitionImporterEditor == null || DefinitionImporterEditor.target != inst)
 		{
-			string packFoldoutPath = $"{sourcePack}";
-			GUILayout.BeginHorizontal();
-			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
-			GUILayout.Label("t", GUILayout.Width(32));
-			GUILayout.EndHorizontal();
-			if (packFoldout)
-			{
-				EditorGUI.indentLevel++;
-				// TODO:Sort by type
-				Dictionary<string, string> importMap = CreateImportMap(sourcePack);
-				// tODO: Gather import data "will this override existing etc"
-				foreach(var kvp in importMap)
-				{
-					string importFoldoutPath = $"{sourcePack}/{kvp.Key}";
-					if (NestedFoldout(importFoldoutPath, kvp.Key))
-					{
-						EditorGUI.indentLevel++;
-						GUILayout.Label(kvp.Value);
-						EditorGUI.indentLevel--;
-					}
-				}
-
-				EditorGUI.indentLevel--;
-			}
+			DefinitionImporterEditor = Editor.CreateEditor(inst);
+		}
+		if(DefinitionImporterEditor != null)
+		{
+			DefinitionImporterEditor.OnInspectorGUI();
 		}
 	}
 
-	private Dictionary<string, string> CreateImportMap(string importFolder)
-	{
-		Dictionary<string, string> importMap = new Dictionary<string, string>();
-		string modName = Utils.ToLowerWithUnderscores(importFolder);
-		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
-		{
-			EDefinitionType defType = (EDefinitionType)i;
-			DirectoryInfo dir = new DirectoryInfo($"{DefinitionImporter.IMPORT_ROOT}/{importFolder}/{defType.Folder()}");
-			if (dir.Exists)
-			{
-				foreach (FileInfo file in dir.EnumerateFiles())
-				{
-					string shortName = Utils.ToLowerWithUnderscores(file.Name.Split(".")[0]);
-					importMap.Add(
-						$"{importFolder}/{defType.Folder()}/{file.Name}",
-						$"{modName}/{defType.OutputFolder()}/{shortName}.asset");
-				}
-			}
-		}
-		return importMap;
-	}
+
 
 	/*
 	private void p()
@@ -203,39 +156,7 @@ public class FlansModToolbox : EditorWindow
 		FolderSelector("Export Location", inst.ExportRoot, "Assets/Export");
 	}
 	*/
-	private void ContentNode(Definition def, string parentPath)
-	{
-		string path = $"{parentPath}/{def.name}";
-		if(NestedFoldout(path, def.name))
-		{ 
-			
-		}
-	}
-	private bool NestedFoldout(string path, string label)
-	{
-		bool oldFoldout = ImportFoldouts.Contains(path);
-		bool newFoldout = EditorGUILayout.Foldout(oldFoldout, label);
-		if (newFoldout && !oldFoldout)
-			ImportFoldouts.Add(path);
-		else if (oldFoldout && !newFoldout)
-			ImportFoldouts.Remove(path);
-		return newFoldout;
-	}
-
-
-
-	private string FolderSelector(string label, string folder, string defaultLocation)
-	{
-		GUILayout.Label(label);
-		GUILayout.BeginHorizontal();
-		folder = EditorGUILayout.DelayedTextField(folder);
-		if(GUILayout.Button(EditorGUIUtility.IconContent("d_Profiler.Open")))
-			folder = EditorUtility.OpenFolderPanel("Select resources root folder", folder, "");
-		if (GUILayout.Button(EditorGUIUtility.IconContent("d_preAudioLoopOff")))
-			folder = defaultLocation;
-		GUILayout.EndHorizontal();
-		return folder;
-	}
+	
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
 

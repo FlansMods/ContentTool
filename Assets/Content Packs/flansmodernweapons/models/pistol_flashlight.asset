@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: pistol_flashlight
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -52,4 +53,7 @@ MonoBehaviour:
       - {x: -0, y: -0.35, z: -0.35}
       - {x: 0, y: -0.35, z: -0.35}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: attachment
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

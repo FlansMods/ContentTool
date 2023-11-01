@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: executioner
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -183,5 +184,14 @@ MonoBehaviour:
   - key: barrel_break_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.1875, y: 0.125, z: 0}
-  AttachPoints: []
+    vec3Value: {x: 3, y: 2, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: break_action
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

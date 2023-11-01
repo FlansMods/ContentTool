@@ -154,6 +154,8 @@ public class TurboPiecePreview : MinecraftModelPreview
 
 	public void OnDrawGizmosSelected()
 	{
+		if (Piece == null)
+			return;
 		Vector3[] verts = Piece.GetVerts();
 		Vector3 center = Vector3.zero;
 		for (int i = 0; i < 8; i++)

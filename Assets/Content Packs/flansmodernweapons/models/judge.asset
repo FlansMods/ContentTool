@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: judge
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -194,11 +195,11 @@ MonoBehaviour:
   - key: grip_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.3125, y: 0.0625, z: 0}
+    vec3Value: {x: 5, y: 1, z: 0}
   - key: scope_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.3125, y: 0.25, z: 0}
+    vec3Value: {x: 5, y: 4, z: 0}
   - key: revolver_flip_angle
     isVec3: 0
     floatValue: -40
@@ -219,4 +220,13 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0.2
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: revolver
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

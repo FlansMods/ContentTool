@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 4x_scope
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -131,4 +132,7 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: attachment
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

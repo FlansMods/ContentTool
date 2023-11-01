@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: molotov_cocktail
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -71,4 +72,13 @@ MonoBehaviour:
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: neck
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: cloth
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

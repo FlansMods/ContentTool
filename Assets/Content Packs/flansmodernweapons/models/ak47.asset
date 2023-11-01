@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ak47
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -365,17 +366,29 @@ MonoBehaviour:
   - key: barrel_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.96875, y: 0.203125, z: 0}
+    vec3Value: {x: 15.5, y: 3.25, z: 0}
   - key: stock_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: -0.03125, y: 0.1875, z: 0}
+    vec3Value: {x: -0.5, y: 3, z: 0}
   - key: scope_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.25, y: 0.296875, z: 0}
+    vec3Value: {x: 4, y: 4.75, z: 0}
   - key: grip_attach_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: 0.5625, y: 0.171875, z: 0}
-  AttachPoints: []
+    vec3Value: {x: 9, y: 2.75, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
