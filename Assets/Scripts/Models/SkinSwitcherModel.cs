@@ -18,6 +18,15 @@ public class SkinSwitcherModel : MinecraftModel
 		}
 	}
 
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+		
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+		
+	}
+
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("parent", Default.Location.ToString());

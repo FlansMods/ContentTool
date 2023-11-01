@@ -311,6 +311,9 @@ public abstract class MinecraftModelEditor : Editor
 			{
 				ModellingNode(child, path);
 			}
+
+			
+
 			EditorGUI.indentLevel--;
 			if (node.name != oldName)
 			{

@@ -66,4 +66,13 @@ public class ItemModel : MinecraftModel
 		}
 		return base.ExportToJson(builder);
 	}
+
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+
+	}
 }

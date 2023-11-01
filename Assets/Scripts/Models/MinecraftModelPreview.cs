@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
 public abstract class MinecraftModelPreview : MonoBehaviour
 {
-	public static float TextureZoomLevel = 16;
+	public static float TextureZoomLevel = 2;
 	protected MinecraftModel Model = null;
 	protected MeshRenderer MR = null;
 	protected MeshFilter MF = null;

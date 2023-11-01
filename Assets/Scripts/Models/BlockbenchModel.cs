@@ -17,4 +17,12 @@ public class BlockbenchModel : MinecraftModel
 	{
 		return other is BlockbenchModel;
 	}
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+		
+	}
 }

@@ -77,7 +77,7 @@ public class ModelEditingRigEditor : Editor
 	{
 		Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, options);
 		if (changedModel != rig.ModelOpenedForEdit)
-			rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
+			rig.OpenModel(changedModel as MinecraftModel);
 	}
 
 	#endregion
@@ -252,18 +252,19 @@ public class ModelEditingRigEditor : Editor
 	{
 		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(AnimationDefinition), false, options);
 		if (changedAnim != rig.SelectedAnimation)
-			rig.Button_ApplyAnimation(AssetDatabase.GetAssetPath(changedAnim));
+			rig.OpenAnimation(changedAnim as AnimationDefinition);
 	}
 	#endregion
 	// ------------------------------------------------------------------------
 
 	// ------------------------------------------------------------------------
-	#region Texturing Tab
+	#region Skins Tab
 	// ------------------------------------------------------------------------
 	private static readonly List<float> TextureZoomSettings = new List<float>(new float[] { 0, 1, 2, 4, 8, 16, 32, 64 });
 	private static readonly string[] TextureZoomSettingNames = new string[] { "Auto", "1", "2", "4", "8", "16", "32", "64" };
 	private List<int> ExpandedTextures = new List<int>();
 	private List<string> SkinNodeFoldouts = new List<string>();
+	private Vector2 TexturePreviewScroller = Vector2.zero;
 	private void SkinsTab(ModelEditingRig rig)
 	{
 		if (rig == null)
@@ -293,18 +294,54 @@ public class ModelEditingRigEditor : Editor
 					ExpandedTextures.Remove(i);
 				else if (newExpanded && !oldExpanded)
 					ExpandedTextures.Add(i);
-				GUILayout.Label($"[{i}]", GUILayout.Width(32));
-				GUIVerify.VerificationIcon(verifications);
+				GUILayout.Label($"[{i}] {texture.Key}", GUILayout.Width(200));
 
-				texture.Location = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+				if (!newExpanded)
+				{
+					GUIVerify.VerificationIcon(verifications);
+					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+					if (changedTextureLocation != texture.Location)
+					{
+						texture.Location = changedTextureLocation;
+						texture.Texture = changedTextureLocation.Load<Texture2D>();
+					}
+				}
+				GUILayout.FlexibleSpace();
+
 				GUILayout.EndHorizontal();
 
 				if (newExpanded)
 				{
+					GUILayout.BeginHorizontal();
+
+					GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 15));
+
+					GUILayout.BeginVertical();
+					GUILayout.BeginHorizontal();
+					GUILayout.Label("Key: ");
+					texture.Key = GUILayout.TextField(texture.Key);
+					GUILayout.EndHorizontal();
+
+					GUILayout.BeginHorizontal();
+					GUILayout.Label("Texture: ");
+					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+					if (changedTextureLocation != texture.Location)
+					{
+						texture.Location = changedTextureLocation;
+						texture.Texture = changedTextureLocation.Load<Texture2D>();
+					}
+					GUILayout.EndHorizontal();
+
 					if (texture.Texture != null)
 					{
+						TexturePreviewScroller = GUILayout.BeginScrollView(TexturePreviewScroller, GUILayout.ExpandHeight(false));
 						RenderTextureAutoWidth(texture.Texture);
+						GUILayout.EndScrollView();
 					}
+					GUIVerify.VerificationsBox(verifications);
+					GUILayout.EndVertical();
+
+					GUILayout.EndHorizontal();
 				}
 			}
 

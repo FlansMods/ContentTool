@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Model;
 
@@ -302,7 +303,32 @@ public class TurboRig : MinecraftModel
 
 		return mod;
     }
-
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+		foreach (TurboModel section in Sections)
+		{
+			for(int i = 0; i < section.Pieces.Count; i++)
+			{
+				if(section.Pieces[i].TryGenerateUVPatch(out UVPatch patch))
+				{
+					patches.Add($"{section.PartName}/{i}", patch);
+				}
+			}
+		}
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+		foreach (TurboModel section in Sections)
+		{
+			for (int i = 0; i < section.Pieces.Count; i++)
+			{
+				if (section.Pieces[i].TryGetUVPlacement(out UVMap.UVPlacement placement))
+				{
+					placements.Add($"{section.PartName}/{i}", placement);
+				}
+			}
+		}
+	}
 	public override bool IsUVMapSame(MinecraftModel other)
 	{
 		if (other is TurboRig otherRig)
@@ -474,7 +500,7 @@ public class TurboRig : MinecraftModel
 					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(wrapper.Origin - origin));
 					using (builder.Indentation("faces"))
 					{
-						Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
+                        System.Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
 						{
 							using (builder.Indentation(name))
 							{

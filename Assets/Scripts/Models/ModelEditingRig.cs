@@ -7,22 +7,179 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using static MinecraftModel;
 
 [ExecuteInEditMode]
 public class ModelEditingRig : MonoBehaviour
 {
-    // Selection
-    //[HideInInspector]
-    public MinecraftModel ModelOpenedForEdit = null;
-    //[HideInInspector]
-	//public MinecraftModel WorkingCopy = null;
+	// ------------------------------------------------------------------------------------------
+	#region General
+	// ------------------------------------------------------------------------------------------
+	[HideInInspector]
+	public MinecraftModel ModelOpenedForEdit = null; 
+	public string ModelName { get { return ModelOpenedForEdit == null ? "None" : ModelOpenedForEdit.name; } }
+	public void OpenModel(MinecraftModel model)
+	{
+		CloseModel();
 
+		ModelOpenedForEdit = model;
+
+		CheckModelPreviewExists();
+		Preview.Refresh();
+		LoadInitialUVMap();
+
+		MinecraftModel.NamedTexture DefaultTexture = model.GetDefaultTexture();
+		if (DefaultTexture != null)
+			foreach (TurboPiecePreview piece in GetComponentsInChildren<TurboPiecePreview>())
+			{
+				piece.CopyExistingTexture(DefaultTexture.Texture);
+			}
+	}
+	public void CloseModel()
+	{
+		// Unparent any rigs attached to this
+		ModelEditingRig[] subRigs = GetComponentsInChildren<ModelEditingRig>();
+		foreach(ModelEditingRig subRig in subRigs)
+		{
+			if(subRig != this)
+				subRig.transform.SetParent(null);
+		}
+
+		InvalidatePreviews();
+		ModelOpenedForEdit = null;
+	}
+
+	public void UpdateModel()
+	{
+		CheckModelPreviewExists();
+		Preview.Refresh(); // TODO: Rename, be specific
+
+		// Check for Scene View edits
+
+		// Check for Inspector edits
+
+
+		CheckUpdateUVs();
+	}
+
+	public void OnEnable()
+	{
+		EditorApplication.update += UpdateAnims;
+		EditorApplication.update += UpdateModel;
+	}
+	public void OnDisable()
+	{
+		EditorApplication.update -= UpdateAnims;
+		EditorApplication.update -= UpdateModel;
+	}
+	#endregion
+	// ------------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------------
+	#region Previewers
+	// ------------------------------------------------------------------------------------------
 	public MinecraftModelPreview Preview = null;
 
-	// Currently assuming single texture skinning only
+	private TurboRigPreview FindRigPreview()
+	{
+		return GetComponentInChildren<TurboRigPreview>();
+	}
+	private TurboModelPreview FindSectionPreview(string key)
+	{
+		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
+			if (section.PartName == key)
+				return section;
+		return null;
+	}
+	private void InvalidatePreviews()
+	{
+		// Delete all our preview objects
+		MinecraftModelPreview child = GetComponentInChildren<MinecraftModelPreview>();
+		while (child != null) // Weird loop because they might be parented
+		{
+			DestroyImmediate(child.gameObject);
+			child = GetComponentInChildren<MinecraftModelPreview>();
+		}
+	}
+	private void CheckModelPreviewExists()
+	{
+		if (ModelOpenedForEdit != null && Preview == null)
+		{
+			if (ModelOpenedForEdit is CubeModel cubeModel)
+				Preview = CreatePreviewObject(cubeModel, false);
+			else if (ModelOpenedForEdit is ItemModel itemModel)
+				Preview = CreatePreviewObject(itemModel, false);
+			else if (ModelOpenedForEdit is TurboRig turboRig)
+				Preview = CreatePreviewObject(turboRig, false);
+		}
+	}
+	public MinecraftModelPreview CreatePreviewObject(TurboRig model, bool forceUpdate)
+	{
+		Transform existing = transform.Find("turbo");
+		if (existing == null || forceUpdate)
+		{
+			if (existing != null)
+				DestroyImmediate(existing.gameObject);
+			GameObject go = new GameObject("turbo");
+			go.transform.SetParent(transform);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localScale = Vector3.one;
+			go.transform.localRotation = Quaternion.identity;
+			TurboRigPreview preview = go.AddComponent<TurboRigPreview>();
+			preview.SetModel(model);
+			return preview;
+		}
+		existing.GetComponent<TurboRigPreview>().SetModel(model);
+		return existing.GetComponent<TurboRigPreview>();
+	}
+
+	public MinecraftModelPreview CreatePreviewObject(CubeModel model, bool forceUpdate)
+	{
+		Transform existing = transform.Find("cube");
+		if (existing == null || forceUpdate)
+		{
+			if (existing != null)
+				DestroyImmediate(existing.gameObject);
+			GameObject go = new GameObject("cube");
+			go.transform.SetParent(transform);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localScale = Vector3.one;
+			go.transform.localRotation = Quaternion.identity;
+			CubeModelPreview preview = go.AddComponent<CubeModelPreview>();
+			preview.SetModel(model);
+			return preview;
+		}
+		return existing.GetComponent<CubeModelPreview>();
+	}
+
+	public MinecraftModelPreview CreatePreviewObject(ItemModel model, bool forceUpdate)
+	{
+		Transform existing = transform.Find("item");
+		if (existing == null || forceUpdate)
+		{
+			if (existing != null)
+				DestroyImmediate(existing.gameObject);
+			GameObject go = new GameObject("item");
+			go.transform.SetParent(transform);
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localScale = Vector3.one;
+			go.transform.localRotation = Quaternion.identity;
+			ItemModelPreview preview = go.AddComponent<ItemModelPreview>();
+			preview.SetModel(model);
+			return preview;
+		}
+		return existing.GetComponent<ItemModelPreview>();
+	}
+	#endregion
+	// ------------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------------
+	#region Skins
+	// ------------------------------------------------------------------------------------------
 	[Header("Skins")]
     public bool ApplySkin = true;
-    public string SelectedSkin = "default";
+	// Currently assuming single texture skinning only
+	public string SelectedSkin = "default";
 	public MinecraftModel.NamedTexture GetNamedTexture() 
 	{ 
 		if(ModelOpenedForEdit != null)
@@ -36,8 +193,46 @@ public class ModelEditingRig : MonoBehaviour
 			return namedTexture.Texture;
 		return null;
 	}
-	public string ModelName { get { return ModelOpenedForEdit == null ? "None" : ModelOpenedForEdit.name; } }
+	public Texture2D DebugBoxTexture = null;
+	public UVMap CurrentUVMap = null;
+	
+	private void LoadInitialUVMap()
+	{
+		CurrentUVMap = UVMap.ExportFromModel(ModelOpenedForEdit);
+	}
+	private bool NeedsUVUpdate()
+	{
+		UVMap newMap = UVMap.GetPatchesFor(ModelOpenedForEdit);
+		return !CurrentUVMap.Solves(newMap);
+	}
+	private bool CheckUpdateUVs()
+	{
+		UVMap newMap = UVMap.GetPatchesFor(ModelOpenedForEdit);
+		if (CurrentUVMap.Solves(newMap))
+			return false;
 
+		// So we need to convert from one map to the other
+		UVCalculator.GenerateNewUVMap(CurrentUVMap, newMap);
+
+		// And then update our texture stack
+		List<Texture2D> inputTextures = new List<Texture2D>();
+		foreach(NamedTexture namedTexture in ModelOpenedForEdit.Textures)
+		{
+			if (namedTexture.Key == "particle")
+				continue;
+			inputTextures.Add(namedTexture.Texture);
+		}
+		UVCalculator.UpdateSkins(CurrentUVMap, newMap, inputTextures);
+		CurrentUVMap = newMap;
+		return true;
+	}
+
+	#endregion
+	// ------------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------------
+	#region Animations
+	// ------------------------------------------------------------------------------------------
 	[Header("Animations")]
     public bool ApplyAnimation = false;
     public AnimationDefinition SelectedAnimation = null;
@@ -54,6 +249,16 @@ public class ModelEditingRig : MonoBehaviour
 	public bool Looping = false;
 	public bool StepThrough = false;
 	public List<AnimPreviewEntry> PreviewSequences = new List<AnimPreviewEntry>();
+	public void CloseAnimation()
+	{
+		SelectedAnimation = null;
+	}
+	public void OpenAnimation(AnimationDefinition anim)
+	{
+		CloseAnimation();
+		SelectedAnimation = anim;
+	}
+
 	public SequenceDefinition GetSequence(string sequenceName)
 	{
 		if(SelectedAnimation != null)
@@ -157,21 +362,6 @@ public class ModelEditingRig : MonoBehaviour
 		parameter = 0.0f;
 		return null;
 	}
-
-	public void OnEnable()
-	{
-		EditorApplication.update += UpdateAnims;
-	}
-
-	public void OnDisable()
-	{
-		EditorApplication.update -= UpdateAnims;
-	}
-
-	public void Update()
-	{
-        RefreshMeshes();
-	}
 	public void PressPlay()
 	{
 		if (StepThrough)
@@ -187,7 +377,6 @@ public class ModelEditingRig : MonoBehaviour
 	{
 		AnimProgressSeconds = 0.0f;
 	}
-
 	public void UpdateAnims()
 	{
 		if (ApplyAnimation && PreviewSequences.Count > 0)
@@ -209,7 +398,7 @@ public class ModelEditingRig : MonoBehaviour
 			for (int i = 0; i < PreviewSequences.Count; i++)
 			{
 				float duration = 0.0f;
-				if(PreviewSequences[i].IsSequence)
+				if (PreviewSequences[i].IsSequence)
 				{
 					sequence = FindSequence(PreviewSequences[i].Name);
 					keyframe = null;
@@ -290,7 +479,7 @@ public class ModelEditingRig : MonoBehaviour
 					}
 				}
 			}
-			else 
+			else
 			{
 				// Found neither matching frame nor sequence, default pose?
 				SetDefaultPose();
@@ -309,18 +498,6 @@ public class ModelEditingRig : MonoBehaviour
 			section.transform.localRotation = Quaternion.identity;
 			section.transform.localScale = Vector3.one;
 		}
-	}
-
-	private TurboRigPreview FindRigPreview()
-	{
-		return GetComponentInChildren<TurboRigPreview>();
-	}
-	private TurboModelPreview FindSectionPreview(string key)
-	{
-		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
-			if (section.PartName == key)
-				return section;
-		return null;
 	}
 	private void ApplyPose(KeyframeDefinition keyframe)
 	{
@@ -427,317 +604,6 @@ public class ModelEditingRig : MonoBehaviour
 				return keyframe;
 		return null;
 	}
-
-	public void RefreshMeshes()
-    {
-        if (ModelOpenedForEdit == null)
-            return;
-
-		if (ModelOpenedForEdit is CubeModel cubeModel)
-		{
-			Preview = CreatePreviewObject(cubeModel, false);
-		}
-		else if (ModelOpenedForEdit is ItemModel itemModel)
-		{
-			Preview = CreatePreviewObject(itemModel, false);
-		}
-		else if (ModelOpenedForEdit is TurboRig turboRig)
-		{
-			Preview = CreatePreviewObject(turboRig, false);
-		}
-		Preview.Refresh();
-	}
-
-	public MinecraftModelPreview CreatePreviewObject(TurboRig model, bool forceUpdate)
-	{
-        Transform existing = transform.Find("turbo");
-        if (existing == null || forceUpdate)
-        {
-            if (existing != null)
-                DestroyImmediate(existing.gameObject);
-            GameObject go = new GameObject("turbo");
-            go.transform.SetParent(transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localScale = Vector3.one;
-            go.transform.localRotation = Quaternion.identity;
-            TurboRigPreview preview = go.AddComponent<TurboRigPreview>();
-			preview.SetModel(model);
-			return preview;
-        }
-		existing.GetComponent<TurboRigPreview>().SetModel(model);
-		return existing.GetComponent<TurboRigPreview>();
-	}
-
-	public MinecraftModelPreview CreatePreviewObject(CubeModel model, bool forceUpdate)
-    {
-		Transform existing = transform.Find("cube");
-		if (existing == null || forceUpdate)
-		{
-			if (existing != null)
-				DestroyImmediate(existing.gameObject);
-			GameObject go = new GameObject("cube");
-            go.transform.SetParent(transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localScale = Vector3.one;
-            go.transform.localRotation = Quaternion.identity;
-            CubeModelPreview preview = go.AddComponent<CubeModelPreview>();
-            preview.SetModel(model);
-            return preview;
-		}
-		return existing.GetComponent<CubeModelPreview>();
-	}
-
-	public MinecraftModelPreview CreatePreviewObject(ItemModel model, bool forceUpdate)
-	{
-		Transform existing = transform.Find("item");
-		if (existing == null || forceUpdate)
-		{
-			if (existing != null)
-				DestroyImmediate(existing.gameObject);
-			GameObject go = new GameObject("item");
-			go.transform.SetParent(transform);
-			go.transform.localPosition = Vector3.zero;
-			go.transform.localScale = Vector3.one;
-			go.transform.localRotation = Quaternion.identity;
-			ItemModelPreview preview = go.AddComponent<ItemModelPreview>();
-			preview.SetModel(model);
-			return preview;
-		}
-		return existing.GetComponent<ItemModelPreview>();
-	}
-
-	public void OpenModel(MinecraftModel model)
-    {
-		if (ModelOpenedForEdit != null)
-		{
-			DiscardChanges();
-		}
-
-		ModelOpenedForEdit = model;
-        
-        RefreshMeshes();
-		MinecraftModel.NamedTexture DefaultTexture = model.GetDefaultTexture();
-		if(DefaultTexture != null)
-			foreach (TurboPiecePreview piece in GetComponentsInChildren<TurboPiecePreview>())
-			{
-				piece.CopyExistingTexture(DefaultTexture.Texture);
-			}
-    }
-
-	private void PreSaveStep()
-	{
-		if(ModelOpenedForEdit != null)
-		{
-			UVCalculator.AutoUV(ModelOpenedForEdit, Preview, SelectedSkin);
-		}
-	}
-
-    public void SaveAs(string newAssetPath)
-    {
-		if (ModelOpenedForEdit != null)
-		{
-			PreSaveStep();
-
-			// Serialize-copy our model
-			MinecraftModel SaveAsCopy = (MinecraftModel)ScriptableObject.CreateInstance(ModelOpenedForEdit.GetType());
-			string json = JsonUtility.ToJson(ModelOpenedForEdit);
-			JsonUtility.FromJsonOverwrite(json, SaveAsCopy);
-
-            // Save to disk
-            AssetDatabase.CreateAsset(SaveAsCopy, newAssetPath);
-			EditorUtility.SetDirty(SaveAsCopy);
-
-            // Then re-establish the new connection
-            ModelOpenedForEdit = AssetDatabase.LoadAssetAtPath<MinecraftModel>(newAssetPath);
-		}
-	}
-
-    public void SaveChanges()
-    {
-        if (ModelOpenedForEdit != null)
-        {
-			PreSaveStep();
-
-			//string json = JsonUtility.ToJson(WorkingCopy);
-            //JsonUtility.FromJsonOverwrite(json, ModelOpenedForEdit);
-            //EditorUtility.SetDirty(ModelOpenedForEdit);
-            //AssetDatabase.SaveAssets();
-			//Debug.Log($"Saved {WorkingCopy} to {AssetDatabase.GetAssetPath(ModelOpenedForEdit)}");
-			//
-			//IsDirty = false;
-        }
-        else Debug.LogError("Can't save changes without an open model");
-	}
-
-    public void SaveAndCloseModel()
-    {
-        SaveChanges();
-        ModelOpenedForEdit = null;
-		foreach (MinecraftModelPreview preview in GetComponentsInChildren<MinecraftModelPreview>())
-			if (preview != null)
-				DestroyImmediate(preview.gameObject);
-	}
-
-    public void DiscardChanges()
-    {
-        ModelOpenedForEdit = null;
-        foreach (MinecraftModelPreview preview in GetComponentsInChildren<MinecraftModelPreview>())
-            if (preview != null)
-                DestroyImmediate(preview.gameObject);
-    }
-
-	public void SaveTexture()
-	{
-		
-	}
-
-	public void SaveTextureAs(string newTexturePath)
-	{
-		string newTextureName = newTexturePath;
-		newTextureName = newTextureName.Substring(
-			newTextureName.LastIndexOf('/') + 1,
-			newTextureName.LastIndexOf('.') - (newTextureName.LastIndexOf('/') + 1));
-
-		if (UVCalculator.StitchWithExistingUV(ModelOpenedForEdit, Preview, newTextureName))
-		{
-			Debug.Log($"Saved new skin as {newTextureName}:'{newTexturePath}'");
-		}
-		else Debug.LogError($"Failed to save new skin as {newTextureName} at {newTexturePath}");
-	}
-
-	#if UNITY_EDITOR
-	public void Editor_Toolbox()
-    {
-		if (GUILayout.Button("Load..."))
-			Button_OpenModel();
-
-		EditorGUI.BeginDisabledGroup(ModelOpenedForEdit == null);
-		{
-			if (GUILayout.Button("Save"))
-				Button_Save();
-			if (GUILayout.Button("Save As..."))
-				Button_SaveAs();
-			if (GUILayout.Button("Discard"))
-				Button_Discard();
-		}
-		EditorGUI.EndDisabledGroup();
-	}
-
-	public void Button_ApplyAnimation(string loadPath = null)
-	{
-		if (SelectedAnimation != null)
-		{
-			// Maybe?
-		}
-
-		if (loadPath == null)
-			loadPath = EditorUtility.OpenFilePanelWithFilters("", "Assets/Content Packs", new string[] { "Imported Animation", "asset" });
-		if (loadPath != null && loadPath.Length > 0)
-		{
-			loadPath = loadPath.Substring(loadPath.IndexOf("Assets"));
-			AnimationDefinition anim = AssetDatabase.LoadAssetAtPath<AnimationDefinition>(loadPath);
-			if(anim != null)
-				SelectedAnimation = anim;
-			else Debug.LogError($"Could not load animation at {loadPath}");
-		}
-	}
-
-
-	public void Button_OpenModel(string loadPath = null)
-    {
-		bool canLoad = true;
-		if (ModelOpenedForEdit != null && EditorUtility.IsDirty(ModelOpenedForEdit))
-		{
-			int result = EditorUtility.DisplayDialogComplex(
-				"Unsaved changes",
-				"Your model has unsaved changes, do you want to save?",
-				"Save Changes",
-				"Don't Save",
-				"Cancel");
-
-			if (result == 0)
-				SaveAndCloseModel();
-			else if (result == 1)
-				DiscardChanges();
-			else if (result == 2)
-				canLoad = false;
-		}
-
-		if (canLoad)
-		{
-			if(loadPath == null)
-				loadPath = EditorUtility.OpenFilePanelWithFilters("", "Assets/Content Packs", new string[] { "Imported Model", "asset" });
-			if (loadPath != null && loadPath.Length > 0)
-			{
-				loadPath = loadPath.Substring(loadPath.IndexOf("Assets"));
-				MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(loadPath);
-				if (model != null)
-					OpenModel(model);
-				else
-				{
-					Debug.LogError($"Could not load model at {loadPath}");
-                    UnityEngine.Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(loadPath);
-					for (int i = 0; i < allAssets.Length; i++)
-						Debug.LogWarning($"Found asset {allAssets[i]}");
-				}
-			}
-		}
-	}
-
-    public void Button_Save()
-	{
-		if (ModelOpenedForEdit != null && EditorUtility.IsDirty(ModelOpenedForEdit))
-		{
-			if(!ModelOpenedForEdit.IsUVMapSame(ModelOpenedForEdit))
-			{
-				if (!EditorUtility.DisplayDialog("Model UV Mapping Changed!", 
-					$"Are you sure you want to save {ModelOpenedForEdit.name}? The model UV has changed, so skins other than the currently active one will be invalid.", "Yes", "No"))
-					return;
-			}
-			EditorGUI.BeginDisabledGroup(EditorUtility.IsDirty(ModelOpenedForEdit));
-			SaveChanges();
-			EditorGUI.EndDisabledGroup();
-		}
-	}
-
-    public void Button_SaveAs()
-    {
-		if (ModelOpenedForEdit != null)
-		{
-			string savePath = EditorUtility.SaveFilePanelInProject(ModelOpenedForEdit.name, "new_model", "asset", "Save Model As...");
-			if (savePath != null && savePath.Length > 0)
-				SaveAs(savePath);
-		}
-	}
-
-    public void Button_Discard()
-    {
-		if (ModelOpenedForEdit != null)
-		{
-			if (EditorUtility.DisplayDialog("Are you sure?", $"Are you sure you want to discard changes to {ModelOpenedForEdit.name}", "Yes", "No"))
-				DiscardChanges();
-		}
-	}
-
-	public void Button_CreateNewTexture()
-	{
-		
-	}
-
-	public void Button_SaveTexture()
-	{
-		if (EditorUtility.DisplayDialog("Model UV Mapping Changed!", $"Are you sure you want to save {SelectedSkin}? The model UV has changed, so other skins will not match the mapping.", "Yes", "No"))
-			SaveTexture();
-	}
-
-	public void Button_SaveTextureAs()
-	{
-		if (ModelOpenedForEdit != null && SelectedSkin.Length > 0)
-		{
-			string savePath = EditorUtility.SaveFilePanelInProject(SelectedSkin, "new_skin", "asset", "Save Skin As...");
-			if (savePath != null && savePath.Length > 0)
-				SaveTextureAs(savePath);
-		}
-	}
-    #endif
+	#endregion
+	// ------------------------------------------------------------------------------------------
 }

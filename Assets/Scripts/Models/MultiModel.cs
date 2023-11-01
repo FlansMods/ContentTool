@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Minecraft Models/MultiModel")]
@@ -17,6 +18,24 @@ public class MultiModel : MinecraftModel
 			&& multi.GUIModel.IsUVMapSame(GUIModel);
 		}
 		return false;
+	}
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+		FirstPersonModel?.GenerateUVPatches(patches);
+		ThirdPersonModel?.GenerateUVPatches(patches);
+		HeadModel?.GenerateUVPatches(patches);
+		GroundModel?.GenerateUVPatches(patches);
+		FixedModel?.GenerateUVPatches(patches);
+		GUIModel?.GenerateUVPatches(patches);
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+		FirstPersonModel?.ExportUVMap(placements);
+		ThirdPersonModel?.ExportUVMap(placements);
+		HeadModel?.ExportUVMap(placements);
+		GroundModel?.ExportUVMap(placements);
+		FixedModel?.ExportUVMap(placements);
+		GUIModel?.ExportUVMap(placements);
 	}
 
 	public MinecraftModel FirstPersonModel;

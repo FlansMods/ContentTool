@@ -43,4 +43,13 @@ public class CubeModel : MinecraftModel
 	{
 		base.GetVerifications(verifications);
 	}
+
+	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
+	{
+
+	}
+	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
+	{
+
+	}
 }

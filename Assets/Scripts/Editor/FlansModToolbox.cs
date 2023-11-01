@@ -356,7 +356,7 @@ public class FlansModToolbox : EditorWindow
 	{
 		Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, options);
 		if (changedModel != rig.ModelOpenedForEdit)
-			rig.Button_OpenModel(AssetDatabase.GetAssetPath(changedModel));
+			rig.OpenModel(changedModel as MinecraftModel);
 	}
 
 	private static readonly string[] APDefaults = new string[] {

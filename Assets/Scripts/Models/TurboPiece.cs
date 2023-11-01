@@ -96,6 +96,27 @@ public class TurboPiece
 		}
 	}
 
+	public bool TryGenerateUVPatch(out UVPatch patch)
+	{
+		patch = new BoxUVPatch()
+		{
+			boxDims = new Vector3Int(Mathf.CeilToInt(Dim.x), Mathf.CeilToInt(Dim.y), Mathf.CeilToInt(Dim.z)),
+		};
+		return true;
+	}
+	public bool TryGetUVPlacement(out UVMap.UVPlacement placement)
+	{
+		placement = new UVMap.UVPlacement()
+		{
+			Origin = new Vector2Int(textureU, textureV),
+			Patch = new BoxUVPatch()
+			{
+				boxDims = new Vector3Int(Mathf.CeilToInt(Dim.x), Mathf.CeilToInt(Dim.y), Mathf.CeilToInt(Dim.z)),
+			}
+		};
+		return true;
+	}
+
 	public Vector2Int MinUV { get { return new Vector2Int(textureU, textureV); } }
 	public Vector2Int MaxUV { get { return MinUV + BoxUVSize; } }
 	public Vector2Int BoxUVSize { get { return GetBoxUVSize(); } }

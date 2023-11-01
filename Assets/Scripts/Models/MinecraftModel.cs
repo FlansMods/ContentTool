@@ -94,6 +94,8 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 		return null;
 	}
 
+	public abstract void GenerateUVPatches(Dictionary<string, UVPatch> patches);
+	public abstract void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements);
 	public abstract bool IsUVMapSame(MinecraftModel other);
 	public virtual void FixNamespaces() { }
     public virtual bool ExportToJson(QuickJSONBuilder builder)
