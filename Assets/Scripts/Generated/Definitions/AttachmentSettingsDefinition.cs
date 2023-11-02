@@ -10,9 +10,5 @@ public class AttachmentSettingsDefinition
 	[JsonField]
 	public int numAttachmentSlots = 0;
 	[JsonField]
-	public string attachToMesh = "body";
-	[JsonField]
-	public Vector3 attachPoint = Vector3.zero;
-	[JsonField]
 	public bool hideDefaultMesh = true;
 }

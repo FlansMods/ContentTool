@@ -12,33 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9717990bd45d44ca23f90b0951c14c, type: 3}
   m_Name: modern
   m_EditorClassIdentifier: 
-  Model:
-    Type: 2
-    top: modern_box_top
-    north: modern_box_side
-    east: modern_box_side
-    south: modern_box_side
-    west: modern_box_side
-    bottom: box_bottom
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
   Skin: {fileID: 0}
   Icon: {fileID: 0}
-  AdditionalTextures:
-  - name: textures/blocks/box_bottom.png
-    texture: {fileID: 0}
-    icon: {fileID: 0}
-  - name: textures/blocks/modern_box_side.png
-    texture: {fileID: 0}
-    icon: {fileID: 0}
-  - name: textures/blocks/modern_box_top.png
-    texture: {fileID: 0}
-    icon: {fileID: 0}
+  AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   titlestring: workbench
   bannerTextureLocation: 
   gunCrafting:
@@ -46,13 +24,14 @@ MonoBehaviour:
     pages:
     - entries:
       - outputs:
-        - item: flansmodernweapons:r700ammo
+        - item: minecraft:r700ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -69,7 +48,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -81,13 +60,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m40a3ammo
+        - item: minecraft:m40a3ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -104,7 +84,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -116,13 +96,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:shulkersniperammo
+        - item: minecraft:shulkersniperammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -139,7 +120,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -151,13 +132,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m40a3
+        - item: minecraft:m40a3
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -174,7 +156,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -212,13 +194,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:dragunov_ammo
+        - item: minecraft:dragunov_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -235,7 +218,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -247,13 +230,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:dragunov
+        - item: minecraft:dragunov
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -295,13 +279,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:r700ammo
+        - item: minecraft:r700ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -318,7 +303,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -330,13 +315,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m40a3ammo
+        - item: minecraft:m40a3ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -353,7 +339,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -365,13 +351,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:shulkersniperammo
+        - item: minecraft:shulkersniperammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -388,7 +375,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -400,13 +387,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:r700
+        - item: minecraft:r700
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
@@ -449,13 +437,14 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:m14ammo
+        - item: minecraft:m14ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -472,7 +461,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -484,13 +473,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:seekerrifleammo
+        - item: minecraft:seekerrifleammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -507,7 +497,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -532,13 +522,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m14
+        - item: minecraft:m14
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
@@ -555,7 +546,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -567,13 +558,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:g3ammo
+        - item: minecraft:g3ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -590,7 +582,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -602,13 +594,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:seekerrifleammo
+        - item: minecraft:seekerrifleammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -625,7 +618,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -650,13 +643,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:g3
+        - item: minecraft:g3
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 22
             compareItemName: 1
@@ -672,13 +666,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m16a4ammo
+        - item: minecraft:m16a4ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
@@ -695,7 +690,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 5
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -707,17 +702,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:beta_cmag
+        - item: minecraft:beta_cmag
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -730,7 +726,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -742,13 +738,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m16a4
+        - item: minecraft:m16a4
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 15
             compareItemName: 1
@@ -765,7 +762,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 5
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -777,13 +774,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:ak47ammo
+        - item: minecraft:ak47ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 5
             compareItemName: 1
@@ -800,7 +798,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -812,13 +810,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:witheringakammo
+        - item: minecraft:witheringakammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -848,7 +847,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -860,13 +859,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:ak47
+        - item: minecraft:ak47
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
@@ -895,13 +895,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:g36ammo
+        - item: minecraft:g36ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -918,7 +919,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -931,7 +932,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -943,13 +944,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:g36
+        - item: minecraft:g36
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 5
             compareItemName: 1
@@ -966,7 +968,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 15
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -979,17 +981,18 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:p90ammo
+        - item: minecraft:p90ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1002,7 +1005,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 6
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1014,13 +1017,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:p90
+        - item: FlansMod:p90
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 5
             compareItemName: 1
@@ -1037,7 +1041,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 20
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1049,17 +1053,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:fnscar_ammo
+        - item: minecraft:fnscar_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 3
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1072,7 +1077,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1084,13 +1089,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:fnscar
+        - item: minecraft:fnscar
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
@@ -1107,7 +1113,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1119,17 +1125,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:acr_ammo
+        - item: minecraft:acr_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1142,7 +1149,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1154,17 +1161,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:beta_cmag
+        - item: minecraft:beta_cmag
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1177,7 +1185,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1189,13 +1197,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:acr
+        - item: minecraft:acr
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
@@ -1212,7 +1221,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 12
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1224,17 +1233,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:aug_ammo
+        - item: minecraft:aug_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 3
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1247,7 +1257,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1259,17 +1269,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:beta_cmag
+        - item: minecraft:beta_cmag
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1282,7 +1293,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1294,13 +1305,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:aug
+        - item: minecraft:aug
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -1317,7 +1329,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1329,17 +1341,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:mtar_ammo
+        - item: minecraft:mtar_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1352,7 +1365,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1364,17 +1377,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:beta_cmag
+        - item: minecraft:beta_cmag
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1387,7 +1401,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1399,13 +1413,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:mtar
+        - item: minecraft:mtar
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
@@ -1422,7 +1437,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1435,13 +1450,14 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:mp5ammo
+        - item: minecraft:mp5ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 3
             compareItemName: 1
@@ -1458,7 +1474,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1470,17 +1486,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:smg100ammo
+        - item: minecraft:smg100ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1493,7 +1510,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 9
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1505,13 +1522,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:mp5
+        - item: minecraft:mp5
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 15
             compareItemName: 1
@@ -1527,13 +1545,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:skorpion_ammo
+        - item: minecraft:skorpion_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 3
             compareItemName: 1
@@ -1550,7 +1569,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1562,17 +1581,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:smg100ammo
+        - item: minecraft:smg100ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1585,7 +1605,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 9
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1597,13 +1617,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:skorpion
+        - item: minecraft:skorpion
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -1632,13 +1653,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:uzi_ammo
+        - item: minecraft:uzi_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -1655,7 +1677,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1667,17 +1689,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:smg100ammo
+        - item: minecraft:smg100ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1690,7 +1713,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 9
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1702,13 +1725,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:uzi
+        - item: minecraft:uzi
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 14
             compareItemName: 1
@@ -1724,13 +1748,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:ak74ammo
+        - item: minecraft:ak74ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 3
             compareItemName: 1
@@ -1747,7 +1772,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1760,7 +1785,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1772,13 +1797,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:witheringakammo
+        - item: minecraft:witheringakammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -1808,7 +1834,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1820,13 +1846,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:ak74
+        - item: minecraft:ak74
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 15
             compareItemName: 1
@@ -1843,7 +1870,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1855,13 +1882,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:bizon_ammo
+        - item: minecraft:bizon_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 5
             compareItemName: 1
@@ -1878,7 +1906,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1890,13 +1918,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:bizon
+        - item: minecraft:bizon
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -1913,7 +1942,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 8
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1926,17 +1955,18 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:w1200ammo
+        - item: minecraft:w1200ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1949,7 +1979,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1961,17 +1991,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200incendiary_ammo
+        - item: minecraft:w1200incendiary_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -1984,7 +2015,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2009,13 +2040,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200
+        - item: minecraft:w1200
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 16
             compareItemName: 1
@@ -2032,7 +2064,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 6
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2044,17 +2076,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200ammo
+        - item: minecraft:w1200ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2067,7 +2100,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2079,13 +2112,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1014ammo
+        - item: minecraft:m1014ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -2102,7 +2136,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2115,7 +2149,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2127,13 +2161,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1014
+        - item: minecraft:m1014
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -2150,7 +2185,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2162,17 +2197,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200ammo
+        - item: minecraft:w1200ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2185,7 +2221,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2197,13 +2233,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:r870ammo
+        - item: minecraft:r870ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -2220,7 +2257,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2233,7 +2270,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2245,13 +2282,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:r870
+        - item: minecraft:r870
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 12
             compareItemName: 1
@@ -2280,17 +2318,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200ammo
+        - item: minecraft:w1200ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2303,7 +2342,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2315,17 +2354,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:spas_ammo
+        - item: minecraft:spas_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2338,7 +2378,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 4
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2350,17 +2390,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:spas
+        - item: minecraft:spas
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2385,17 +2426,18 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:w1200ammo
+        - item: minecraft:w1200ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2408,7 +2450,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2420,13 +2462,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1887ammo
+        - item: minecraft:m1887ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -2443,7 +2486,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2456,7 +2499,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2481,13 +2524,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1887
+        - item: minecraft:m1887
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 6
             compareItemName: 1
@@ -2517,13 +2561,14 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:m9ammo
+        - item: minecraft:m9ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2540,7 +2585,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2552,13 +2597,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m9
+        - item: minecraft:m9
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -2574,13 +2620,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:usp_ammo
+        - item: minecraft:usp_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2597,7 +2644,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2609,13 +2656,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:usp_poison_ammo
+        - item: minecraft:usp_poison_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2632,7 +2680,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2657,13 +2705,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:usp
+        - item: minecraft:usp
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
@@ -2679,13 +2728,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1911ammo
+        - item: minecraft:m1911ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2702,7 +2752,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2714,13 +2764,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:m1911
+        - item: minecraft:m1911
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -2737,7 +2788,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:leather
+            itemName: flansbasicparts:leather
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2749,13 +2800,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:sig_p226ammo
+        - item: minecraft:sig_p226ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2772,7 +2824,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2784,13 +2836,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:sig_p226
+        - item: minecraft:sig_p226
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -2806,13 +2859,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:sigp232
+        - item: minecraft:sigp232
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -2829,13 +2883,14 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:makarov_ammo
+        - item: minecraft:makarov_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 2
             compareItemName: 1
@@ -2852,7 +2907,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2864,13 +2919,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:makarov
+        - item: minecraft:makarov
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 8
             compareItemName: 1
@@ -2886,13 +2942,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:glock_ammo
+        - item: minecraft:glock_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
@@ -2909,7 +2966,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 3
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2921,13 +2978,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:glock
+        - item: minecraft:glock
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 9
             compareItemName: 1
@@ -2943,13 +3001,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:jury_ammo
+        - item: minecraft:jury_ammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -2966,7 +3025,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -2978,13 +3037,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:highexpistolammo
+        - item: minecraft:highexpistolammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -3001,7 +3061,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -3013,13 +3073,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:appistolammo
+        - item: minecraft:appistolammo
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 1
             compareItemName: 1
@@ -3036,7 +3097,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 1
             compareItemName: 1
-            itemName: flansmodernweapons:highexgunpowder
+            itemName: minecraft:highexgunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -3061,13 +3122,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
       - outputs:
-        - item: flansmodernweapons:jury
+        - item: minecraft:jury
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 10
             compareItemName: 1
@@ -3084,17 +3146,18 @@ MonoBehaviour:
             disallowedNBT: []
     - entries:
       - outputs:
-        - item: flansmodernweapons:m67
+        - item: minecraft:m67
           count: 1
           damage: 0
           tags: '{}'
         parts:
         - part: 0
           tieredIngredients: []
+          rawIngredients: []
           additionalIngredients:
           - count: 4
             compareItemName: 1
-            itemName: flansmodernweapons:fiberglass
+            itemName: flansbasicparts:fiberglass
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -3107,7 +3170,7 @@ MonoBehaviour:
             disallowedNBT: []
           - count: 2
             compareItemName: 1
-            itemName: minecraft:gunpowder
+            itemName: flansbasicparts:gunpowder
             compareDamage: 1
             minAllowedDamage: 0
             maxAllowedDamage: 0
@@ -3119,6 +3182,14 @@ MonoBehaviour:
             requiredNBT: []
             disallowedNBT: []
     FECostPerCraft: 0
+  partCrafting:
+    isActive: 0
+    inputSlots: 8
+    outputSlots: 8
+    timePerCraft: 1
+    FECostPerCraft: 0
+    partsByName: []
+    partsByTier: []
   gunModifying:
     isActive: 0
     disallowedMods: []

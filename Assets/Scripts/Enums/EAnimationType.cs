@@ -26,6 +26,8 @@ public enum EAnimationType
 
 public static class AnimationTypes
 {
+	public const int NUM_TYPES = (int)EAnimationType.CUSTOM + 1;
+
 	public static string Convert(this EAnimationType anim)
 	{
 		switch(anim)

@@ -17,10 +17,6 @@ public class InfoType
 	public Vector3 itemFrameOffset = Vector3.zero;
 	public Vector3 thirdPersonOffset = Vector3.zero;
 
-	public Model model = null;
-	//public Texture2D icon = null;
-	//public Texture2D skin = null;
-
 	public virtual void GetTextures(List<string> textureNames)
 	{
 		if(iconPath != null && iconPath.Length > 0)

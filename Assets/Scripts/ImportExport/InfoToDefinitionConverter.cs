@@ -122,6 +122,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 {
 	public static GunConverter inst = new GunConverter();
 
+	// Hacky but meh
+	public static EAnimationType OldAnimType = EAnimationType.NONE;
+	public static float UntiltTime = 0.0f;
+	public static float TiltTime = 0.0f;
+	public static float UnloadTime = 0.0f;
+	public static float LoadTime = 0.0f;
+	// ------------------------------------------------------------
+
 	protected override void DoConversion(GunType inf, GunDefinition def)
 	{
 		PaintableConverter.inst.DoConversion(inf, def.paints);
@@ -173,32 +181,24 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		def.barrelAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowBarrelAttachments ? 1 : 0,
-			attachToMesh = "body",
-			attachPoint = inf.barrelAttachPoint,
 			allowAll = inf.allowAllAttachments,
 			allowlist = inf.allowedAttachments.ToArray(),
 		};
 		def.gripAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowGripAttachments ? 1 : 0,
-			attachToMesh = inf.gripIsOnPump ? "pump" : "body",
-			attachPoint = inf.gripAttachPoint,
 			allowAll = inf.allowAllAttachments,
 			allowlist = inf.allowedAttachments.ToArray(),
 		};
 		def.stockAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowStockAttachments ? 1 : 0,
-			attachToMesh = "body",
-			attachPoint = inf.stockAttachPoint,
 			allowAll = inf.allowAllAttachments,
 			allowlist = inf.allowedAttachments.ToArray(),
 		};
 		def.scopeAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowScopeAttachments ? 1 : 0,
-			attachToMesh = inf.scopeIsOnBreakAction ? "breakAction" : (inf.scopeIsOnSlide ? "slide" : "body"),
-			attachPoint = inf.scopeAttachPoint,
 			allowAll = inf.allowAllAttachments,
 			allowlist = inf.allowedAttachments.ToArray(),
 		};
@@ -206,7 +206,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		//def.userMoveSpeedModifier = inf.moveSpeedModifier;
 		//def.userKnockbackResist = inf.knockbackModifier;
 
-		def.animationSet = inf.animationType.Convert();
+		def.animationSet = OldAnimType.Convert();
 		//switch(inf.animationType)
 		//{
 		//	case EAnimationType.REVOLVER: 
@@ -244,12 +244,12 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionDefinition[] CreateStartReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		if(inf.tiltGunTime > 0.0f)
+		if(TiltTime > 0.0f)
 		{
 			reloadActions.Add(new ActionDefinition() 
 			{ 
 				actionType = EActionType.Animation, 
-				duration = inf.reloadTime * inf.tiltGunTime / 20f,
+				duration = inf.reloadTime * TiltTime / 20f,
 				anim = "reload_start",
 			});
 		}
@@ -272,13 +272,13 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionDefinition[] CreateEjectReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		if(inf.unloadClipTime > 0.0f &&
-		   inf.animationType != EAnimationType.END_LOADED)
+		if(UnloadTime > 0.0f &&
+		   OldAnimType != EAnimationType.END_LOADED)
 		{
 			reloadActions.Add(new ActionDefinition() 
 			{ 
 				actionType = EActionType.Animation, 
-				duration = inf.reloadTime * inf.unloadClipTime / 20f,
+				duration = inf.reloadTime * UnloadTime / 20f,
 				anim = "reload_eject",
 			});
 		}
@@ -288,12 +288,12 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionDefinition[] CreateLoadOneReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
-		if(inf.loadClipTime > 0.0f)
+		if(LoadTime > 0.0f)
 		{
 			reloadActions.Add(new ActionDefinition() 
 			{ 
 				actionType = EActionType.Animation, 
-				duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
+				duration = (inf.reloadTime * LoadTime / 20f) / inf.numAmmoItemsInGun,
 				anim = "reload_load_one",
 			});
 		}
@@ -304,12 +304,12 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
 
-		if(inf.untiltGunTime > 0.0f)
+		if(UntiltTime > 0.0f)
 		{
 			reloadActions.Add(new ActionDefinition() 
 			{ 
 				actionType = EActionType.Animation, 
-				duration = inf.reloadTime * inf.untiltGunTime / 20f,
+				duration = inf.reloadTime * UntiltTime / 20f,
 				anim = "reload_end",
 			});
 		}

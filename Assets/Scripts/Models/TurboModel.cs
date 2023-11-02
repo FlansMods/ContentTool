@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Model;
-using static System.Collections.Specialized.BitVector32;
 
 [System.Serializable]
 public class TurboModel

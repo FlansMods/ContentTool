@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Model;
 
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
 public class TurboRig : MinecraftModel
@@ -236,77 +233,6 @@ public class TurboRig : MinecraftModel
 		if(ap != null)
 			ap.position = offset;
 	}
-
-	public Model convertToModel()
-    {
-		Model mod = new Model();
-		mod.Type = ModelType.TurboRig;
-
-		mod.textureX = TextureX;
-		mod.textureY = TextureY;
-
-		foreach(TurboModel s in Sections)
-        {
-			Section s2 = new Section();
-			s2.partName = s.PartName;
-
-			int count = s.Pieces.Count;
-            Piece[] parts = new Piece[count];
-
-			for(int i = 0; i < count; i++)
-            {
-				Piece p = new Piece();
-				TurboPiece tp = s.Pieces[i];
-				p.textureU = tp.textureU;
-				p.textureV = tp.textureV;
-				p.Shape = EShape.ShapeBox;
-				p.Pos = tp.Pos;
-				p.Dim = tp.Dim;
-				p.Origin = tp.Origin;
-				p.Offsets = tp.Offsets;
-				p.Euler = tp.Euler;
-
-				parts[i] = p;
-            }
-			s2.pieces = parts;
-			foreach(AttachPoint p in AttachPoints)
-            {
-				Model.AttachPoint p2 = new Model.AttachPoint();
-				p2.name = p.name;
-				p2.attachedTo = p.attachedTo;
-				p2.position = p.position;
-            }
-			mod.sections.Add(s2);
-
-		}
-
-
-		List<Model.AttachPoint> ap = new List<Model.AttachPoint>();
-		foreach(AttachPoint a in AttachPoints)
-        {
-			Model.AttachPoint newPoint = new Model.AttachPoint();
-			newPoint.name = a.name;
-			newPoint.attachedTo = a.attachedTo;
-			newPoint.position = a.position;
-			ap.Add(newPoint);
-        }
-		mod.attachPoints = ap;
-
-		List<Model.AnimationParameter> param = new List<Model.AnimationParameter>();
-		foreach(AnimationParameter p in AnimationParameters)
-        {
-			Model.AnimationParameter newP = new Model.AnimationParameter();
-			newP.key = p.key;
-			newP.isVec3 = p.isVec3;
-			newP.floatValue = p.floatValue;
-			newP.vec3Value = p.vec3Value;
-
-			param.Add(newP);
-        }
-		mod.animations = param;
-
-		return mod;
-    }
 	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
 	{
 		foreach (TurboModel section in Sections)
@@ -460,6 +386,37 @@ public class TurboRig : MinecraftModel
 			Position = new Vector3(0.5f, 0.5f, 0f),
 			Rotation = Quaternion.Euler(0f, 160f, 0f),
 			Scale = Vector3.one,
+		});
+	}
+	public void SetTransformPos(ItemTransformType type, Vector3 pos)
+	{
+		foreach (ItemTransform transform in Transforms)
+		{
+			if (transform.Type == type)
+				transform.Position = pos;
+		}
+	}
+
+	public void SetTransform(ItemTransformType type, Vector3 pos, Quaternion rot, Vector3 scale)
+	{
+		foreach(ItemTransform transform in Transforms)
+		{
+			if(transform.Type == type)
+			{
+				transform.Position = pos;
+				transform.Rotation = rot;
+				transform.Scale = scale;
+				return;
+			}
+		}
+
+		// We didn't find it, add it
+		Transforms.Add(new ItemTransform()
+		{
+			Type = type,
+			Position = pos,
+			Rotation = rot,
+			Scale = scale
 		});
 	}
 	#endregion

@@ -17,12 +17,12 @@ MonoBehaviour:
     Location:
       Namespace: flanszombies
       ID: winchester_model70
-    Texture: {fileID: 2800000, guid: 8ceb3842a24465541917e6f79fa7c356, type: 3}
+    Texture: {fileID: 0}
   - Key: 2
     Location:
       Namespace: flanszombies
       ID: winchester_model70_black
-    Texture: {fileID: 2800000, guid: 9d633d82efd0a744dae2c911010ac589, type: 3}
+    Texture: {fileID: 0}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -189,49 +189,44 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters:
-  - key: scope_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 3, y: 5, z: 0}
-  - key: barrel_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 17, y: 4.5, z: 0}
-  - key: stock_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: -1, y: 1, z: 0}
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.5
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: '#ANIM_TYPE#:RIFLE'
+    isVec3: 0
+    floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
   - key: num_bullets_in_reload_animation
     isVec3: 0
     floatValue: 5
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: tilt_gun_time
+  - key: '#tiltGunTime#'
     isVec3: 0
     floatValue: 0.279
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: unload_clip_time
+  - key: '#unloadClipTime#'
     isVec3: 0
     floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: load_clip_time
+  - key: '#loadClipTime#'
     isVec3: 0
     floatValue: 0.558
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: untilt_gun_time
+  - key: '#untiltGunTime#'
     isVec3: 0
     floatValue: 0.163
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 3, y: 2.5, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 17, y: 2, z: 0}
   - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: -1, y: -1.5, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}

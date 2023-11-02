@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Model;
 
 [System.Serializable]
 public class UVMap

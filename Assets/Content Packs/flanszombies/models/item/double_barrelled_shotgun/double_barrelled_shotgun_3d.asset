@@ -17,7 +17,7 @@ MonoBehaviour:
     Location:
       Namespace: flanszombies
       ID: double_barrelled_shotgun
-    Texture: {fileID: 2800000, guid: 8d8220d65614d994c9ccd6da48b21edf, type: 3}
+    Texture: {fileID: 0}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -167,30 +167,24 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters:
-  - key: barrel_break_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 3, y: 3, z: 0}
-  - key: barrel_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 7.5, y: 4, z: 0}
-  - key: scope_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 3, y: 5, z: 0}
-  - key: scope_is_on_slide
-    isVec3: 0
-    floatValue: 0
-    vec3Value: {x: 0, y: 0, z: 0}
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.25
     vec3Value: {x: 0, y: 0, z: 0}
+  - key: '#ANIM_TYPE#:BREAK_ACTION'
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: break_action
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 3, y: 3, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 7.5, y: 4, z: 0}
+  - name: sights
+    attachedTo: slide
+    position: {x: 3, y: 5, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}

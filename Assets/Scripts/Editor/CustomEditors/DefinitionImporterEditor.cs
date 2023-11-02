@@ -10,14 +10,14 @@ public class DefinitionImporterEditor : Editor
 	private bool hasDoneInit = false;
 	private enum Tab
 	{
-		NewPack,
-		Reimport,
+		Import,
+		Export,
 	}
 	private string[] TabNames = new string[] {
-		"New Packs",
-		"Re-Importing"
+		"Import",
+		"Export"
 	};
-	private Tab CurrentTab = Tab.NewPack;
+	private Tab CurrentTab = Tab.Import;
 	private int SelectedImportPackIndex = 0;
 	private List<string> ImportFoldouts = new List<string>();
 
@@ -26,23 +26,21 @@ public class DefinitionImporterEditor : Editor
 		DefinitionImporter instance = (DefinitionImporter)target;
 		if (instance != null)
 		{
-			// TODO: Timer on this
-			instance.CheckInit();
-
+			instance.Refresh();
 			CurrentTab = (Tab)GUILayout.Toolbar((int)CurrentTab, TabNames);
 			switch (CurrentTab)
 			{
-				case Tab.NewPack:
-					NewPackTab(instance);
+				case Tab.Import:
+					ImportTab(instance);
 					break;
-				case Tab.Reimport:
-					ReimportTab(instance);
+				case Tab.Export:
+					ExportTab(instance);
 					break;
 			}
 		}
 	}
 
-	private void NewPackTab(DefinitionImporter instance)
+	public void ImportTab(DefinitionImporter instance)
 	{
 		foreach (string sourcePack in instance.GetPreImportPackNames())
 		{
@@ -52,7 +50,7 @@ public class DefinitionImporterEditor : Editor
 
 			// --- Import Status ---
 			bool alreadyImported = instance.FindContentPack(sourcePack) != null;
-			if(alreadyImported)
+			if (alreadyImported)
 				GUILayout.Label("[Imported]", FlanStyles.GreenLabel, GUILayout.Width(120));
 			else
 				GUILayout.Label("[Not Imported]", FlanStyles.BoldLabel, GUILayout.Width(120));
@@ -60,9 +58,9 @@ public class DefinitionImporterEditor : Editor
 			// --- Asset Summary ---
 			int assetCount = instance.GetNumAssetsInPack(sourcePack);
 			bool hasFullImportMapForAllTypes = instance.HasFullImportMap(sourcePack);
-			if(hasFullImportMapForAllTypes)
+			if (hasFullImportMapForAllTypes)
 			{
-				if(instance.TryGetFullImportCount(sourcePack, out int inputCount, out int outputCount))
+				if (instance.TryGetFullImportCount(sourcePack, out int inputCount, out int outputCount))
 				{
 					GUILayout.Label($"[{inputCount}] Input Assets", FlanStyles.GreenLabel, GUILayout.Width(120));
 					GUILayout.Label($"[{outputCount}] Output Assets", FlanStyles.GreenLabel, GUILayout.Width(120));
@@ -83,7 +81,7 @@ public class DefinitionImporterEditor : Editor
 
 			// --- Import (New Only) Button! ---
 			if (GUILayout.Button(EditorGUIUtility.IconContent("Customized"), GUILayout.Width(32)))
-			{ 
+			{
 				List<Verification> errors = new List<Verification>();
 				instance.ImportPack(sourcePack, errors, false);
 			}
@@ -98,7 +96,7 @@ public class DefinitionImporterEditor : Editor
 			if (packFoldout)
 			{
 				EditorGUI.indentLevel++;
-				for(int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
 				{
 					EDefinitionType defType = (EDefinitionType)i;
 					int count = instance.GetNumAssetsInPack(sourcePack, defType);
@@ -111,10 +109,10 @@ public class DefinitionImporterEditor : Editor
 
 						GUILayout.Label($"[{count}] .txt", GUILayout.Width(100));
 						bool hasFullImportMap = instance.HasFullImportMap(sourcePack, defType);
-						if(hasFullImportMap)
+						if (hasFullImportMap)
 						{
 							// Print an import summary
-							if(instance.TryGetFullImportCount(sourcePack, defType, out int inputCount, out int outputCount))
+							if (instance.TryGetFullImportCount(sourcePack, defType, out int inputCount, out int outputCount))
 							{
 								GUILayout.Label($"[{inputCount}] Input Assets", GUILayout.Width(120));
 								GUILayout.Label($"[{outputCount}] Output Assets", GUILayout.Width(120));
@@ -187,7 +185,7 @@ public class DefinitionImporterEditor : Editor
 										{
 											if (File.Exists(output))
 												GUILayout.Label(output, FlanStyles.GreenLabel);
-											else 
+											else
 												GUILayout.Label(output);
 										}
 										GUILayout.EndVertical();
@@ -204,56 +202,11 @@ public class DefinitionImporterEditor : Editor
 			}
 		}
 	}
-	private void ReimportTab(DefinitionImporter instance)
-	{
-	/*
-		foreach (string sourcePack in instance.UnimportedPacks)
-		{
-			string packFoldoutPath = $"{sourcePack}";
-			GUILayout.BeginHorizontal();
-			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
-			GUILayout.Label("t", GUILayout.Width(32));
-			GUILayout.EndHorizontal();
-			if (packFoldout)
-			{
-				EditorGUI.indentLevel++;
-				// TODO:Sort by type
-				Dictionary<string, string> importMap = instance.CreateImportMap(sourcePack);
-				// tODO: Gather import data "will this override existing etc"
-				foreach (var kvp in importMap)
-				{
-					string importFoldoutPath = $"{sourcePack}/{kvp.Key}";
-					if (NestedFoldout(importFoldoutPath, kvp.Key))
-					{
-						EditorGUI.indentLevel++;
-						GUILayout.Label(kvp.Value);
-						EditorGUI.indentLevel--;
-					}
-				}
 
-				EditorGUI.indentLevel--;
-			}
-		}
-		*/
-	}
-
-	private void ContentNode(Definition def, string parentPath)
+	public void ExportTab(DefinitionImporter instance)
 	{
-		string path = $"{parentPath}/{def.name}";
-		if (NestedFoldout(path, def.name))
-		{
+		FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
 
-		}
-	}
-	private bool NestedFoldout(string path, string label)
-	{
-		bool oldFoldout = ImportFoldouts.Contains(path);
-		bool newFoldout = EditorGUILayout.Foldout(oldFoldout, label);
-		if (newFoldout && !oldFoldout)
-			ImportFoldouts.Add(path);
-		else if (oldFoldout && !newFoldout)
-			ImportFoldouts.Remove(path);
-		return newFoldout;
 	}
 
 	private string FolderSelector(string label, string folder, string defaultLocation)
@@ -269,6 +222,19 @@ public class DefinitionImporterEditor : Editor
 		return folder;
 	}
 
+	private bool NestedFoldout(string path, string label)
+	{
+		bool oldFoldout = ImportFoldouts.Contains(path);
+		bool newFoldout = EditorGUILayout.Foldout(oldFoldout, label);
+		if (newFoldout && !oldFoldout)
+			ImportFoldouts.Add(path);
+		else if (oldFoldout && !newFoldout)
+			ImportFoldouts.Remove(path);
+		return newFoldout;
+	}
+
+
+
 	private void p()
 	{ 
 		{
@@ -277,7 +243,7 @@ public class DefinitionImporterEditor : Editor
 
 			if (!hasDoneInit)
 			{
-				instance.CheckInit();
+				instance.Refresh();
 				hasDoneInit = true;
 			}
 

@@ -638,6 +638,28 @@ public static class JavaModelImporter
 	}
 
 	private static readonly Regex SetParameterRegex = new Regex("([A-Za-z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s_]*);");
+	public static bool MatchSetParameter(string line, out string parameter, out string value)
+	{
+		Match match = SetParameterRegex.Match(line);
+		if (match.Success)
+		{
+			parameter = match.Groups[1].Value;
+			value = match.Groups[2].Value;
+			return true;
+		}
+		parameter = "";
+		value = "";
+		return false;
+	}
+	public static bool MatchSetFloatParameter(string line, out string parameter, out float value)
+	{
+		if(MatchSetParameter(line, out parameter, out string strValue))
+		{
+			return float.TryParse(strValue, out value);
+		}
+		value = 0.0f;
+		return false;
+	}
 	public static bool MatchSetParameter(TurboRig rig, string line)
 	{
 		Match match = SetParameterRegex.Match(line);
@@ -646,52 +668,128 @@ public static class JavaModelImporter
 			// Find the parameter and set it
 			string parameter = match.Groups[1].Value;
 			string value = match.Groups[2].Value;
+			List<float> floats = ResolveParameters(value, 1);
 
-			if (parameter == "animationType")
+			switch (parameter)
 			{
-				// Hmm? Send to type?
-				EAnimationType animationType = (EAnimationType)Enum.Parse(typeof(EAnimationType), value.Split('.')[1]);
-				Debug.Log($"Detected animation type {animationType} in line '{line}'");
-				return true;
-			}
-			else
-			{
-				List<float> floats = ResolveParameters(value, 1);
-				if (floats.Count == 1)
-				{
+				// Bit hacky, we should consume this at a later point into the Definition
+				// TODO: Pick up on the other end
+				case "animationType":
+					EAnimationType animationType = (EAnimationType)Enum.Parse(typeof(EAnimationType), value.Split('.')[1]);
 					rig.AnimationParameters.Add(new AnimationParameter()
 					{
-						key = Utils.ToLowerWithUnderscores(parameter),
+						key = $"#ANIM_TYPE#:{animationType}",
 						isVec3 = false,
-						floatValue = floats[0]
+						floatValue = 0.0f,
 					});
 					return true;
-				}
+				case "untiltGunTime":
+				case "tiltGunTime":
+				case "unloadClipTime":
+				case "loadClipTime":
+					if (floats.Count == 1)
+					{
+						rig.AnimationParameters.Add(new AnimationParameter()
+						{
+							key = $"#{parameter}#",
+							isVec3 = false,
+							floatValue = floats[0]
+						});
+						return true;
+					}
+					return false;
+				// ----------------------------------------------------------------------
+				case "gripIsOnPump":
+					rig.SetAttachment("grip", "pump");
+					return true;
+				case "scopeIsOnSlide":
+					rig.SetAttachment("sights", "slide");
+					return true;
+				case "scopeIsOnBreakAction":
+					rig.SetAttachment("sights", "break_action");
+					return true;
+				default:
+					if (floats.Count == 1)
+					{
+						rig.AnimationParameters.Add(new AnimationParameter()
+						{
+							key = Utils.ToLowerWithUnderscores(parameter),
+							isVec3 = false,
+							floatValue = floats[0]
+						});
+						return true;
+					}
+					return false;
 			}
 		}
 		return false;
 	}
 
 	private static readonly Regex SetVec3ParameterRegex = new Regex("([A-Za-z]*)\\s*=\\s*new\\s*Vector3f\\s*\\(([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchSetVec3Parameter(TurboRig rig, string line)
+	public static bool MatchSetVec3Parameter(string line, out string parameterName, out Vector3 vec)
 	{
 		Match match = SetVec3ParameterRegex.Match(line);
 		if (match.Success)
 		{
 			// Find the parameter and set it
-			string parameter = match.Groups[1].Value;
+			parameterName = match.Groups[1].Value;
 			string value = match.Groups[2].Value;
 			List<float> floats = ResolveParameters(value, 3);
 			if (floats.Count == 3)
 			{
-				rig.AnimationParameters.Add(new AnimationParameter()
-				{
-					key = Utils.ToLowerWithUnderscores(parameter),
-					isVec3 = true,
-					vec3Value = new Vector3(floats[0] * 16f, floats[1] * 16f, floats[2] * 16f),
-				});
+				vec = new Vector3(floats[0] * 16f, floats[1] * 16f, floats[2] * 16f);
 				return true;
 			}
+		}
+		parameterName = "";
+		vec = Vector3.zero;
+		return false;
+	}
+	public static bool MatchSetVec3Parameter(TurboRig rig, string line)
+	{
+		Match match = SetVec3ParameterRegex.Match(line);
+		if (MatchSetVec3Parameter(line, out string parameter, out Vector3 pos))
+		{
+			switch(parameter)
+			{
+				case "itemFrameOffset":
+					rig.SetTransformPos(MinecraftModel.ItemTransformType.FIXED, pos);
+					break;
+				case "thirdPersonOffset":
+					rig.SetTransformPos(MinecraftModel.ItemTransformType.THIRD_PERSON_RIGHT_HAND, pos);
+					rig.SetTransformPos(MinecraftModel.ItemTransformType.THIRD_PERSON_LEFT_HAND, pos);
+					break;
+				case "barrelBreakPoint":
+					rig.SetAttachmentOffset("break_action", pos);
+					break;
+				case "revolverFlipPoint":
+					rig.SetAttachmentOffset("revolver_barrel", pos);
+					break;
+				case "minigunBarrelOrigin":
+					rig.SetAttachmentOffset("minigun_rotator", pos);
+					break;
+				case "stockAttachPoint":
+					rig.SetAttachmentOffset("stock", pos);
+					break;
+				case "barrelAttachPoint":
+					rig.SetAttachmentOffset("barrel", pos);
+					break;
+				case "scopeAttachPoint":
+					rig.SetAttachmentOffset("sights", pos);
+					break;
+				case "gripAttachPoint":
+					rig.SetAttachmentOffset("grip", pos);
+					break;
+				default:
+					rig.AnimationParameters.Add(new AnimationParameter()
+					{
+						key = Utils.ToLowerWithUnderscores(parameter),
+						isVec3 = true,
+						vec3Value = pos,
+					});
+					break;
+			}
+			return true;
 		}
 		return false;
 	}
@@ -713,7 +811,7 @@ public static class JavaModelImporter
 		return float.Parse(value.Replace("f", "").Replace("F", ""));
 	}
 
-	private static List<float> ResolveParameters(string parameters, int max = 100)
+	public static List<float> ResolveParameters(string parameters, int max = 100)
 	{
 		parameters = parameters.Replace("(float)Math.PI", "3.14159265");
 		List<float> splits = new List<float>();

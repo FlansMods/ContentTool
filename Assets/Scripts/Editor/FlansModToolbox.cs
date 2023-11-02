@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.IO;
-using System.Security.Cryptography;
-using UnityEditor.Build;
-using Unity.VisualScripting;
 
 public class FlansModToolbox : EditorWindow
 {
@@ -24,37 +20,23 @@ public class FlansModToolbox : EditorWindow
 	{
 		EditorApplication.update -= Repaint;
 	}
-
-	private DefinitionImporter DefinitionImporter = null;
-	private List<ContentPack> Packs 
-	{
-		get	
-		{
-			if (DefinitionImporter == null)
-				DefinitionImporter = FindObjectOfType<DefinitionImporter>();
-			return DefinitionImporter.Packs;
-		}
-	}
+	private List<ContentPack> Packs { get { return DefinitionImporter.inst.Packs; } }
 	private enum Tab
 	{
 		Import,
 		ContentPacks,
 		Rigs,
+		Export,
 	}
 	private static readonly string[] TabNames = new string[]
 	{
 		"Import",
 		"Content Packs",
 		"Rig Editor",
+		"Export",
 	};
 
 	private Tab SelectedTab = Tab.ContentPacks;
-	
-
-	private string recipeFolder = "";
-	private string copyFromMat = "iron";
-	private string copyToMat = "aluminium";
-
 	private Vector2 scroller = Vector2.zero;
 	void OnGUI()
 	{
@@ -72,6 +54,9 @@ public class FlansModToolbox : EditorWindow
 			case Tab.Rigs:
 				RigsTab();
 				break;
+			case Tab.Export:
+				ExportTab();
+				break;
 		}
 		GUILayout.EndVertical();
 		GUILayout.EndScrollView();
@@ -80,86 +65,38 @@ public class FlansModToolbox : EditorWindow
 	// -------------------------------------------------------------------------------------------------------
 	#region Import Tab
 	// -------------------------------------------------------------------------------------------------------
-	private Editor DefinitionImporterEditor = null;
-	private void ImportTab()
+	private DefinitionImporterEditor ContentManagerEditor = null;
+	private void CreateContentManagerEditor()
 	{
 		DefinitionImporter inst = DefinitionImporter.inst;
-		if(DefinitionImporterEditor == null || DefinitionImporterEditor.target != inst)
+		if (ContentManagerEditor == null || ContentManagerEditor.target != inst)
 		{
-			DefinitionImporterEditor = Editor.CreateEditor(inst);
-		}
-		if(DefinitionImporterEditor != null)
-		{
-			DefinitionImporterEditor.OnInspectorGUI();
+			ContentManagerEditor = Editor.CreateEditor(inst) as DefinitionImporterEditor;
 		}
 	}
 
-
-
-	/*
-	private void p()
+	private void ImportTab()
 	{
-
-
-		// Back to front? Should be imports
-
-		foreach (ContentPack pack in inst.Packs)
-		{
-			string packPath = $"{pack.name}";
-
-			List<string> originalAssetPaths = new List<string>();
-			bool hasOriginalImportFolder = false;
-			if (inst.UnimportedPacks.Contains(pack.name))
-			{
-				hasOriginalImportFolder = true;
-			}
-
-			if (NestedFoldout(packPath, pack.name))
-			{
-				EditorGUI.indentLevel++;
-
-				GUILayout.Label($"Pack: {pack.name}", FlanStyles.BoldLabel);
-				GUILayout.Label(hasOriginalImportFolder ? $"Matching source assets at Import/Content Packs/{pack.name}" : "No matching assets in Import/Content Packs", FlanStyles.BoldLabel);
-
-				string defsPath = $"{packPath}/Definitions";
-				if(NestedFoldout(defsPath, "Definitions"))
-				{
-					EditorGUI.indentLevel++;
-					foreach (var kvp in pack.GetSortedContent())
-					{
-						string typePath = $"{defsPath}/{kvp.Key}";
-						if (NestedFoldout(typePath, kvp.Key.ToString()))
-						{
-							EditorGUI.indentLevel++;
-							foreach (Definition def in kvp.Value)
-							{
-								ContentNode(def, pack.name);
-							}
-							EditorGUI.indentLevel--;
-						}
-					}
-					
-					EditorGUI.indentLevel--;
-				}
-				string modelsPath = $"{packPath}/Models";
-				if (NestedFoldout(modelsPath, "Models"))
-				{
-
-				}
-				EditorGUI.indentLevel--;
-			}
-			
-		}
-
-
-		// Import location
-		FolderSelector("Export Location", inst.ExportRoot, "Assets/Export");
+		CreateContentManagerEditor();
+		DefinitionImporter inst = DefinitionImporter.inst;
+		if (ContentManagerEditor != null)
+			ContentManagerEditor.ImportTab(inst);
 	}
-	*/
-	
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
 
+	// -------------------------------------------------------------------------------------------------------
+	#region Export Tab
+	// -------------------------------------------------------------------------------------------------------
+	private void ExportTab()
+	{
+		CreateContentManagerEditor();
+		DefinitionImporter inst = DefinitionImporter.inst;
+		if (ContentManagerEditor != null)
+			ContentManagerEditor.ExportTab(inst);
+	}
+	#endregion
+	// -------------------------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------------------------------------
 	#region Content Packs Tab
@@ -192,7 +129,6 @@ public class FlansModToolbox : EditorWindow
 	}
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
-
 
 	// -------------------------------------------------------------------------------------------------------
 	#region Rigs Tab
@@ -378,76 +314,4 @@ public class FlansModToolbox : EditorWindow
 
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
-
-	private MinecraftModel UpdateModel(Model model, ContentPack pack, Definition def)
-	{
-		switch (model.Type)
-		{
-			case Model.ModelType.TurboRig:
-			{
-				TurboRig rig = CreateInstance<TurboRig>();
-				foreach(Model.Section modelSection in model.sections)
-				{
-					TurboModel section = new TurboModel();
-					section.PartName = Utils.ConvertPartName(modelSection.partName);
-					section.Pieces = new List<TurboPiece>();
-					for (int i = 0; i < modelSection.pieces.Length; i++)
-						section.Pieces.Add( modelSection.pieces[i].CopyAsTurbo());
-					rig.Sections.Add(section);
-				}
-				foreach (Model.AnimationParameter animParam in model.animations)
-					rig.AnimationParameters.Add(new AnimationParameter(animParam.key, animParam.isVec3, animParam.floatValue, animParam.vec3Value));
-				foreach (Model.AttachPoint attachPoint in model.attachPoints)
-					rig.AttachPoints.Add(new AttachPoint(
-						Utils.ConvertPartName(attachPoint.name), 
-						Utils.ConvertPartName(attachPoint.attachedTo), 
-						attachPoint.position));
-
-				rig.GetOrCreate("barrel");
-				rig.GetOrCreate("slide");
-				rig.GetOrCreate("ammo_0");
-				rig.GetOrCreate("stock");
-				rig.GetOrCreate("sights");
-				rig.GetOrCreate("grip");
-
-
-				rig.TextureX = model.textureX;
-				rig.TextureY = model.textureY;
-
-				if(def.Skin != null)
-					rig.AddTexture("default", pack.ModName, def.Skin);
-				if(def is GunDefinition gun)
-				{
-					foreach(PaintjobDefinition paint in gun.paints.paintjobs)
-					{
-						rig.AddTexture(paint.textureName, pack.ModName, def.GetSkin(paint.textureName));
-					}
-				}
-				return rig;
-			}
-			case Model.ModelType.Block:
-			{
-				CubeModel cube = CreateInstance<CubeModel>();
-				cube.north = new ResourceLocation(model.north);
-				cube.east = new ResourceLocation(model.east);
-				cube.south = new ResourceLocation(model.south);
-				cube.west = new ResourceLocation(model.west);
-				cube.top = new ResourceLocation(model.top);
-				cube.bottom = new ResourceLocation(model.bottom);
-				cube.particle = new ResourceLocation(model.north);
-				return cube;
-			}
-			case Model.ModelType.Custom:
-			{
-				BlockbenchModel bbModel = CreateInstance<BlockbenchModel>();
-				return bbModel;
-			}
-			case Model.ModelType.Item:
-			{
-				ItemModel itemModel = CreateInstance<ItemModel>();
-				return itemModel;
-			}
-		}
-		return null;
-	}
 }
