@@ -465,8 +465,8 @@ public class DefinitionImporter : MonoBehaviour
 			EDefinitionType defType = (EDefinitionType)i;
 			foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
 			{
-				if (inputPack.TryGetAddtionalImportInfo(packName, defType, fileName, out List<string> inputFiles, out List<string> outputFiles)
-				{
+				if (inputPack.TryGetAddtionalImportInfo(packName, defType, fileName, out List<string> inputFiles, out List<string> outputFiles))
+				{	
 					
 				}
 			}
