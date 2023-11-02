@@ -24,11 +24,14 @@ public class TurboRigPreview : MinecraftModelPreview
 	}
 	public override IEnumerable<MinecraftModelPreview> GetChildren()
 	{
-		foreach(TurboModel section in Rig.Sections)
+		if (Rig != null)
 		{
-			TurboModelPreview sectionPreview = GetAndUpdateChild(section.PartName);
-			if (sectionPreview != null)
-				yield return sectionPreview;
+			foreach (TurboModel section in Rig.Sections)
+			{
+				TurboModelPreview sectionPreview = GetAndUpdateChild(section.PartName);
+				if (sectionPreview != null)
+					yield return sectionPreview;
+			}
 		}
 	}
 

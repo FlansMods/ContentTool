@@ -11,8 +11,8 @@ public class Team : InfoType
 	public int teamColour = 0xffffff;
 	public char textColour = 'f';
 	
-	public string hat;
-	public string chest;
-	public string legs;
-	public string shoes;
+	public string hat = "";
+	public string chest = "";
+	public string legs = "";
+	public string shoes = "";
 }

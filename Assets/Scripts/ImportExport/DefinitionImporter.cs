@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Palmmedia.ReportGenerator.Core;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.WSA;
 using static Definition;
@@ -201,21 +202,21 @@ public class DefinitionImporter : MonoBehaviour
 				foreach (string fileName in folder.FileNames)
 					yield return fileName;
 		}
-		public bool TryGetAddtionalImportInfo(string packName, EDefinitionType type, string txtFileName, out List<string> inputs, out List<string> outputs)
+		public bool TryGetAddtionalImportInfo(EDefinitionType type, string txtFileName, out List<string> inputs, out List<string> outputs)
 		{
 			CheckInitCache();
 			if (SubFolders.TryGetValue(type, out Folder folder))
-				return folder.TryGetAddtionalImportInfo(packName, type, txtFileName, out inputs, out outputs);
+				return folder.TryGetAddtionalImportInfo(PackName, type, txtFileName, out inputs, out outputs);
 
 			inputs = EMPTY_LIST;
 			outputs = EMPTY_LIST;
 			return false;
 		}
-		public bool HasFullImportMap(string packName, EDefinitionType type, bool generate = false)
+		public bool HasFullImportMap(EDefinitionType type, bool generate = false)
 		{
 			CheckInitCache();
 			if (SubFolders.TryGetValue(type, out Folder folder))
-				return folder.HasFullImportMap(packName, type, generate);
+				return folder.HasFullImportMap(PackName, type, generate);
 			return true;
 		}
 		public bool TryGetFullImportCount(EDefinitionType type, out int inputCount, out int outputCount)
@@ -304,7 +305,7 @@ public class DefinitionImporter : MonoBehaviour
 	{
 		if(TryGetPreImportPack(packName, out PreImportPack pack))
 		{
-			return pack.TryGetAddtionalImportInfo(packName, type, txtFileName, out inputs, out outputs);
+			return pack.TryGetAddtionalImportInfo(type, txtFileName, out inputs, out outputs);
 		}
 		inputs = EMPTY_LIST;
 		outputs = EMPTY_LIST;
@@ -321,13 +322,13 @@ public class DefinitionImporter : MonoBehaviour
 			if (generate)
 			{
 				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
-					pack.HasFullImportMap(packName, (EDefinitionType)i, generate);
+					pack.HasFullImportMap((EDefinitionType)i, generate);
 				return true;
 			}
 			else
 			{
 				for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
-					if (!pack.HasFullImportMap(packName, (EDefinitionType)i))
+					if (!pack.HasFullImportMap((EDefinitionType)i))
 						return false;
 				return true;
 			}
@@ -338,7 +339,7 @@ public class DefinitionImporter : MonoBehaviour
 	{
 		if (TryGetPreImportPack(packName, out PreImportPack pack))
 		{
-			return pack.HasFullImportMap(packName, type, generate);
+			return pack.HasFullImportMap(type, generate);
 		}
 		return true;
 	}
@@ -454,7 +455,7 @@ public class DefinitionImporter : MonoBehaviour
 		if(outputPack == null)
 		{
 			outputPack = ScriptableObject.CreateInstance<ContentPack>();
-			AssetDatabase.CreateAsset(outputPack, $"{ASSET_ROOT}/{packName}/{packName}.asset");
+			CreateUnityAsset(outputPack, $"{ASSET_ROOT}/{packName}/{packName}.asset");
 			Packs.Add(outputPack);
 		}
 
@@ -465,24 +466,106 @@ public class DefinitionImporter : MonoBehaviour
 			EDefinitionType defType = (EDefinitionType)i;
 			foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
 			{
-				if (inputPack.TryGetAddtionalImportInfo(packName, defType, fileName, out List<string> inputFiles, out List<string> outputFiles))
-				{	
-					
-				}
+				ImportContent_Internal(inputPack, outputPack, defType, fileName, errors, overwrite);
 			}
 		}
-
-
+		AssetDatabase.Refresh();
 
 
 		return true;
 	}
+
+	public static void CreateUnityAsset(UnityEngine.Object asset, string path)
+	{
+		string folder = path.Substring(0, path.LastIndexOf('/'));
+		if (!Directory.Exists(folder))
+			Directory.CreateDirectory(folder);
+		AssetDatabase.CreateAsset(asset, path);
+	}
+
+	private void ImportContent_Internal(PreImportPack fromPack, ContentPack toPack, EDefinitionType defType, string fileName, List<Verification> errors, bool overwrite)
+	{
+		if (fromPack == null || toPack == null)
+			return;
+
+		// Check existing content if we aren't ok to overwrite
+		if (!overwrite)
+		{
+			if (fromPack.TryGetAddtionalImportInfo(defType, fileName, out List<string> inputFiles, out List<string> outputFiles))
+			{
+				foreach (string output in outputFiles)
+				{
+					if (File.Exists(output))
+					{
+
+					}
+				}
+			}
+		}
+
+		// We are okay to do the import
+		// Step 1. Import InfoType, our old format
+		InfoType imported = ImportType(toPack, defType, fileName.Split(".")[0]);
+		if (imported == null)
+		{
+			errors.Add(Verification.Failure($"Failed to import {fileName} as InfoType"));
+			return;
+		}
+
+		// Step 2. Convert to Definition
+		Definition def = ConvertDefinition(toPack.ModName, defType, imported.shortName, imported);
+		if (def == null)
+		{
+			errors.Add(Verification.Failure($"Failed to convert {imported.shortName} from InfoType to Definition"));
+			return;
+		}
+
+		VerifyDefinition(def, toPack);
+		EditorUtility.SetDirty(def);
+		AssetDatabase.SaveAssetIfDirty(def);
+
+		// Step 3. Import all additional assets
+		List<string> outputPaths = AdditionalAssetImporter.GetOutputPaths(fromPack.PackName, imported);
+		if(!overwrite)
+		{
+			for(int i = outputPaths.Count - 1; i >= 0; i--)
+			{
+				if (File.Exists(outputPaths[i]))
+					outputPaths.RemoveAt(i);
+			}
+		}
+		AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, outputPaths, errors);
+
+		{
+			//TYPE_LOOKUP[i].Add(imported.shortName, imported);
+
+			//if (imported.modelString != null && imported.modelString.Length > 0)
+			//{
+			//	ImportModel_Internal(fromPack, toPack, imported.modelFolder, imported.modelString, errors);
+			//}
+		}
+
+	}
+	private void ImportModel_Internal(PreImportPack fromPack, ContentPack toPack, string modelFolder, string modelFileName, List<Verification> errors)
+	{
+		string modelPath = $"{MODEL_IMPORT_ROOT}/{modelFolder}/Model{modelFileName}.java";
+		TurboRig rig = JavaModelImporter.ImportTurboModel(toPack.ModName, modelPath, null);
+		if (rig == null)
+		{
+			errors.Add(Verification.Failure($"Failed to import model {modelFolder}/Model{modelFileName}.java to TurboRig"));
+			return;
+		}
+
+		string importToPath = $"{ASSET_ROOT}/{toPack.ModName}/models/{rig.name}.asset";
+		CreateUnityAsset(rig, importToPath);
+	}
+
 	#endregion
 	// ---------------------------------------------------------------------------------------
 
 
 
-	public bool ImportPack(string packName, bool overwrite = false)
+	private bool ImportPack(string packName, bool overwrite = false)
 	{
 		string modName = packName;
 		string assetPath = $"{ASSET_ROOT}/{packName}/{packName}.asset";
@@ -541,7 +624,7 @@ public class DefinitionImporter : MonoBehaviour
 		Debug.Log($"--------------------");
 		Debug.Log($"Saving {pack} to {assetPath}");
 
-		AssetDatabase.CreateAsset(pack, assetPath);
+		DefinitionImporter.CreateUnityAsset(pack, assetPath);
 		if(!Packs.Contains(pack))
 			Packs.Add(pack);
 
@@ -573,7 +656,7 @@ public class DefinitionImporter : MonoBehaviour
 		return TYPE_LOOKUP[(int)type].TryGetValue(key, out infoType);
 	}
 
-	public void ImportAllTypeFiles(ContentPack pack)
+	private void ImportAllTypeFiles(ContentPack pack)
 	{
 		DirectoryInfo modelsFolder = new DirectoryInfo($"{ASSET_ROOT}/{pack.ModName}/models/");
 		if (!modelsFolder.Exists)
@@ -607,7 +690,7 @@ public class DefinitionImporter : MonoBehaviour
 								if (rig != null)
 								{
 									string importToPath = $"{ASSET_ROOT}/{pack.ModName}/models/{rig.name}.asset";
-									AssetDatabase.CreateAsset(rig, importToPath);
+									DefinitionImporter.CreateUnityAsset(rig, importToPath);
 								}
 								else
 									Debug.LogError($"Failed to import {pack.name}:{file.Name}");
@@ -852,54 +935,54 @@ public class DefinitionImporter : MonoBehaviour
 		def.name = infoType.shortName;
 
 		// Copy textures
-		if(infoType.texture != null && infoType.texture.Length > 0)
-			def.Skin = ImportTexture(packName, $"skins/{infoType.texture}.png", $"skins/{Utils.ToLowerWithUnderscores(infoType.texture)}.png");
-		if(infoType.iconPath != null && infoType.iconPath.Length > 0)
-		{
-			def.Icon = ImportTexture(packName, $"textures/items/{infoType.iconPath}.png", $"items/{infoType.iconPath}.png");
-		}
-		if(infoType is PaintableType paintable)
-		{
-			foreach(Paintjob paintjob in paintable.paintjobs)
-			{
-				def.AdditionalTextures.Add(new Definition.AdditionalTexture()
-				{
-					name = paintjob.textureName,
-					texture = ImportTexture(packName, $"skins/{paintjob.textureName}.png", $"skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png")
-				
-				});
-				def.AdditionalTextures.Add(new Definition.AdditionalTexture()
-				{
-					name = $"{paintjob.iconName}_Icon",
-					texture = ImportTexture(packName, $"textures/items/{paintjob.iconName}.png", $"items/{paintjob.iconName}.png")
-				});
-			}
-		}
-		if(infoType is BoxType box)
-		{	
-			// Boxes need a model made from their side textures
-			CubeModel cubeModel = JavaModelImporter.ImportBlock(packName, box);
-			if(cubeModel != null)
-			{
-				string importPath = $"{IMPORT_ROOT}/{packName}/models/{cubeModel.name}.asset";
-				AssetDatabase.CreateAsset(cubeModel, importPath);
-			}
-			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
-			{
-				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.bottomTexturePath)}.png",
-				texture = ImportTexture(packName, $"blocks/{box.bottomTexturePath}.png")
-			});
-			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
-			{
-				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.sideTexturePath)}.png",
-				texture = ImportTexture(packName, $"blocks/{box.sideTexturePath}.png")
-			});
-			def.AdditionalTextures.Add(new Definition.AdditionalTexture()
-			{
-				name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.topTexturePath)}.png",
-				texture = ImportTexture(packName, $"blocks/{box.topTexturePath}.png")
-			});
-		}
+		//if(infoType.texture != null && infoType.texture.Length > 0)
+		//	def.Skin = ImportTexture(packName, $"skins/{infoType.texture}.png", $"skins/{Utils.ToLowerWithUnderscores(infoType.texture)}.png");
+		//if(infoType.iconPath != null && infoType.iconPath.Length > 0)
+		//{
+		//	def.Icon = ImportTexture(packName, $"textures/items/{infoType.iconPath}.png", $"items/{infoType.iconPath}.png");
+		//}
+		//if(infoType is PaintableType paintable)
+		//{
+		//	foreach(Paintjob paintjob in paintable.paintjobs)
+		//	{
+		//		def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+		//		{
+		//			name = paintjob.textureName,
+		//			texture = ImportTexture(packName, $"skins/{paintjob.textureName}.png", $"skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png")
+		//		
+		//		});
+		//		def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+		//		{
+		//			name = $"{paintjob.iconName}_Icon",
+		//			texture = ImportTexture(packName, $"textures/items/{paintjob.iconName}.png", $"items/{paintjob.iconName}.png")
+		//		});
+		//	}
+		//}
+		//if(infoType is BoxType box)
+		//{	
+		//	// Boxes need a model made from their side textures
+		//	CubeModel cubeModel = JavaModelImporter.ImportBlock(packName, box);
+		//	if(cubeModel != null)
+		//	{
+		//		string importPath = $"{IMPORT_ROOT}/{packName}/models/{cubeModel.name}.asset";
+		//		AssetDatabase.CreateAsset(cubeModel, importPath);
+		//	}
+		//	def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+		//	{
+		//		name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.bottomTexturePath)}.png",
+		//		texture = ImportTexture(packName, $"blocks/{box.bottomTexturePath}.png")
+		//	});
+		//	def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+		//	{
+		//		name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.sideTexturePath)}.png",
+		//		texture = ImportTexture(packName, $"blocks/{box.sideTexturePath}.png")
+		//	});
+		//	def.AdditionalTextures.Add(new Definition.AdditionalTexture()
+		//	{
+		//		name = $"textures/blocks/{Utils.ToLowerWithUnderscores(box.topTexturePath)}.png",
+		//		texture = ImportTexture(packName, $"blocks/{box.topTexturePath}.png")
+		//	});
+		//}
 
 
 		//if(pack.HasContent(shortName))
@@ -907,7 +990,7 @@ public class DefinitionImporter : MonoBehaviour
 
 		string assetPath = $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{Utils.ToLowerWithUnderscores(shortName)}.asset";
 		Debug.Log($"Saving {def} to {assetPath}");
-		AssetDatabase.CreateAsset(def, assetPath);
+		DefinitionImporter.CreateUnityAsset(def, assetPath);
 		return AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
 	}
 

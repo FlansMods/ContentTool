@@ -174,6 +174,8 @@ public class TurboRig : MinecraftModel
 
 	public AttachPoint GetOrCreate(string name)
 	{
+		if (name == "body")
+			return null;
 		foreach (AttachPoint point in AttachPoints)
 			if (point.name == name)
 				return point;
@@ -225,12 +227,14 @@ public class TurboRig : MinecraftModel
 	public void SetAttachment(string name, string attachedTo)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		ap.attachedTo = attachedTo;
+		if(ap != null)
+			ap.attachedTo = attachedTo;
 	}
 	public void SetAttachmentOffset(string name, Vector3 offset)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		ap.position = offset;
+		if(ap != null)
+			ap.position = offset;
 	}
 
 	public Model convertToModel()

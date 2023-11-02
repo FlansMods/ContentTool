@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: zero_titan
   m_EditorClassIdentifier: 
   Textures: []
+  Transforms: []
   Icon:
     Namespace: minecraft
     ID: null
@@ -2000,5 +2001,23 @@ MonoBehaviour:
   - key: hips_attachment_point
     isVec3: 1
     floatValue: 0
-    vec3Value: {x: -3.125, y: 7.5, z: 0}
-  AttachPoints: []
+    vec3Value: {x: -50, y: 120, z: 0}
+  AttachPoints:
+  - name: body
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: hips
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftLeg
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightLeg
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: leftArm
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: rightArm
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

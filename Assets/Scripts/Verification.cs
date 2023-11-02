@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -43,6 +44,15 @@ public class Verification
 			Type = VerifyType.Fail,
 			Func = func,
 			Message = msg
+		};
+	}
+	public static Verification Failure(Exception exception, QuickFixFunc func = null)
+	{
+		return new Verification()
+		{
+			Type = VerifyType.Fail,
+			Func = func,
+			Message = exception.Message
 		};
 	}
 
@@ -111,7 +121,7 @@ public static class GUIVerify
 	}
 
 	
-	public static bool VerificationsBox(Dictionary<Object, List<Verification>> multiVerifications)
+	public static bool VerificationsBox(Dictionary<UnityEngine.Object, List<Verification>> multiVerifications)
 	{
 		bool allSucceeded = true;
 		bool pressedAnyQuickFix = false;

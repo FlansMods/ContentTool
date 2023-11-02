@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,14 @@ public abstract class Converter<TInfo, TDefinition>
 {
 	public void CastConvert(InfoType input, Definition output)
 	{
-		DoConversion((TInfo)input, (TDefinition)output);
+		try
+		{
+			DoConversion((TInfo)input, (TDefinition)output);
+		}
+		catch(Exception)
+		{
+			Debug.LogError($"Type {output} was not of the expected type {typeof(TDefinition)}");
+		}
 	}
 	public void Convert(TInfo input, TDefinition output)
 	{

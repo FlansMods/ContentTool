@@ -2242,6 +2242,11 @@ public class GunBoxTypeImporter : TxtImporter<GunBoxType>
 		//Add an info type at the top level.
 		else if(split[0].Equals("AddGun") || split[0].Equals("AddType"))
 		{
+			if (obj.currentPage == null)
+			{
+				obj.currentPage = new GunBoxPage("default");
+				obj.pagesByTitle.Add("default", obj.currentPage);
+			}
 			obj.currentPage.addNewEntry(split[1], ConvertRecipeString(split));
 		}
 		//Add a subtype (such as ammo) to the current top level InfoType

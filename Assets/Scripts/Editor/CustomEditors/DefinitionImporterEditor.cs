@@ -83,13 +83,15 @@ public class DefinitionImporterEditor : Editor
 
 			// --- Import (New Only) Button! ---
 			if (GUILayout.Button(EditorGUIUtility.IconContent("Customized"), GUILayout.Width(32)))
-			{
-				instance.ImportPack(sourcePack, false);
+			{ 
+				List<Verification> errors = new List<Verification>();
+				instance.ImportPack(sourcePack, errors, false);
 			}
 			// --- Import Button! ---
 			if (GUILayout.Button(EditorGUIUtility.IconContent("Download-Available"), GUILayout.Width(32)))
 			{
-				instance.ImportPack(sourcePack, true);
+				List<Verification> errors = new List<Verification>();
+				instance.ImportPack(sourcePack, errors, true);
 			}
 			GUILayout.EndHorizontal();
 
@@ -301,8 +303,8 @@ public class DefinitionImporterEditor : Editor
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"> {packName}");
-				if(GUILayout.Button("Re-Import"))
-					instance.ImportPack(packName);
+				//if(GUILayout.Button("Re-Import"))
+					//instance.ImportPack(packName);
 				if(GUILayout.Button("Export"))
 					instance.ExportPack(packName);
 				GUILayout.EndHorizontal();
