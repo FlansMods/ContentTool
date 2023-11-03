@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -205,8 +206,194 @@ public class ContentManagerEditor : Editor
 
 	public void ExportTab(ContentManager instance)
 	{
-		FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
+		instance.ExportRoot = FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
 
+		foreach(ContentPack pack in instance.Packs)
+		{
+			string packFoldoutPath = $"{pack.ModName}";
+			List<Verification> verifications = new List<Verification>();
+			pack.GetVerifications(verifications);
+			foreach (Definition def in pack.AllContent)
+				def.GetVerifications(verifications);
+			foreach (MinecraftModel model in pack.AllModels)
+				model.GetVerifications(verifications);
+			VerifyType verificationSummary = Verification.GetWorstState(verifications);
+			int failCount = Verification.CountFailures(verifications);
+			int quickFixCount = Verification.CountQuickFixes(verifications);
+
+			// Foldout / summary view
+			GUILayout.BeginHorizontal();
+			bool packFoldout = NestedFoldout(packFoldoutPath, pack.ModName);
+			GUILayout.FlexibleSpace();
+			if(quickFixCount > 0)
+			{
+				GUILayout.Label($"{quickFixCount} Quick-Fixes Available");
+				if(GUILayout.Button("Apply"))
+				{
+					Verification.ApplyAllQuickFixes(verifications);
+				}
+			}
+			if (failCount > 0)
+			{
+				GUILayout.Label($"{failCount} Errors");
+				GUIVerify.VerificationIcon(verifications);
+				EditorGUI.BeginDisabledGroup(true);
+				GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
+				EditorGUI.EndDisabledGroup();
+			}
+			else
+			{
+				GUIVerify.VerificationIcon(verifications);
+				if (GUILayout.Button(FlanStyles.ExportPackNewOnly, GUILayout.Width(32)))
+				{
+					instance.ExportPack(pack.ModName, false);
+				}
+				if (GUILayout.Button(FlanStyles.ExportPackOverwrite, GUILayout.Width(32)))
+				{
+					instance.ExportPack(pack.ModName, true);
+				}
+			}
+			GUILayout.EndHorizontal();
+
+			if (packFoldout)
+			{
+				EditorGUI.indentLevel++;
+				string contentFoldoutPath = $"{packFoldoutPath}/content";
+				bool contentFoldout = NestedFoldout(contentFoldoutPath, "Content");
+				if (contentFoldout)
+				{
+					EditorGUI.indentLevel++;
+					AssetListFoldout(instance, pack, contentFoldoutPath, pack.AllContent);
+					EditorGUI.indentLevel--;
+				}
+
+				string modelsFoldoutPath = $"{packFoldoutPath}/models";
+				bool modelsFoldout = NestedFoldout(modelsFoldoutPath, "Models");
+				if(modelsFoldout)
+				{
+					EditorGUI.indentLevel++;
+					AssetListFoldout(instance, pack, modelsFoldoutPath, pack.AllModels);
+					EditorGUI.indentLevel--;
+				}
+
+				string texturesFoldoutPath = $"{packFoldoutPath}/textures";
+				bool texturesFoldout = NestedFoldout(texturesFoldoutPath, "Textures");
+				if (texturesFoldout)
+				{
+					EditorGUI.indentLevel++;
+					AssetListFoldout(instance, pack, texturesFoldoutPath, pack.AllTextures);
+					EditorGUI.indentLevel--;
+				}
+				EditorGUI.indentLevel--;
+			}
+		}
+	}
+
+	private void AssetListFoldout(ContentManager instance, ContentPack pack, string foldoutPath, IEnumerable<Object> assets)
+	{
+		foreach (Object asset in assets)
+		{
+			List<Verification> verifications = new List<Verification>();
+			if (asset is IVerifiableAsset verifiable)
+			{
+				verifiable.GetVerifications(verifications);
+			}
+
+			GUILayout.BeginHorizontal();
+			VerifyType verificationSummary = Verification.GetWorstState(verifications);
+			int quickFixCount = Verification.CountQuickFixes(verifications);
+			string assetFoldoutPath = $"{foldoutPath}/{asset.name}";
+			bool assetFoldout = NestedFoldout(assetFoldoutPath, asset.name);
+			bool alreadyExported = instance.ExportedAssetAlreadyExists(pack.ModName, asset);
+			if (!assetFoldout)
+			{
+				GUILayout.FlexibleSpace();
+				if (quickFixCount > 0)
+				{
+					GUILayout.Label($"{quickFixCount} Quick-Fixes Available");
+					if (GUILayout.Button("Apply"))
+					{
+						Verification.ApplyAllQuickFixes(verifications);
+					}
+				}
+				GUIVerify.VerificationIcon(verifications);
+				if (verificationSummary == VerifyType.Fail)
+				{
+					EditorGUI.BeginDisabledGroup(true);
+					GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
+					EditorGUI.EndDisabledGroup();
+				}
+				else
+				{
+					EditorGUI.BeginDisabledGroup(alreadyExported);
+					if (GUILayout.Button(FlanStyles.ExportSingleAsset, GUILayout.Width(32)))
+					{
+						instance.ExportAsset(pack.ModName, asset);
+					}
+					EditorGUI.EndDisabledGroup();
+					EditorGUI.BeginDisabledGroup(!alreadyExported);
+					if (GUILayout.Button(FlanStyles.ExportSingleAssetOverwrite, GUILayout.Width(32)))
+					{
+						instance.ExportAsset(pack.ModName, asset);
+					}
+					EditorGUI.EndDisabledGroup();
+				}				
+			}
+			GUILayout.EndHorizontal();
+			if (assetFoldout)
+			{
+				EditorGUI.indentLevel++;
+
+				EditorGUILayout.ObjectField(asset, asset.GetType(), false);
+				GUILayout.BeginHorizontal();
+				GUILayout.Label(GUIContent.none, GUILayout.Width(15 * EditorGUI.indentLevel));
+				{
+					GUILayout.BeginVertical();
+					GUILayout.Label(asset.GetType().ToString());
+					GUIVerify.VerificationsBox(verifications);
+
+					if (quickFixCount > 0)
+					{
+						GUILayout.BeginHorizontal();
+						GUILayout.Label($"{quickFixCount} Quick-Fixes Available");
+						if (GUILayout.Button("Apply"))
+						{
+							Verification.ApplyAllQuickFixes(verifications);
+						}
+						GUILayout.EndHorizontal();
+					}
+
+					GUILayout.BeginHorizontal();
+					if(verificationSummary == VerifyType.Fail)
+					{
+						EditorGUI.BeginDisabledGroup(true);
+						GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
+						EditorGUI.EndDisabledGroup();
+					}
+					else
+					{
+						EditorGUI.BeginDisabledGroup(alreadyExported);
+						if (GUILayout.Button(FlanStyles.ExportSingleAsset, GUILayout.Width(32)))
+						{
+							instance.ExportAsset(pack.ModName, asset);
+						}
+						EditorGUI.EndDisabledGroup();
+						EditorGUI.BeginDisabledGroup(!alreadyExported);
+						if (GUILayout.Button(FlanStyles.ExportSingleAssetOverwrite, GUILayout.Width(32)))
+						{
+							instance.ExportAsset(pack.ModName, asset);
+						}
+						EditorGUI.EndDisabledGroup();
+					}
+					
+					GUILayout.EndHorizontal();
+					GUILayout.EndVertical();
+				}
+				GUILayout.EndHorizontal();
+
+				EditorGUI.indentLevel--;
+			}
+		}
 	}
 
 	private string FolderSelector(string label, string folder, string defaultLocation)
@@ -272,7 +459,7 @@ public class ContentManagerEditor : Editor
 				//if(GUILayout.Button("Re-Import"))
 					//instance.ImportPack(packName);
 				if(GUILayout.Button("Export"))
-					instance.ExportPack(packName);
+					instance.ExportPack(packName, false);
 				GUILayout.EndHorizontal();
 			}
 

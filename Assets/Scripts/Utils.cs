@@ -229,7 +229,31 @@ public static class FlanStyles
         .WithFontStyle(FontStyle.Bold)
         .WithTextColour(Color.green);
 
+    public static readonly GUIContent ExportSingleAsset = 
+        EditorGUIUtility.IconContent("SaveAs").Clone()
+        .WithTooltip("Export this asset");
+	public static readonly GUIContent ExportSingleAssetOverwrite =
+		EditorGUIUtility.IconContent("Warning").Clone()
+		.WithTooltip("Export this asset, overwriting the existing asset!");
+	public static readonly GUIContent ExportPackNewOnly =
+		EditorGUIUtility.IconContent("SaveAs").Clone()
+		.WithTooltip("Export all new assets in this pack");
+	public static readonly GUIContent ExportPackOverwrite =
+        EditorGUIUtility.IconContent("Warning").Clone()
+        .WithTooltip("Export ALL assets in this pack, overwritng existing assets.");
+	public static readonly GUIContent ExportError =
+        EditorGUIUtility.IconContent("Error").Clone()
+        .WithTooltip("Fix all verification errors before exporting.");
 
+	public static GUIContent Clone(this GUIContent content)
+	{
+		return new GUIContent(content);
+	}
+    public static GUIContent WithTooltip(this GUIContent content, string tooltip)
+    {
+        content.tooltip = tooltip;
+        return content;
+    }
 	public static GUIStyle Clone(this GUIStyle style)
 	{
 		return new GUIStyle(style);

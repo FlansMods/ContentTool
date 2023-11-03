@@ -69,6 +69,35 @@ public class Verification
 		return result;
 	}
 
+	public static int CountSuccesses(List<Verification> verifications) { return CountType(verifications, VerifyType.Pass); }
+	public static int CountNeutrals(List<Verification> verifications) { return CountType(verifications, VerifyType.Neutral); }
+	public static int CountFailures(List<Verification> verifications) { return CountType(verifications, VerifyType.Fail); }
+
+	public static int CountType(List<Verification> verifications, VerifyType type)
+	{
+		int count = 0;
+		foreach (Verification v in verifications)
+			if (v.Type == type)
+				count++;
+		return count;
+	}
+
+	public static int CountQuickFixes(List<Verification> verifications)
+	{
+		int count = 0;
+		foreach (Verification v in verifications)
+			if (v.Func != null)
+				count++;
+		return count;
+	}
+
+	public static void ApplyAllQuickFixes(List<Verification> verifications)
+	{
+		foreach (Verification v in verifications)
+			if (v.Func != null)
+				v.Func();
+	}
+
 	public override string ToString()
 	{
 		return $"[{Type}] {Message}";

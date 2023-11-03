@@ -30,7 +30,6 @@ public class ContentManager : MonoBehaviour
 	public const string IMPORT_ROOT = "Import/Content Packs";
 	public const string MODEL_IMPORT_ROOT = "Import/Java Models";
 	public const string ASSET_ROOT = "Assets/Content Packs";
-	public string ExportRoot = "Export";
 
 	// ---------------------------------------------------------------------------------------
 	#region Pre-Import Pack storage
@@ -978,7 +977,33 @@ public class ContentManager : MonoBehaviour
 	#endregion
 	// ---------------------------------------------------------------------------------------
 
-	public void ExportPack(string packName)
+	// ---------------------------------------------------------------------------------------
+	#region The Export Process
+	// ---------------------------------------------------------------------------------------
+	public string ExportRoot = "Export"; 
+	public void ExportAsset(string packName, UnityEngine.Object asset)
+	{
+		
+	}
+
+	public string GetExportPath(string packName, UnityEngine.Object asset)
+	{
+		ResourceLocation loc = asset.GetLocation();
+		if(asset is MinecraftModel)
+			return $"{ExportRoot}/assets/{packName}/{loc.ID}.json";
+		if (asset is Texture2D)
+			return $"{ExportRoot}/assets/{packName}/{loc.ID}.png";
+
+		return $"{ExportRoot}/data/{packName}/{loc.ID}.json";
+	}
+
+	public bool ExportedAssetAlreadyExists(string packName, UnityEngine.Object asset)
+	{
+		string exportPath = GetExportPath(packName, asset);
+		return File.Exists(exportPath);
+	}
+
+	public void ExportPack(string packName, bool overwrite)
 	{
 		ContentPack pack = FindContentPack(packName);
 		if(pack == null)
@@ -1126,4 +1151,6 @@ public class ContentManager : MonoBehaviour
 			}
 		}
 	}
+	#endregion
+	// ---------------------------------------------------------------------------------------
 }
