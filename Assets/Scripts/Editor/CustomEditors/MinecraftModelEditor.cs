@@ -128,7 +128,7 @@ public abstract class MinecraftModelEditor : Editor
 		FlanStyles.BigHeader("Model Editor");
 	}
 
-	private ModelEditingRig RigSelector(MinecraftModel mcModel)
+	protected ModelEditingRig RigSelector(MinecraftModel mcModel)
 	{
 		ModelEditingRig[] rigs = FindObjectsOfType<ModelEditingRig>();
 		ModelEditingRig matchingRig = null;

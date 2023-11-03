@@ -14,6 +14,11 @@ public class TurboRigEditor : MinecraftModelEditor
 	private Vector2 TexturePreviewScroller = Vector2.zero;
 	protected override void TexturingTabImpl(MinecraftModel mcModel)
 	{
+		ModelEditingRig rig = RigSelector(mcModel);
+		if (rig != null)
+		{
+		}
+
 		ResourceLocation modelLocation = mcModel.GetLocation();
 		List<string> existingTextures = new List<string>();
 		if (mcModel is TurboRig turboRig)

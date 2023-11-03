@@ -10,23 +10,61 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
-  m_Name: fc_56
+  m_Name: fc_49_3d
   m_EditorClassIdentifier: 
   Textures:
-  - Key: fc_56
+  - Key: fc_49
     Location:
       Namespace: flansvendersgame
-      ID: textures/skins/fc_56
-    Texture: {fileID: 2800000, guid: 3a046730e285c3449b960217121308b0, type: 3}
-  - Key: 
+      ID: textures/skins/fc_49
+    Texture: {fileID: 2800000, guid: e59e5a6220e105542bce90e596777cb5, type: 3}
+  - Key: fc_49_aged
     Location:
       Namespace: flansvendersgame
-      ID: 
-    Texture: {fileID: 0}
+      ID: textures/skins/fc_49_aged
+    Texture: {fileID: 2800000, guid: d13a62e61446e184db65755e8ced2049, type: 3}
+  - Key: fc_49_polymer
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_49_polymer
+    Texture: {fileID: 2800000, guid: 524b3e66a7470b745b43313f5592e340, type: 3}
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 0, y: 3.25, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 0, y: 3.75, z: 0}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: 0.009886876, y: -0.008581123, z: -0.00081563636}
+    Rotation: {x: 0.008246765, y: -0.5547413, z: -0.44016588, w: -0.7060085}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 0.5, y: 0.5, z: 0}
+    Rotation: {x: 0, y: 0.9848077, z: 0, w: 0.17364822}
+    Scale: {x: 1, y: 1, z: 1}
   Icon:
     Namespace: minecraft
     ID: null
-  TextureX: 32
+  TextureX: 64
   TextureY: 128
   Sections:
   - PartName: body
@@ -241,41 +279,26 @@ MonoBehaviour:
       - {x: -0.2, y: 0.1, z: -0.2}
       - {x: 0, y: 0, z: -0.2}
       - {x: -0.2, y: 0, z: -0.2}
-    - textureU: 11
-      textureV: 72
-      Pos: {x: 0, y: -2, z: -3}
-      Dim: {x: 1, y: 2, z: 3}
-      Origin: {x: 16.8, y: 3, z: 1.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: -0.2, z: 0.1}
-      - {x: 0, y: -0.2, z: 0.1}
-      - {x: 0, y: 0, z: 0.1}
-      - {x: 0, y: 0, z: 0.1}
-      - {x: 0, y: -0.2, z: -0.1}
-      - {x: 0, y: -0.2, z: -0.1}
-      - {x: 0, y: 0, z: -0.1}
-      - {x: 0, y: 0, z: -0.1}
     - textureU: 0
-      textureV: 86
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 1, y: 1, z: 1}
-      Origin: {x: 16.8, y: 4, z: 0.5}
+      textureV: 82
+      Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 9, y: 2, z: 3}
+      Origin: {x: 16.75, y: 3, z: 1.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
-      - {x: 0, y: 0, z: -0.25}
-      - {x: 0, y: 0, z: -0.25}
       - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.5, z: 0.25}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0.25}
-      - {x: 0, y: 0, z: 0.25}
       - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.5, z: -0.25}
       - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -0.25}
     - textureU: 0
       textureV: 88
       Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 11, y: 1, z: 1}
-      Origin: {x: 17.8, y: 3.5, z: 0.5}
+      Dim: {x: 14, y: 1, z: 1}
+      Origin: {x: 17.75, y: 3.5, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
@@ -286,81 +309,6 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 0
-      textureV: 90
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 2, y: 1, z: 1}
-      Origin: {x: 21.8, y: 3.5, z: 0.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: -0.1, z: -0.1}
-      - {x: 0, y: -0.1, z: -0.1}
-      - {x: 0, y: 0.1, z: -0.1}
-      - {x: 0, y: 0.1, z: -0.1}
-      - {x: 0, y: -0.1, z: 0.1}
-      - {x: 0, y: -0.1, z: 0.1}
-      - {x: 0, y: 0.1, z: 0.1}
-      - {x: 0, y: 0.1, z: 0.1}
-    - textureU: 0
-      textureV: 92
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 1, y: 1, z: 1}
-      Origin: {x: 23.8, y: 3.5, z: 0.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: -0.2, z: -0.2}
-      - {x: 0, y: -0.2, z: -0.2}
-      - {x: 0, y: 0.2, z: -0.2}
-      - {x: 0, y: 0.2, z: -0.2}
-      - {x: 0, y: -0.2, z: 0.2}
-      - {x: 0, y: -0.2, z: 0.2}
-      - {x: 0, y: 0.2, z: 0.2}
-      - {x: 0, y: 0.2, z: 0.2}
-    - textureU: 26
-      textureV: 94
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 2, y: 1, z: 1}
-      Origin: {x: 28.8, y: 3.5, z: 0.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: -0.2, z: -0.2}
-      - {x: 0, y: -0.2, z: -0.2}
-      - {x: 0, y: 0.2, z: -0.2}
-      - {x: 0, y: 0.2, z: -0.2}
-      - {x: 0, y: -0.2, z: 0.2}
-      - {x: 0, y: -0.2, z: 0.2}
-      - {x: 0, y: 0.2, z: 0.2}
-      - {x: 0, y: 0.2, z: 0.2}
-    - textureU: 22
-      textureV: 96
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 1, y: 1, z: 1}
-      Origin: {x: 22.8, y: 4.5, z: 0.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - textureU: 26
-      textureV: 97
-      Pos: {x: 0, y: -1, z: -1}
-      Dim: {x: 5, y: 1, z: 1}
-      Origin: {x: 17.8, y: 4.5, z: 0.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: -1, z: 0.25}
-      - {x: 0, y: 0, z: 0.25}
-      - {x: 0, y: -1, z: 0.25}
-      - {x: 0, y: -0.3, z: 0.25}
-      - {x: 0, y: -1, z: -0.25}
-      - {x: 0, y: 0, z: -0.25}
-      - {x: 0, y: -1, z: -0.25}
-      - {x: 0, y: -0.3, z: -0.25}
     - textureU: 16
       textureV: 26
       Pos: {x: 0, y: -1, z: -1}
@@ -421,11 +369,56 @@ MonoBehaviour:
       - {x: -0.5, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: 0}
+    - textureU: 0
+      textureV: 90
+      Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 9, y: 1, z: 3}
+      Origin: {x: 16.75, y: 4, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 1}
+      - {x: 0, y: 0, z: 1}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -1}
+      - {x: 0, y: 0, z: -1}
+    - textureU: 7
+      textureV: 73
+      Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 24.75, y: 5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0.5, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - textureU: 0
+      textureV: 88
+      Pos: {x: -14, y: -1, z: -1}
+      Dim: {x: 14, y: 1, z: 1}
+      Origin: {x: 13.75, y: 2.5, z: -0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0.25, z: 0.25}
+      - {x: 0, y: 0.25, z: 0.25}
+      - {x: 0, y: -0.25, z: 0.25}
+      - {x: 0, y: -0.25, z: 0.25}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: 0, y: -0.25, z: -0.25}
+      - {x: 0, y: -0.25, z: -0.25}
     - textureU: 5
       textureV: 3
-      Pos: {x: 0.5, y: -3, z: -1}
+      Pos: {x: 0, y: -3, z: -1}
       Dim: {x: 1, y: 3, z: 1}
-      Origin: {x: 6, y: 4.3999996, z: 0.5}
+      Origin: {x: 6.5, y: 4.25, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0.5, z: 0.1}
@@ -436,36 +429,6 @@ MonoBehaviour:
       - {x: 0, y: 0.5, z: -0.1}
       - {x: 0, y: -0.5, z: -0.1}
       - {x: 0, y: -0.5, z: -0.1}
-    - textureU: 0
-      textureV: 48
-      Pos: {x: 0, y: -2, z: -3}
-      Dim: {x: 1, y: 2, z: 3}
-      Origin: {x: 6, y: 2, z: 1.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - textureU: 0
-      textureV: 53
-      Pos: {x: 0, y: -3, z: -3}
-      Dim: {x: 1, y: 3, z: 3}
-      Origin: {x: 7, y: 3, z: 1.5}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
     - textureU: 1
       textureV: 95
       Pos: {x: 0, y: -2, z: -3}
@@ -609,50 +572,6 @@ MonoBehaviour:
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.1875
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: has_arms
-    isVec3: 0
-    floatValue: 0
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: left_arm_pos
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0, y: -0.2, z: 0}
-  - key: left_arm_rot
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 90, y: 45, z: 0}
-  - key: left_arm_reload_pos
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0, y: -0.4, z: 0}
-  - key: left_arm_reload_rot
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 90, y: 20, z: 0}
-  - key: right_arm_pos
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0.4, y: -0.5, z: 0}
-  - key: right_arm_rot
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0, y: 0, z: -90}
-  - key: right_arm_reload_pos
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0.4, y: -0.5, z: 0}
-  - key: right_arm_reload_rot
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0, y: 0, z: -90}
-  - key: right_hand_ammo
-    isVec3: 0
-    floatValue: 0
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: left_hand_ammo
-    isVec3: 0
-    floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: scope

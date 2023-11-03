@@ -564,12 +564,16 @@ public class TurboRig : MinecraftModel
 	{
 		base.GetVerifications(verifications);
 		ResourceLocation thisLocation = this.GetLocation();
-		if(Textures[0].Key != "default")
+		if (Textures.Count > 0)
 		{
-			verifications.Add(Verification.Neutral($"First skin key should be 'default'",
-			() => {
-				Textures[0].Key = "default";
-			}));
+			if (Textures[0].Key != "default")
+			{
+				verifications.Add(Verification.Neutral($"First skin key should be 'default'",
+				() =>
+				{
+					Textures[0].Key = "default";
+				}));
+			}
 		}
 		foreach(NamedTexture texture in Textures)
 		{
