@@ -312,7 +312,7 @@ public static class AdditionalAssetImporter
 		{
 			rig.Textures.Add(new MinecraftModel.NamedTexture()
 			{
-				Key = $"{i + 1}",
+				Key = textureLocations[i].IDWithoutPrefixes(),
 				Location = textureLocations[i],
 				Texture = textureLocations[i].Load<Texture2D>("textures/skins")
 			});

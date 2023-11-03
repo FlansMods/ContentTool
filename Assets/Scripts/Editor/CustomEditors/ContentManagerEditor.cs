@@ -66,27 +66,27 @@ public class ContentManagerEditor : Editor
 					GUILayout.Label($"[{outputCount}] Output Assets", FlanStyles.GreenLabel, GUILayout.Width(120));
 				}
 				EditorGUI.BeginDisabledGroup(true);
-				GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32));
+				GUILayout.Button(FlanStyles.RefreshImportInfo, GUILayout.Width(32));
 				EditorGUI.EndDisabledGroup();
 			}
 			else
 			{
 				GUILayout.Label($"[?] Input Assets", FlanStyles.BoldLabel, GUILayout.Width(120));
 				GUILayout.Label($"[?] Output Assets", FlanStyles.BoldLabel, GUILayout.Width(120));
-				if (GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32)))
+				if (GUILayout.Button(FlanStyles.RefreshImportInfo, GUILayout.Width(32)))
 				{
 					instance.GenerateFullImportMap(sourcePack);
 				}
 			}
 
 			// --- Import (New Only) Button! ---
-			if (GUILayout.Button(EditorGUIUtility.IconContent("Customized"), GUILayout.Width(32)))
+			if (GUILayout.Button(FlanStyles.ImportPackNewOnly, GUILayout.Width(32)))
 			{
 				List<Verification> errors = new List<Verification>();
 				instance.ImportPack(sourcePack, errors, false);
 			}
 			// --- Import Button! ---
-			if (GUILayout.Button(EditorGUIUtility.IconContent("Download-Available"), GUILayout.Width(32)))
+			if (GUILayout.Button(FlanStyles.ImportPackOverwrite, GUILayout.Width(32)))
 			{
 				List<Verification> errors = new List<Verification>();
 				instance.ImportPack(sourcePack, errors, true);
@@ -117,7 +117,7 @@ public class ContentManagerEditor : Editor
 								GUILayout.Label($"[{inputCount}] Input Assets", GUILayout.Width(120));
 								GUILayout.Label($"[{outputCount}] Output Assets", GUILayout.Width(120));
 								EditorGUI.BeginDisabledGroup(true);
-								GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32));
+								GUILayout.Button(FlanStyles.RefreshImportInfo, GUILayout.Width(32));
 								EditorGUI.EndDisabledGroup();
 							}
 						}
@@ -125,14 +125,14 @@ public class ContentManagerEditor : Editor
 						{
 							GUILayout.Label($"[?] Input Assets", GUILayout.Width(120));
 							GUILayout.Label($"[?] Output Assets", GUILayout.Width(120));
-							if (GUILayout.Button(EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow"), GUILayout.Width(32)))
+							if (GUILayout.Button(FlanStyles.RefreshImportInfo, GUILayout.Width(32)))
 							{
 								instance.HasFullImportMap(sourcePack, defType, true);
 							}
 						}
-						if (GUILayout.Button(EditorGUIUtility.IconContent("Download-Available"), GUILayout.Width(32)))
+						if (GUILayout.Button(FlanStyles.ImportPackOverwrite, GUILayout.Width(32)))
 						{
-
+						
 						}
 						GUILayout.EndHorizontal();
 
@@ -400,9 +400,9 @@ public class ContentManagerEditor : Editor
 		GUILayout.Label(label);
 		GUILayout.BeginHorizontal();
 		folder = EditorGUILayout.DelayedTextField(folder);
-		if (GUILayout.Button(EditorGUIUtility.IconContent("d_Profiler.Open")))
+		if (GUILayout.Button(FlanStyles.SelectFolder))
 			folder = EditorUtility.OpenFolderPanel("Select resources root folder", folder, "");
-		if (GUILayout.Button(EditorGUIUtility.IconContent("d_preAudioLoopOff")))
+		if (GUILayout.Button(FlanStyles.ResetToDefault))
 			folder = defaultLocation;
 		GUILayout.EndHorizontal();
 		return folder;
@@ -417,64 +417,5 @@ public class ContentManagerEditor : Editor
 		else if (oldFoldout && !newFoldout)
 			ImportFoldouts.Remove(path);
 		return newFoldout;
-	}
-
-
-
-	private void p()
-	{ 
-		{
-			ContentManager instance = (ContentManager)target;
-			//base.OnInspectorGUI();
-
-			if (!hasDoneInit)
-			{
-				instance.Refresh();
-				hasDoneInit = true;
-			}
-
-			instance.ExportRoot = EditorGUILayout.DelayedTextField(instance.ExportRoot);
-			if(GUILayout.Button("Choose Export Folder"))
-			{
-				instance.ExportRoot  = EditorUtility.OpenFolderPanel("Select resources root folder", "", "");
-				
-			}
-			
-
-			GUILayout.Label("Imported Packs");
-
-			List<string> packNames = new List<string>();
-
-			foreach(ContentPack pack in instance.Packs)
-			{
-				if(pack != null)
-					packNames.Add(pack.name);
-			}
-
-			foreach(string packName in packNames)
-			{
-				GUILayout.BeginHorizontal();
-				GUILayout.Label($"> {packName}");
-				//if(GUILayout.Button("Re-Import"))
-					//instance.ImportPack(packName);
-				if(GUILayout.Button("Export"))
-					instance.ExportPack(packName, false);
-				GUILayout.EndHorizontal();
-			}
-
-			GUILayout.Label("Unimported Packs");
-			
-			//foreach(string packName in instance.UnimportedPacks)
-			//{
-			//	GUILayout.BeginHorizontal();
-			//	if(GUILayout.Button("Import"))
-			//	{
-			//		instance.ImportPack(packName);
-			//	}
-			//	GUILayout.Label($"> {packName}");
-			//	GUILayout.EndHorizontal();
-			//}
-
-		}
 	}
 }

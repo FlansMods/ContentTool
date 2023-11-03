@@ -1035,8 +1035,10 @@ public class ContentManager : MonoBehaviour
 		else if(asset is MinecraftModel model)
 		{
 			try
-			{ 
-				//model.ExportToModelJsonFiles(exportPath);
+			{
+				List<string> outputFiles = new List<string>();
+				ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
+				model.ExportToModelJsonFiles(exportDir, outputFiles);
 			}
 			catch (Exception e)
 			{

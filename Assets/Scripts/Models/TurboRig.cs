@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
 public class TurboRig : MinecraftModel
@@ -15,7 +16,7 @@ public class TurboRig : MinecraftModel
 	public int TextureY = 16;
 	public List<TurboModel> Sections = new List<TurboModel>();
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
-	public List<AttachPoint> AttachPoints = new List<AttachPoint>();	
+	public List<AttachPoint> AttachPoints = new List<AttachPoint>();
 
 	public TurboModel GetSection(string key)
 	{
@@ -48,7 +49,8 @@ public class TurboRig : MinecraftModel
 	}
 	public TurboModel AddSection()
 	{
-		Sections.Add(new TurboModel() {
+		Sections.Add(new TurboModel()
+		{
 			PartName = $"new_{Sections.Count}"
 		});
 		return Sections[Sections.Count - 1];
@@ -56,13 +58,13 @@ public class TurboRig : MinecraftModel
 
 	public void DuplicateSection(string partName)
 	{
-		for(int i = 0; i < Sections.Count; i++)
+		for (int i = 0; i < Sections.Count; i++)
 		{
-			if(Sections[i].PartName == partName)
+			if (Sections[i].PartName == partName)
 			{
 				TurboModel copy = Sections[i].Copy();
 				copy.PartName = $"{copy.PartName}-";
-				Sections.Insert(i+1, copy);
+				Sections.Insert(i + 1, copy);
 				return;
 			}
 		}
@@ -131,7 +133,7 @@ public class TurboRig : MinecraftModel
 
 	public void RemoveAnimParameter(string key)
 	{
-		for(int i = AnimationParameters.Count - 1; i >= 0; i--)
+		for (int i = AnimationParameters.Count - 1; i >= 0; i--)
 		{
 			if (AnimationParameters[i].key == key)
 				AnimationParameters.RemoveAt(i);
@@ -165,7 +167,7 @@ public class TurboRig : MinecraftModel
 
 	public void GetSectionNames(List<string> names)
 	{
-		foreach(TurboModel section in Sections)
+		foreach (TurboModel section in Sections)
 			names.Add(section.PartName);
 	}
 
@@ -224,22 +226,22 @@ public class TurboRig : MinecraftModel
 	public void SetAttachment(string name, string attachedTo)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		if(ap != null)
+		if (ap != null)
 			ap.attachedTo = attachedTo;
 	}
 	public void SetAttachmentOffset(string name, Vector3 offset)
 	{
 		AttachPoint ap = GetOrCreate(name);
-		if(ap != null)
+		if (ap != null)
 			ap.position = offset;
 	}
 	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
 	{
 		foreach (TurboModel section in Sections)
 		{
-			for(int i = 0; i < section.Pieces.Count; i++)
+			for (int i = 0; i < section.Pieces.Count; i++)
 			{
-				if(section.Pieces[i].TryGenerateUVPatch(out UVPatch patch))
+				if (section.Pieces[i].TryGenerateUVPatch(out UVPatch patch))
 				{
 					patches.Add($"{section.PartName}/{i}", patch);
 				}
@@ -399,9 +401,9 @@ public class TurboRig : MinecraftModel
 
 	public void SetTransform(ItemTransformType type, Vector3 pos, Quaternion rot, Vector3 scale)
 	{
-		foreach(ItemTransform transform in Transforms)
+		foreach (ItemTransform transform in Transforms)
 		{
-			if(transform.Type == type)
+			if (transform.Type == type)
 			{
 				transform.Position = pos;
 				transform.Rotation = rot;
@@ -461,7 +463,7 @@ public class TurboRig : MinecraftModel
 					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(wrapper.Origin - origin));
 					using (builder.Indentation("faces"))
 					{
-                        System.Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
+						System.Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
 						{
 							using (builder.Indentation(name))
 							{
@@ -551,6 +553,29 @@ public class TurboRig : MinecraftModel
 		}
 
 		return base.ExportToJson(builder);
+	}
+	#endregion
+	// --------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------
+	#region Verifications
+	// --------------------------------------------------------------------------
+	public override void GetVerifications(List<Verification> verifications)
+	{
+		base.GetVerifications(verifications);
+		ResourceLocation thisLocation = this.GetLocation();
+		if(Textures[0].Key != "default")
+		{
+			verifications.Add(Verification.Neutral($"First skin key should be 'default'",
+			() => {
+				Textures[0].Key = "default";
+			}));
+		}
+		foreach(NamedTexture texture in Textures)
+		{
+			if (texture.Location.Namespace != thisLocation.Namespace)
+				verifications.Add(Verification.Neutral($"Texture {texture} is from another namespace"));
+		}
 	}
 	#endregion
 	// --------------------------------------------------------------------------

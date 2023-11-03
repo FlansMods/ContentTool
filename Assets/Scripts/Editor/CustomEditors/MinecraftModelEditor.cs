@@ -7,6 +7,8 @@ using static MinecraftModel;
 
 public abstract class MinecraftModelEditor : Editor
 {
+	public static readonly char[] SLASHES = new char[] { '/', '\\' };
+
 	private static ContentManager DefImporter = null;
 	protected static ContentManager DefinitionImporter
 	{ get 
@@ -218,7 +220,7 @@ public abstract class MinecraftModelEditor : Editor
 		if(parent != null)
 		{
 			GUILayout.BeginHorizontal();
-			if(GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if(GUILayout.Button(FlanStyles.NavigateBack, GUILayout.Width(MODELLING_BUTTON_X)))
 				Selection.activeObject = parent;
 			GUILayout.Label($"Parent: {parent}");
 			GUILayout.EndHorizontal();
@@ -233,7 +235,7 @@ public abstract class MinecraftModelEditor : Editor
 		if(apParent != null)
 		{
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.NavigateBack, GUILayout.Width(MODELLING_BUTTON_X)))
 				Selection.activeObject = apParent;
 			GUILayout.Label($"Attached to AP: {apParent}");
 			GUILayout.EndHorizontal();
@@ -241,7 +243,7 @@ public abstract class MinecraftModelEditor : Editor
 		else if (model != null)
 		{
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button(EditorGUIUtility.IconContent("back"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.NavigateBack, GUILayout.Width(MODELLING_BUTTON_X)))
 				Selection.activeObject = model;
 			GUILayout.Label($"Parent: {model}");
 			GUILayout.EndHorizontal();
@@ -254,7 +256,7 @@ public abstract class MinecraftModelEditor : Editor
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"Child AP: {apChild.name}");
-				if (GUILayout.Button(EditorGUIUtility.IconContent("AvatarPivot"), GUILayout.Width(MODELLING_BUTTON_X)))
+				if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 					Selection.activeObject = apChild;
 				GUILayout.EndHorizontal();
 			}
@@ -284,14 +286,14 @@ public abstract class MinecraftModelEditor : Editor
 		}
 
 		
-		if (GUILayout.Button(EditorGUIUtility.IconContent("AvatarPivot"), GUILayout.Width(MODELLING_BUTTON_X)))
+		if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 			Selection.activeObject = node;
 
 		if(node.CanDuplicate() && parentPath.Length > 0)
-			if(GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Duplicate"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if(GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 				node.Duplicate();
 		if (node.CanDelete() && parentPath.Length > 0)
-			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Trash"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 				node.Delete();
 
 		GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 16));
@@ -334,7 +336,12 @@ public abstract class MinecraftModelEditor : Editor
 	// ------------------------------------------------------------------------------------
 	private void TexturingTab(MinecraftModel mcModel)
 	{
-		// TODO
+		TexturingTabImpl(mcModel);
+	}
+
+	protected virtual void TexturingTabImpl(MinecraftModel mcModel)
+	{
+
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------
@@ -441,22 +448,22 @@ public abstract class MinecraftModelEditor : Editor
 
 			int numPossiblePoses = GetNumPoses(itemTransform.Type);
 			EditorGUI.BeginDisabledGroup(isAppliedToRig);
-			if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.ApplyPose, GUILayout.Width(MODELLING_BUTTON_X)))
 				ApplyPose(rig, itemTransform, 0);
 			if(numPossiblePoses > 1)
-				if (GUILayout.Button(EditorGUIUtility.IconContent("animationvisibilitytoggleon"), GUILayout.Width(MODELLING_BUTTON_X)))
+				if (GUILayout.Button(FlanStyles.ApplyPose, GUILayout.Width(MODELLING_BUTTON_X)))
 					ApplyPose(rig, itemTransform, 1);
 			EditorGUI.EndDisabledGroup();
 
 			EditorGUI.BeginDisabledGroup(!isAppliedToRig);
-			if (GUILayout.Button(EditorGUIUtility.IconContent("d_SceneViewCamera"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.ViewPose, GUILayout.Width(MODELLING_BUTTON_X)))
 				MoveSceneCamera(rig, itemTransform);
 			EditorGUI.EndDisabledGroup();
 
 
-			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Duplicate"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 				indexToDuplicate = i;
-			if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Trash"), GUILayout.Width(MODELLING_BUTTON_X)))
+			if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 				indexToDelete = i;
 
 			GUILayout.EndHorizontal();

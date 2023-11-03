@@ -12,12 +12,10 @@ public class ModelEditingRigEditor : Editor
 	{
 		Models,
 		Animations,
-		Skins,
 	}
 	private static readonly string[] TabNames = new string[] {
 		"Model",
 		"Animations",
-		"Skin",
 	};
 
 	public override void OnInspectorGUI()
@@ -34,9 +32,6 @@ public class ModelEditingRigEditor : Editor
 				break;
 			case Tab.Animations:
 				AnimationsTab(rig);
-				break;
-			case Tab.Skins:
-				SkinsTab(rig);
 				break;
 		}
 	}
@@ -107,11 +102,11 @@ public class ModelEditingRigEditor : Editor
 		}
 
 		GUILayout.BeginHorizontal();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("Animation.PrevKey")))
+		if (GUILayout.Button(FlanStyles.ResetToDefault))
 			rig.PressBack();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("PlayButton")))
+		if (GUILayout.Button(FlanStyles.Play))
 			rig.PressPlay();
-		if (GUILayout.Button(EditorGUIUtility.IconContent("PauseButton")))
+		if (GUILayout.Button(FlanStyles.Pause))
 			rig.PressPause();
 
 		rig.Looping = GUILayout.Toggle(rig.Looping, "Repeat");
@@ -252,168 +247,6 @@ public class ModelEditingRigEditor : Editor
 		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(AnimationDefinition), false, options);
 		if (changedAnim != rig.SelectedAnimation)
 			rig.OpenAnimation(changedAnim as AnimationDefinition);
-	}
-	#endregion
-	// ------------------------------------------------------------------------
-
-	// ------------------------------------------------------------------------
-	#region Skins Tab
-	// ------------------------------------------------------------------------
-	private static readonly List<float> TextureZoomSettings = new List<float>(new float[] { 0, 1, 2, 4, 8, 16, 32, 64 });
-	private static readonly string[] TextureZoomSettingNames = new string[] { "Auto", "1", "2", "4", "8", "16", "32", "64" };
-	private List<int> ExpandedTextures = new List<int>();
-	private List<string> SkinNodeFoldouts = new List<string>();
-	private Vector2 TexturePreviewScroller = Vector2.zero;
-	private void SkinsTab(ModelEditingRig rig)
-	{
-		if (rig == null)
-			return;
-
-		GUILayout.Label("Texture Zoom Level", FlanStyles.BoldLabel);
-		int oldIndex = TextureZoomSettings.IndexOf(MinecraftModelPreview.TextureZoomLevel);
-		int newIndex = GUILayout.Toolbar(oldIndex, TextureZoomSettingNames);
-		MinecraftModelPreview.TextureZoomLevel = TextureZoomSettings[newIndex];
-
-		FlanStyles.BigHeader("Skins");
-		rig.ApplySkin = GUILayout.Toggle(rig.ApplySkin, "Apply Skin");
-		GUILayout.Label(rig.SelectedSkin);
-		if (rig.Preview is TurboRigPreview turboPreview)
-		{
-			// Draw a box for each texture
-			for (int i = 0; i < turboPreview.Rig.Textures.Count; i++)
-			{
-				MinecraftModel.NamedTexture texture = turboPreview.Rig.Textures[i];
-				List<Verification> verifications = new List<Verification>();
-				texture.GetVerifications(verifications);
-				bool oldExpanded = ExpandedTextures.Contains(i);
-
-				GUILayout.BeginHorizontal();
-				bool newExpanded = EditorGUILayout.Foldout(oldExpanded, GUIContent.none);
-				if (oldExpanded && !newExpanded)
-					ExpandedTextures.Remove(i);
-				else if (newExpanded && !oldExpanded)
-					ExpandedTextures.Add(i);
-				GUILayout.Label($"[{i}] {texture.Key}", GUILayout.Width(200));
-
-				if (!newExpanded)
-				{
-					GUIVerify.VerificationIcon(verifications);
-					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(texture.Location, texture.Texture, "textures/skins");
-					if (changedTextureLocation != texture.Location)
-					{
-						texture.Location = changedTextureLocation;
-						texture.Texture = changedTextureLocation.Load<Texture2D>();
-					}
-				}
-				GUILayout.FlexibleSpace();
-
-				GUILayout.EndHorizontal();
-
-				if (newExpanded)
-				{
-					GUILayout.BeginHorizontal();
-
-					GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 15));
-
-					GUILayout.BeginVertical();
-					GUILayout.BeginHorizontal();
-					GUILayout.Label("Key: ");
-					texture.Key = GUILayout.TextField(texture.Key);
-					GUILayout.EndHorizontal();
-
-					GUILayout.BeginHorizontal();
-					GUILayout.Label("Texture: ");
-					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(texture.Location, texture.Texture, "textures/skins");
-					if (changedTextureLocation != texture.Location)
-					{
-						texture.Location = changedTextureLocation;
-						texture.Texture = changedTextureLocation.Load<Texture2D>();
-					}
-					GUILayout.EndHorizontal();
-
-					if (texture.Texture != null)
-					{
-						TexturePreviewScroller = GUILayout.BeginScrollView(TexturePreviewScroller, GUILayout.ExpandHeight(false));
-						RenderTextureAutoWidth(texture.Texture);
-						GUILayout.EndScrollView();
-					}
-					GUIVerify.VerificationsBox(verifications);
-					GUILayout.EndVertical();
-
-					GUILayout.EndHorizontal();
-				}
-			}
-
-			// And a row for "add new"
-			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("[+]", GUILayout.Width(32)))
-			{
-				turboPreview.Rig.Textures.Add(new MinecraftModel.NamedTexture()
-				{
-					Key = "new_skin",
-					Location = new ResourceLocation(turboPreview.Rig.GetLocation().Namespace, "null"),
-					Texture = null,
-				});
-			}
-			GUILayout.FlexibleSpace();
-			GUILayout.EndHorizontal();
-		}
-
-
-
-		FlanStyles.BigHeader("UV Mapping");
-
-		GUILayout.BeginHorizontal();
-
-
-		//MinecraftModelPreview.TextureZoomLevel = Mathf.Clamp(EditorGUILayout.FloatField(MinecraftModelPreview.TextureZoomLevel), 1f, 256f);
-		//MinecraftModelPreview.TextureZoomLevel = EditorGUILayout.Slider(MinecraftModelPreview.TextureZoomLevel, 1f, 256f);
-		GUILayout.EndHorizontal();
-		InitialSkinNode(rig.Preview);
-	}
-	private void RenderTextureAutoWidth(Texture texture)
-	{
-		if (MinecraftModelPreview.TextureZoomLevel == 0)
-		{
-			float scale = (float)(Screen.width - 10) / texture.width;
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * scale),
-							GUILayout.Height(texture.height * scale));
-		}
-		else
-		{
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
-							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
-		}
-		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
-	}
-	private void InitialSkinNode(MinecraftModelPreview preview)
-	{
-		SkinNode(preview, "");
-	}
-	private void SkinNode(MinecraftModelPreview preview, string path)
-	{
-		if (preview == null || EditorGUI.indentLevel > 16)
-			return;
-		string childPath = $"{path}/{preview.name}";
-		bool foldout = SkinNodeFoldouts.Contains(childPath);
-		bool newFoldout = EditorGUILayout.Foldout(foldout, preview.name);
-		if (newFoldout && !foldout)
-			SkinNodeFoldouts.Add(childPath);
-		else if (!newFoldout && foldout)
-			SkinNodeFoldouts.Remove(childPath);
-
-		if (newFoldout)
-		{
-			preview.Compact_Editor_Texture_GUI();
-			EditorGUI.indentLevel++;
-			foreach (MinecraftModelPreview child in preview.GetChildren())
-			{
-				SkinNode(child, childPath);
-			}
-			EditorGUI.indentLevel--;
-		}
 	}
 	#endregion
 	// ------------------------------------------------------------------------

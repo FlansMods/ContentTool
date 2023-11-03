@@ -229,7 +229,19 @@ public static class FlanStyles
         .WithFontStyle(FontStyle.Bold)
         .WithTextColour(Color.green);
 
-    public static readonly GUIContent ExportSingleAsset = 
+	// Import Buttons
+	public static readonly GUIContent RefreshImportInfo =
+	    EditorGUIUtility.IconContent("d_UnityEditor.HistoryWindow").Clone()
+	    .WithTooltip("Refresh this pack's estimated import summary");
+	public static readonly GUIContent ImportPackOverwrite =
+	    EditorGUIUtility.IconContent("Download-Available").Clone()
+	    .WithTooltip("Import this entire pack, overwriting existing assets!");
+	public static readonly GUIContent ImportPackNewOnly =
+	    EditorGUIUtility.IconContent("Customized").Clone()
+	    .WithTooltip("Import new assets in this pack, without overwriting existing assets");
+
+	// Export Buttons
+	public static readonly GUIContent ExportSingleAsset = 
         EditorGUIUtility.IconContent("SaveAs").Clone()
         .WithTooltip("Export this asset");
 	public static readonly GUIContent ExportSingleAssetOverwrite =
@@ -244,6 +256,50 @@ public static class FlanStyles
 	public static readonly GUIContent ExportError =
         EditorGUIUtility.IconContent("Error").Clone()
         .WithTooltip("Fix all verification errors before exporting.");
+
+    // Navigation Buttons
+	public static readonly GUIContent NavigateBack =
+        EditorGUIUtility.IconContent("back").Clone()
+        .WithTooltip("Return to parent");
+	public static readonly GUIContent GoToEntry =
+        EditorGUIUtility.IconContent("AvatarPivot").Clone()
+        .WithTooltip("Focus in Scene View");
+	public static readonly GUIContent DuplicateEntry =
+		EditorGUIUtility.IconContent("TreeEditor.Duplicate").Clone()
+		.WithTooltip("Duplicate");
+	public static readonly GUIContent DeleteEntry =
+		EditorGUIUtility.IconContent("TreeEditor.Trash").Clone()
+		.WithTooltip("Delete");
+	public static readonly GUIContent AddEntry =
+	    EditorGUIUtility.IconContent("CreateAddNew").Clone()
+	    .WithTooltip("Add Entry");
+
+	// Folder Selector Buttons
+	public static readonly GUIContent SelectFolder =
+        EditorGUIUtility.IconContent("d_Profiler.Open").Clone()
+        .WithTooltip("Select Folder");
+	public static readonly GUIContent ResetToDefault =
+		EditorGUIUtility.IconContent("d_preAudioLoopOff").Clone()
+		.WithTooltip("Reset to Default");
+
+	// Animation Buttons
+	public static readonly GUIContent ApplyPose =
+	   EditorGUIUtility.IconContent("animationvisibilitytoggleon").Clone()
+	   .WithTooltip("Apply Pose to Rig");
+	public static readonly GUIContent ViewPose =
+		EditorGUIUtility.IconContent("d_SceneViewCamera").Clone()
+		.WithTooltip("Align to Pose in Scene View"); 
+    public static readonly GUIContent Play =
+	   EditorGUIUtility.IconContent("PlayButton").Clone()
+	   .WithTooltip("Play");
+	public static readonly GUIContent Pause =
+		EditorGUIUtility.IconContent("PauseButton").Clone()
+		.WithTooltip("Pause"); 
+    public static readonly GUIContent ReturnToStart =
+	   EditorGUIUtility.IconContent("Animation.PrevKey").Clone()
+	   .WithTooltip("Return to start");
+
+
 
 	public static GUIContent Clone(this GUIContent content)
 	{

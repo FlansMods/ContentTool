@@ -101,52 +101,54 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			Models.Clear();
 			Textures.Clear();
 			Sounds.Clear();
-			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.asset", SearchOption.AllDirectories))
+			if (Directory.Exists($"Assets/Content Packs/{name}/"))
 			{
-				if (assetPath.EndsWith($"{name}.asset"))
-					continue;
-
-				Definition def = AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
-				if (def != null)
-					Content.Add(def);
-				else
+				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.asset", SearchOption.AllDirectories))
 				{
-					MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(assetPath);
-					if (model != null)
-						Models.Add(model);
+					if (assetPath.EndsWith($"{name}.asset"))
+						continue;
+
+					Definition def = AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
+					if (def != null)
+						Content.Add(def);
 					else
 					{
-						Debug.LogError($"Unknown asset type at {assetPath} in pack {name}");
+						MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(assetPath);
+						if (model != null)
+							Models.Add(model);
+						else
+						{
+							Debug.LogError($"Unknown asset type at {assetPath} in pack {name}");
+						}
 					}
 				}
-			}
-
-			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.png", SearchOption.AllDirectories))
-			{
-				Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-				if(texture != null)
-					Textures.Add(texture);
-				else
+				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.png", SearchOption.AllDirectories))
 				{
-					Debug.LogError($"Unable to load .png at {assetPath} in pack {name}");
+					Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+					if (texture != null)
+						Textures.Add(texture);
+					else
+					{
+						Debug.LogError($"Unable to load .png at {assetPath} in pack {name}");
+					}
 				}
-			}
 
-			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
-			{
-				AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-				if (clip != null)
-					Sounds.Add(clip);
-				else
-					Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
-			}
-			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
-			{
-				AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-				if (clip != null)
-					Sounds.Add(clip);
-				else
-					Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
+				{
+					AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+					if (clip != null)
+						Sounds.Add(clip);
+					else
+						Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
+				}
+				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
+				{
+					AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+					if (clip != null)
+						Sounds.Add(clip);
+					else
+						Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+				}
 			}
 
 			if (count != Content.Count + Models.Count + Textures.Count)

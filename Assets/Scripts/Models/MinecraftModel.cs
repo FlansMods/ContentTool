@@ -27,6 +27,26 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 		public Vector3 Position = Vector3.zero;
 		public Quaternion Rotation = Quaternion.identity;
 		public Vector3 Scale = Vector3.one;
+
+		public string GetOutputKey()
+		{
+			switch(Type)
+			{
+				case ItemTransformType.THIRD_PERSON_LEFT_HAND:
+					return "thirdperson";
+				case ItemTransformType.FIRST_PERSON_LEFT_HAND:
+					return "firstperson";
+				case ItemTransformType.HEAD:
+					return "head";
+				case ItemTransformType.GUI:
+					return "gui";
+				case ItemTransformType.GROUND:
+					return "ground";
+				case ItemTransformType.FIXED:
+					return "fixed";
+				default: return null;
+			}
+		}
 	}
 
 	[System.Serializable]
@@ -42,6 +62,19 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 				verifications.Add(Verification.Failure("Texture is null"));
 			if (Key == null || Key.Length == 0)
 				verifications.Add(Verification.Failure("Key is empty"));
+			if (Key != "default")
+				if (Key != Location.IDWithoutPrefixes())
+				{
+					verifications.Add(Verification.Neutral($"Key for skin does not match the skin name",
+					() => {
+						Key = Location.IDWithoutPrefixes();
+					}));
+				}
+			
+		}
+		public override string ToString()
+		{
+			return $"'{Key}'={Location}";
 		}
 	}
 
@@ -102,18 +135,18 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 	{
 		using (builder.Indentation("display"))
 		{
-		// TODO: !Use the new system!
-			using (builder.Indentation("thirdperson"))
+			foreach(ItemTransform trans in Transforms)
 			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(-90f, 0f, 0f)));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 1f, -3f)));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(0.55f, 0.55f, 0.55f)));
-			}
-			using (builder.Indentation("firstperson"))
-			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(new Vector3(0f, -135f, 25f)));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(new Vector3(0f, 4f, 2f)));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(new Vector3(1.7f, 1.7f, 1.7f)));
+				string outputKey = trans.GetOutputKey();
+				if (outputKey != null)
+				{
+					using (builder.Indentation(outputKey))
+					{
+						builder.Current.Add("rotation", JSONHelpers.ToJSON(trans.Rotation.eulerAngles));
+						builder.Current.Add("translation", JSONHelpers.ToJSON(trans.Position));
+						builder.Current.Add("scale", JSONHelpers.ToJSON(trans.Scale));
+					}
+				}
 			}
 		}
 		return true;
