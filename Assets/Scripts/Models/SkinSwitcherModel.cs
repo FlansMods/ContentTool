@@ -5,18 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Minecraft Models/Skin Switcher")]
 public class SkinSwitcherModel : MinecraftModel
 {
-	public List<NamedTexture> Icons = new List<NamedTexture>();
-	public NamedTexture Default { 
-		get
-		{
-			foreach (NamedTexture texture in Icons)
-				if (texture.Key == "default")
-					return texture;
-			if (Icons.Count > 0)
-				return Icons[0];
-			return null;
-		}
-	}
+	public MinecraftModel DefaultModel = null;
+	public List<MinecraftModel> Models = new List<MinecraftModel>();
 
 	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
 	{
@@ -29,17 +19,18 @@ public class SkinSwitcherModel : MinecraftModel
 
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
-		builder.Current.Add("parent", Default.Location.ToString());
+		if(DefaultModel != null)
+			builder.Current.Add("parent", DefaultModel.GetLocation().ToString());
 		using (builder.Tabulation("overrides"))
 		{
-			for (int i = 0; i < Icons.Count; i++)
+			for (int i = 0; i < Models.Count; i++)
 				using (builder.TableEntry())
 				{
 					using (builder.Indentation("predicate"))
 					{
 						builder.Current.Add("custom_model_data", i + 1);
 					}
-					builder.Current.Add("model", Icons[i].Location.ToString());
+					builder.Current.Add("model", Models[i].GetLocation().ToString());
 				}
 		}
 		return true;

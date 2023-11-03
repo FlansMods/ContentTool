@@ -146,14 +146,6 @@ public static class TxtImport
 			default: return null;
 		}
 	}
-
-	public static void ImportFromModel(string line, EDefinitionType type, InfoType target)
-	{
-		switch(type)
-		{
-			//case EDefinitionType.gun: GunTypeImporter.inst.ImportFromModel((GunType)target, model, line); break;
-		}
-	}
 }
 
 public class InfoTypeImporter : TxtImporter<InfoType>

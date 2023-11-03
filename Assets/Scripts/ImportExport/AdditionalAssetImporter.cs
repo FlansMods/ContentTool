@@ -29,7 +29,7 @@ public static class AdditionalAssetImporter
 					{
 						outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{Utils.ToLowerWithUnderscores(paintjob.iconName)}.png");
 						outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png");
-						outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/{dstShortName}/{paintjob.iconName}_icon.asset");
+						outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{Utils.ToLowerWithUnderscores(paintjob.iconName)}_icon.asset");
 					}
 					outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/skins/{dstShortName}.png");
 					outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{dstShortName}.png");
@@ -173,32 +173,30 @@ public static class AdditionalAssetImporter
 				if (inputType is PaintableType paintable)
 				{
 					// Create the array of icon models and the skin switcher that points to them
-					List<ResourceLocation> iconLocations = new List<ResourceLocation>();
-					List<ResourceLocation> skinLocations = new List<ResourceLocation>();
+					List<ResourceLocation> iconModelLocations = new List<ResourceLocation>();
+					List<ResourceLocation> skinTextureLocations = new List<ResourceLocation>();
 
 					// Default skin + icon
-					ResourceLocation defaultIconLocation = new ResourceLocation(dstPackName, dstShortName);
-					ResourceLocation defaultSkinLocation = new ResourceLocation(dstPackName, dstShortName);
-					iconLocations.Add(defaultIconLocation);
-					skinLocations.Add(defaultSkinLocation);
+					ResourceLocation defaultIconLocation = new ResourceLocation(dstPackName, dstShortName);					
 					CreateIconModel_Internal(defaultIconLocation, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_default_icon.asset", allowedOutputs, errors);
+					skinTextureLocations.Add(new ResourceLocation(dstPackName, dstShortName));
+					iconModelLocations.Add(new ResourceLocation(dstPackName, $"/models/item/{dstShortName}/{dstShortName}_default_icon"));
 
 					// And then paintjobs
 					foreach (Paintjob paintjob in paintable.paintjobs)
 					{
-						ResourceLocation iconLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.iconName));
-						ResourceLocation skinLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.textureName));
-						iconLocations.Add(iconLoc);
-						skinLocations.Add(skinLoc);
-						CreateIconModel_Internal(iconLoc, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{iconLoc.ID}_icon.asset", allowedOutputs, errors);
+						ResourceLocation iconTextureLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.iconName));
+						CreateIconModel_Internal(iconTextureLoc, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{iconTextureLoc.ID}_icon.asset", allowedOutputs, errors);
+						skinTextureLocations.Add(new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.textureName)));
+						iconModelLocations.Add(new ResourceLocation(dstPackName, $"/models/item/{dstShortName}/{iconTextureLoc.ID}_icon"));
 					}
 					
-					CreateSkinSwitcher_Internal(iconLocations, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_icon.asset", allowedOutputs, errors);
+					CreateSkinSwitcher_Internal(iconModelLocations, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_icon.asset", allowedOutputs, errors);
 
 					// Create the 3D model
 					ImportRig_Internal($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
 										$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_3d.asset",
-										skinLocations, allowedOutputs, errors);
+										skinTextureLocations, allowedOutputs, errors);
 
 					// And link them all together with a MultiModel
 					ResourceLocation loc3d = new ResourceLocation(dstPackName, $"models/item/{dstShortName}/{dstShortName}_3d");
@@ -248,22 +246,18 @@ public static class AdditionalAssetImporter
 		}
 	}
 
-	private static void CreateSkinSwitcher_Internal(List<ResourceLocation> skinLocations, string location, List<string> allowedOutputs, List<Verification> errors)
+	private static void CreateSkinSwitcher_Internal(List<ResourceLocation> iconModelLocations, string location, List<string> allowedOutputs, List<Verification> errors)
 	{
 		if (!allowedOutputs.Contains(location))
 			return;
 
 		SkinSwitcherModel switcher = ScriptableObject.CreateInstance<SkinSwitcherModel>();
 		switcher.AddDefaultTransforms();
-		switcher.Icons = new List<MinecraftModel.NamedTexture>(skinLocations.Count);
-		for(int i = 0; i < skinLocations.Count; i++)
+		switcher.DefaultModel = iconModelLocations.Count > 0 ? iconModelLocations[0].Load<MinecraftModel>("models/item") : null;
+		switcher.Models = new List<MinecraftModel>(iconModelLocations.Count);
+		for(int i = 0; i < iconModelLocations.Count; i++)
 		{
-			switcher.Icons.Add(new MinecraftModel.NamedTexture()
-			{
-				Key = $"{i + 1}",
-				Location = skinLocations[i],
-				Texture = skinLocations[i].Load<Texture2D>("textures/item")
-			});
+			switcher.Models.Add(iconModelLocations[i].Load<MinecraftModel>("models/item"));
 		}
 		ContentManager.CreateUnityAsset(switcher, location);
 		errors.Add(Verification.Success($"Created SkinSwitcher model at '{location}'"));

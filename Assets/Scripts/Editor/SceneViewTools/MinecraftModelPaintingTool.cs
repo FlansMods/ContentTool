@@ -45,10 +45,8 @@ public abstract class MinecraftModelPaintingTool : EditorTool
 	protected abstract void OnMouseHeld();
 	protected abstract void OnMouseUp();
 
-	private MinecraftModelPreview CurrentlyPainting = null;
 	public override void OnToolGUI(EditorWindow window)
 	{
-		CurrentlyPainting = null;
 		if (window is SceneView sceneView && target != null)
 		{
 			MinecraftModelPreview modelTarget = null;

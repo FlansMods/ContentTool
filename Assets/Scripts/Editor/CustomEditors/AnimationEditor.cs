@@ -6,10 +6,7 @@ using UnityEngine;
 [CustomEditor(typeof(AnimationDefinition))]
 public class AnimationEditor : Editor
 {
-	private bool loopPreview = true;
-
 	private List<bool> foldouts = new List<bool>();
-	private List<bool> subFoldouts = new List<bool>();
 
 	private static List<string> foldedOut = new List<string>();
 

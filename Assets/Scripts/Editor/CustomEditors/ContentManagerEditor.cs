@@ -19,7 +19,6 @@ public class ContentManagerEditor : Editor
 		"Export"
 	};
 	private Tab CurrentTab = Tab.Import;
-	private int SelectedImportPackIndex = 0;
 	private List<string> ImportFoldouts = new List<string>();
 
 	public override void OnInspectorGUI()

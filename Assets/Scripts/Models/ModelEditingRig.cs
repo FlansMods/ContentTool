@@ -381,8 +381,6 @@ public class ModelEditingRig : MonoBehaviour
 	{
 		if (ApplyAnimation && PreviewSequences.Count > 0)
 		{
-			AnimPreviewEntry entry = null;
-
 			if (Playing && !StepThrough)
 			{
 				TimeSpan timeToAdd = DateTime.Now - LastEditorTick;

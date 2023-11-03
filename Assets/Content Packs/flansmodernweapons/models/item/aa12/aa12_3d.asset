@@ -28,7 +28,39 @@ MonoBehaviour:
       Namespace: flansmodernweapons
       ID: aa12_magma
     Texture: {fileID: 2800000, guid: a89144d8d81270347b1a878eab12b8c6, type: 3}
-  Transforms: []
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 0, y: 3.25, z: 0}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 0, y: 3.75, z: 0}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 0.5, y: 0.5, z: 0}
+    Rotation: {x: 0, y: 0.9848077, z: 0, w: 0.17364822}
+    Scale: {x: 1, y: 1, z: 1}
   Icon:
     Namespace: minecraft
     ID: null
@@ -148,7 +180,7 @@ MonoBehaviour:
       textureV: 9
       Pos: {x: 14, y: 3.1, z: -0.5}
       Dim: {x: 3, y: 1, z: 1}
-      Origin: {x: 0, y: 0, z: 0}
+      Origin: {x: -18, y: -3.5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
       - {x: -0, y: 0.1, z: 0.1}
@@ -165,7 +197,7 @@ MonoBehaviour:
       textureV: 17
       Pos: {x: 0, y: 5, z: -0.5}
       Dim: {x: 1, y: 2, z: 1}
-      Origin: {x: 0, y: 0, z: 0}
+      Origin: {x: -3.5, y: -5, z: 0}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
       - {x: -0, y: -0, z: 0.375}
@@ -182,7 +214,7 @@ MonoBehaviour:
       textureV: 9
       Pos: {x: -7, y: 3, z: -1}
       Dim: {x: 7, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
+      Origin: {x: -1, y: -4, z: 0}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
       - {x: -0, y: -2, z: -0}
@@ -244,10 +276,6 @@ MonoBehaviour:
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.5
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: '#ANIM_TYPE#:BOTTOM_CLIP'
-    isVec3: 0
-    floatValue: 0
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: sights

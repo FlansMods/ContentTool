@@ -129,6 +129,7 @@ public static class JavaModelImporter
 		}
 
 		TurboRig rig = ScriptableObject.CreateInstance<TurboRig>();
+		rig.AddDefaultTransforms();
 		for (; ; )
 		{
 			string line = file.readLine();
@@ -140,16 +141,16 @@ public static class JavaModelImporter
 			if (line.StartsWith("//"))
 				continue;
 
-			ReadLine(rig, file, line, optionalType);
+			ReadLine(rig, file, line);
 		}
 
 		// Post-Import fixes
 		if (optionalType != null)
 			rig.name = Utils.ToLowerWithUnderscores(optionalType.shortName);
-		ImportAttachPoint(rig, "scopeAttachPoint", "sights");
-		ImportAttachPoint(rig, "stockAttachPoint", "stock");
-		ImportAttachPoint(rig, "gripAttachPoint", "grip");
-		ImportAttachPoint(rig, "barrelAttachPoint", "barrel");
+		ImportAttachPoint(rig, "sights", "sights");
+		ImportAttachPoint(rig, "stock", "stock");
+		ImportAttachPoint(rig, "grip", "grip");
+		ImportAttachPoint(rig, "barrel", "barrel");
 		foreach(TurboModel section in rig.Sections)
 		{
 			if(!rig.TryGetAttachPoint(section.PartName, out AttachPoint ap))
@@ -163,18 +164,16 @@ public static class JavaModelImporter
 
 	private static void ImportAttachPoint(TurboRig rig, string javaOffsetName, string sectionName)
 	{
-		if(rig.TryGetVec3Param(javaOffsetName, out Vector3 value))
+		if(rig.TryGetAttachPoint(javaOffsetName, out AttachPoint ap))
 		{
 			if(rig.TryGetSection(sectionName, out TurboModel section))
 			{
-				section.TranslateAll(-value.x, -value.y, -value.z);
+				section.TranslateAll(-ap.position.x, -ap.position.y, -ap.position.z);
 			}
-			rig.SetAttachmentOffset(sectionName, value);
-			rig.RemoveAnimParameter(javaOffsetName);
 		}
 	}
 
-	private static void ReadLine(TurboRig rig, TypeFile file, string line, InfoType optionalType)
+	private static void ReadLine(TurboRig rig, TypeFile file, string line)
 	{
 		// Skip simple / unimportant lines
 		if (line == null || line.Length == 0) return;
@@ -235,15 +234,6 @@ public static class JavaModelImporter
 		else
 		{
 			Debug.LogError($"Could not parse '{line}' in {file.name}");
-		}
-
-
-		if (optionalType != null)
-		{
-			// Auto-import anim parameters
-			// TODO: Check we covered this case
-			TxtImport.ImportFromModel(line, DefinitionTypes.GetFromObject(optionalType), optionalType);
-			return;
 		}
 	}
 	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
@@ -612,6 +602,11 @@ public static class JavaModelImporter
 				// This is fine to skip
 				case "render": return true;
 				case "scale": return true;
+				// GL functions also fine to skip
+				case "pushMatrix": return true;
+				case "popMatrix": return true;
+				case "translate": return true;
+				case "rotate": return true;
 				default:
 				{
 					Debug.LogWarning($"Unknown global function '{function}' in line '{line}'");
@@ -668,37 +663,20 @@ public static class JavaModelImporter
 			// Find the parameter and set it
 			string parameter = match.Groups[1].Value;
 			string value = match.Groups[2].Value;
-			List<float> floats = ResolveParameters(value, 1);
 
+			if (parameter == "animationType")
+			{ 
+				return true; // Consumed in ContentManager:ImportType_Internal
+			}
+
+			List<float> floats = ResolveParameters(value, 1);
 			switch (parameter)
 			{
-				// Bit hacky, we should consume this at a later point into the Definition
-				// TODO: Pick up on the other end
-				case "animationType":
-					EAnimationType animationType = (EAnimationType)Enum.Parse(typeof(EAnimationType), value.Split('.')[1]);
-					rig.AnimationParameters.Add(new AnimationParameter()
-					{
-						key = $"#ANIM_TYPE#:{animationType}",
-						isVec3 = false,
-						floatValue = 0.0f,
-					});
-					return true;
 				case "untiltGunTime":
 				case "tiltGunTime":
 				case "unloadClipTime":
 				case "loadClipTime":
-					if (floats.Count == 1)
-					{
-						rig.AnimationParameters.Add(new AnimationParameter()
-						{
-							key = $"#{parameter}#",
-							isVec3 = false,
-							floatValue = floats[0]
-						});
-						return true;
-					}
-					return false;
-				// ----------------------------------------------------------------------
+					return true; // Consumed in ContentManager:ImportType_Internal
 				case "gripIsOnPump":
 					rig.SetAttachment("grip", "pump");
 					return true;

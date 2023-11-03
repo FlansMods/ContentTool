@@ -648,7 +648,7 @@ public class ContentManager : MonoBehaviour
 		return infoType;
 	}
 
-	private Definition ConvertDefinition_Internal(string packName, EDefinitionType type, string shortName, InfoType infoType)
+	private Definition ConvertDefinition_Internal(string packName, EDefinitionType type, string shortName, InfoType infoType, List<Verification> verifications = null)
 	{
 		// All clear, let's import it
 		Definition def = type.CreateInstance();
@@ -660,12 +660,13 @@ public class ContentManager : MonoBehaviour
 		def.name = infoType.shortName;
 
 		string assetPath = $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{Utils.ToLowerWithUnderscores(shortName)}.asset";
-		Debug.Log($"Saving {def} to {assetPath}");
 		CreateUnityAsset(def, assetPath);
+		if (verifications != null)
+			verifications.Add(Verification.Success($"Saved {def} to {assetPath}"));
 		return AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
 	}
 
-	private void ImportLangFiles_Internal(string packName)
+	private void ImportLangFiles_Internal(string packName, List<Verification> verifications = null)
 	{
 		DirectoryInfo langFolder = new DirectoryInfo($"{IMPORT_ROOT}/{packName}/assets/flansmod/lang/");
 		string itemNamePrefix = $"item.{packName}.";
@@ -673,44 +674,52 @@ public class ContentManager : MonoBehaviour
 		string materialNamePrefix = $"material.{packName}.";
 		ContentPack pack = FindContentPack(packName);
 
-		if (langFolder.Exists && pack != null)
+		try
 		{
-			foreach (FileInfo langFile in langFolder.EnumerateFiles())
+			if (langFolder.Exists && pack != null)
 			{
-				string langName = langFile.Name;
-				if (langName.Contains('.'))
-					langName = langName.Substring(0, langName.IndexOf('.'));
-				if (Enum.TryParse(langName, out Definition.ELang lang))
+				foreach (FileInfo langFile in langFolder.EnumerateFiles())
 				{
-					int stringsImported = 0;
-					using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
-					using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
+					string langName = langFile.Name;
+					if (langName.Contains('.'))
+						langName = langName.Substring(0, langName.IndexOf('.'));
+					if (Enum.TryParse(langName, out Definition.ELang lang))
 					{
-						JObject translations = JObject.Load(jsonReader);
-						foreach (var kvp in translations)
+						int stringsImported = 0;
+						using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
+						using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
 						{
-							if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-							{ }
-							else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-							{ }
-							else if (TryImportLocalisationLine(materialNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-							{ }
-							else // Had no matching prefix. Let's add it to the generic extras
+							JObject translations = JObject.Load(jsonReader);
+							foreach (var kvp in translations)
 							{
-								pack.ExtraLocalisation.Add(new LocalisedExtra()
+								if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+								{ }
+								else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+								{ }
+								else if (TryImportLocalisationLine(materialNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+								{ }
+								else // Had no matching prefix. Let's add it to the generic extras
 								{
-									Lang = lang,
-									Unlocalised = kvp.Key,
-									Localised = kvp.Value.ToString(),
-								});
+									pack.ExtraLocalisation.Add(new LocalisedExtra()
+									{
+										Lang = lang,
+										Unlocalised = kvp.Key,
+										Localised = kvp.Value.ToString(),
+									});
+								}
+								stringsImported++;
 							}
-							stringsImported++;
 						}
+						Debug.Log($"Imported {stringsImported} strings from {langFile.FullName}");
 					}
-					Debug.Log($"Imported {stringsImported} strings from {langFile.FullName}");
+					else Debug.LogError($"Could not match {langName} to a known language");
 				}
-				else Debug.LogError($"Could not match {langName} to a known language");
 			}
+		}
+		catch(Exception e)
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Failure(e));
 		}
 	}
 
@@ -1210,6 +1219,7 @@ public class ContentManager : MonoBehaviour
 				EditorUtility.DisplayProgressBar("Exporting Misc Assets", $"Exporting {(ELang)i}.json", 0.5f + 0.5f * ((float)(i + 1) / Langs.NUM_LANGS));
 				ExportLangJson(packName, (ELang)i, verifications);
 			}
+			EditorUtility.ClearProgressBar();
 		}
 		finally
 		{

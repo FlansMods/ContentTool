@@ -72,6 +72,4 @@ public class GunBoxType : BoxType
 	public GunBoxPage currentPage;
 	
 	public GunBoxPage defaultPage;
-	
-	private static int lastIconIndex = 2;
 }

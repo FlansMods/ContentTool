@@ -17,7 +17,7 @@ public class ItemModelEditor : MinecraftModelEditor
 
 		if (target is ItemModel itemModel)
 		{
-			ResourceLocation changedLocation = ResourceLocation.EditorObjectField<Texture2D>(itemModel.IconLocation);
+			ResourceLocation changedLocation = ResourceLocation.EditorObjectField(itemModel.IconLocation, itemModel.Icon, "textures/item");
 			if (changedLocation != itemModel.IconLocation)
 			{
 				itemModel.IconLocation = changedLocation;

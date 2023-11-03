@@ -45,7 +45,6 @@ public class ModelEditingRigEditor : Editor
 	#region Modelling Tab
 	// ------------------------------------------------------------------------
 	private Editor ModelSubEditor = null;
-	private bool ModelEditorFoldout = false;
 	private void ModelsTab(ModelEditingRig rig)
 	{
 		if (rig == null)
@@ -299,7 +298,7 @@ public class ModelEditingRigEditor : Editor
 				if (!newExpanded)
 				{
 					GUIVerify.VerificationIcon(verifications);
-					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(texture.Location, texture.Texture, "textures/skins");
 					if (changedTextureLocation != texture.Location)
 					{
 						texture.Location = changedTextureLocation;
@@ -324,7 +323,7 @@ public class ModelEditingRigEditor : Editor
 
 					GUILayout.BeginHorizontal();
 					GUILayout.Label("Texture: ");
-					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField<Texture2D>(texture.Location, "textures/skins");
+					ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(texture.Location, texture.Texture, "textures/skins");
 					if (changedTextureLocation != texture.Location)
 					{
 						texture.Location = changedTextureLocation;

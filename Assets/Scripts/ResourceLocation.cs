@@ -154,6 +154,29 @@ public class ResourceLocation
 		} 
     }
 
+    public void MatchToAsset(Object asset)
+    {
+        if (asset != null)
+        {
+            ResourceLocation resLoc = asset.GetLocation();
+            if (resLoc.Namespace != Namespace)
+                Debug.LogError($"ResourceLocation {this} does not match asset {asset} at location {resLoc}");
+            else if(resLoc.ID != ID)
+            {
+                if(resLoc.ID.Contains(ID))
+                {
+                    // We weren't fully specific, that's okay
+                    ID = resLoc.ID;
+                }
+                else
+                {
+                    // Something different came up, that's odd
+                    Debug.LogWarning($"Partial ResourceLocation mismatch, {this} does not match asset {asset} at location {resLoc}");
+                    ID = resLoc.ID;
+                }
+            }
+        }
+    }
 
     public static ResourceLocation EditorObjectField<T>(ResourceLocation src, string subfolder = "") where T : Object
     {
@@ -207,6 +230,7 @@ public class ResourceLocation
 				}
                 else
                 {
+                    GUILayout.Label($"{subfolder}/");
                     foreach (string option in pack.AllIDs)
                         if (option.Contains(subfolder))
                         {
@@ -231,6 +255,8 @@ public class ResourceLocation
 	public static ResourceLocation EditorObjectField<T>(ResourceLocation src, T currentObject, string subfolder = "") where T : Object
     {
         ResourceLocation result = src.Clone();
+
+        result.MatchToAsset(currentObject);
 		
 		GUILayout.BeginHorizontal();
 
