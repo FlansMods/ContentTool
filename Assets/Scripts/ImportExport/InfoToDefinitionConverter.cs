@@ -1070,7 +1070,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 			// We are going to in-line them for simplicity
 			case EWeaponType.GUN:
 			{
-				if(gun.type != null && gun.type.Length > 0 && DefinitionImporter.TryGetType<GunType>(EDefinitionType.gun, gun.type, out GunType gunType))
+				if(gun.type != null && gun.type.Length > 0 && ContentManager.TryGetType<GunType>(EDefinitionType.gun, gun.type, out GunType gunType))
 				{
 					actions.Add(new ActionDefinition()
 					{
@@ -1120,7 +1120,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 
 		if(seat.gunType != null && seat.gunType.Length > 0)
 		{
-			if(DefinitionImporter.TryGetType<GunType>(EDefinitionType.gun, seat.gunType, out GunType gunType))
+			if(ContentManager.TryGetType<GunType>(EDefinitionType.gun, seat.gunType, out GunType gunType))
 			{
 				primaryActions.Add(new ActionDefinition()
 				{

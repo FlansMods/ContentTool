@@ -20,7 +20,7 @@ public class FlansModToolbox : EditorWindow
 	{
 		EditorApplication.update -= Repaint;
 	}
-	private List<ContentPack> Packs { get { return DefinitionImporter.inst.Packs; } }
+	private List<ContentPack> Packs { get { return ContentManager.inst.Packs; } }
 	private enum Tab
 	{
 		Import,
@@ -65,20 +65,20 @@ public class FlansModToolbox : EditorWindow
 	// -------------------------------------------------------------------------------------------------------
 	#region Import Tab
 	// -------------------------------------------------------------------------------------------------------
-	private DefinitionImporterEditor ContentManagerEditor = null;
+	private ContentManagerEditor ContentManagerEditor = null;
 	private void CreateContentManagerEditor()
 	{
-		DefinitionImporter inst = DefinitionImporter.inst;
+		ContentManager inst = ContentManager.inst;
 		if (ContentManagerEditor == null || ContentManagerEditor.target != inst)
 		{
-			ContentManagerEditor = Editor.CreateEditor(inst) as DefinitionImporterEditor;
+			ContentManagerEditor = Editor.CreateEditor(inst) as ContentManagerEditor;
 		}
 	}
 
 	private void ImportTab()
 	{
 		CreateContentManagerEditor();
-		DefinitionImporter inst = DefinitionImporter.inst;
+		ContentManager inst = ContentManager.inst;
 		if (ContentManagerEditor != null)
 			ContentManagerEditor.ImportTab(inst);
 	}
@@ -91,7 +91,7 @@ public class FlansModToolbox : EditorWindow
 	private void ExportTab()
 	{
 		CreateContentManagerEditor();
-		DefinitionImporter inst = DefinitionImporter.inst;
+		ContentManager inst = ContentManager.inst;
 		if (ContentManagerEditor != null)
 			ContentManagerEditor.ExportTab(inst);
 	}

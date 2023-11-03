@@ -9,9 +9,9 @@ using static UnityEditor.FilePathAttribute;
 
 public static class AdditionalAssetImporter
 {
-	public static readonly string IMPORT_ROOT = DefinitionImporter.IMPORT_ROOT;
-	public static readonly string MODEL_IMPORT_ROOT = DefinitionImporter.MODEL_IMPORT_ROOT;
-	public static readonly string ASSET_ROOT = DefinitionImporter.ASSET_ROOT;
+	public static readonly string IMPORT_ROOT = ContentManager.IMPORT_ROOT;
+	public static readonly string MODEL_IMPORT_ROOT = ContentManager.MODEL_IMPORT_ROOT;
+	public static readonly string ASSET_ROOT = ContentManager.ASSET_ROOT;
 
 	public static List<string> GetOutputPaths(string srcPackName, InfoType inputType)
 	{
@@ -265,7 +265,7 @@ public static class AdditionalAssetImporter
 				Texture = skinLocations[i].Load<Texture2D>("textures/item")
 			});
 		}
-		DefinitionImporter.CreateUnityAsset(switcher, location);
+		ContentManager.CreateUnityAsset(switcher, location);
 		errors.Add(Verification.Success($"Created SkinSwitcher model at '{location}'"));
 	}
 
@@ -278,7 +278,7 @@ public static class AdditionalAssetImporter
 		item.AddDefaultTransforms();
 		item.IconLocation = iconLocation;
 		item.Icon = iconLocation.Load<Texture2D>("textures/item");
-		DefinitionImporter.CreateUnityAsset(item, location);
+		ContentManager.CreateUnityAsset(item, location);
 		errors.Add(Verification.Success($"Created ItemModel at '{location}'"));
 	}
 
@@ -298,7 +298,7 @@ public static class AdditionalAssetImporter
 		multi.FixedModel = fixedModel.Load<MinecraftModel>();
 		multi.GroundModel = groundModel.Load<MinecraftModel>();
 		multi.HeadModel = headModel.Load<MinecraftModel>();
-		DefinitionImporter.CreateUnityAsset(multi, location);
+		ContentManager.CreateUnityAsset(multi, location);
 		errors.Add(Verification.Success($"Created MultiModel at '{location}'"));
 	}
 
@@ -324,7 +324,7 @@ public static class AdditionalAssetImporter
 			});
 		}
 
-		DefinitionImporter.CreateUnityAsset(rig, to);
+		ContentManager.CreateUnityAsset(rig, to);
 		errors.Add(Verification.Success($"Imported TurboRig to '{rig}'"));
 	}
 

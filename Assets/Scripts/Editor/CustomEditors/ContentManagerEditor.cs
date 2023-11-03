@@ -4,8 +4,8 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(DefinitionImporter))]
-public class DefinitionImporterEditor : Editor
+[CustomEditor(typeof(ContentManager))]
+public class ContentManagerEditor : Editor
 {	
 	private bool hasDoneInit = false;
 	private enum Tab
@@ -23,7 +23,7 @@ public class DefinitionImporterEditor : Editor
 
 	public override void OnInspectorGUI()
 	{
-		DefinitionImporter instance = (DefinitionImporter)target;
+		ContentManager instance = (ContentManager)target;
 		if (instance != null)
 		{
 			instance.Refresh();
@@ -40,7 +40,7 @@ public class DefinitionImporterEditor : Editor
 		}
 	}
 
-	public void ImportTab(DefinitionImporter instance)
+	public void ImportTab(ContentManager instance)
 	{
 		foreach (string sourcePack in instance.GetPreImportPackNames())
 		{
@@ -203,7 +203,7 @@ public class DefinitionImporterEditor : Editor
 		}
 	}
 
-	public void ExportTab(DefinitionImporter instance)
+	public void ExportTab(ContentManager instance)
 	{
 		FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
 
@@ -238,7 +238,7 @@ public class DefinitionImporterEditor : Editor
 	private void p()
 	{ 
 		{
-			DefinitionImporter instance = (DefinitionImporter)target;
+			ContentManager instance = (ContentManager)target;
 			//base.OnInspectorGUI();
 
 			if (!hasDoneInit)

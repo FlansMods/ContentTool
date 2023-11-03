@@ -5,27 +5,23 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Palmmedia.ReportGenerator.Core;
-using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.WSA;
 using static Definition;
 
-public class DefinitionImporter : MonoBehaviour
+public class ContentManager : MonoBehaviour
 {
-	private static DefinitionImporter _inst = null;
-	public static DefinitionImporter inst
+	private static ContentManager _inst = null;
+	public static ContentManager inst
 	{
 		get
 		{
 			if (_inst == null)
-				_inst = FindObjectOfType<DefinitionImporter>();
+				_inst = FindObjectOfType<ContentManager>();
 			if(_inst == null)
 			{
 				GameObject go = new GameObject("DefinitionImporter");
-				_inst = go.AddComponent<DefinitionImporter>();
+				_inst = go.AddComponent<ContentManager>();
 			}
 			return _inst;
 		}

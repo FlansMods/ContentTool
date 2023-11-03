@@ -7,12 +7,12 @@ using static MinecraftModel;
 
 public abstract class MinecraftModelEditor : Editor
 {
-	private static DefinitionImporter DefImporter = null;
-	protected static DefinitionImporter DefinitionImporter
+	private static ContentManager DefImporter = null;
+	protected static ContentManager DefinitionImporter
 	{ get 
 		{
 			if (DefImporter == null)
-				DefImporter = FindObjectOfType<DefinitionImporter>();
+				DefImporter = FindObjectOfType<ContentManager>();
 			return DefImporter;
 		}
 	}

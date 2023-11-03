@@ -142,7 +142,7 @@ public class ResourceLocation
 				    "minecraft",
 				    "flansmod"
 			    };
-				DefinitionImporter importer = Object.FindObjectOfType<DefinitionImporter>();
+				ContentManager importer = Object.FindObjectOfType<ContentManager>();
 				if (importer != null)
 				{
 					foreach (ContentPack pack in importer.Packs)
@@ -195,7 +195,7 @@ public class ResourceLocation
         if (Namespaces.Contains(ns) && ns != "minecraft" && ns != NEW_NAMESPACE)
         {
             List<string> possibleIDs = new List<string>();
-            ContentPack pack = DefinitionImporter.inst.FindContentPack(ns);
+            ContentPack pack = ContentManager.inst.FindContentPack(ns);
             int selectedIndex = -1;
 			if (pack != null)
             {

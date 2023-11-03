@@ -37,7 +37,7 @@ public class ContentPackEditor : Editor
 
 			if(GUILayout.Button("Export"))
 			{
-				DefinitionImporter importExport = FindObjectOfType<DefinitionImporter>();
+				ContentManager importExport = FindObjectOfType<ContentManager>();
 				if(importExport != null)
 				{
 					importExport.ExportPack(pack.name);
