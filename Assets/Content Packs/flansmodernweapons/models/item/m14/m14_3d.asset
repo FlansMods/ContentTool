@@ -17,27 +17,27 @@ MonoBehaviour:
     Location:
       Namespace: flansmodernweapons
       ID: m14
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: d6eff12ff41a3534b8791f37498b990e, type: 3}
   - Key: 2
     Location:
       Namespace: flansmodernweapons
       ID: m14_purple
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: d3a7a8a9ff2551c498d8ad074f112354, type: 3}
   - Key: 3
     Location:
       Namespace: flansmodernweapons
       ID: m14_red
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: c83471db890484a44a9f69fdf34b9502, type: 3}
   - Key: 4
     Location:
       Namespace: flansmodernweapons
       ID: m14_royal_green
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: e4688cdb46692594dbe69cc2ee3aeaf3, type: 3}
   - Key: 5
     Location:
       Namespace: flansmodernweapons
       ID: m14_cluck_cluck
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: 654985529e4db3444b3ae8322da88c14, type: 3}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -281,33 +281,27 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters:
-  - key: scope_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 0, y: 12.5, z: 0}
-  - key: stock_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 1, y: 4, z: 0}
-  - key: barrel_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 25, y: 11.5, z: 0}
-  - key: grip_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 10, y: 3, z: 0}
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.2
     vec3Value: {x: 0, y: 0, z: 0}
+  - key: '#ANIM_TYPE#:BOTTOM_CLIP'
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 0, y: 6.25, z: 0}
   - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 1, y: -2.25, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 25, y: 5.25, z: 0}
+  - name: grip
+    attachedTo: none
+    position: {x: 10, y: -3.25, z: 0}
   - name: slide
     attachedTo: body
     position: {x: 0, y: 0, z: 0}

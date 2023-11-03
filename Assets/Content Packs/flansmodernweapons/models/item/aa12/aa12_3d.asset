@@ -17,17 +17,17 @@ MonoBehaviour:
     Location:
       Namespace: flansmodernweapons
       ID: aa12
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: d0ef68e36acdebb49a4bd0353a4d54c7, type: 3}
   - Key: 2
     Location:
       Namespace: flansmodernweapons
       ID: aa12_undergrowth
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: a7214ce2bddd2bd48b6d19f174fb5f1e, type: 3}
   - Key: 3
     Location:
       Namespace: flansmodernweapons
       ID: aa12_magma
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: a89144d8d81270347b1a878eab12b8c6, type: 3}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -241,36 +241,27 @@ MonoBehaviour:
       - {x: -0, y: -1.75, z: 0}
       - {x: 0, y: -1.75, z: 0}
   AnimationParameters:
-  - key: scope_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 3.5, y: 5, z: 0}
-  - key: stock_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 1, y: 4, z: 0}
-  - key: barrel_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 18, y: 3.5, z: 0}
-  - key: grip_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 11, y: 3, z: 0}
   - key: gun_slide_distance
     isVec3: 0
     floatValue: 0.5
     vec3Value: {x: 0, y: 0, z: 0}
+  - key: '#ANIM_TYPE#:BOTTOM_CLIP'
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
-  - name: barrel
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
   - name: sights
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 3.5, y: 5, z: 0}
   - name: stock
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    attachedTo: none
+    position: {x: 1, y: 4, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 18, y: 3.5, z: 0}
+  - name: grip
+    attachedTo: none
+    position: {x: 11, y: 3, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}

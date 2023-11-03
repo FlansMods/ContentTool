@@ -29,10 +29,434 @@ MonoBehaviour:
     minPitch: -89
     maxPitch: 89
     gyroStabilised: 0
-    inputs: []
+    inputs:
+    - key: 0
+      articulations: []
+      guns: []
+      driving:
+      - control: 0
+        force: 8
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 1
+      articulations: []
+      guns: []
+      driving:
+      - control: 1
+        force: 0
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 2
+      articulations: []
+      guns: []
+      driving:
+      - control: 4
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 3
+      articulations: []
+      guns: []
+      driving:
+      - control: 5
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 13
+      articulations: []
+      guns: []
+      driving:
+      - control: 3
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 6
+      articulations: []
+      guns: []
+      driving:
+      - control: 8
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 7
+      articulations: []
+      guns: []
+      driving:
+      - control: 9
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 8
+      articulations: []
+      guns: []
+      driving:
+      - control: 6
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 9
+      articulations: []
+      guns: []
+      driving:
+      - control: 7
+        force: 4
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 17
+      articulations: []
+      guns: []
+      driving:
+      - control: 13
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 18
+      articulations: []
+      guns: []
+      driving:
+      - control: 14
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
   articulatedParts: []
-  guns: []
-  movementModes: []
+  guns:
+  - name: pilot_gun_primary_0
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:rpdshoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 7
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 3
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: impact_damage
+        Filter: 
+        Add: 0
+        Multiply: 4
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_primary_1
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:rpdshoot
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers:
+      - Stat: vertical_recoil
+        Filter: 
+        Add: 0
+        Multiply: 7
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: spread
+        Filter: 
+        Add: 0
+        Multiply: 3
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: speed
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: bullet_count
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: impact_damage
+        Filter: 
+        Add: 0
+        Multiply: 4
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      - Stat: knockback
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyToPrimary: 1
+        ApplyToSecondary: 0
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_secondary_0
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: FireMissile
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_secondary_1
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: FireMissile
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound: 'flansmodernweapons:'
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  movementModes:
+  - name: plane
+    type: 0
+    wheels:
+    - attachedTo: coreWheel
+      visualOffset: {x: -5.75, y: -0.75, z: -0.9375}
+      physicsOffset: {x: -5.75, y: -0.75, z: -0.9375}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: -5.75, y: -0.75, z: 0.9375}
+      physicsOffset: {x: -5.75, y: -0.75, z: 0.9375}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: 0.75, y: -0.5625, z: 0}
+      physicsOffset: {x: 0.75, y: -0.5625, z: 0}
+      springStrength: 0.125
+      stepHeight: 1
+    propellers:
+    - attachedTo: core
+      visualOffset: {x: 3.375, y: 0, z: 0}
+      forceOffset: {x: 0, y: 0, z: 0}
+    legs: []
+    arms: []
+    maxAcceleration: 1
+    maxDecceleration: -1
+    maxSpeed: 100
+    liftForce: 10
   restingEulerAngles: {x: 0, y: 0, z: 0}
   defaultEngine:
     maxAcceleration: 1

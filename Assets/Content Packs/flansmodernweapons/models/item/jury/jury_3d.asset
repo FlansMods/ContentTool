@@ -17,27 +17,27 @@ MonoBehaviour:
     Location:
       Namespace: flansmodernweapons
       ID: jury
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: b86c4adfcbc9437468d1cca1e55d8480, type: 3}
   - Key: 2
     Location:
       Namespace: flansmodernweapons
       ID: jury_chaos
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: e769c61fe2b91e846a2c69b24df0b4fa, type: 3}
   - Key: 3
     Location:
       Namespace: flansmodernweapons
       ID: jury_order
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: af6f8221da3f83c44994f5a342887844, type: 3}
   - Key: 4
     Location:
       Namespace: flansmodernweapons
       ID: jury_thunderbolt
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: 067f004e582d59a4c830b7613c809f0e, type: 3}
   - Key: 5
     Location:
       Namespace: flansmodernweapons
       ID: jury_lightning
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: 6dd868166febb604b8a9f65cfd664712, type: 3}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -277,35 +277,37 @@ MonoBehaviour:
       - {x: -0, y: 0, z: 0.25}
       - {x: 0, y: 0, z: 0.25}
   AnimationParameters:
-  - key: barrel_attach_point
-    isVec3: 1
+  - key: '#ANIM_TYPE#:REVOLVER'
+    isVec3: 0
     floatValue: 0
-    vec3Value: {x: 9.5, y: 2.5, z: 0}
-  - key: scope_attach_point
-    isVec3: 1
-    floatValue: 0
-    vec3Value: {x: 5, y: 4.25, z: 0}
+    vec3Value: {x: 0, y: 0, z: 0}
   - key: revolver_flip_angle
     isVec3: 0
     floatValue: -25
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: tilt_gun_time
+  - key: '#tiltGunTime#'
     isVec3: 0
     floatValue: 0.1
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: unload_clip_time
+  - key: '#unloadClipTime#'
     isVec3: 0
     floatValue: 0.3
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: load_clip_time
+  - key: '#loadClipTime#'
     isVec3: 0
     floatValue: 0.5
     vec3Value: {x: 0, y: 0, z: 0}
-  - key: untilt_gun_time
+  - key: '#untiltGunTime#'
     isVec3: 0
     floatValue: 0.1
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
+  - name: barrel
+    attachedTo: none
+    position: {x: 9.5, y: 2.5, z: 0}
+  - name: sights
+    attachedTo: none
+    position: {x: 5, y: 4.25, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}

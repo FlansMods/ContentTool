@@ -17,7 +17,7 @@ MonoBehaviour:
     Location:
       Namespace: flansmodernweapons
       ID: fmg
-    Texture: {fileID: 0}
+    Texture: {fileID: 2800000, guid: e7d2a84c6adf38e47ad2b2aff7eee297, type: 3}
   Transforms: []
   Icon:
     Namespace: minecraft
@@ -299,7 +299,11 @@ MonoBehaviour:
       - {x: -1, y: -0, z: 0}
       - {x: 1, y: 1, z: 0}
       - {x: 0, y: 1, z: 0}
-  AnimationParameters: []
+  AnimationParameters:
+  - key: '#ANIM_TYPE#:BOTTOM_CLIP'
+    isVec3: 0
+    floatValue: 0
+    vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: ammo_0
     attachedTo: body

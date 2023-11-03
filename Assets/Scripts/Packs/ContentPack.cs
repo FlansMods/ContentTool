@@ -20,8 +20,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 	private List<Texture2D> Textures = new List<Texture2D>();
 	[SerializeField]
 	private List<string> IDs = new List<string>();
-
-	public List<AudioClip> Sounds = new List<AudioClip>();
+	[SerializeField]
+	private List<AudioClip> Sounds = new List<AudioClip>();
 	public List<Definition.LocalisedExtra> ExtraLocalisation = new List<Definition.LocalisedExtra>();
 	public string ModName { get { return name; } }
 
@@ -29,6 +29,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 	{
 		Refresh(true);
 	}
+	public int ContentCount { get { Refresh(); return Content.Count; } }
 	public IEnumerable<Definition> AllContent
 	{
 		get
@@ -38,6 +39,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 				yield return def;
 		}
 	}
+	public int TextureCount { get { Refresh(); return Textures.Count; } }
 	public IEnumerable<Texture2D> AllTextures
 	{
 		get
@@ -47,6 +49,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 				yield return tex;
 		}
 	}
+	public int ModelCount { get { Refresh(); return Models.Count; } }
 	public IEnumerable<MinecraftModel> AllModels
 	{
 		get
@@ -54,6 +57,16 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			Refresh();
 			foreach (MinecraftModel model in Models)
 				yield return model;
+		}
+	}
+	public int SoundCount { get { Refresh(); return Sounds.Count; } }
+	public IEnumerable<AudioClip> AllSounds
+	{
+		get
+		{
+			Refresh();
+			foreach (AudioClip sound in Sounds)
+				yield return sound;
 		}
 	}
 	public IEnumerable<string> AllIDs
@@ -87,6 +100,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			Content.Clear();
 			Models.Clear();
 			Textures.Clear();
+			Sounds.Clear();
 			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.asset", SearchOption.AllDirectories))
 			{
 				if (assetPath.EndsWith($"{name}.asset"))
@@ -118,7 +132,24 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 				}
 			}
 
-			if(count != Content.Count + Models.Count + Textures.Count)
+			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
+			{
+				AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				if (clip != null)
+					Sounds.Add(clip);
+				else
+					Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
+			}
+			foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
+			{
+				AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				if (clip != null)
+					Sounds.Add(clip);
+				else
+					Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+			}
+
+			if (count != Content.Count + Models.Count + Textures.Count)
 			{
 				EditorUtility.SetDirty(this);
 			}
@@ -133,6 +164,9 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			foreach (MinecraftModel model in Models)
 				if (model.TryGetLocation(out ResourceLocation modelLoc))
 					IDs.Add(modelLoc.ID);
+			foreach (AudioClip sound in Sounds)
+				if (sound.TryGetLocation(out ResourceLocation soundLoc))
+					IDs.Add(soundLoc.ID);
 			LastContentCheck = DateTime.Now;
 		}
 	}

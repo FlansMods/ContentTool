@@ -111,6 +111,11 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		uk_ua,
 	}
 
+	public static class Langs
+	{
+		public static int NUM_LANGS = (int)ELang.uk_ua + 1;
+	}
+
 	[System.Serializable]
 	public class LocalisedName
 	{

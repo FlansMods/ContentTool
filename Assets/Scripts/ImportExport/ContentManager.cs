@@ -485,7 +485,9 @@ public class ContentManager : MonoBehaviour
 		GenerateFullImportMap(packName);
 		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
 		{
+			
 			EDefinitionType defType = (EDefinitionType)i;
+			EditorUtility.DisplayProgressBar($"Importing Content", $"Importing {defType}", (float)(i+1) / DefinitionTypes.NUM_TYPES);
 			TYPE_LOOKUP[i] = new Dictionary<string, InfoType>();
 			foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
 			{
@@ -498,6 +500,7 @@ public class ContentManager : MonoBehaviour
 
 		ImportLangFiles_Internal(packName);
 		ImportSounds_Internal(packName, outputPack);
+		EditorUtility.ClearProgressBar();
 
 		outputPack.ForceRefreshAssets();
 		AssetDatabase.Refresh();
@@ -674,7 +677,10 @@ public class ContentManager : MonoBehaviour
 		{
 			foreach (FileInfo langFile in langFolder.EnumerateFiles())
 			{
-				if (Enum.TryParse(langFile.FullName, out Definition.ELang lang))
+				string langName = langFile.Name;
+				if (langName.Contains('.'))
+					langName = langName.Substring(0, langName.IndexOf('.'));
+				if (Enum.TryParse(langName, out Definition.ELang lang))
 				{
 					int stringsImported = 0;
 					using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
@@ -703,7 +709,7 @@ public class ContentManager : MonoBehaviour
 					}
 					Debug.Log($"Imported {stringsImported} strings from {langFile.FullName}");
 				}
-				else Debug.LogError($"Could not match {langFile.FullName} to a known language");
+				else Debug.LogError($"Could not match {langName} to a known language");
 			}
 		}
 	}
@@ -752,8 +758,8 @@ public class ContentManager : MonoBehaviour
 						string soundName = entry.ToString();
 						soundName = soundName.Replace("flansmod:", "");
 						AudioClip clip = ImportSound(packName, soundName.ToLower(), Utils.ToLowerWithUnderscores(soundName));
-						if (pack != null && clip != null)
-							pack.Sounds.Add(clip);
+						//if (pack != null && clip != null)
+						//	pack.Sounds.Add(clip);
 
 						JObject newSoundBlob = new JObject();
 						newSoundBlob.Add("name", $"{pack.ModName}:{Utils.ToLowerWithUnderscores(soundName)}");
@@ -980,12 +986,8 @@ public class ContentManager : MonoBehaviour
 	// ---------------------------------------------------------------------------------------
 	#region The Export Process
 	// ---------------------------------------------------------------------------------------
-	public string ExportRoot = "Export"; 
-	public void ExportAsset(string packName, UnityEngine.Object asset)
-	{
-		
-	}
-
+	public string ExportRoot = "Export";
+	private static readonly char[] SLASHES = new char[] { '/', '\\' };
 	public string GetExportPath(string packName, UnityEngine.Object asset)
 	{
 		ResourceLocation loc = asset.GetLocation();
@@ -1003,7 +1005,143 @@ public class ContentManager : MonoBehaviour
 		return File.Exists(exportPath);
 	}
 
-	public void ExportPack(string packName, bool overwrite)
+	public void ExportAsset(string packName, UnityEngine.Object asset, List<Verification> verifications = null)
+	{
+		string exportPath = GetExportPath(packName, asset);
+		string exportFolder = exportPath.Substring(0, exportPath.LastIndexOfAny(SLASHES));
+		if (!Directory.Exists(exportFolder))
+			Directory.CreateDirectory(exportFolder);
+		if (asset is Definition def)
+		{
+			try
+			{
+				def.CheckAndExportToFile(exportPath);
+			}
+			catch (Exception e)
+			{
+				if(verifications != null)
+					verifications.Add(Verification.Failure(e));
+			}
+		}
+		else if(asset is MinecraftModel model)
+		{
+			try
+			{ 
+				//model.ExportToModelJsonFiles(exportPath);
+			}
+			catch (Exception e)
+			{
+				if (verifications != null)
+					verifications.Add(Verification.Failure(e));
+			}
+		}
+		else if(asset is Texture2D texture)
+		{
+			try
+			{
+				texture.CheckAndExportToFile(exportPath);
+			}
+			catch (Exception e)
+			{
+				if (verifications != null)
+					verifications.Add(Verification.Failure(e));
+			}
+		}
+		else if(asset is AudioClip audio)
+		{
+			// TODO:
+			//sound.CheckAndExportToFile(outputDir.File())
+			//string src = AssetDatabase.GetAssetPath(sound);
+			//string dst = $"{soundsExportFolder}/{sound.name}{new FileInfo(src).Extension}";
+			//
+			//Debug.Log($"Copying sound from {src} to {dst}");
+			//File.Copy(src, dst, true);
+		}
+		else
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Failure($"Unknown asset type {asset.GetType()} for {asset}"));
+		}
+	}
+
+	public string GetLangExportPath(string packName, ELang lang)
+	{
+		return $"{ExportRoot}/assets/{packName}/lang/{lang}.json";
+	}
+	public string GetNamePrefix(Definition def)
+	{
+		if (def is MagazineDefinition)
+			return "magazine";
+		if (def is MaterialDefinition)
+			return "material";
+		return "item";
+	}
+	public void ExportLangJson(string packName, ELang lang, List<Verification> verifications = null)
+	{
+		string exportPath = GetLangExportPath(packName, lang);
+		string exportFolder = exportPath.Substring(0, exportPath.LastIndexOfAny(SLASHES));
+		if (!Directory.Exists(exportFolder))
+			Directory.CreateDirectory(exportFolder);
+		ContentPack pack = FindContentPack(packName);
+		if (pack == null)
+		{
+			Debug.LogError($"Failed to find pack {packName}");
+			return;
+		}
+
+		try
+		{
+			JObject jRoot = new JObject();
+			foreach (Definition def in pack.AllContent)
+			{
+				foreach (LocalisedName locName in def.LocalisedNames)
+					if (locName.Lang == lang)
+						jRoot.Add($"{GetNamePrefix(def)}.{packName}.{def.name}", locName.Name);
+
+				foreach (LocalisedExtra locExtra in def.LocalisedExtras)
+					if (locExtra.Lang == lang)
+						jRoot.Add(locExtra.Unlocalised, locExtra.Localised);
+			}
+
+			// And add pack localisation
+			foreach (LocalisedExtra locExtra in pack.ExtraLocalisation)
+				if (locExtra.Lang == lang)
+					jRoot.Add(locExtra.Unlocalised, locExtra.Localised);
+
+			if (jRoot.HasValues)
+			{
+				using (StringWriter stringWriter = new StringWriter())
+				using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+				{
+					jsonWriter.Formatting = Formatting.Indented;
+					jRoot.WriteTo(jsonWriter);
+					File.WriteAllText(exportPath, stringWriter.ToString());
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Failure(e));
+		}
+	}
+
+	public void ExportSoundsJson(string packName, List<Verification> verifications = null)
+	{
+		// TODO:
+		// Copy sound.json
+		//{
+		//	string src = $"{ASSET_ROOT}/{packName}/sounds.json";
+		//	if (File.Exists(src))
+		//	{
+		//		string dst = $"{assetExportFolder}/sounds.json";
+		//		Debug.Log($"Copying sounds.json from {src} to {dst}");
+		//		File.Copy(src, dst, true);
+		//	}
+		//}
+	}
+
+	public void ExportPack(string packName, bool overwrite, List<Verification> verifications = null)
 	{
 		ContentPack pack = FindContentPack(packName);
 		if(pack == null)
@@ -1012,143 +1150,70 @@ public class ContentManager : MonoBehaviour
 			return;
 		}
 
-		Dictionary<string, Exception> CaughtExceptions = new Dictionary<string, Exception>();
-
-		using (var rootDir = new ExportDirectory(ExportRoot))
+		try
 		{
-			using (var dataDir = rootDir.Subdir("data"))
+			// ----------------------------------------------------------------------------------
+			// Export Content
+			int contentCount = pack.ContentCount;
+			int processedCount = 0;
+			foreach (Definition def in pack.AllContent)
 			{
-				foreach (Definition def in pack.AllContent)
-				{
-					using (var typeOutputDir = dataDir.Subdir(DefinitionTypes.GetFromObject(def).OutputFolder()))
-					{
-						try
-						{
-							def.CheckAndExportToFile(typeOutputDir.File($"{def.name}.json"));
-						}
-						catch(Exception e)
-						{
-							CaughtExceptions.Add($"Export Definition '{def.name}'", e);
-						}
-					}
-				}
+				EditorUtility.DisplayProgressBar("Exporting Content", $"Exporting {processedCount + 1}/{contentCount} - {def.name}", (float)processedCount / contentCount);
+				ExportAsset(pack.ModName, def, verifications);
 			}
-			using (var assetsDir = rootDir.Subdir("assets"))
+			EditorUtility.ClearProgressBar();
+			// ----------------------------------------------------------------------------------
+
+			// ----------------------------------------------------------------------------------
+			// Export Textures
+			int textureCount = pack.TextureCount;
+			processedCount = 0;
+			foreach (Texture2D texture in pack.AllTextures)
 			{
-				foreach(Texture2D texture in pack.AllTextures)
-				{
-					if (texture.TryGetLocation(out ResourceLocation location))
-					{
-						using (var outputDir = assetsDir.Subdir(location.GetPrefixes()))
-						{
-							try
-							{ 
-								texture.CheckAndExportToFile(outputDir.File($"{location.ID}.png"));
-							}
-							catch (Exception e)
-							{
-								CaughtExceptions.Add($"Export Texture '{location}'", e);
-							}
-						}
-					}
-					else Debug.LogError($"Texture {texture} in pack {pack} could not resolve ResourceLocation");
-				}
-				foreach(MinecraftModel model in pack.AllModels)
-				{
-					try
-					{ 
-						model.ExportToModelJsonFiles(assetsDir);
-					}
-					catch (Exception e)
-					{
-						CaughtExceptions.Add($"Export Model '{model}'", e);
-					}
-				}
-				foreach(AudioClip sound in pack.Sounds)
-				{
-					//sound.CheckAndExportToFile(outputDir.File())
-					//string src = AssetDatabase.GetAssetPath(sound);
-					//string dst = $"{soundsExportFolder}/{sound.name}{new FileInfo(src).Extension}";
-					//
-					//Debug.Log($"Copying sound from {src} to {dst}");
-					//File.Copy(src, dst, true);
-				}
-				// Copy sound.json
-				//{
-				//	string src = $"{ASSET_ROOT}/{packName}/sounds.json";
-				//	if (File.Exists(src))
-				//	{
-				//		string dst = $"{assetExportFolder}/sounds.json";
-				//		Debug.Log($"Copying sounds.json from {src} to {dst}");
-				//		File.Copy(src, dst, true);
-				//	}
-				//}
+				EditorUtility.DisplayProgressBar("Exporting Textures", $"Exporting {processedCount + 1}/{textureCount} - {texture.name}", (float)processedCount / textureCount);
+				ExportAsset(pack.ModName, texture, verifications);
+			}
+			EditorUtility.ClearProgressBar();
+			// ----------------------------------------------------------------------------------
 
-				// Create lang.jsons
-				Dictionary<string, JObject> langJsons = new Dictionary<string, JObject>();
-				foreach (Definition def in pack.AllContent)
-				{
-					foreach (Definition.LocalisedName locName in def.LocalisedNames)
-					{
-						string langFileName = $"{locName.Lang}.json";
-						if (!langJsons.ContainsKey(langFileName))
-							langJsons.Add(langFileName, new JObject());
+			// ----------------------------------------------------------------------------------
+			// Export Models
+			int modelCount = pack.ModelCount;
+			processedCount = 0;
+			foreach (MinecraftModel model in pack.AllModels)
+			{
+				EditorUtility.DisplayProgressBar("Exporting Textures", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
+				ExportAsset(pack.ModName, model, verifications);
+			}
+			EditorUtility.ClearProgressBar();
+			// ----------------------------------------------------------------------------------
 
-						string prefix = "item";
-						if (def is MagazineDefinition)
-							prefix = "magazine";
-						if (def is MaterialDefinition)
-							prefix = "material";
-						langJsons[langFileName].Add($"{prefix}.{pack.ModName}.{def.name}", locName.Name);
-					}
-					foreach (Definition.LocalisedExtra locExtra in def.LocalisedExtras)
-					{
-						string langFileName = $"{locExtra.Lang}.json";
-						if (!langJsons.ContainsKey(langFileName))
-							langJsons.Add(langFileName, new JObject());
+			// ----------------------------------------------------------------------------------
+			// Export Sounds
+			int soundCount = pack.SoundCount;
+			processedCount = 0;
+			foreach (AudioClip sound in pack.AllSounds)
+			{
+				EditorUtility.DisplayProgressBar("Exporting Sounds", $"Exporting {processedCount + 1}/{soundCount} - {sound.name}", (float)processedCount / soundCount);
+				ExportAsset(pack.ModName, sound, verifications);
+			}
+			EditorUtility.ClearProgressBar();
+			// ----------------------------------------------------------------------------------
 
-						langJsons[langFileName].Add(locExtra.Unlocalised, locExtra.Localised);
-					}
-				}
-				foreach (Definition.LocalisedExtra locExtra in pack.ExtraLocalisation)
-				{
-					string langFileName = $"{locExtra.Lang}.json";
-					if (!langJsons.ContainsKey(langFileName))
-						langJsons.Add(langFileName, new JObject());
+			// Export sounds.json
+			EditorUtility.DisplayProgressBar("Exporting Misc Assets", "Exporting sounds.json", 0.0f);
+			ExportSoundsJson(packName, verifications);
 
-					langJsons[langFileName].Add(locExtra.Unlocalised, locExtra.Localised);
-				}
-
-				using (var langDir = assetsDir.Subdir("lang"))
-				{
-					foreach (var kvp in langJsons)
-					{
-						using (StringWriter stringWriter = new StringWriter())
-						using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
-						{
-							jsonWriter.Formatting = Formatting.Indented;
-							string dst = langDir.File(kvp.Key);
-							kvp.Value.WriteTo(jsonWriter);
-							File.WriteAllText(dst, stringWriter.ToString());
-							Debug.Log($"Exporting lang file to {dst}");
-						}
-					}
-				}
+			// Export lang.jsons
+			for (int i = 0; i < Langs.NUM_LANGS; i++)
+			{
+				EditorUtility.DisplayProgressBar("Exporting Misc Assets", $"Exporting {(ELang)i}.json", 0.5f + 0.5f * ((float)(i + 1) / Langs.NUM_LANGS));
+				ExportLangJson(packName, (ELang)i, verifications);
 			}
 		}
-
-		// Summarise the export process
-		if (CaughtExceptions.Count == 0)
+		finally
 		{
-			Debug.Log($"Successfully completed export of {pack}");
-		}
-		else
-		{
-			Debug.LogError($"Failed export of {pack} with {CaughtExceptions.Count} exceptions");
-			foreach (var kvp in CaughtExceptions)
-			{
-				Debug.LogError($"Exception [{kvp.Key}] => {kvp.Value.Message}");
-			}
+			EditorUtility.ClearProgressBar();
 		}
 	}
 	#endregion
