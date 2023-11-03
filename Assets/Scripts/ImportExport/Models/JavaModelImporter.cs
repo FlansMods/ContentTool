@@ -91,6 +91,7 @@ public static class JavaModelImporter
 	public static CubeModel ImportBlock(string modName, BoxType box)
 	{
 		CubeModel cube = ScriptableObject.CreateInstance<CubeModel>();
+		cube.AddDefaultTransforms();
 
 		ResourceLocation side = new ResourceLocation(modName, Utils.ToLowerWithUnderscores(box.sideTexturePath));
 		ResourceLocation top = new ResourceLocation(modName, Utils.ToLowerWithUnderscores(box.topTexturePath));

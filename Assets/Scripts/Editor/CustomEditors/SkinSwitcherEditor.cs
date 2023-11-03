@@ -81,6 +81,7 @@ public class SkinSwitcherEditor : MinecraftModelEditor
 								if (GUILayout.Button("Add"))
 								{
 									ItemModel newModel = CreateInstance<ItemModel>();
+									newModel.AddDefaultTransforms();
 									newModel.IconLocation = iconLoc;
 									newModel.Icon = icon;
 									if (actualFileName == searchName)

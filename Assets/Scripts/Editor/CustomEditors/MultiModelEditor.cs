@@ -41,22 +41,28 @@ public class MultiModelEditor : Editor
                 AssetDatabase.Refresh();
             }
 
+            ModelSelector(MinecraftModel.ItemTransformType.FIRST_PERSON_RIGHT_HAND, "First Person");
 
 
-            ResourceLocation thisLocation = multi.GetLocation();
+			ResourceLocation thisLocation = multi.GetLocation();
             string thisName = thisLocation.IDWithoutPrefixes();
             string searchPath = $"Assets/Content Packs/{thisLocation.Namespace}/models/item/{thisName}";
-           // if (Directory.Exists(searchPath))
-           // {
-           //     foreach (string file in Directory.EnumerateFiles(searchPath))
-           //     {
-           //         if (file.Contains(thisName))
-           //         {
-           //             
-           //         }
-           //     }
-           // }
+            if (Directory.Exists(searchPath))
+            {
+                foreach (string file in Directory.EnumerateFiles(searchPath))
+                {
+                    if (file.Contains(thisName))
+                    {
+                        // TODO: Auto fixes for MultiModel
+                    }
+                }
+            }
         }
         base.OnInspectorGUI();
     }
+
+    private void ModelSelector(MinecraftModel.ItemTransformType transformType, string label)
+    {
+		// TODO: Auto fixes for MultiModel
+	}
 }

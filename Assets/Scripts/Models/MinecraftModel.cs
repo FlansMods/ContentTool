@@ -195,7 +195,7 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 		}
 		else
 		{
-			verifications.Add(Verification.Success($"Model has {Transforms.Count} transforms"));
+			//verifications.Add(Verification.Success($"Model has {Transforms.Count} transforms"));
 			List<ItemTransformType> foundTypes = new List<ItemTransformType>();
 			for(int i = 0; i < Transforms.Count; i++)
 			{
