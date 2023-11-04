@@ -47,6 +47,12 @@ public class TurboRigEditor : MinecraftModelEditor
 
 				if (!newExpanded)
 				{
+					EditorGUI.BeginDisabledGroup(rig == null);
+					if(GUILayout.Button(FlanStyles.ApplyPose))
+					{
+						rig.SelectSkin(texture.Key);
+					}
+					EditorGUI.EndDisabledGroup();
 					if(GUILayout.Button(FlanStyles.DuplicateEntry))
 					{
 						indexToDuplicate = i;
@@ -135,11 +141,38 @@ public class TurboRigEditor : MinecraftModelEditor
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button(FlanStyles.AddEntry, GUILayout.Width(32)))
 			{
+				string newSkinName = turboRig.name;
+				if (newSkinName.EndsWith("_3d"))
+					newSkinName = newSkinName.Substring(0, newSkinName.Length - 3);
+				newSkinName = $"{newSkinName}_new";
+
+				while (File.Exists($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png"))
+				{
+					newSkinName += "_";
+				}
+
+				Texture2D newSkinTexture = new Texture2D(turboRig.GetMaxUV().x, turboRig.GetMaxUV().y);
+				newSkinTexture.name = newSkinName;
+				UVMap map = null;
+				if (rig != null)
+				{
+					map = rig.CurrentUVMap;
+				}
+				else
+				{
+					map = new UVMap(); 
+					turboRig.ExportUVMap(map.Placements);
+				}
+				
+				map.CreateDefaultTexture(newSkinTexture);
+				File.WriteAllBytes($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png", newSkinTexture.EncodeToPNG());
+				AssetDatabase.Refresh();
+				newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png");
 				turboRig.Textures.Add(new MinecraftModel.NamedTexture()
 				{
-					Key = "new_skin",
-					Location = new ResourceLocation(turboRig.GetLocation().Namespace, "null"),
-					Texture = null,
+					Key = newSkinName,
+					Location = newSkinTexture.GetLocation(),
+					Texture = newSkinTexture,
 				});
 				EditorUtility.SetDirty(turboRig);
 			}

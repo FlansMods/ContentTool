@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -13,7 +14,7 @@ public static class UVCalculator
 	public static void GenerateNewUVMap(UVMap oldMap, UVMap newMap)
 	{
 		// Try to place each UV as it was in the old map, skipping conflicts
-		foreach(var kvp in oldMap.Placement)
+		foreach(var kvp in oldMap.Placements)
 		{
 			newMap.TryPlacement(kvp.Key, kvp.Value.Origin);
 		}
@@ -38,35 +39,52 @@ public static class UVCalculator
 				continue;
 			}
 
-			// Cut our input texture into pieces
-			// We have to store these in arrays because our input and output Texture2D might be the same
-			Dictionary<string, PixelPatch> pxPatches = new Dictionary<string, PixelPatch>();
-			foreach(var kvp in from.Placement)
+			try
 			{
-				RectInt area = kvp.Value.GetBounds();
-				pxPatches.Add(kvp.Key, new PixelPatch() {
-					FromArea = kvp.Value.Patch,
-					Pixels = textures[i].GetPixels(area.xMin, area.yMin, area.width, area.height),
-				});
-			}
 
-			// Then re-stitch into the texture
-			textures[i].Reinitialize(to.MaxSize.x, to.MaxSize.y);
-			foreach(var kvp in to.Placement)
-			{
-				if (pxPatches.TryGetValue(kvp.Key, out PixelPatch src))
+				// Cut our input texture into pieces
+				// We have to store these in arrays because our input and output Texture2D might be the same
+				Dictionary<string, PixelPatch> pxPatches = new Dictionary<string, PixelPatch>();
+				foreach (var kvp in from.Placements)
 				{
-					PixelPatch newPatch = kvp.Value.Patch.ConvertPixelsFromExistingPatch(src);
-					RectInt bounds = kvp.Value.GetBounds();
-					textures[i].SetPixels(bounds.xMin, bounds.yMin, bounds.width, bounds.height, newPatch.Pixels);
+					RectInt area = kvp.Value.GetBounds();
+					if (area.xMin + area.width >= textures[i].width
+					|| area.yMin + area.height >= textures[i].height)
+						Debug.LogError($"Attempting to acquire invalid pixel patch of size {area} from texture of dimensions {textures[i].width}x{textures[i].height}");
+					else
+					{
+						pxPatches.Add(kvp.Key, new PixelPatch()
+						{
+							FromArea = kvp.Value.Patch,
+							Pixels = textures[i].GetPixels(area.xMin, area.yMin, area.width, area.height),
+						});
+					}
 				}
-				else
+
+				// Then re-stitch into the texture
+				to.CalculateBounds();
+				textures[i].Reinitialize(to.MaxSize.x, to.MaxSize.y);
+				foreach (var kvp in to.Placements)
 				{
-					// TODO: Apply default debug box shapes
+					if (pxPatches.TryGetValue(kvp.Key, out PixelPatch src))
+					{
+						PixelPatch newPatch = kvp.Value.Patch.ConvertPixelsFromExistingPatch(src);
+						RectInt bounds = kvp.Value.GetBounds();
+						textures[i].SetPixels(bounds.xMin, bounds.yMin, bounds.width, bounds.height, newPatch.Pixels);
+					}
+					else
+					{
+						// TODO: Apply default debug box shapes
+					}
 				}
+				textures[i].Apply();
+				EditorUtility.SetDirty(textures[i]);
+				AssetDatabase.SaveAssetIfDirty(textures[i]);
 			}
-			textures[i].Apply();
-			EditorUtility.SetDirty(textures[i]);
+			catch(Exception e)
+			{
+				Debug.LogError($"Failed to stitch texture {textures[i]} due to '{e.Message}'");
+			}
 		}
 	}
 
@@ -74,14 +92,6 @@ public static class UVCalculator
 	{
 		if (model is TurboRig rig && preview is TurboRigPreview rigPreview)
 			return StitchWithExistingUV(rig, rigPreview, skinName);
-		return false;
-		
-	}
-
-	public static bool AutoUV(MinecraftModel model, MinecraftModelPreview preview, string skinName)
-	{
-		if (model is TurboRig rig && preview is TurboRigPreview turboPreview)
-			return AutoUVRig(rig, turboPreview, skinName);
 		return false;
 	}
 
@@ -97,93 +107,6 @@ public static class UVCalculator
 				Mathf.NextPowerOfTwo(maxUV.y));
 		}
 
-
 		return false;
 	}
-
-	public static bool AutoUVRig(TurboRig rig, TurboRigPreview preview, string skinName)
-	{
-		Dictionary<TurboPiecePreview, RectInt> mappings = new Dictionary<TurboPiecePreview, RectInt>();
-		Vector2Int maxBounds = new Vector2Int(16, 16);
-		foreach (TurboModel section in rig.Sections)
-		{
-			TurboModelPreview modelPreview = preview.GetAndUpdateChild(section.PartName);
-			if(modelPreview == null)
-			{
-				Debug.LogError($"Section {section.PartName} did not have a valid preview");
-				return false;
-			}
-			for(int i = 0; i < section.Pieces.Count; i++)
-			{
-				TurboPiece piece = section.Pieces[i];
-				TurboPiecePreview piecePreview = modelPreview.GetChild(i);
-				if (piecePreview == null)
-				{
-					Debug.LogError($"Piece {i} did not have a valid preview");
-					return false;
-				}
-
-				Vector2Int uvSize = piece.GetBoxUVSize();
-
-				// Then try and place it
-				Queue<Vector2Int> possiblePositions = new Queue<Vector2Int>();
-				possiblePositions.Enqueue(Vector2Int.zero);
-
-				while(possiblePositions.Count > 0)
-				{
-					// Test this position for overlaps
-					Vector2Int testPos = possiblePositions.Dequeue();
-					Vector2Int nextTestPos = testPos;
-					RectInt testRect = new RectInt(testPos, uvSize);
-					bool anyOverlap = false;
-					foreach(RectInt overlapTest in mappings.Values)
-					{
-						if(overlapTest.Overlaps(testRect))
-						{
-							// Keep bumping these bounds outwards. We want to definitely move far enough in x/y
-							nextTestPos.x = Mathf.Max(nextTestPos.x, overlapTest.max.x);
-							nextTestPos.y = Mathf.Max(nextTestPos.y, overlapTest.max.y);
-							anyOverlap = true;
-						}
-					}
-					if(anyOverlap)
-					{
-						possiblePositions.Enqueue(new Vector2Int(testPos.x, nextTestPos.y));
-						possiblePositions.Enqueue(new Vector2Int(nextTestPos.x, testPos.y));
-					}
-					else
-					{
-						// When we select a space, make sure the texture is big enough to include it
-						while (testRect.max.x > maxBounds.x)
-							maxBounds.x *= 2;
-						while (testRect.max.y > maxBounds.y)
-							maxBounds.y *= 2;
-
-						mappings.Add(piecePreview, testRect);
-						possiblePositions.Clear();	
-					}
-				}
-
-			}
-		}
-
-		// UV map has been calculated, create the texture
-		MinecraftModel.NamedTexture namedTexture = rig.GetOrCreateNamedTexture(skinName);
-		namedTexture.Texture = new Texture2D(maxBounds.x, maxBounds.y);
-		foreach(var kvp in mappings)
-		{
-			Texture2D tempTex = kvp.Key.GetTemporaryTexture();
-			for(int i = 0; i < kvp.Value.width; i++)
-				for(int j = 0; j < kvp.Value.height; j++)
-				{
-					namedTexture.Texture.SetPixel(
-						kvp.Value.min.x + i, 
-						kvp.Value.min.y + j,
-						tempTex.GetPixel(i, j));
-				}
-		}
-		namedTexture.Texture.Apply();
-		return true;
-	}
-
 }

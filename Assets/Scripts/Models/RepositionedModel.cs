@@ -18,7 +18,10 @@ public class RepositionedModel : MinecraftModel
 	{
 		Parent.ExportUVMap(placements);
 	}
-
+	public override void ApplyUVMap(UVMap map)
+	{
+		Parent.ApplyUVMap(map);
+	}
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("parent", Parent.GetLocation().ToString());

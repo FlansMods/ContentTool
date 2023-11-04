@@ -24,6 +24,9 @@ public class TurboPieceBoundsEditorTool : MinecraftModelEditorTool<TurboPiecePre
 
 	public override void CopyFromHandle(TurboPiecePreview preview)
 	{
+		if (preview.Piece == null)
+			return;
+
 		if(Changed(preview.Piece.Pos, _Handle.Origin)
 		|| Changed(preview.Piece.Dim, _Handle.Dimensions))
 			Undo.RecordObject(preview.GetComponentInParent<TurboRigPreview>().Rig, "Shapebox resize");
@@ -35,6 +38,9 @@ public class TurboPieceBoundsEditorTool : MinecraftModelEditorTool<TurboPiecePre
 
 	public override void CopyToHandle(TurboPiecePreview preview)
 	{
+		if(preview.Piece == null)
+			return;
+
 		_Handle.SetOriginAndDims(preview.Piece.Pos, preview.Piece.Dim);
 		_Handle.Offsets = preview.Piece.Offsets;
 	}
@@ -58,6 +64,9 @@ public class TurboPieceCornersEditorTool : MinecraftModelEditorTool<TurboPiecePr
 
 	public override void CopyFromHandle(TurboPiecePreview preview)
 	{
+		if (preview.Piece == null)
+			return;
+
 		if (Changed(preview.Piece.Offsets[0], _Handle.Offsets[0])
 		|| Changed(preview.Piece.Offsets[1], _Handle.Offsets[1])
 		|| Changed(preview.Piece.Offsets[2], _Handle.Offsets[2])
@@ -77,6 +86,9 @@ public class TurboPieceCornersEditorTool : MinecraftModelEditorTool<TurboPiecePr
 
 	public override void CopyToHandle(TurboPiecePreview preview)
 	{
+		if (preview.Piece == null)
+			return;
+
 		_Handle.SetOriginAndDims(preview.Piece.Pos, preview.Piece.Dim);
 		for (int i = 0; i < preview.Piece.Offsets.Length; i++)
 			_Handle.Offsets[i] = preview.Piece.Offsets[i];

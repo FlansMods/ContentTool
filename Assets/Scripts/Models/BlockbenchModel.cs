@@ -23,6 +23,9 @@ public class BlockbenchModel : MinecraftModel
 	}
 	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
 	{
-		
+
+	}
+	public override void ApplyUVMap(UVMap map)
+	{
 	}
 }

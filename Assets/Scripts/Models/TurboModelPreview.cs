@@ -132,6 +132,7 @@ public class TurboModelPreview : MinecraftModelPreview
 		if(existing != null)
 		{
 			Transform insert = Instantiate(existing);
+			insert.GetComponent<TurboPiecePreview>().PartIndex = index + 1;
 			insert.name = $"{index + 1}";
 			insert.SetParent(transform);
 			insert.SetSiblingIndex(index+1);

@@ -296,7 +296,12 @@ public class FlansModToolbox : EditorWindow
 				Transform newParent = parentRig.transform;
 				if (changedAttachedTo != 0)
 				{
-					newParent = parentRig.transform.FindRecursive(turbo.AttachPoints[changedAttachedTo - 1].name);
+					string apTransformName = $"AP_{turbo.AttachPoints[changedAttachedTo - 1].name}";
+					newParent = parentRig.transform.FindRecursive(apTransformName);
+					if(newParent == null)
+					{
+						Debug.LogError($"Could not find AP '{apTransformName}' on {parentRig}");
+					}
 				}
 				rig.transform.SetParent(newParent);
 				rig.transform.localPosition = Vector3.zero;

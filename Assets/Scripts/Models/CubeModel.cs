@@ -52,4 +52,8 @@ public class CubeModel : MinecraftModel
 	{
 
 	}
+	public override void ApplyUVMap(UVMap map)
+	{
+
+	}
 }

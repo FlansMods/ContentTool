@@ -28,12 +28,9 @@ public class ModelEditingRig : MonoBehaviour
 		Preview.Refresh();
 		LoadInitialUVMap();
 
-		MinecraftModel.NamedTexture DefaultTexture = model.GetDefaultTexture();
-		if (DefaultTexture != null)
-			foreach (TurboPiecePreview piece in GetComponentsInChildren<TurboPiecePreview>())
-			{
-				piece.CopyExistingTexture(DefaultTexture.Texture);
-			}
+		NamedTexture defaultTexture = model.GetDefaultTexture();
+		if (defaultTexture != null)
+			SelectSkin(defaultTexture.Key);
 	}
 	public void CloseModel()
 	{
@@ -170,6 +167,14 @@ public class ModelEditingRig : MonoBehaviour
 		}
 		return existing.GetComponent<ItemModelPreview>();
 	}
+
+	public void RegenerateModels()
+	{
+		if(Preview != null)
+		{
+			Preview.Refresh();
+		}
+	}
 	#endregion
 	// ------------------------------------------------------------------------------------------
 
@@ -180,7 +185,55 @@ public class ModelEditingRig : MonoBehaviour
     public bool ApplySkin = true;
 	// Currently assuming single texture skinning only
 	public string SelectedSkin = "default";
-	public MinecraftModel.NamedTexture GetNamedTexture() 
+	[SerializeField]
+	private Material SkinMaterial = null;
+	[SerializeField]
+	private Texture2D DefaultSkinTexture = null;
+	public Material GetSkinMaterial()
+	{
+		if(SkinMaterial == null)
+		{
+			SkinMaterial = new Material(Shader.Find("Standard"));
+			SkinMaterial.name = "TemporaryTexture";
+			SkinMaterial.SetTexture("_MainTex", null);
+			SkinMaterial.EnableKeyword("_NORMALMAP");
+			SkinMaterial.EnableKeyword("_DETAIL_MULX2");
+		}
+		return SkinMaterial;
+	}
+	public void SelectSkin(string skinName)
+	{
+		SelectedSkin = skinName;
+		Material skinMaterial = GetSkinMaterial();
+		Texture2D skinTexture = GetTexture2D();
+		if(skinTexture != null)
+		{
+			skinMaterial.SetTexture("_MainTex", skinTexture);
+		}
+		else
+		{
+			CreateDefaultUVTexture();
+			skinMaterial.SetTexture("_MainTex", DefaultSkinTexture);
+		}
+		ModelOpenedForEdit.ApplyUVMap(CurrentUVMap);
+		RegenerateModels();
+		EditorUtility.SetDirty(ModelOpenedForEdit);
+	}
+	public void CreateDefaultUVTexture()
+	{
+		if(CurrentUVMap == null)
+		{
+			LoadInitialUVMap();
+		}
+		if(DefaultSkinTexture == null)
+		{
+			CurrentUVMap.CalculateBounds();
+			DefaultSkinTexture = new Texture2D(CurrentUVMap.MaxSize.x, CurrentUVMap.MaxSize.y);
+			DefaultSkinTexture.filterMode = FilterMode.Point;
+		}
+		CurrentUVMap.CreateDefaultTexture(DefaultSkinTexture);
+	}
+	public NamedTexture GetNamedTexture() 
 	{ 
 		if(ModelOpenedForEdit != null)
 			return ModelOpenedForEdit.GetNamedTexture(SelectedSkin);
@@ -188,7 +241,7 @@ public class ModelEditingRig : MonoBehaviour
 	}
 	public Texture2D GetTexture2D()
 	{
-		MinecraftModel.NamedTexture namedTexture = GetNamedTexture();
+		NamedTexture namedTexture = GetNamedTexture();
 		if (namedTexture != null)
 			return namedTexture.Texture;
 		return null;
@@ -222,7 +275,10 @@ public class ModelEditingRig : MonoBehaviour
 				continue;
 			inputTextures.Add(namedTexture.Texture);
 		}
+		ModelOpenedForEdit.ApplyUVMap(newMap);
+		EditorUtility.SetDirty(ModelOpenedForEdit);
 		UVCalculator.UpdateSkins(CurrentUVMap, newMap, inputTextures);
+		RegenerateModels();
 		CurrentUVMap = newMap;
 		return true;
 	}

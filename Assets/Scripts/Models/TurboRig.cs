@@ -261,6 +261,28 @@ public class TurboRig : MinecraftModel
 			}
 		}
 	}
+	public override void ApplyUVMap(UVMap map)
+	{
+		TextureX = map.MaxSize.x;
+		TextureY = map.MaxSize.y;
+		foreach(var kvp in map.Placements)
+		{
+			string[] keys = kvp.Key.Split('/');
+			if(keys.Length == 2)
+			{
+				if (TryGetSection(keys[0], out TurboModel section))
+				{
+					if (int.TryParse(keys[1], out int index))
+					{
+						TurboPiece piece = section.GetPiece(index);
+						if (piece != null)
+							piece.SetUVPlacement(kvp.Value);
+					}
+				}
+
+			}
+		}
+	}
 	public override bool IsUVMapSame(MinecraftModel other)
 	{
 		if (other is TurboRig otherRig)

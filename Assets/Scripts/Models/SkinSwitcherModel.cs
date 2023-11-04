@@ -14,7 +14,10 @@ public class SkinSwitcherModel : MinecraftModel
 	}
 	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
 	{
-		
+
+	}
+	public override void ApplyUVMap(UVMap map)
+	{
 	}
 
 	public override bool ExportToJson(QuickJSONBuilder builder)

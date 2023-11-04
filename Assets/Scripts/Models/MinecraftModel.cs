@@ -126,7 +126,7 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			return Textures[0];
 		return null;
 	}
-
+	public abstract void ApplyUVMap(UVMap map);
 	public abstract void GenerateUVPatches(Dictionary<string, UVPatch> patches);
 	public abstract void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements);
 	public abstract bool IsUVMapSame(MinecraftModel other);

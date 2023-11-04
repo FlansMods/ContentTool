@@ -11,7 +11,7 @@ public class TurboAttachPointPreview : MonoBehaviour
 
 	public void OnDrawGizmosSelected()
 	{
-		if (Parent == null)
+		if (Parent == null || Parent.Rig == null)
 			return;
 
 		string attachedTo = Parent.Rig.GetAttachedTo(PartName);

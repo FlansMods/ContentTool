@@ -37,6 +37,15 @@ public class MultiModel : MinecraftModel
 		FixedModel?.ExportUVMap(placements);
 		GUIModel?.ExportUVMap(placements);
 	}
+	public override void ApplyUVMap(UVMap map)
+	{
+		FirstPersonModel?.ApplyUVMap(map);
+		ThirdPersonModel?.ApplyUVMap(map);
+		HeadModel?.ApplyUVMap(map);
+		GroundModel?.ApplyUVMap(map);
+		FixedModel?.ApplyUVMap(map);
+		GUIModel?.ApplyUVMap(map);
+	}
 
 	public MinecraftModel FirstPersonModel;
 	public MinecraftModel ThirdPersonModel;

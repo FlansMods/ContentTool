@@ -309,13 +309,12 @@ public abstract class MinecraftModelEditor : Editor
 			EditorGUI.indentLevel++;
 			node.Compact_Editor_GUI();
 
-			foreach (MinecraftModelPreview child in node.GetChildren())
+			List<MinecraftModelPreview> children = new List<MinecraftModelPreview>(node.GetChildren());
+			foreach (MinecraftModelPreview child in children)
 			{
-				ModellingNode(child, path);
+				if(child != null)
+					ModellingNode(child, path);
 			}
-
-			
-
 			EditorGUI.indentLevel--;
 			if (node.name != oldName)
 			{

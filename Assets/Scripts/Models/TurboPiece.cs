@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class TurboPiece
@@ -99,7 +100,7 @@ public class TurboPiece
 	{
 		patch = new BoxUVPatch()
 		{
-			boxDims = new Vector3Int(Mathf.CeilToInt(Dim.x), Mathf.CeilToInt(Dim.y), Mathf.CeilToInt(Dim.z)),
+			boxDims = GetBoxUVDims(),
 		};
 		return true;
 	}
@@ -110,10 +111,15 @@ public class TurboPiece
 			Origin = new Vector2Int(textureU, textureV),
 			Patch = new BoxUVPatch()
 			{
-				boxDims = new Vector3Int(Mathf.CeilToInt(Dim.x), Mathf.CeilToInt(Dim.y), Mathf.CeilToInt(Dim.z)),
+				boxDims = GetBoxUVDims(),
 			}
 		};
 		return true;
+	}
+	public void SetUVPlacement(UVMap.UVPlacement placement)
+	{
+		textureU = placement.Origin.x;
+		textureV = placement.Origin.y;
 	}
 
 	public Vector2Int MinUV { get { return new Vector2Int(textureU, textureV); } }
@@ -121,8 +127,15 @@ public class TurboPiece
 	public Vector2Int BoxUVSize { get { return GetBoxUVSize(); } }
 	public Vector2Int GetBoxUVSize()
 	{
-		int x = Mathf.CeilToInt(Dim.x), y = Mathf.CeilToInt(Dim.y), z = Mathf.CeilToInt(Dim.z);
-		return new Vector2Int(z + x + z + x, z + y);
+		Vector3Int box = GetBoxUVDims();
+		return new Vector2Int(box.z + box.x + box.z + box.x, box.z + box.y);
+	}
+	public Vector3Int GetBoxUVDims()
+	{
+		return new Vector3Int(
+			Mathf.CeilToInt(Dim.x),
+			Mathf.CeilToInt(Dim.y),
+			Mathf.CeilToInt(Dim.z));
 	}
 
 	public int[] GetIntUV(int u0, int v0, EFace face)
@@ -277,12 +290,12 @@ public class TurboPiece
 		Vector3[] v = GetVerts();
 		mesh.SetVertices(GenerateVertsForUV(v));
 		List<Vector2> uvs = new List<Vector2>();
-		uvs.AddRange(GetUVS(EFace.north, 0, 0));
-		uvs.AddRange(GetUVS(EFace.south, 0, 0));
-		uvs.AddRange(GetUVS(EFace.west, 0, 0));
-		uvs.AddRange(GetUVS(EFace.east, 0, 0));
-		uvs.AddRange(GetUVS(EFace.up, 0, 0));
-		uvs.AddRange(GetUVS(EFace.down, 0, 0));
+		uvs.AddRange(GetUVS(EFace.north, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.south, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.west, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.east, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.up, textureU, textureV));
+		uvs.AddRange(GetUVS(EFace.down, textureU, textureV));
 		for (int i = 0; i < uvs.Count; i++)
 		{
 			uvs[i] = new Vector2(uvs[i].x / textureX, (textureY - uvs[i].y) / textureY);

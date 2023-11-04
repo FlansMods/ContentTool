@@ -75,4 +75,8 @@ public class ItemModel : MinecraftModel
 	{
 
 	}
+	public override void ApplyUVMap(UVMap map)
+	{
+
+	}
 }
