@@ -92,10 +92,10 @@ public class TurboRigPreview : MinecraftModelPreview
 		if (partName.Length == 0 || partName == "none")
 			return transform;
 
-			string apName = $"AP_{partName}";
-		foreach (Transform t in GetComponentsInChildren<Transform>())
-			if (t.name == apName)
-				return t;
+		string apName = $"AP_{partName}";
+		Transform apTransform = transform.FindRecursive(apName);
+		if (apTransform != null)
+			return apTransform;
 
 		if (depth >= 50)
 		{

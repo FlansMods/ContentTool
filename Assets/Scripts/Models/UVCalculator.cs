@@ -87,26 +87,4 @@ public static class UVCalculator
 			}
 		}
 	}
-
-	public static bool StitchWithExistingUV(MinecraftModel model, MinecraftModelPreview preview, string skinName)
-	{
-		if (model is TurboRig rig && preview is TurboRigPreview rigPreview)
-			return StitchWithExistingUV(rig, rigPreview, skinName);
-		return false;
-	}
-
-	public static bool StitchWithExistingUV(TurboRig rig, TurboRigPreview preview, string skinName)
-	{
-		MinecraftModel.NamedTexture namedTexture = rig.GetOrCreateNamedTexture(skinName);
-		if(namedTexture.Texture == null)
-		{
-			Vector2Int maxUV = rig.GetMaxUV();
-
-			namedTexture.Texture = new Texture2D(
-				Mathf.NextPowerOfTwo(maxUV.x), 
-				Mathf.NextPowerOfTwo(maxUV.y));
-		}
-
-		return false;
-	}
 }

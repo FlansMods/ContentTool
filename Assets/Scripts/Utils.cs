@@ -205,12 +205,15 @@ public static class Utils
 	}
 
     public static Transform FindRecursive(this Transform t, string name)
-    {
+    {        
 		if (t.name == name)
 			return t;
 		foreach (Transform child in t)
         {
-            Transform childSearch = child.FindRecursive(name);
+            // Don't dig into sub-rigs
+            if (child.GetComponent<ModelEditingRig>() != null)
+                continue;
+			Transform childSearch = child.FindRecursive(name);
             if (childSearch != null)
                 return childSearch;
         }

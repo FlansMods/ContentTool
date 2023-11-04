@@ -2,6 +2,7 @@ using Newtonsoft.Json.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -191,10 +192,10 @@ public class ModelEditingRig : MonoBehaviour
 	private Texture2D DefaultSkinTexture = null;
 	public Material GetSkinMaterial()
 	{
-		if(SkinMaterial == null)
+		if(SkinMaterial == null || SkinMaterial.name != name)
 		{
 			SkinMaterial = new Material(Shader.Find("Standard"));
-			SkinMaterial.name = "TemporaryTexture";
+			SkinMaterial.name = name;
 			SkinMaterial.SetTexture("_MainTex", null);
 			SkinMaterial.EnableKeyword("_NORMALMAP");
 			SkinMaterial.EnableKeyword("_DETAIL_MULX2");
@@ -232,6 +233,13 @@ public class ModelEditingRig : MonoBehaviour
 			DefaultSkinTexture.filterMode = FilterMode.Point;
 		}
 		CurrentUVMap.CreateDefaultTexture(DefaultSkinTexture);
+		SaveModifiedTexture();
+	}
+	public void SaveModifiedTexture()
+	{
+		Texture2D tex = GetTexture2D();
+		string path = AssetDatabase.GetAssetPath(tex);
+		File.WriteAllBytes(path, tex.EncodeToPNG());
 	}
 	public NamedTexture GetNamedTexture() 
 	{ 
