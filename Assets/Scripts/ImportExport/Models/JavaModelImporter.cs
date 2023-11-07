@@ -130,6 +130,7 @@ public static class JavaModelImporter
 		}
 
 		TurboRig rig = ScriptableObject.CreateInstance<TurboRig>();
+		rig.BakedUVMap = new UVMap();
 		rig.AddDefaultTransforms();
 		for (; ; )
 		{
