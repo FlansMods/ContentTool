@@ -40,37 +40,6 @@ public class FlansModToolbox : EditorWindow
 	private Vector2 scroller = Vector2.zero;
 	void OnGUI()
 	{
-		if(GUILayout.Button("Debug Convert"))
-		{
-			string[] guids = AssetDatabase.FindAssets("t:TurboRig");
-			foreach(string guid in guids)
-			{
-				string path = AssetDatabase.GUIDToAssetPath(guid);
-				TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
-				if(rig != null)
-				{
-					rig.BakedUVMap = new UVMap();
-					foreach (TurboModel section in rig.Sections)
-					{
-						for(int i = 0; i < section.Pieces.Count; i++)
-						{
-							rig.BakedUVMap.AddExistingPatchPlacement(new BoxUVPlacement()
-							{
-								Patch = new BoxUVPatch()
-								{
-									Key = $"{section.PartName}/{i}",
-									BoxDims = section.Pieces[i].BoxUVDims,
-								},
-								Origin = new Vector2Int(section.Pieces[i].textureU, section.Pieces[i].textureV),
-							});
-						}
-					}
-					rig.BakedUVMap.CalculateBounds();
-					EditorUtility.SetDirty(rig);
-				}
-			}
-		}
-
 		scroller = GUILayout.BeginScrollView(scroller);
 		GUILayout.BeginVertical();
 		SelectedTab = (Tab)GUILayout.Toolbar((int)SelectedTab, TabNames, GUILayout.MaxWidth(Screen.width));

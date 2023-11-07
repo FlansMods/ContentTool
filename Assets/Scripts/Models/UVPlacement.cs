@@ -27,10 +27,14 @@ public abstract class UVPlacement<TPatchType> where TPatchType : UVPatch
 	}
 	public static bool operator ==(UVPlacement<TPatchType> a, UVPlacement<TPatchType> b)
 	{
+		if ((object)a == null || (object)b == null)
+			return (object)a == null && (object)b == null;
 		return a.Origin == b.Origin && a.Patch == b.Patch;
 	}
 	public static bool operator !=(UVPlacement<TPatchType> a, UVPlacement<TPatchType> b)
 	{
+		if ((object)a == null || (object)b == null)
+			return ((object)a == null) != ((object)b == null);
 		return a.Origin != b.Origin || a.Patch != b.Patch;
 	}
 }

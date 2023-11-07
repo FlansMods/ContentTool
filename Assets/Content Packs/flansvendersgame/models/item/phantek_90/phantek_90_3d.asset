@@ -71,6 +71,50 @@ MonoBehaviour:
     Position: {x: 0.5, y: 0.5, z: 0}
     Rotation: {x: 0, y: 0.9848077, z: 0, w: 0.17364822}
     Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 12, y: 2, z: 2}
+    - Origin: {x: 0, y: 4}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 6, y: 5, z: 2}
+    - Origin: {x: 0, y: 11}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 3, y: 3, z: 2}
+    - Origin: {x: 10, y: 13}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 8, y: 1, z: 2}
+    - Origin: {x: 14, y: 9}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 18, y: 7}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 16, y: 4}
+      Patch:
+        Key: body/6
+        BoxDims: {x: 1, y: 1, z: 2}
+    - Origin: {x: 25, y: 1}
+      Patch:
+        Key: body/7
+        BoxDims: {x: 5, y: 3, z: 3}
+    - Origin: {x: 21, y: 11}
+      Patch:
+        Key: barrel/0
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 28, y: 13}
+      Patch:
+        Key: ammo_0/0
+        BoxDims: {x: 11, y: 1, z: 2}
+    MaxSize: {x: 64, y: 16}
   Icon:
     Namespace: minecraft
     ID: null
@@ -83,8 +127,8 @@ MonoBehaviour:
       textureV: 0
       Pos: {x: -2, y: 1, z: -1}
       Dim: {x: 12, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -98,8 +142,8 @@ MonoBehaviour:
       textureV: 4
       Pos: {x: -8, y: -1, z: -1}
       Dim: {x: 6, y: 5, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -113,8 +157,8 @@ MonoBehaviour:
       textureV: 11
       Pos: {x: -2, y: -2, z: -1}
       Dim: {x: 3, y: 3, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -128,8 +172,8 @@ MonoBehaviour:
       textureV: 13
       Pos: {x: 1, y: -2, z: -1}
       Dim: {x: 8, y: 1, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -143,8 +187,8 @@ MonoBehaviour:
       textureV: 9
       Pos: {x: 5, y: -1, z: -1}
       Dim: {x: 1, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -158,8 +202,8 @@ MonoBehaviour:
       textureV: 7
       Pos: {x: 8, y: -1, z: -1}
       Dim: {x: 1, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -173,8 +217,8 @@ MonoBehaviour:
       textureV: 4
       Pos: {x: 9, y: 0, z: -1}
       Dim: {x: 1, y: 1, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -188,8 +232,8 @@ MonoBehaviour:
       textureV: 1
       Pos: {x: 4.9, y: 2, z: -1.5}
       Dim: {x: 5, y: 3, z: 3}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -205,8 +249,8 @@ MonoBehaviour:
       textureV: 11
       Pos: {x: 10, y: 1.5, z: -0.5}
       Dim: {x: 1, y: 1, z: 1}
-      Origin: {x: -10, y: -2, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -222,8 +266,8 @@ MonoBehaviour:
       textureV: 13
       Pos: {x: -2, y: 3, z: -1}
       Dim: {x: 11, y: 1, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 1, y: 1, z: 1}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}

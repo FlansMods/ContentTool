@@ -27,6 +27,7 @@ public class TurboRigEditor : MinecraftModelEditor
 				}
 			}
 		}
+	
 
 		ResourceLocation modelLocation = mcModel.GetLocation();
 		List<string> existingTextures = new List<string>();
