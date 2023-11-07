@@ -12,22 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
   m_Name: bolt_action_rifle
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 0}
   AdditionalTextures: []
@@ -96,7 +80,7 @@ MonoBehaviour:
     - applyTo: slide
       position:
         xOverride: 
-        xValue: 2
+        xValue: -5
         yOverride: 
         yValue: 0
         zOverride: 
@@ -111,6 +95,7 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
+    - bolt_up
   - name: ammo_load_start
     poses:
     - applyTo: ammo_0
@@ -167,6 +152,26 @@ MonoBehaviour:
   - name: keyframe_10
     poses: []
     parents: []
+  - name: bolt_up
+    poses:
+    - applyTo: bolt
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: -60
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
   sequences:
   - name: shoot
     ticks: 40
@@ -183,14 +188,22 @@ MonoBehaviour:
       entry: 2
       exit: 1
       frame: idle
-    - tick: 15
+    - tick: 10
       entry: 2
       exit: 1
       frame: ready_to_reload
-    - tick: 20
+    - tick: 15
       entry: 2
       exit: 1
+      frame: bolt_up
+    - tick: 20
+      entry: 1
+      exit: 1
       frame: bolt_open
+    - tick: 25
+      entry: 1
+      exit: 1
+      frame: bolt_up
     - tick: 30
       entry: 1
       exit: 1
