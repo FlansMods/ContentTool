@@ -6,85 +6,84 @@ using UnityEngine;
 
 public static class UVCalculator
 {
-	public static bool NeedsNewUVMap(MinecraftModel a, MinecraftModel b)
+	public static bool IsSolutionTo(this UVMap solutionMap, UVMap testMap)
 	{
-		return !a.IsUVMapSame(b);
+		// Any defined placements MUST be present and identical
+		foreach (BoxUVPlacement testPlacement in testMap.PlacedBoxes)
+		{
+			if (!solutionMap.HasPlacedPatchMatching(testPlacement))
+				return false;
+		}
+
+		// But for our unplaced patches, we just need to know that the other map has them
+		foreach (BoxUVPatch testPatch in testMap.UnplacedBoxes)
+		{
+			if (!solutionMap.HasConsideredUnplacedPatch(testPatch))
+				return false;
+		}
+
+		return true;
 	}
 
-	public static void GenerateNewUVMap(UVMap oldMap, UVMap newMap)
+	public static void ManuallyPlace(this UVMap map, BoxUVPatch patch, Vector2Int pos, bool allowConflict)
 	{
-		// Try to place each UV as it was in the old map, skipping conflicts
-		foreach(var kvp in oldMap.Placements)
+		if(allowConflict || CanManuallyPlace(map, patch, pos))
 		{
-			newMap.TryPlacement(kvp.Key, kvp.Value.Origin);
+			map.PlacedBoxes.Add(new BoxUVPlacement()
+			{
+				Patch = patch,
+				Origin = pos,
+			});
 		}
-
-		// Now the newMap should have as many old placements as possible
-		// And we can place the remaining pieces where possible
-		while(newMap.HasUnplacedPatch(out string key))
-		{
-			newMap.AutoPlacePatch(key);
-		}
-
-		newMap.CalculateBounds();
 	}
 
-	public static void UpdateSkins(UVMap from, UVMap to, List<Texture2D> textures)
+	public static bool CanManuallyPlace(this UVMap map, BoxUVPatch patch, Vector2Int pos)
 	{
-		for (int i = 0; i < textures.Count; i++)
+		return !map.OverlapTest(pos, patch);
+	}
+
+	public static void AutoPlacePatches(this UVMap map)
+	{
+		while(map.TryPopUnplacedPatch(out BoxUVPatch patch))
 		{
-			if (textures[i] == null)
+			AutoPlacePatch(map, patch);
+		}
+	}
+
+	public static void AutoPlacePatch(this UVMap map, BoxUVPatch patch)
+	{
+		Vector2Int pos = GetAutoPlacementForPatch(map, patch);
+		map.PlacedBoxes.Add(new BoxUVPlacement()
+		{
+			Patch = patch,
+			Origin = pos,
+		});
+	}
+
+	public static Vector2Int GetAutoPlacementForPatch(this UVMap map, BoxUVPatch patch)
+	{
+		Queue<Vector2Int> possiblePositions = new Queue<Vector2Int>();
+		possiblePositions.Enqueue(Vector2Int.zero);
+
+		while (possiblePositions.Count > 0)
+		{
+			// Test this position for overlaps
+			Vector2Int testPos = possiblePositions.Dequeue();
+
+			int hintPosX = testPos.x, hintPosY = testPos.y;
+			bool canPlace = !map.OverlapTestWithHints(testPos, patch, ref hintPosX, ref hintPosY);
+			if(canPlace)
 			{
-				Debug.LogWarning($"Found null texture when trying to update UV map");
-				continue;
+				return testPos;
 			}
-
-			try
+			else
 			{
-
-				// Cut our input texture into pieces
-				// We have to store these in arrays because our input and output Texture2D might be the same
-				Dictionary<string, PixelPatch> pxPatches = new Dictionary<string, PixelPatch>();
-				foreach (var kvp in from.Placements)
-				{
-					RectInt area = kvp.Value.GetBounds();
-					if (area.xMin + area.width >= textures[i].width
-					|| area.yMin + area.height >= textures[i].height)
-						Debug.LogError($"Attempting to acquire invalid pixel patch of size {area} from texture of dimensions {textures[i].width}x{textures[i].height}");
-					else
-					{
-						pxPatches.Add(kvp.Key, new PixelPatch()
-						{
-							FromArea = kvp.Value.Patch,
-							Pixels = textures[i].GetPixels(area.xMin, area.yMin, area.width, area.height),
-						});
-					}
-				}
-
-				// Then re-stitch into the texture
-				to.CalculateBounds();
-				textures[i].Reinitialize(to.MaxSize.x, to.MaxSize.y);
-				foreach (var kvp in to.Placements)
-				{
-					if (pxPatches.TryGetValue(kvp.Key, out PixelPatch src))
-					{
-						PixelPatch newPatch = kvp.Value.Patch.ConvertPixelsFromExistingPatch(src);
-						RectInt bounds = kvp.Value.GetBounds();
-						textures[i].SetPixels(bounds.xMin, bounds.yMin, bounds.width, bounds.height, newPatch.Pixels);
-					}
-					else
-					{
-						// TODO: Apply default debug box shapes
-					}
-				}
-				textures[i].Apply();
-				EditorUtility.SetDirty(textures[i]);
-				AssetDatabase.SaveAssetIfDirty(textures[i]);
-			}
-			catch(Exception e)
-			{
-				Debug.LogError($"Failed to stitch texture {textures[i]} due to '{e.Message}'");
+				possiblePositions.Enqueue(new Vector2Int(testPos.x, hintPosY));
+				possiblePositions.Enqueue(new Vector2Int(hintPosX, testPos.y));
 			}
 		}
+
+		Debug.LogError($"Failed to place UV patch {patch.Key}");
+		return Vector2Int.zero;
 	}
 }

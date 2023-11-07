@@ -8,18 +8,6 @@ public class SkinSwitcherModel : MinecraftModel
 	public MinecraftModel DefaultModel = null;
 	public List<MinecraftModel> Models = new List<MinecraftModel>();
 
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-		
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-	}
-
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		if(DefaultModel != null)
@@ -36,11 +24,6 @@ public class SkinSwitcherModel : MinecraftModel
 					builder.Current.Add("model", Models[i].GetLocation().ToString());
 				}
 		}
-		return true;
-	}
-
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
 		return true;
 	}
 }

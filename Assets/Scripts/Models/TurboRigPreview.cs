@@ -5,158 +5,149 @@ using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static System.Collections.Specialized.BitVector32;
 
 public class TurboRigPreview : MinecraftModelPreview
 {
+	private static int IterationCount = 0;
 	public TurboRig Rig { get { return Model as TurboRig; } }
 
-
-
-	public void DeleteSection(int index)
-	{
-		DestroyImmediate(GetAndUpdateChild(Rig.Sections[index].PartName).gameObject);
-		Rig.DeleteSection(index);
-	}
-	public void DeleteSection(string partName)
-	{
-		DestroyImmediate(GetAndUpdateChild(partName).gameObject);
-		Rig.DeleteSection(partName);
-	}
+	// -------------------------------------------------------------------------------
+	// Heirarchy
 	public override IEnumerable<MinecraftModelPreview> GetChildren()
 	{
 		if (Rig != null)
 		{
 			foreach (TurboModel section in Rig.Sections)
 			{
-				TurboModelPreview sectionPreview = GetAndUpdateChild(section.PartName);
+				TurboModelPreview sectionPreview = GetSectionPreview(section.PartName);
 				if (sectionPreview != null)
 					yield return sectionPreview;
 			}
 		}
 	}
 
-	public TurboModelPreview DuplicateSection(int index)
+	// -------------------------------------------------------------------------------
+	#region Attach Point Management
+	// -------------------------------------------------------------------------------
+	private bool TryGetAPPreview(string partName, out TurboAttachPointPreview ap)
 	{
-		string newName = $"{Rig.Sections[index].PartName}-";
-		Rig.DuplicateSection(index);
-		return GetAndUpdateChild(newName);
-	}
-	public TurboModelPreview DuplicateSection(string partName)
-	{
-		string newName = $"{partName}-";
-		Rig.DuplicateSection(partName);
-		return GetAndUpdateChild(newName);
-	}
-
-	public TurboModelPreview AddSection()
-	{
-		return GetAndUpdateChild(Rig.AddSection().PartName);
-	}
-
-	public Transform UpdateAPFromHeirarchy(string partName, int depth = 0)
-	{
-		Transform apTransform = GetOrCreateAPTransform(partName, depth + 1);
-		if (apTransform != null && apTransform != transform)
-		{
-			Vector3 oldOffset = Rig.GetAttachmentOffset(partName);
-			if(!Mathf.Approximately((oldOffset - apTransform.localPosition).sqrMagnitude, 0f))
-			{
-				Vector3 delta = apTransform.localPosition - oldOffset;
-				TurboAttachPointPreview apPreview = apTransform.GetComponent<TurboAttachPointPreview>();
-				if (apPreview != null)
-				{
-					if (apPreview.LockPartPositions)
-					{
-						TurboModel section = Rig.GetSection(partName);
-						if (section != null)
-						{
-							foreach (TurboPiece piece in section.Pieces)
-								piece.Pos -= delta;
-						}
-					}
-					if (apPreview.LockAttachPoints)
-					{
-						foreach (AttachPoint ap in Rig.AttachPoints)
-							if (ap.attachedTo == partName)
-								ap.position -= delta;
-					}
-				}
-				Rig.SetAttachmentOffset(partName, apTransform.localPosition);
-			}
-		}
-		return apTransform;
-	}
-
-	public Transform GetOrCreateAPTransform(string partName, int depth = 0)
-	{
+		ap = null;
 		if (partName.Length == 0 || partName == "none")
-			return transform;
+			return false;
 
-		string apName = $"AP_{partName}";
-		Transform apTransform = transform.FindRecursive(apName);
-		if (apTransform != null)
-			return apTransform;
-
-		if (depth >= 50)
+		Transform apTransform = transform.FindRecursive($"AP_{partName}");
+		ap = apTransform?.GetComponent<TurboAttachPointPreview>();
+		return ap != null;
+	}
+	private TurboAttachPointPreview CreateAPPreview(string partName)
+	{
+		IterationCount++;
+		if(IterationCount >= 50)
 		{
 			Debug.LogError($"AttachPoint loop in {Rig.name}");
-			return transform;
+			return null;
 		}
-
-		GameObject go = new GameObject(apName);
+		GameObject go = new GameObject($"AP_{partName}");
 		string parentName = Rig.GetAttachedTo(partName);
 		Vector3 offset = Rig.GetAttachmentOffset(partName);
 		Transform parentTransform = transform;
-		parentTransform = UpdateAPFromHeirarchy(parentName, depth + 1);
+		if(parentName != "none")
+		{
+			parentTransform = GetAPPreview(parentName).transform;
+		}
 		go.transform.SetParent(parentTransform);
 		go.transform.localPosition = offset;
 		go.transform.localRotation = Quaternion.identity;
 		go.transform.localScale = Vector3.one;
-		go.AddComponent<TurboAttachPointPreview>().PartName = partName;
-		return go.transform;
+		TurboAttachPointPreview ap = go.AddComponent<TurboAttachPointPreview>();
+		ap.PartName = partName;
+		IterationCount--;
+		return ap;
 	}
-
-	public TurboModelPreview GetAndUpdateChild(string partName)
+	public TurboAttachPointPreview GetAPPreview(string partName)
 	{
-		TurboModelPreview child = null;
-		foreach(TurboModelPreview model in GetComponentsInChildren<TurboModelPreview>())
+		if (partName == "none" || partName.Length == 0)
+			partName = "body";
+		if (TryGetAPPreview(partName, out TurboAttachPointPreview ap))
+			return ap;
+		else // The AP transform does not yet exist, create it
 		{
-			if (model.PartName == partName)
-				child = model;
+			return CreateAPPreview(partName);
 		}
-		if(child == null)
-		{
-			GameObject go = new GameObject(partName);
-			child = go.AddComponent<TurboModelPreview>();
-		}
-
-		Transform parent = UpdateAPFromHeirarchy(partName);
-		child.transform.SetParent(parent);
-		child.transform.localPosition = Vector3.zero;
-		child.transform.localRotation = Quaternion.identity;
-		child.transform.localScale = Vector3.one;
-		child.PartName = partName;
-		child.SetModel(Model);
-		return child;
 	}
+	#endregion
+	// -------------------------------------------------------------------------------
 
-	public override void GenerateMesh()
+	// -------------------------------------------------------------------------------
+	#region Section Management
+	// -------------------------------------------------------------------------------
+	private bool TryGetSectionPreview(string partName, out TurboModelPreview section)
 	{
-		if (Rig == null)
-			return;
+		section = null;
+		if (partName.Length == 0 || partName == "none")
+			return false;
 
-		foreach (AttachPoint ap in Rig.AttachPoints)
+		Transform apTransform = transform.FindRecursive(partName);
+		section = apTransform?.GetComponent<TurboModelPreview>();
+		return section != null;
+	}
+	private TurboModelPreview CreateSectionPreview(string partName)
+	{
+		TurboAttachPointPreview parentAP = GetAPPreview(partName);
+		GameObject go = new GameObject(partName);
+		go.transform.SetParent(parentAP.transform);
+		go.transform.localPosition = Vector3.one;
+		go.transform.localRotation = Quaternion.identity;
+		go.transform.localScale = Vector3.one;
+		TurboModelPreview section = go.AddComponent<TurboModelPreview>();
+		section.PartName = partName;
+		section.SetModel(GetModel());
+		return section;
+	}
+	public TurboModelPreview GetSectionPreview(string partName)
+	{
+		if (TryGetSectionPreview(partName, out TurboModelPreview section))
+			return section;
+		else // The Section transform does not yet exist, create it
 		{
-			UpdateAPFromHeirarchy(ap.name);
-		}
-
-		foreach (TurboModel section in Rig.Sections)
-		{
-			TurboModelPreview modelPreview = GetAndUpdateChild(section.PartName);
-			if (modelPreview == null)
-				continue;
-
-			modelPreview.Refresh();
+			return CreateSectionPreview(partName);
 		}
 	}
+	public override void InitializePreviews()
+	{
+		foreach(AttachPoint ap in Rig.AttachPoints)
+		{
+			TurboAttachPointPreview apPreview = GetAPPreview(ap.name);
+		}
+
+		foreach(TurboModel section in Rig.Sections)
+		{
+			TurboModelPreview sectionPreview = GetSectionPreview(section.PartName);
+			if (sectionPreview != null)
+				sectionPreview.InitializePreviews();
+		}
+	}
+	#endregion
+	// -------------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------------
+	#region Unity Transform
+	// -------------------------------------------------------------------------------
+	protected override void EditorUpdate()
+	{
+		base.EditorUpdate();
+
+		if(HasUnityTransformBeenChanged())
+		{
+			// TODO: Update current pose
+		}
+	}
+
+	private bool HasUnityTransformBeenChanged()
+	{
+		return true;
+	}
+	#endregion
+	// -------------------------------------------------------------------------------
 }

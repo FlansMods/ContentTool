@@ -14,15 +14,31 @@ public class TurboRigEditor : MinecraftModelEditor
 	private Vector2 TexturePreviewScroller = Vector2.zero;
 	protected override void TexturingTabImpl(MinecraftModel mcModel)
 	{
+		UVMapField("Baked UV Map", mcModel.BakedUVMap);
 		ModelEditingRig rig = RigSelector(mcModel);
 		if (rig != null)
 		{
+			if (rig.TemporaryUVMap != null)
+			{
+				UVMapField("Temporary UV Map", rig.TemporaryUVMap);
+				if(GUILayout.Button("Apply"))
+				{
+					
+				}
+			}
 		}
 
 		ResourceLocation modelLocation = mcModel.GetLocation();
 		List<string> existingTextures = new List<string>();
 		if (mcModel is TurboRig turboRig)
 		{
+			EditorGUI.BeginDisabledGroup(rig == null);
+			if(GUILayout.Button("Re-apply UVs to Preview"))
+			{
+				rig.SelectSkin(rig.SelectedSkin);
+			}
+			EditorGUI.EndDisabledGroup();
+
 			// Draw a box for each texture
 			int indexToDelete = -1;
 			int indexToDuplicate = -1;
@@ -151,20 +167,10 @@ public class TurboRigEditor : MinecraftModelEditor
 					newSkinName += "_";
 				}
 
-				Texture2D newSkinTexture = new Texture2D(turboRig.GetMaxUV().x, turboRig.GetMaxUV().y);
+				UVMap bakedMap = turboRig.BakedUVMap;
+				Texture2D newSkinTexture = new Texture2D(bakedMap.MaxSize.x, bakedMap.MaxSize.y);
 				newSkinTexture.name = newSkinName;
-				UVMap map = null;
-				if (rig != null)
-				{
-					map = rig.CurrentUVMap;
-				}
-				else
-				{
-					map = new UVMap(); 
-					turboRig.ExportUVMap(map.Placements);
-				}
-				
-				map.CreateDefaultTexture(newSkinTexture);
+				SkinGenerator.CreateDefaultTexture(bakedMap, newSkinTexture);
 				File.WriteAllBytes($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png", newSkinTexture.EncodeToPNG());
 				AssetDatabase.Refresh();
 				newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png");

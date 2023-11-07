@@ -8,67 +8,11 @@ public class TurboModel
 {
 	public string PartName = "";
 	public List<TurboPiece> Pieces = new List<TurboPiece>();
-
-	public bool IsUVMapSame(TurboModel other)
-	{
-		if (other.PartName != PartName)
-			return false;
-		if (other.Pieces.Count != Pieces.Count)
-			return false;
-		for(int i = 0; i < Pieces.Count; i++)
-		{
-			if (!Pieces[i].IsUVMapSame(other.Pieces[i]))
-				return false;
-		}
-
-		return true;
-	}
-
-	// These two functions are guaranteed to construct the shapes at the specified index
-	public void SetIndexedTextureUV(int index, int u, int v)
-	{
-		if (index < 0 || index > 10000)
-			return;
-		while (Pieces.Count <= index)
-			AddChild();
-		Pieces[index].textureU = u;
-		Pieces[index].textureV = v;
-	}
-	public TurboPiece GetIndexedPiece(int index)
-	{
-		if (index < 0 || index > 10000)
-			return null;
-		while (Pieces.Count <= index)
-			AddChild();
-		return Pieces[index];
-	}
-	public Vector2Int GetMaxUV()
-	{
-		Vector2Int max = Vector2Int.zero;
-		foreach(TurboPiece piece in Pieces)
-		{
-			Vector2Int pieceMax = piece.MaxUV;
-			if (pieceMax.x > max.x)
-				max.x = pieceMax.x;
-			if (pieceMax.y > max.y)
-				max.y = pieceMax.y;
-		}
-		return max;
-	}
-
 	public TurboPiece GetPiece(int index)
 	{
 		if (0 <= index && index < Pieces.Count)
 			return Pieces[index];
 		return null;
-	}
-	public bool ExportToJson(QuickJSONBuilder builder)
-	{
-		return false;
-	}
-	public bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
-	{
-		return false;
 	}
 	public TurboModel Copy()
 	{
@@ -80,13 +24,39 @@ public class TurboModel
 			copy.Pieces.Add(Pieces[i].Copy());
 		return copy;
 	}
-	public TurboPiece AddChild()
+	public bool ExportToJson(QuickJSONBuilder builder)
+	{
+		return false;
+	}
+	public bool ExportInventoryVariantToJson(QuickJSONBuilder builder)
+	{
+		return false;
+	}
+
+	// ----------------------------------------------------------------
+	#region Import-Only functions
+	// ----------------------------------------------------------------
+	public TurboPiece Import_GetIndexedPiece(int index)
+	{
+		if (index < 0 || index > 10000)
+			return null;
+		while (Pieces.Count <= index)
+			Pieces.Add(new TurboPiece());
+		return Pieces[index];
+	}
+	#endregion
+	// ----------------------------------------------------------------
+
+	// ----------------------------------------------------------------
+	#region Operations - Use ModelEditingSystem to access these
+	// ----------------------------------------------------------------
+	public TurboPiece Operation_AddChild()
 	{
 		TurboPiece newPiece = new TurboPiece();
 		Pieces.Add(newPiece);
 		return newPiece;
 	}
-	public TurboPiece DuplicateChild(int index)
+	public TurboPiece Operation_DuplicateChild(int index)
 	{
 		if (0 <= index && index < Pieces.Count)
 		{
@@ -96,14 +66,14 @@ public class TurboModel
 		}
 		return null;
 	}
-	public void DeleteChild(int index)
+	public void Operation_DeleteChild(int index)
 	{
 		if (0 <= index && index < Pieces.Count)
 		{
 			Pieces.RemoveAt(index);
 		}
 	}
-	public void TranslateAll(float x, float y, float z)
+	public void Operation_TranslateAll(float x, float y, float z)
 	{
 		foreach (TurboPiece piece in Pieces)
 		{
@@ -115,9 +85,11 @@ public class TurboModel
 			}
 		}
 	}
-	public void DoMirror(bool x, bool y, bool z)
+	public void Operation_DoMirror(bool x, bool y, bool z)
 	{
 		foreach (TurboPiece piece in Pieces)
-			piece.DoMirror(x, y, z);
+			piece.Operation_DoMirror(x, y, z);
 	}
+	#endregion
+	// ----------------------------------------------------------------
 }

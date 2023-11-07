@@ -158,6 +158,15 @@ public static class JavaModelImporter
 			{
 				rig.SetAttachment(section.PartName, "body");
 			}
+			for(int i = 0; i < section.Pieces.Count; i++)
+			{
+				rig.BakedUVMap.SetBoxSize($"{section.PartName}/{i}", section.Pieces[i].BoxUVDims);
+			}
+		}
+		if(rig.BakedUVMap.HasAnyUnplacedPatches())
+		{
+			Debug.LogWarning($"Model {rig.name} had unapplied UV mappings after import");
+			rig.BakedUVMap.AutoPlacePatches();
 		}
 
 		return rig;
@@ -169,7 +178,7 @@ public static class JavaModelImporter
 		{
 			if(rig.TryGetSection(sectionName, out TurboModel section))
 			{
-				section.TranslateAll(-ap.position.x, -ap.position.y, -ap.position.z);
+				section.Operation_TranslateAll(-ap.position.x, -ap.position.y, -ap.position.z);
 			}
 		}
 	}
@@ -255,7 +264,6 @@ public static class JavaModelImporter
 			string partName = Utils.ConvertPartName(match.Groups[1].Value);
 			int index_0 = int.Parse(match.Groups[2].Value);
 			int index_1 = int.Parse(match.Groups[3].Value);
-			TurboModel section = rig.GetOrCreateSection($"{partName}_{index_0}");
 
 			// Set the right piece UVs
 			List<float> floats = ResolveParameters(match.Groups[4].Value, 2);
@@ -263,7 +271,7 @@ public static class JavaModelImporter
 			{
 				int u = Mathf.FloorToInt(floats[0]);
 				int v = Mathf.FloorToInt(floats[1]);
-				section.SetIndexedTextureUV(index_1, u, v);
+				rig.BakedUVMap.SetUVPlacement($"{partName}_{index_0}/{index_1}", new Vector2Int(u, v));
 				return true;
 			}
 		}
@@ -278,7 +286,6 @@ public static class JavaModelImporter
 		{
 			// Get the right section
 			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
 			// Get the right piece
 			int index = int.Parse(match.Groups[2].Value);
 			List<float> floats = ResolveParameters(match.Groups[3].Value, 2);
@@ -286,7 +293,7 @@ public static class JavaModelImporter
 			{
 				int u = Mathf.FloorToInt(floats[0]);
 				int v = Mathf.FloorToInt(floats[1]);
-				section.SetIndexedTextureUV(index, u, v);
+				rig.BakedUVMap.SetUVPlacement($"{partName}/{index}", new Vector2Int(u, v));
 				return true;
 			}
 		}
@@ -306,7 +313,7 @@ public static class JavaModelImporter
 			TurboModel section = rig.GetOrCreateSection($"{partName}_{index_0}");
 
 			// Get the right piece
-			TurboPiece piece = section.GetIndexedPiece(index_1);
+			TurboPiece piece = section.Import_GetIndexedPiece(index_1);
 
 			// Then run the function
 			string function = match.Groups[4].Value;
@@ -345,7 +352,7 @@ public static class JavaModelImporter
 
 			// Get the right piece
 			int index = int.Parse(match.Groups[2].Value);
-			TurboPiece piece = section.GetIndexedPiece(index);
+			TurboPiece piece = section.Import_GetIndexedPiece(index);
 
 			// Then run the function
 			string function = match.Groups[3].Value;
@@ -509,7 +516,7 @@ public static class JavaModelImporter
 		string[] boolParams = parameters.Split(',');
 		if(boolParams.Length == 3)
 		{
-			piece.DoMirror(bool.Parse(boolParams[0]), bool.Parse(boolParams[1]), bool.Parse(boolParams[2]));
+			piece.Operation_DoMirror(bool.Parse(boolParams[0]), bool.Parse(boolParams[1]), bool.Parse(boolParams[2]));
 			return true;
 		}
 		return false;
@@ -529,7 +536,7 @@ public static class JavaModelImporter
 
 			// Get the right piece
 			int index = int.Parse(match.Groups[2].Value);
-			TurboPiece piece = section.GetIndexedPiece(index);
+			TurboPiece piece = section.Import_GetIndexedPiece(index);
 
 			// Then run the function
 			string field = match.Groups[3].Value;

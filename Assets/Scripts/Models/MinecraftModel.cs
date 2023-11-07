@@ -6,7 +6,16 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 {
 	public List<NamedTexture> Textures = new List<NamedTexture>();
 	public List<ItemTransform> Transforms = new List<ItemTransform>();
+	public UVMap BakedUVMap = null;
 
+	public void ApplyUVMap(UVMap newMap)
+	{
+		BakedUVMap = newMap;
+	}
+
+	// ------------------------------------------------------------------------------
+	#region Transforms
+	// ------------------------------------------------------------------------------
 	public enum ItemTransformType
 	{
 		NONE,
@@ -49,6 +58,16 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 		}
 	}
 
+	public virtual void AddDefaultTransforms()
+	{
+		Transforms.Add(new ItemTransform());
+	}
+	#endregion
+	// ------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------
+	#region Textures
+	// ------------------------------------------------------------------------------
 	[System.Serializable]
 	public class NamedTexture : IVerifiableAsset
 	{
@@ -126,10 +145,25 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			return Textures[0];
 		return null;
 	}
-	public abstract void ApplyUVMap(UVMap map);
-	public abstract void GenerateUVPatches(Dictionary<string, UVPatch> patches);
-	public abstract void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements);
-	public abstract bool IsUVMapSame(MinecraftModel other);
+	#endregion
+	// ------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------
+	#region UV Mapping
+	// ------------------------------------------------------------------------------
+	public virtual void CollectUnplacedUVs(List<BoxUVPatch> unplacedPatches)
+	{
+		
+	}
+
+	public void OnResizeUV(string key, UVPatch newPatch)
+	{
+		//CurrentUVMap
+	}
+	#endregion
+	// ------------------------------------------------------------------------------
+
+
 	public virtual void FixNamespaces() { }
     public virtual bool ExportToJson(QuickJSONBuilder builder)
 	{
@@ -163,10 +197,6 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 			model.BuildExportTree(childBranch);
 			tree.Children.Add(childBranch);
 		}
-	}
-	public virtual void AddDefaultTransforms()
-	{
-		Transforms.Add(new ItemTransform());
 	}
 
 	public virtual void GetVerifications(List<Verification> verifications)

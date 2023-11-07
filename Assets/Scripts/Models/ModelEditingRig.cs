@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -25,13 +26,8 @@ public class ModelEditingRig : MonoBehaviour
 
 		ModelOpenedForEdit = model;
 
-		CheckModelPreviewExists();
-		Preview.Refresh();
-		LoadInitialUVMap();
-
-		NamedTexture defaultTexture = model.GetDefaultTexture();
-		if (defaultTexture != null)
-			SelectSkin(defaultTexture.Key);
+		InitializePreviews();
+		ApplySkinOnOpenModel();
 	}
 	public void CloseModel()
 	{
@@ -42,52 +38,58 @@ public class ModelEditingRig : MonoBehaviour
 			if(subRig != this)
 				subRig.transform.SetParent(null);
 		}
-
 		InvalidatePreviews();
+		DiscardTemporaryUVMap();
 		ModelOpenedForEdit = null;
 	}
-
-	public void UpdateModel()
-	{
-		CheckModelPreviewExists();
-		Preview.Refresh(); // TODO: Rename, be specific
-
-		// Check for Scene View edits
-
-		// Check for Inspector edits
-
-
-		CheckUpdateUVs();
-	}
-
 	public void OnEnable()
 	{
-		EditorApplication.update += UpdateAnims;
-		EditorApplication.update += UpdateModel;
+		EditorApplication.update += EditorUpdate;
 	}
 	public void OnDisable()
 	{
-		EditorApplication.update -= UpdateAnims;
-		EditorApplication.update -= UpdateModel;
+		EditorApplication.update -= EditorUpdate;
 	}
+	public void EditorUpdate()
+	{
+		UpdateAnims();
+	}
+
 	#endregion
 	// ------------------------------------------------------------------------------------------
 
 	// ------------------------------------------------------------------------------------------
 	#region Previewers
 	// ------------------------------------------------------------------------------------------
-	public MinecraftModelPreview Preview = null;
-
-	private TurboRigPreview FindRigPreview()
-	{
-		return GetComponentInChildren<TurboRigPreview>();
+	[SerializeField]
+	private MinecraftModelPreview _Preview = null;
+	public MinecraftModelPreview Preview 
+	{ 
+		get
+		{
+			if (ModelOpenedForEdit != null && _Preview == null)
+			{
+				if (ModelOpenedForEdit is CubeModel cubeModel)
+					_Preview = CreatePreviewObject(cubeModel, false);
+				else if (ModelOpenedForEdit is ItemModel itemModel)
+					_Preview = CreatePreviewObject(itemModel, false);
+				else if (ModelOpenedForEdit is TurboRig turboRig)
+					_Preview = CreatePreviewObject(turboRig, false);
+			}
+			if(ModelOpenedForEdit == null && _Preview != null)
+			{
+				Debug.LogError($"Closed model without cleaning up Preview objects");
+				InvalidatePreviews();
+			}
+			return _Preview;
+		} 
 	}
-	private TurboModelPreview FindSectionPreview(string key)
+	private void InitializePreviews()
 	{
-		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
-			if (section.PartName == key)
-				return section;
-		return null;
+		if(Preview != null)
+		{
+			Preview.InitializePreviews();
+		}
 	}
 	private void InvalidatePreviews()
 	{
@@ -99,18 +101,15 @@ public class ModelEditingRig : MonoBehaviour
 			child = GetComponentInChildren<MinecraftModelPreview>();
 		}
 	}
-	private void CheckModelPreviewExists()
+
+	private TurboModelPreview FindSectionPreview(string key)
 	{
-		if (ModelOpenedForEdit != null && Preview == null)
-		{
-			if (ModelOpenedForEdit is CubeModel cubeModel)
-				Preview = CreatePreviewObject(cubeModel, false);
-			else if (ModelOpenedForEdit is ItemModel itemModel)
-				Preview = CreatePreviewObject(itemModel, false);
-			else if (ModelOpenedForEdit is TurboRig turboRig)
-				Preview = CreatePreviewObject(turboRig, false);
-		}
+		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
+			if (section.PartName == key)
+				return section;
+		return null;
 	}
+	
 	public MinecraftModelPreview CreatePreviewObject(TurboRig model, bool forceUpdate)
 	{
 		Transform existing = transform.Find("turbo");
@@ -125,6 +124,7 @@ public class ModelEditingRig : MonoBehaviour
 			go.transform.localRotation = Quaternion.identity;
 			TurboRigPreview preview = go.AddComponent<TurboRigPreview>();
 			preview.SetModel(model);
+			preview.RefreshGeometry();
 			return preview;
 		}
 		existing.GetComponent<TurboRigPreview>().SetModel(model);
@@ -168,14 +168,6 @@ public class ModelEditingRig : MonoBehaviour
 		}
 		return existing.GetComponent<ItemModelPreview>();
 	}
-
-	public void RegenerateModels()
-	{
-		if(Preview != null)
-		{
-			Preview.Refresh();
-		}
-	}
 	#endregion
 	// ------------------------------------------------------------------------------------------
 
@@ -184,113 +176,118 @@ public class ModelEditingRig : MonoBehaviour
 	// ------------------------------------------------------------------------------------------
 	[Header("Skins")]
     public bool ApplySkin = true;
-	// Currently assuming single texture skinning only
-	public string SelectedSkin = "default";
-	[SerializeField]
-	private Material SkinMaterial = null;
-	[SerializeField]
-	private Texture2D DefaultSkinTexture = null;
-	public Material GetSkinMaterial()
-	{
-		if(SkinMaterial == null || SkinMaterial.name != name)
-		{
-			SkinMaterial = new Material(Shader.Find("Standard"));
-			SkinMaterial.name = name;
-			SkinMaterial.SetTexture("_MainTex", null);
-			SkinMaterial.EnableKeyword("_NORMALMAP");
-			SkinMaterial.EnableKeyword("_DETAIL_MULX2");
-		}
-		return SkinMaterial;
-	}
-	public void SelectSkin(string skinName)
-	{
-		SelectedSkin = skinName;
-		Material skinMaterial = GetSkinMaterial();
-		Texture2D skinTexture = GetTexture2D();
-		if(skinTexture != null)
-		{
-			skinMaterial.SetTexture("_MainTex", skinTexture);
-		}
-		else
-		{
-			CreateDefaultUVTexture();
-			skinMaterial.SetTexture("_MainTex", DefaultSkinTexture);
-		}
-		ModelOpenedForEdit.ApplyUVMap(CurrentUVMap);
-		RegenerateModels();
-		EditorUtility.SetDirty(ModelOpenedForEdit);
-	}
-	public void CreateDefaultUVTexture()
-	{
-		if(CurrentUVMap == null)
-		{
-			LoadInitialUVMap();
-		}
-		if(DefaultSkinTexture == null)
-		{
-			CurrentUVMap.CalculateBounds();
-			DefaultSkinTexture = new Texture2D(CurrentUVMap.MaxSize.x, CurrentUVMap.MaxSize.y);
-			DefaultSkinTexture.filterMode = FilterMode.Point;
-		}
-		CurrentUVMap.CreateDefaultTexture(DefaultSkinTexture);
-		SaveModifiedTexture();
-	}
-	public void SaveModifiedTexture()
-	{
-		Texture2D tex = GetTexture2D();
-		string path = AssetDatabase.GetAssetPath(tex);
-		File.WriteAllBytes(path, tex.EncodeToPNG());
-	}
-	public NamedTexture GetNamedTexture() 
+	public string SelectedSkin = "debug";
+	[NonSerialized]
+	public UVMap TemporaryUVMap = null;
+	public Vector2Int UVMapSize 
 	{ 
-		if(ModelOpenedForEdit != null)
-			return ModelOpenedForEdit.GetNamedTexture(SelectedSkin);
-		return null;
-	}
-	public Texture2D GetTexture2D()
-	{
-		NamedTexture namedTexture = GetNamedTexture();
-		if (namedTexture != null)
-			return namedTexture.Texture;
-		return null;
-	}
-	public Texture2D DebugBoxTexture = null;
-	public UVMap CurrentUVMap = null;
-	
-	private void LoadInitialUVMap()
-	{
-		CurrentUVMap = UVMap.ExportFromModel(ModelOpenedForEdit);
-	}
-	private bool NeedsUVUpdate()
-	{
-		UVMap newMap = UVMap.GetPatchesFor(ModelOpenedForEdit);
-		return !CurrentUVMap.Solves(newMap);
-	}
-	private bool CheckUpdateUVs()
-	{
-		UVMap newMap = UVMap.GetPatchesFor(ModelOpenedForEdit);
-		if (CurrentUVMap.Solves(newMap))
-			return false;
-
-		// So we need to convert from one map to the other
-		UVCalculator.GenerateNewUVMap(CurrentUVMap, newMap);
-
-		// And then update our texture stack
-		List<Texture2D> inputTextures = new List<Texture2D>();
-		foreach(NamedTexture namedTexture in ModelOpenedForEdit.Textures)
+		get 
 		{
-			if (namedTexture.Key == "particle")
-				continue;
-			inputTextures.Add(namedTexture.Texture);
-		}
-		ModelOpenedForEdit.ApplyUVMap(newMap);
-		EditorUtility.SetDirty(ModelOpenedForEdit);
-		UVCalculator.UpdateSkins(CurrentUVMap, newMap, inputTextures);
-		RegenerateModels();
-		CurrentUVMap = newMap;
-		return true;
+			if (TemporaryUVMap != null)
+				return TemporaryUVMap.MaxSize;
+			else return Vector2Int.zero;
+		 } 
 	}
+	public Material SkinMaterial 
+	{
+		get
+		{
+			if (_SkinMaterial == null || _SkinMaterial.name != name)
+			{
+				_SkinMaterial = new Material(Shader.Find("Standard"));
+				_SkinMaterial.name = name;
+				_SkinMaterial.SetTexture("_MainTex", null);
+				_SkinMaterial.EnableKeyword("_NORMALMAP");
+				_SkinMaterial.EnableKeyword("_DETAIL_MULX2");
+			}
+			return _SkinMaterial;
+		}
+	}
+	[SerializeField]
+	private Material _SkinMaterial = null;
+	public Texture2D DebugTexture
+	{
+		get
+		{
+			if (_DebugTexture == null)
+			{
+				_DebugTexture = new Texture2D(UVMapSize.x, UVMapSize.y);
+				_DebugTexture.filterMode = FilterMode.Point;
+			}
+			RegenerateDebugTexture();
+			return _DebugTexture;
+		}
+	}
+	[SerializeField]
+	private Texture2D _DebugTexture = null;
+	private void RegenerateDebugTexture()
+	{
+		SkinGenerator.CreateDefaultTexture(TemporaryUVMap, _DebugTexture);
+	}
+	public void CreateTemporaryUVMap()
+	{
+		if(ModelOpenedForEdit != null)
+		{
+			TemporaryUVMap = ModelOpenedForEdit.BakedUVMap.Clone();
+			TemporaryUVMap.CalculateBounds();
+		}
+	}
+	public void DiscardTemporaryUVMap()
+	{
+		TemporaryUVMap = null;
+	}
+	public UVMap GetPreviewUVMap()
+	{
+		if (TemporaryUVMap != null)
+			return TemporaryUVMap;
+		if (ModelOpenedForEdit != null)
+			return ModelOpenedForEdit.BakedUVMap;
+		return null;
+	}
+	public bool TryGetNamedTexture(string skinKey, out NamedTexture namedTexture)
+	{
+		if (ModelOpenedForEdit != null)
+		{
+			namedTexture = ModelOpenedForEdit.GetNamedTexture(skinKey);
+			return namedTexture != null;
+		}
+		namedTexture = null;
+		return false;
+	}
+	public Texture2D GetTextureForSkinKey(string skinKey)
+	{
+		if (TryGetNamedTexture(skinKey, out NamedTexture namedTexture))
+			return namedTexture.Texture;
 
+		return DebugTexture;
+	}
+	public void ApplySkinOnOpenModel()
+	{
+		if (ModelOpenedForEdit.Textures.Count > 0)
+			SelectSkin(ModelOpenedForEdit.Textures[0].Key);
+		else
+			SelectDebugTexture();
+	}
+	public void SelectSkin(string skinKey)
+	{
+		SelectedSkin = skinKey;
+		Texture2D skinTexture = GetTextureForSkinKey(skinKey);
+		SkinMaterial.SetTexture("_MainTex", skinTexture);
+	}
+	public void SelectDebugTexture()
+	{
+		SelectedSkin = "debug";
+		SkinMaterial.SetTexture("_MainTex", DebugTexture);
+	}
+	public void OnUVMapChange()
+	{
+		// If we are live-editing UVs, we don't want to rip our textures up, so swap to debug
+		if(SelectedSkin != "debug")
+		{
+			SelectDebugTexture();
+		}
+		RegenerateDebugTexture();
+	}
 	#endregion
 	// ------------------------------------------------------------------------------------------
 

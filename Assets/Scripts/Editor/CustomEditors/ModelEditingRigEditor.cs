@@ -50,6 +50,22 @@ public class ModelEditingRigEditor : Editor
 		{
 			bool dirty = EditorUtility.IsDirty(rig.ModelOpenedForEdit);
 			GUILayout.Label(dirty ? $"*{rig.ModelOpenedForEdit.name} has unsaved changes" : $"{rig.ModelOpenedForEdit.name} has no changes.");
+			GUILayout.BeginHorizontal();
+			EditorGUI.BeginDisabledGroup(dirty);
+			if (GUILayout.Button($"Reload {rig.ModelOpenedForEdit.name}"))
+			{
+				rig.OpenModel(rig.ModelOpenedForEdit);
+			}
+			EditorGUI.EndDisabledGroup();
+			if (GUILayout.Button("Reload ALL open rigs"))
+			{
+				foreach(ModelEditingRig otherRig in FindObjectsOfType<ModelEditingRig>())
+				{
+					//if(!EditorUtility.IsDirty(otherRig.ModelOpenedForEdit))
+						otherRig.OpenModel(otherRig.ModelOpenedForEdit);
+				}
+			}
+			GUILayout.EndHorizontal();
 		}
 
 		EditorGUI.BeginDisabledGroup(rig.ModelOpenedForEdit == null);

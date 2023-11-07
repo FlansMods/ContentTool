@@ -7,8 +7,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using static Definition;
 
+[ExecuteInEditMode]
 public class ContentManager : MonoBehaviour
 {
 	private static ContentManager _inst = null;
@@ -30,6 +32,20 @@ public class ContentManager : MonoBehaviour
 	public const string IMPORT_ROOT = "Import/Content Packs";
 	public const string MODEL_IMPORT_ROOT = "Import/Java Models";
 	public const string ASSET_ROOT = "Assets/Content Packs";
+
+	public void OnEnable()
+	{
+		EditorApplication.update += EditorUpdate;
+	}
+	public void OnDisable()
+	{
+		EditorApplication.update -= EditorUpdate;
+	}
+
+	private void EditorUpdate()
+	{
+		ModelEditingSystem.ApplyAllQueuedActions();
+	}
 
 	// ---------------------------------------------------------------------------------------
 	#region Pre-Import Pack storage
@@ -384,7 +400,18 @@ public class ContentManager : MonoBehaviour
 	// ---------------------------------------------------------------------------------------
 	public const float RefreshEveryT = 10;
 	private DateTime LastContentCheck = DateTime.Now;
-	public List<ContentPack> Packs = new List<ContentPack>();
+	public List<ContentPack> Packs
+	{ 
+		get
+		{
+			for (int i = _Packs.Count - 1; i >= 0; i--)
+				if (_Packs[i] == null)
+					_Packs.RemoveAt(i);
+			return _Packs;
+		}
+	}
+	[SerializeField, FormerlySerializedAs("Packs")]
+	private List<ContentPack> _Packs = new List<ContentPack>();
 
 	public ContentPack FindContentPack(string packName)
 	{

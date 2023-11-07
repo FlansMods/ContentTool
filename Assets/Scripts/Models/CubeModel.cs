@@ -33,27 +33,8 @@ public class CubeModel : MinecraftModel
 		}
 		return true;
 	}
-
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		return other is CubeModel;
-	}
-
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);
-	}
-
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-
 	}
 }

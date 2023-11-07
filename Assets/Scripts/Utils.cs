@@ -221,7 +221,7 @@ public static class Utils
     }
     public static bool Approximately(this Vector3 a, Vector3 b)
     {
-        return Mathf.Approximately((a - b).sqrMagnitude, 0f);
+        return (a - b).sqrMagnitude < 0.000000001f;
     }
 }
 public static class FlanStyles

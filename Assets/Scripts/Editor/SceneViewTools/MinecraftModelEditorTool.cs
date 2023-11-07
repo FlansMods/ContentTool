@@ -33,9 +33,7 @@ public abstract class MinecraftModelEditorTool<T> : EditorTool where T : Minecra
 					else BoundsHandle.DrawHandle();
 					if (EditorGUI.EndChangeCheck())
 					{
-						//Undo.RecordObject(modelPreview, string.Format("Modify {0}", ObjectNames.NicifyVariableName(target.GetType().Name)));
 						CopyFromHandle(modelPreview);
-						modelPreview.Refresh();
 					}
 				}
 			}

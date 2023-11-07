@@ -12,20 +12,4 @@ public class BlockbenchModel : MinecraftModel
 	{
 		return base.ExportToJson(builder);
 	}
-
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		return other is BlockbenchModel;
-	}
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-	}
 }

@@ -34,11 +34,6 @@ public class ItemModel : MinecraftModel
 		return Icon;
 	}
 
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		return other is ItemModel;
-	}
-
 	public override void AddDefaultTransforms()
 	{
 		Transforms.Add(new ItemTransform()
@@ -65,18 +60,5 @@ public class ItemModel : MinecraftModel
 			builder.Current.Add("layer0", IconLocation.ResolveWithSubdir("item"));
 		}
 		return base.ExportToJson(builder);
-	}
-
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-
 	}
 }

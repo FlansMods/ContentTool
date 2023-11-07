@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static MinecraftModel;
 
@@ -289,12 +290,12 @@ public abstract class MinecraftModelEditor : Editor
 		if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 			Selection.activeObject = node;
 
-		if(node.CanDuplicate() && parentPath.Length > 0)
-			if(GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(MODELLING_BUTTON_X)))
-				node.Duplicate();
+		if (node.CanDuplicate() && parentPath.Length > 0)
+			if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+				ModelEditingSystem.ApplyOperation(node.Duplicate());
 		if (node.CanDelete() && parentPath.Length > 0)
 			if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(MODELLING_BUTTON_X)))
-				node.Delete();
+				ModelEditingSystem.ApplyOperation(node.Delete());
 
 		GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 16));
 		GUILayout.EndHorizontal();
@@ -341,6 +342,49 @@ public abstract class MinecraftModelEditor : Editor
 	protected virtual void TexturingTabImpl(MinecraftModel mcModel)
 	{
 
+	}
+
+	private List<string> UVMapFoldouts = new List<string>();
+	protected void UVMapField(string label, UVMap map)
+	{
+		bool prevFoldout = UVMapFoldouts.Contains(label);
+		GUILayout.BeginHorizontal();
+		bool newFoldout = EditorGUILayout.Foldout(prevFoldout, label);
+		if (newFoldout && !prevFoldout)
+			UVMapFoldouts.Add(label);
+		else if (prevFoldout && !newFoldout)
+			UVMapFoldouts.Remove(label);
+		GUILayout.Label($"Width: {map.MaxSize.x}");
+		GUILayout.Label($"Height: {map.MaxSize.y}");
+		GUILayout.EndHorizontal();
+
+		if (newFoldout)
+		{
+			if (map.PlacedBoxes.Count > 0)
+			{
+				GUILayout.Label("Placed Patches");
+				foreach (BoxUVPlacement placement in map.PlacedBoxes)
+				{
+					GUILayout.BeginHorizontal();
+					GUILayout.Label(placement.Key);
+					GUILayout.Label($"Box Size: {placement.Patch.BoxDims}");
+					GUILayout.Label($"Patch Bounds: {placement.Bounds}");
+					GUILayout.EndHorizontal();
+				}
+			}
+			if (map.UnplacedBoxes.Count > 0)
+			{
+				GUILayout.Label("Unplaced Patches");
+				foreach (BoxUVPatch patch in map.UnplacedBoxes)
+				{
+					GUILayout.BeginHorizontal();
+					GUILayout.Label(patch.Key);
+					GUILayout.Label($"Box Size: {patch.BoxDims}");
+					GUILayout.Label($"Patch Bounds: {patch.BoundingSize}");
+					GUILayout.EndHorizontal();
+				}
+			}
+		}
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------

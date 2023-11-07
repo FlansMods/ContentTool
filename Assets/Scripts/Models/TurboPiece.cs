@@ -33,24 +33,10 @@ public class TurboPiece
 		return true;
 	}
 
-	public bool IsUVMapSame(TurboPiece other)
-	{
-		if (other.Dim != Dim)
-			return false;
-		if (other.textureU != textureU)
-			return false;
-		if (other.textureV != textureV)
-			return false;
-
-		return true;
-	}
-
 	public TurboPiece Copy()
 	{
 		return new TurboPiece()
 		{
-			textureU = this.textureU,
-			textureV = this.textureV,
 			Pos = this.Pos,
 			Dim = this.Dim,
 			Origin = this.Origin,
@@ -62,7 +48,7 @@ public class TurboPiece
 		};
 	}
 
-	public void DoMirror(bool bX, bool bY, bool bZ)
+	public void Operation_DoMirror(bool bX, bool bY, bool bZ)
 	{
 		if (bX)
 		{
@@ -96,48 +82,35 @@ public class TurboPiece
 		}
 	}
 
+	// ---------------------------------------------------------------------------
+	#region UV-Mapping information, (not actually stored in the TurboPiece)
+	// ---------------------------------------------------------------------------
 	public bool TryGenerateUVPatch(out UVPatch patch)
 	{
 		patch = new BoxUVPatch()
 		{
-			boxDims = GetBoxUVDims(),
+			BoxDims = BoxUVDims,
 		};
 		return true;
 	}
-	public bool TryGetUVPlacement(out UVMap.UVPlacement placement)
+	public Vector2Int BoxUVSize
 	{
-		placement = new UVMap.UVPlacement()
+		get
 		{
-			Origin = new Vector2Int(textureU, textureV),
-			Patch = new BoxUVPatch()
-			{
-				boxDims = GetBoxUVDims(),
-			}
-		};
-		return true;
+			Vector3Int box = BoxUVDims;
+			return new Vector2Int(box.z + box.x + box.z + box.x, box.z + box.y);
+		}
 	}
-	public void SetUVPlacement(UVMap.UVPlacement placement)
+	public Vector3Int BoxUVDims
 	{
-		textureU = placement.Origin.x;
-		textureV = placement.Origin.y;
+		get
+		{
+			return new Vector3Int(
+				Mathf.CeilToInt(Dim.x),
+				Mathf.CeilToInt(Dim.y),
+				Mathf.CeilToInt(Dim.z));
+		}
 	}
-
-	public Vector2Int MinUV { get { return new Vector2Int(textureU, textureV); } }
-	public Vector2Int MaxUV { get { return MinUV + BoxUVSize; } }
-	public Vector2Int BoxUVSize { get { return GetBoxUVSize(); } }
-	public Vector2Int GetBoxUVSize()
-	{
-		Vector3Int box = GetBoxUVDims();
-		return new Vector2Int(box.z + box.x + box.z + box.x, box.z + box.y);
-	}
-	public Vector3Int GetBoxUVDims()
-	{
-		return new Vector3Int(
-			Mathf.CeilToInt(Dim.x),
-			Mathf.CeilToInt(Dim.y),
-			Mathf.CeilToInt(Dim.z));
-	}
-
 	public int[] GetIntUV(int u0, int v0, EFace face)
 	{
 		int x = Mathf.CeilToInt(Dim.x), y = Mathf.CeilToInt(Dim.y), z = Mathf.CeilToInt(Dim.z);
@@ -152,7 +125,6 @@ public class TurboPiece
 			default: return new int[4];
 		}
 	}
-
 	public Vector2[] GetUVS(EFace face, int tu, int tv)
 	{
 		float x = Mathf.Ceil(Dim.x);
@@ -207,10 +179,11 @@ public class TurboPiece
 				return new Vector2[4];
 		}
 	}
+	#endregion
+	// ---------------------------------------------------------------------------
 
 	public Vector3[] GetVerts()
 	{
-		Quaternion xRotation = Quaternion.Euler(Euler);
 		Vector3[] verts = new Vector3[8];
 		for (int x = 0; x < 2; x++)
 		{
@@ -225,86 +198,11 @@ public class TurboPiece
 					if (z == 1) verts[index].z += Dim.z;
 
 					verts[index] += Offsets[index];
-
-					// These get applied in the Unity transform
-					//verts[index] = xRotation * verts[index];
-					//verts[index] += Origin;
 				}
 			}
 		}
-
 		return verts;
 	}
-
-	public static readonly int[] NON_UV_TRIS = new int[] {
-		0,2,3,  0,3,1, // -z 0, 2, 3, 1, 
-		5,7,6,  5,6,4, // +z 5, 7, 6, 4,
-		4,6,2,  4,2,0, // -x 4, 6, 2, 0,
-		1,3,7,  1,7,5, // +x 1, 3, 7, 5,
-		7,3,2,  7,2,6, // +y 7, 3, 2, 6,
-		5,4,0,  5,0,1, // -y 5, 4, 0, 1 
-	};
-	public int[] GetTris() { return NON_UV_TRIS; }
-
-	public static readonly int[] VERTS_WITH_UV = new int[] {
-		0, 2, 3, 1,	 // -z face
-		5, 7, 6, 4,	 // +z face
-		4, 6, 2, 0,	 // -x face
-		1, 3, 7, 5,	 // +x face
-		7, 3, 2, 6,	 // +y face
-		5, 4, 0, 1,	 // -y face
-	};
-	public Vector3[] GenerateVertsForUV(Vector3[] inputVerts)
-	{
-		return new Vector3[] {
-			inputVerts[0], inputVerts[2], inputVerts[3], inputVerts[1],	// -z face
-			inputVerts[5], inputVerts[7], inputVerts[6], inputVerts[4], // +z face
-			inputVerts[4], inputVerts[6], inputVerts[2], inputVerts[0], // -x face
-			inputVerts[1], inputVerts[3], inputVerts[7], inputVerts[5], // +x face
-			inputVerts[7], inputVerts[3], inputVerts[2], inputVerts[6], // +y face
-			inputVerts[5], inputVerts[4], inputVerts[0], inputVerts[1], // -y face
-		};
-	}
-	public static readonly int[] TRIS_WITH_UV = new int[] {
-		0,1,2, 0,2,3,
-		4,5,6, 4,6,7,
-		8,9,10, 8,10,11,
-		12,13,14, 12,14,15,
-		16,17,18, 16,18,19,
-		20,21,22, 20,22,23,
-	};
-	public int[] GenerateTrisForUV() { return TRIS_WITH_UV; }
-	public static readonly Vector3[] NORMALS_WITH_UV = new Vector3[] {
-		Vector3.back, Vector3.back, Vector3.back, Vector3.back,
-		Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward,
-		Vector3.left, Vector3.left, Vector3.left, Vector3.left,
-		Vector3.right, Vector3.right, Vector3.right, Vector3.right,
-		Vector3.up, Vector3.up, Vector3.up, Vector3.up,
-		Vector3.down, Vector3.down, Vector3.down, Vector3.down,
-	};
-	public Vector3[] GenerateNormalsForUV() { return NORMALS_WITH_UV; }
-
-
-	public void ExportToMesh(Mesh mesh, float textureX, float textureY)
-	{
-		Vector3[] v = GetVerts();
-		mesh.SetVertices(GenerateVertsForUV(v));
-		List<Vector2> uvs = new List<Vector2>();
-		uvs.AddRange(GetUVS(EFace.north, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.south, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.west, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.east, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.up, textureU, textureV));
-		uvs.AddRange(GetUVS(EFace.down, textureU, textureV));
-		for (int i = 0; i < uvs.Count; i++)
-		{
-			uvs[i] = new Vector2(uvs[i].x / textureX, (textureY - uvs[i].y) / textureY);
-		}
-		mesh.SetUVs(0, uvs);
-		mesh.SetTriangles(GenerateTrisForUV(), 0);
-		mesh.SetNormals(GenerateNormalsForUV());
-	}
-
 
 	public bool ExportToJson(QuickJSONBuilder builder)
 	{

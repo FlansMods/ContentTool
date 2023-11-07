@@ -27,13 +27,16 @@ public class TurboPieceBoundsEditorTool : MinecraftModelEditorTool<TurboPiecePre
 		if (preview.Piece == null)
 			return;
 
-		if(Changed(preview.Piece.Pos, _Handle.Origin)
+		if (Changed(preview.Piece.Pos, _Handle.Origin)
 		|| Changed(preview.Piece.Dim, _Handle.Dimensions))
-			Undo.RecordObject(preview.GetComponentInParent<TurboRigPreview>().Rig, "Shapebox resize");
-		
-		preview.Piece.Pos = _Handle.Origin;
-		preview.Piece.Dim = _Handle.Dimensions;
-		preview.Refresh();
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboResizeBoxOperation(
+					preview.GetModel(),
+					preview.Parent.PartName,
+					preview.PartIndex,
+					new Bounds(_Handle.Origin + _Handle.Dimensions / 2, _Handle.Dimensions)));
+		}
 	}
 
 	public override void CopyToHandle(TurboPiecePreview preview)
@@ -67,21 +70,28 @@ public class TurboPieceCornersEditorTool : MinecraftModelEditorTool<TurboPiecePr
 		if (preview.Piece == null)
 			return;
 
-		if (Changed(preview.Piece.Offsets[0], _Handle.Offsets[0])
-		|| Changed(preview.Piece.Offsets[1], _Handle.Offsets[1])
-		|| Changed(preview.Piece.Offsets[2], _Handle.Offsets[2])
-		|| Changed(preview.Piece.Offsets[3], _Handle.Offsets[3])
-		|| Changed(preview.Piece.Offsets[4], _Handle.Offsets[4])
-		|| Changed(preview.Piece.Offsets[5], _Handle.Offsets[5])
-		|| Changed(preview.Piece.Offsets[6], _Handle.Offsets[6])
-		|| Changed(preview.Piece.Offsets[7], _Handle.Offsets[7]))
+		List<int> changedIndices = new List<int>();
+		List<Vector3> changedOffsets = new List<Vector3>();
+
+		for(int i = 0; i < 8; i++)
 		{
-			Undo.RecordObject(preview.GetComponentInParent<TurboRigPreview>().Rig, "Shapebox corners");
+			if(Changed(preview.Piece.Offsets[i], _Handle.Offsets[i]))
+			{
+				changedIndices.Add(i);
+				changedOffsets.Add(_Handle.Offsets[i]);
+			}
 		}
 
-		for (int i = 0; i < preview.Piece.Offsets.Length; i++)
-			preview.Piece.Offsets[i] = _Handle.Offsets[i];
-		preview.Refresh();
+		if(changedIndices.Count > 0)
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboEditOffsetsOperation(
+					preview.GetModel(),
+					preview.Parent.PartName,
+					preview.PartIndex,
+					changedIndices,
+					changedOffsets));
+		}
 	}
 
 	public override void CopyToHandle(TurboPiecePreview preview)

@@ -1,274 +1,215 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
 public class UVMap
 {
-	[System.Serializable]
-	public class UVPlacement
-    {
-        public UVPatch Patch;
-        public Vector2Int Origin;
-        public RectInt GetBounds()
-        {
-            return new RectInt(Origin, Patch.GetBoundingSize());
-        }
-
-		public override bool Equals(object other)
-		{
-            if (other is UVPlacement otherUV)
-                return Patch.Equals(otherUV.Patch) && Origin == otherUV.Origin;
-            return false;
-		}
-		public override int GetHashCode()
-		{
-            return Patch.GetHashCode() ^ Origin.GetHashCode();
-		}
-        public static bool operator==(UVPlacement a, UVPlacement b)
-        {
-            return a.Origin == b.Origin && a.Equals(b.Patch);
-        }
-		public static bool operator !=(UVPlacement a, UVPlacement b)
-		{
-			return a.Origin != b.Origin || !a.Patch.Equals(b.Patch);
-		}
-	}
-
+    public List<BoxUVPatch> UnplacedBoxes = new List<BoxUVPatch>();
+    public List<BoxUVPlacement> PlacedBoxes = new List<BoxUVPlacement>();
     public Vector2Int MaxSize = Vector2Int.one * 4;
-    public Dictionary<string, UVPatch> PatchesToPlace = new Dictionary<string, UVPatch>();
-    public Dictionary<string, UVPlacement> Placements = new Dictionary<string, UVPlacement>();
 
-    public void Reset() 
+    public void Clear() 
     {
-        PatchesToPlace.Clear();
-        Placements.Clear();
+		UnplacedBoxes.Clear();
+		PlacedBoxes.Clear();
+        MaxSize = Vector2Int.one * 4;
     }
 
-    public bool Solves(UVMap srcMap)
-    {
-        // Any defined placements MUST be present and identical
-        foreach(var kvp in srcMap.Placements)
-        {
-            if (!Placements.TryGetValue(kvp.Key, out UVPlacement dstPlacement))
-                return false;
-            if (dstPlacement != kvp.Value)
-                return false;
-        }
-
-        // But for our unplaced patches, we just need to know that the other map has them
-        foreach(var kvp in srcMap.PatchesToPlace)
-        {
-            // Doesn't exist
-            if (!Placements.TryGetValue(kvp.Key, out UVPlacement dstPlacement))
-                return false;
-            // Wrong size
-            if (!dstPlacement.Patch.Equals(kvp.Value))
-                return false;
-        }
-
-        return true;
-    }
-
-    public static UVMap GetPatchesFor(MinecraftModel model)
-    {
-		UVMap map = new UVMap();
-		if (model != null)
-			model.GenerateUVPatches(map.PatchesToPlace);
-		return map;
-	}
-
-    public static UVMap ExportFromModel(MinecraftModel model)
-    {
-        UVMap map = new UVMap();
-        if(model != null)
-            model.ExportUVMap(map.Placements);
-        map.CalculateBounds();
-        return map;
-    }
-
-    public void CollectPatches(MinecraftModel model)
-    {
-        model.GenerateUVPatches(PatchesToPlace);
-    }
-    
-    public bool HasUnplacedPatch(out string key)
-    {
-        if(PatchesToPlace.Count > 0)
-        {
-            foreach(var kvp in PatchesToPlace)
-            {
-                key = kvp.Key;
-				return true; // Weird idea but okay, just iterate once to get the next
-            }
-        }
-        key = null;
-        return false;
-    }
-
-    public void AutoPlacePatch(string key)
-    {
-        if (PatchesToPlace.TryGetValue(key, out UVPatch patch))
-        {
-            Vector2Int uvSize = patch.GetBoundingSize();
-			Queue<Vector2Int> possiblePositions = new Queue<Vector2Int>();
-			possiblePositions.Enqueue(Vector2Int.zero);
-
-			while (possiblePositions.Count > 0)
-			{
-				// Test this position for overlaps
-				Vector2Int testPos = possiblePositions.Dequeue();
-				Vector2Int nextTestPos = testPos;
-
-                bool canPlace = !Overlaps(patch, testPos, ref nextTestPos);
-                if(canPlace)
-                {
-                    Placements.Add(key, new UVPlacement()
-                    {
-                        Patch = patch,
-                        Origin = testPos
-                    });
-                    PatchesToPlace.Remove(key);
-					possiblePositions.Clear();
-				}
-                else
-                {
-					possiblePositions.Enqueue(new Vector2Int(testPos.x, nextTestPos.y));
-					possiblePositions.Enqueue(new Vector2Int(nextTestPos.x, testPos.y));
-				}
-			}
-
-            if(PatchesToPlace.ContainsKey(key))
-            {
-                Debug.LogError($"Failed to place UV patch {key}");
-                // We HAVE TO remove this from the list, because otherwise it will be an infinite loop
-                PatchesToPlace.Remove(key);
-			}
-		}
-	}
-
-    public bool TryPlacement(string key, Vector2Int position)
-    {
-        if(PatchesToPlace.TryGetValue(key, out UVPatch patch))
-        {
-            bool canPlace = !Overlaps(patch, position);
-            if (canPlace)
-            {
-                PatchesToPlace.Remove(key);
-                Placements.Add(key, new UVPlacement()
-                {
-                    Origin = position,
-                    Patch = patch,
-                });
-                return true;
-            }
-		}
-        return false;
-    }
-
-	public bool Overlaps(UVPatch patch, Vector2Int position, ref Vector2Int nextTestPos)
+	public UVMap Clone()
 	{
-		RectInt testBounds = new RectInt(position, patch.GetBoundingSize());
-        bool anyOverlap = false;
-		foreach (var kvp in Placements)
+		UVMap clone = new UVMap();
+		foreach (BoxUVPatch unplaced in UnplacedBoxes)
+			clone.UnplacedBoxes.Add(unplaced.Clone());
+		foreach (BoxUVPlacement placed in PlacedBoxes)
+			clone.PlacedBoxes.Add(placed.Clone());
+		clone.MaxSize = MaxSize;
+		return clone;
+	}
+
+	public void CalculateBounds()
+	{
+		MaxSize = Vector2Int.one * 4;
+		foreach (BoxUVPlacement placement in PlacedBoxes)
 		{
-			RectInt existingBounds = kvp.Value.GetBounds();
-            if (existingBounds.Overlaps(testBounds))
-            {
-				nextTestPos.x = Mathf.Max(nextTestPos.x, existingBounds.max.x);
-				nextTestPos.y = Mathf.Max(nextTestPos.y, existingBounds.max.y);
-                anyOverlap = true;
-			}
+			RectInt rect = placement.Bounds;
+			int maxX = Mathf.NextPowerOfTwo(rect.xMax);
+			int maxY = Mathf.NextPowerOfTwo(rect.yMax);
+
+			if (maxX > MaxSize.x)
+				MaxSize.x = maxX;
+			if (maxY > MaxSize.y)
+				MaxSize.y = maxY;
 		}
+	}
+
+	// --------------------------------------------------------------------------
+	#region Adding Patches and/or Placements
+	// --------------------------------------------------------------------------
+	public void AddPatchForPlacement(BoxUVPatch patch)
+	{
+		UnplacedBoxes.Add(patch);
+	}
+	public void SetUVPlacement(string key, Vector2Int uvCoords)
+	{
+		BoxUVPlacement existingPlacement = GetPlacedPatch(key);
+		BoxUVPatch existingUnplacedPatch = GetUnplacedPatch(key);
+		if (existingPlacement != null)
+			existingPlacement.Origin = uvCoords;
+		else if(existingUnplacedPatch != null)
+		{
+			PlacedBoxes.Add(new BoxUVPlacement()
+			{
+				Origin = uvCoords,
+				Patch = existingUnplacedPatch,
+			});
+			UnplacedBoxes.Remove(existingUnplacedPatch);
+		}
+		else
+		{
+			PlacedBoxes.Add(new BoxUVPlacement()
+			{
+				Origin = uvCoords,
+				Patch = new BoxUVPatch()
+				{
+					Key = key,
+					BoxDims = Vector3Int.zero,
+				}
+			});
+		}
+	}
+	public void SetBoxSize(string key, Vector3Int boxSize)
+	{
+		BoxUVPlacement existingPlacement = GetPlacedPatch(key);
+		if (existingPlacement != null)
+			existingPlacement.Patch.BoxDims = boxSize;
+		else
+		{
+			UnplacedBoxes.Add(new BoxUVPatch()
+			{
+				Key = key,
+				BoxDims = boxSize,
+			});
+		}
+	}
+	public void AddExistingPatchPlacement(BoxUVPlacement placement)
+	{
+		PlacedBoxes.Add(placement);
+	}
+	#endregion
+	// --------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------
+	#region Getting Patches and/or Placements
+	// --------------------------------------------------------------------------
+	public BoxUVPatch GetUnplacedPatch(string key)
+    {
+        foreach (BoxUVPatch patch in UnplacedBoxes)
+            if (patch.Key == key)
+                return patch;
+        return BoxUVPatch.Invalid;
+	}
+	public BoxUVPlacement GetPlacedPatch(string key)
+	{
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Key == key)
+				return placement;
+		return BoxUVPlacement.Invalid;
+	}
+    public BoxUVPatch GetAnyPatch(string key)
+    {
+        BoxUVPatch unplaced = GetUnplacedPatch(key);
+        if (unplaced.Valid)
+            return unplaced;
+        BoxUVPlacement placed = GetPlacedPatch(key);
+        if (placed.Valid)
+            return placed.Patch;
+        return BoxUVPatch.Invalid;
+	}
+    public bool HasPlacedPatch(string key)
+    {
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Key == key)
+				return true;
+		return false;
+	}
+	public bool HasPlacedPatchMatching(BoxUVPlacement otherPlacement)
+	{
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement == otherPlacement)
+				return true;
+		return false;
+	}
+    public bool HasPlacedPatchMatching(BoxUVPatch otherPatch)
+    {
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Patch == otherPatch)
+				return true;
+        return false;
+	}
+    public bool HasUnplacedPatchMatching(BoxUVPatch otherPatch)
+    {
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Patch == otherPatch)
+				return true;
+        return false;
+	}
+    public bool HasConsideredUnplacedPatch(BoxUVPatch otherPatch)
+    {
+        return HasUnplacedPatchMatching(otherPatch) || HasPlacedPatchMatching(otherPatch);
+	}
+	public bool HasAnyUnplacedPatches()
+	{
+		return UnplacedBoxes.Count > 0;
+	}
+	public bool TryPopUnplacedPatch(out BoxUVPatch patch)
+	{
+		if (UnplacedBoxes.Count > 0)
+		{
+			patch = UnplacedBoxes[UnplacedBoxes.Count - 1];
+			UnplacedBoxes.RemoveAt(UnplacedBoxes.Count - 1);
+			return true;
+		}
+		patch = BoxUVPatch.Invalid;
+		return false;
+	}
+	#endregion
+	// --------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------
+	#region Overlap Tests
+	// --------------------------------------------------------------------------
+	public bool OverlapTest(Vector2Int coords, BoxUVPatch testPatch) { return OverlapTest(new RectInt(coords, testPatch.BoundingSize)); }
+	public bool OverlapTest(BoxUVPlacement testPlacement) { return OverlapTest(testPlacement.Bounds); }
+	public bool OverlapTest(RectInt testRect)
+	{
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Bounds.Overlaps(testRect))
+				return true;
+		return false;
+	}
+	public bool OverlapTestWithHints(Vector2Int coords, BoxUVPatch testPatch, ref int hintPosX, ref int hintPosY) { return OverlapTestWithHints(new RectInt(coords, testPatch.BoundingSize), ref hintPosX, ref hintPosY); }
+	public bool OverlapTestWithHints(BoxUVPlacement testPlacement, ref int hintPosX, ref int hintPosY) { return OverlapTestWithHints(testPlacement.Bounds, ref hintPosX, ref hintPosY); }
+	public bool OverlapTestWithHints(RectInt testRect, ref int hintPosX, ref int hintPosY)
+	{
+		bool anyOverlap = false;
+		hintPosX = testRect.xMin;
+		hintPosY = testRect.yMin;
+		foreach (BoxUVPlacement placement in PlacedBoxes)
+			if (placement.Bounds.Overlaps(testRect))
+			{
+				anyOverlap = true;
+				hintPosX = Mathf.Max(hintPosX, placement.Bounds.xMax);
+				hintPosY = Mathf.Max(hintPosY, placement.Bounds.yMax);
+			}
 		return anyOverlap;
 	}
-	public bool Overlaps(UVPatch patch, Vector2Int position)
-    {
-        RectInt testBounds = new RectInt(position, patch.GetBoundingSize());
-        foreach(var kvp in Placements)
-        {
-            RectInt existingBounds = kvp.Value.GetBounds();
-            if (existingBounds.Overlaps(testBounds))
-                return true;
-		}
-        return false;
-    }
+	#endregion
+	// --------------------------------------------------------------------------
 
-    public void CalculateBounds()
-    {
-		MaxSize = Vector2Int.one * 4;
-		foreach (var kvp in Placements)
-        {
-            RectInt rect = kvp.Value.GetBounds();
-            int maxX = Mathf.NextPowerOfTwo(rect.xMax);
-            int maxY = Mathf.NextPowerOfTwo(rect.yMax);
+	
 
-            if (maxX > MaxSize.x)
-                MaxSize.x = maxX;
-            if (maxY > MaxSize.y)
-                MaxSize.y = maxY;
-		}
-    }
-
-
-	private static readonly Color[] Faces = new Color[]
-	{
-		new Color(0.25f, 0.5f, 1.0f),
-		new Color(0.5f, 0.25f, 1.0f),
-		new Color(1f, 0.5f, 0.25f),
-		new Color(1f, 0.25f, 0.5f),
-		new Color(0.25f, 1f, 0.5f),
-		new Color(0.5f, 1f, 0.25f),
-	};
-	private static readonly Color[] Outlines = new Color[]
-	{
-		new Color(0.5f, 0.75f, 1.0f),
-		new Color(0.75f, 0.5f, 1.0f),
-		new Color(1f, 0.75f, 0.5f),
-		new Color(1f, 0.5f, 0.75f),
-		new Color(0.5f, 1f, 0.75f),
-		new Color(0.75f, 1f, 0.5f),
-	};
-	public void CreateDefaultTexture(Texture2D texture)
-    {
-        CalculateBounds();
-        if (texture.width != MaxSize.x || texture.height != MaxSize.y)
-            texture.Reinitialize(MaxSize.x, MaxSize.y);
-
-		FillTexture(texture, 0, 0, texture.width, texture.height, Color.clear, Color.clear);
-
-        foreach(var kvp in Placements)        
-        {
-            if(kvp.Value.Patch is BoxUVPatch boxPatch)
-            {
-                int x = boxPatch.boxDims.x;
-                int y = boxPatch.boxDims.y;
-                int z = boxPatch.boxDims.z;
-
-                int u = kvp.Value.Origin.x;
-                int v = kvp.Value.Origin.y;
-
-				FillTexture(texture, u + z, x,          v + 0, z, Faces[0], Outlines[0]);
-				FillTexture(texture, u + z + x, x,      v + 0, z, Faces[1], Outlines[1]);
-				FillTexture(texture, u + 0, z,          v + z, y, Faces[2], Outlines[2]);
-				FillTexture(texture, u + z, x,          v + z, y, Faces[3], Outlines[3]);
-				FillTexture(texture, u + z + x, z,      v + z, y, Faces[4], Outlines[4]);
-				FillTexture(texture, u + z + x + z, x,  v + z, y, Faces[5], Outlines[5]);
-			}
-        }
-		
-	}
-	private void FillTexture(Texture2D texture, int x, int w, int y, int h, Color color, Color outline)
-	{
-		for (int i = x; i < x + w; i++)
-			for (int j = y; j < y + h; j++)
-			{
-				if (i == x || i == x + w - 1 || j == y || j == y + h - 1)
-					texture.SetPixel(i, texture.height - 1 - j, outline);
-				else
-					texture.SetPixel(i, texture.height - 1 - j, color);
-			}
-	}
-
-
+    
 }

@@ -6,7 +6,7 @@ public class ItemModelPreview : MinecraftModelPreview
 {
 	public ItemModel Item { get { return Model as ItemModel; } }
 
-	public override void GenerateMesh()
+	public override void RefreshGeometry()
 	{
 		Texture2D icon = Item.GetIcon();
 		List<Vector3> verts = new List<Vector3>();

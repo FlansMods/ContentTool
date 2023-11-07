@@ -6,47 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Minecraft Models/MultiModel")]
 public class MultiModel : MinecraftModel
 {
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		if(other is MultiModel multi)
-		{
-			return multi.FirstPersonModel.IsUVMapSame(FirstPersonModel)
-			&& multi.ThirdPersonModel.IsUVMapSame(ThirdPersonModel)
-			&& multi.HeadModel.IsUVMapSame(HeadModel)
-			&& multi.GroundModel.IsUVMapSame(GroundModel)
-			&& multi.FixedModel.IsUVMapSame(FixedModel)
-			&& multi.GUIModel.IsUVMapSame(GUIModel);
-		}
-		return false;
-	}
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-		FirstPersonModel?.GenerateUVPatches(patches);
-		ThirdPersonModel?.GenerateUVPatches(patches);
-		HeadModel?.GenerateUVPatches(patches);
-		GroundModel?.GenerateUVPatches(patches);
-		FixedModel?.GenerateUVPatches(patches);
-		GUIModel?.GenerateUVPatches(patches);
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-		FirstPersonModel?.ExportUVMap(placements);
-		ThirdPersonModel?.ExportUVMap(placements);
-		HeadModel?.ExportUVMap(placements);
-		GroundModel?.ExportUVMap(placements);
-		FixedModel?.ExportUVMap(placements);
-		GUIModel?.ExportUVMap(placements);
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-		FirstPersonModel?.ApplyUVMap(map);
-		ThirdPersonModel?.ApplyUVMap(map);
-		HeadModel?.ApplyUVMap(map);
-		GroundModel?.ApplyUVMap(map);
-		FixedModel?.ApplyUVMap(map);
-		GUIModel?.ApplyUVMap(map);
-	}
-
 	public MinecraftModel FirstPersonModel;
 	public MinecraftModel ThirdPersonModel;
 	public MinecraftModel HeadModel;

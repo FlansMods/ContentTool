@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
@@ -33,6 +34,13 @@ public class TurboPiecePreview : MinecraftModelPreview
 		return Parent?.GetModel();
 	}
 	public override MinecraftModelPreview GetParent() { return Parent; }
+	public UVMap CurrentUVMap
+	{
+		get
+		{
+			return GetComponentInParent<ModelEditingRig>()?.GetPreviewUVMap();
+		}
+	}
 
 	private static readonly int[] OldVertexOrder = new int[] {
 		7, // V1 = +x, +y, +z
@@ -73,55 +81,60 @@ public class TurboPiecePreview : MinecraftModelPreview
 
 		transform.localPosition = Piece.Origin;
 		if (Piece.Offsets.Length != 8)
-			Piece.Offsets = new Vector3[8];
+			Piece.Offsets = new Vector3[8];		
 
-		EditorGUI.BeginDisabledGroup(true);
-		GUILayout.BeginHorizontal();
-		EditorGUILayout.IntField("Tex U:", Piece.textureU);
-		EditorGUILayout.IntField("Tex V:", Piece.textureV);
-		GUILayout.EndHorizontal();
-		EditorGUI.EndDisabledGroup();
+		// (Duplicate of Unity transform fields, but important)
+		Vector3 newOrigin = FlanStyles.CompactVector3Field("Rotation Origin", Piece.Origin);
+		Vector3 newEuler = FlanStyles.CompactVector3Field("Euler Angles", Piece.Euler);
+		if (!newOrigin.Approximately(Piece.Origin)
+		|| !newEuler.Approximately(Piece.Euler))
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboUnityTransformOperation(
+					GetModel(),
+					Parent.PartName,
+					PartIndex,
+					newOrigin,
+					Quaternion.Euler(newEuler)));
+		}
 
-		// Basic box settings
-		Vector3 newOrigin = FlanStyles.CompactVector3Field("Rotation Origin", transform.localPosition);
-		Vector3 newEuler = FlanStyles.CompactVector3Field("Euler Angles", transform.localEulerAngles);
+		// Box size and position
 		Vector3 newPos = FlanStyles.CompactVector3Field("Cube Offset", Piece.Pos);
 		Vector3 newDim = FlanStyles.CompactVector3Field("Dimensions", Piece.Dim);
-		if(!newOrigin.Approximately(transform.localPosition)
-		|| !newEuler.Approximately(transform.localEulerAngles)
-		|| !newPos.Approximately(Piece.Pos)
+		if(!newPos.Approximately(Piece.Pos)
 		|| !newDim.Approximately(Piece.Dim))
 		{
-			Undo.RecordObject(Parent.Parent.Rig, "Modified Box transform/size");
-			SetOrigin(newOrigin);
-			SetEuler(newEuler);
-			SetPos(newPos);
-			SetDim(newDim);
-			EditorUtility.SetDirty(Parent.Parent.Rig);
+			ModelEditingSystem.ApplyOperation(
+				new TurboResizeBoxOperation(
+					GetModel(),
+					Parent.PartName,
+					PartIndex,
+					new Bounds(newPos + newDim / 2, newDim)));
 		}
 
 		// Shapebox corner fields
-		Vector3[] newOffsets = new Vector3[8];
-		bool anyOffsetChanged = false;
+		List<int> modifiedIndices = new List<int>();
+		List<Vector3> modifedOffsets = new List<Vector3>();
 		for (int i = 0; i < 8; i++)
 		{
 			int TransmutedVertexIndex = OldVertexOrder[i];
-			newOffsets[TransmutedVertexIndex] = FlanStyles.CompactVector3Field(VertexNames[i], Piece.Offsets[TransmutedVertexIndex]);
-			if (!newOffsets[TransmutedVertexIndex].Approximately(Piece.Offsets[TransmutedVertexIndex]))
-				anyOffsetChanged = true;
-		}
-		if(anyOffsetChanged)
-		{
-			Undo.RecordObject(Parent.Parent.Rig, "Modified ShapeBox corners");
-			for(int i = 0; i < 8; i++)
+			Vector3 newOffset = FlanStyles.CompactVector3Field(VertexNames[i], Piece.Offsets[TransmutedVertexIndex]);
+			if (!newOffset.Approximately(Piece.Offsets[TransmutedVertexIndex]))
 			{
-				Piece.Offsets[i] = newOffsets[i];
+				modifiedIndices.Add(TransmutedVertexIndex);
+				modifedOffsets.Add(newOffset);
 			}
-			EditorUtility.SetDirty(Parent.Parent.Rig);
 		}
-
-		
-		
+		if(modifiedIndices.Count > 0)
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboEditOffsetsOperation(
+					GetModel(),
+					Parent.PartName,
+					PartIndex,
+					modifiedIndices,
+					modifedOffsets));
+		}
 	}
 	public override void Compact_Editor_Texture_GUI()
 	{
@@ -131,30 +144,154 @@ public class TurboPiecePreview : MinecraftModelPreview
 
 		GUILayout.BeginVertical(GUILayout.Width(100));
 		GUILayout.Label($"Box [{Piece.Dim.x}x{Piece.Dim.y}x{Piece.Dim.z}]");
-		GUILayout.Label($"Tex [{Piece.GetBoxUVSize().x}x{Piece.GetBoxUVSize().y}]");
+		GUILayout.Label($"Tex [{Piece.BoxUVSize.x}x{Piece.BoxUVSize.y}]");
 		GUILayout.EndVertical();
 
-		// Texture
-		//Texture2D tex = GetTemporaryTexture();
-		//GUILayout.Label("", GUILayout.Width(tex.width * TextureZoomLevel), GUILayout.Height(tex.height * TextureZoomLevel));
-		//GUI.DrawTexture(GUILayoutUtility.GetLastRect(), tex);
-		//GUILayout.EndHorizontal();
+		UVMap map = CurrentUVMap;
+		if(map != null)
+		{
+			BoxUVPlacement placement = map.GetPlacedPatch($"{Parent.PartName}/{PartIndex}");
+			if(placement == null)
+			{
+				EditorGUI.BeginDisabledGroup(true);
+				GUILayout.BeginHorizontal();
+				EditorGUILayout.IntField("Tex U:", 0);
+				EditorGUILayout.IntField("Tex V:", 0);
+				GUILayout.EndHorizontal();
+				EditorGUI.EndDisabledGroup();
+			}
+			else
+			{
+				EditorGUI.BeginDisabledGroup(true);
+				GUILayout.BeginHorizontal();
+				EditorGUILayout.IntField("Tex U:", placement.Origin.x);
+				EditorGUILayout.IntField("Tex V:", placement.Origin.y);
+				GUILayout.EndHorizontal();
+				EditorGUI.EndDisabledGroup();
+			}
+		}
 	}
 	#endif
 	public override bool CanDelete() { return true; }
 	public override bool CanDuplicate() { return true; }
-	public override void Delete()
+	public override ModelEditOperation Delete()
 	{
-		Parent?.DeleteChild(PartIndex);
+		return new TurboDeletePieceOperation(GetModel(), Parent.PartName, PartIndex);
 	}
-	public override void Duplicate()
+	public override ModelEditOperation Duplicate()
 	{
-		Parent?.DuplicateChild(PartIndex);
+		return new TurboDuplicatePieceOperation(GetModel(), Parent.PartName, PartIndex);
 	}
 
-	protected override void Update()
+	protected override void EditorUpdate()
 	{
-		base.Update();
+		base.EditorUpdate();
+
+		if (Piece == null)
+			return;
+
+		if (HasUnityTransformBeenChanged())
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboUnityTransformOperation(
+					GetModel(),
+					Parent.PartName,
+					PartIndex,
+					transform.localPosition,
+					transform.localRotation));	
+		}
+		if(!ModelEditingSystem.ShouldSkipRefresh(GetModel(), Parent.PartName, PartIndex))
+			CopyToUnityTransform();
+	}
+
+	private bool HasUnityTransformBeenChanged()
+	{
+		return !transform.localPosition.Approximately(Piece.Origin)
+			|| !transform.localEulerAngles.Approximately(Piece.Euler);
+	}
+
+	public void CopyToUnityTransform()
+	{
+		transform.localPosition = Piece.Origin;
+		transform.localEulerAngles = Piece.Euler;
+	}
+
+	public static readonly int[] NON_UV_TRIS = new int[] {
+		0,2,3,  0,3,1, // -z 0, 2, 3, 1, 
+		5,7,6,  5,6,4, // +z 5, 7, 6, 4,
+		4,6,2,  4,2,0, // -x 4, 6, 2, 0,
+		1,3,7,  1,7,5, // +x 1, 3, 7, 5,
+		7,3,2,  7,2,6, // +y 7, 3, 2, 6,
+		5,4,0,  5,0,1, // -y 5, 4, 0, 1 
+	};
+	public int[] GetTris() { return NON_UV_TRIS; }
+
+	public static readonly int[] VERTS_WITH_UV = new int[] {
+		0, 2, 3, 1,	 // -z face
+		5, 7, 6, 4,	 // +z face
+		4, 6, 2, 0,	 // -x face
+		1, 3, 7, 5,	 // +x face
+		7, 3, 2, 6,	 // +y face
+		5, 4, 0, 1,	 // -y face
+	};
+	public Vector3[] GenerateVertsForUV(Vector3[] inputVerts)
+	{
+		return new Vector3[] {
+			inputVerts[0], inputVerts[2], inputVerts[3], inputVerts[1],	// -z face
+			inputVerts[5], inputVerts[7], inputVerts[6], inputVerts[4], // +z face
+			inputVerts[4], inputVerts[6], inputVerts[2], inputVerts[0], // -x face
+			inputVerts[1], inputVerts[3], inputVerts[7], inputVerts[5], // +x face
+			inputVerts[7], inputVerts[3], inputVerts[2], inputVerts[6], // +y face
+			inputVerts[5], inputVerts[4], inputVerts[0], inputVerts[1], // -y face
+		};
+	}
+	public static readonly int[] TRIS_WITH_UV = new int[] {
+		0,1,2, 0,2,3,
+		4,5,6, 4,6,7,
+		8,9,10, 8,10,11,
+		12,13,14, 12,14,15,
+		16,17,18, 16,18,19,
+		20,21,22, 20,22,23,
+	};
+	public int[] GenerateTrisForUV() { return TRIS_WITH_UV; }
+	public static readonly Vector3[] NORMALS_WITH_UV = new Vector3[] {
+		Vector3.back, Vector3.back, Vector3.back, Vector3.back,
+		Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward,
+		Vector3.left, Vector3.left, Vector3.left, Vector3.left,
+		Vector3.right, Vector3.right, Vector3.right, Vector3.right,
+		Vector3.up, Vector3.up, Vector3.up, Vector3.up,
+		Vector3.down, Vector3.down, Vector3.down, Vector3.down,
+	};
+	public Vector3[] GenerateNormalsForUV() { return NORMALS_WITH_UV; }
+
+	public override void RefreshGeometry()
+	{
+		if (Piece == null)
+			return;
+
+		BoxUVPlacement placement = CurrentUVMap.GetPlacedPatch($"{Parent.PartName}/{PartIndex}");
+		int textureX = CurrentUVMap.MaxSize.x;
+		int textureY = CurrentUVMap.MaxSize.y;
+		int textureU = placement.Origin.x;
+		int textureV = placement.Origin.y;
+		Vector3[] v = Piece.GetVerts();
+		Mesh.SetVertices(GenerateVertsForUV(v));
+		List<Vector2> uvs = new List<Vector2>();
+		uvs.AddRange(Piece.GetUVS(EFace.north, textureU, textureV));
+		uvs.AddRange(Piece.GetUVS(EFace.south, textureU, textureV));
+		uvs.AddRange(Piece.GetUVS(EFace.west, textureU, textureV));
+		uvs.AddRange(Piece.GetUVS(EFace.east, textureU, textureV));
+		uvs.AddRange(Piece.GetUVS(EFace.up, textureU, textureV));
+		uvs.AddRange(Piece.GetUVS(EFace.down, textureU, textureV));
+		for (int i = 0; i < uvs.Count; i++)
+		{
+			uvs[i] = new Vector2(uvs[i].x / textureX, (textureY - uvs[i].y) / textureY);
+		}
+		Mesh.SetUVs(0, uvs);
+		Mesh.SetTriangles(GenerateTrisForUV(), 0);
+		Mesh.SetNormals(GenerateNormalsForUV());
+
+		MR.sharedMaterial = GetComponentInParent<ModelEditingRig>()?.SkinMaterial;
 	}
 
 	public void OnDrawGizmosSelected()
@@ -167,58 +304,13 @@ public class TurboPiecePreview : MinecraftModelPreview
 			center += verts[i];
 		center /= 8;
 
-		for(int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			Vector3 outwardDir = (verts[i] - center).normalized;
 			Gizmos.DrawLine(
 				transform.TransformPoint(verts[i]),
 				transform.TransformPoint(verts[i] + outwardDir * 1.0f));
 			Gizmos.DrawIcon(transform.TransformPoint(verts[i] + outwardDir * 1.2f), $"Vertex_{OldVertexOrder[i] + 1}.png");
-
 		}
-	}
-
-
-	public override Vector3 SetOrigin(Vector3 localPos)
-	{
-		Vector3 resultPos = base.SetOrigin(localPos);
-		if (Piece != null)
-			Piece.Origin = resultPos;
-		return resultPos;
-	}
-
-	public override Vector3 SetEuler(Vector3 localEuler)
-	{
-		Vector3 resultEuler = base.SetEuler(localEuler);
-		if (Piece != null)
-			Piece.Euler = resultEuler;
-		return resultEuler;
-	}
-
-	public void SetPos(Vector3 pos)
-	{
-		if(Piece != null)
-			Piece.Pos = pos;	
-	}
-
-	public void SetDim(Vector3 dim)
-	{
-		if (Piece != null)
-			Piece.Dim = dim;
-	}
-
-	public override void GenerateMesh()
-	{
-		if (Piece == null)
-			return;
-
-		int textureX = Parent.Parent.Rig.TextureX;
-		int textureY = Parent.Parent.Rig.TextureY;
-		Piece.ExportToMesh(Mesh, textureX, textureY);
-
-		MR.sharedMaterial = GetComponentInParent<ModelEditingRig>()?.GetSkinMaterial();
-
-		transform.localPosition = Piece.Origin;
-		transform.localEulerAngles = Piece.Euler;
 	}
 }

@@ -17,7 +17,44 @@ public class TurboRig : MinecraftModel
 	public List<TurboModel> Sections = new List<TurboModel>();
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
 	public List<AttachPoint> AttachPoints = new List<AttachPoint>();
+	#endregion
+	// --------------------------------------------------------------------------
 
+	public void TranslateAll(float x, float y, float z)
+	{
+		foreach (TurboModel section in Sections)
+			section.Operation_TranslateAll(x, y, z);
+
+		foreach (AttachPoint ap in AttachPoints)
+			ap.position -= new Vector3(x, y, z);
+	}
+	public void FlipAll()
+	{
+		foreach (TurboModel section in Sections)
+			section.Operation_DoMirror(false, true, true);
+	}
+
+	public override void CollectUnplacedUVs(List<BoxUVPatch> unplacedPatches)
+	{
+		foreach(TurboModel section in Sections)
+			foreach(TurboPiece piece in section.Pieces)
+			{
+				unplacedPatches.Add(new BoxUVPatch()
+				{
+					Key = $"{section.PartName}/{piece}",
+					BoxDims = piece.BoxUVDims,
+				});
+			}
+	}
+
+	// --------------------------------------------------------------------------
+	#region Model Sections
+	// --------------------------------------------------------------------------
+	public void GetSectionNames(List<string> names)
+	{
+		foreach (TurboModel section in Sections)
+			names.Add(section.PartName);
+	}
 	public TurboModel GetSection(string key)
 	{
 		TryGetSection(key, out TurboModel section);
@@ -34,7 +71,6 @@ public class TurboRig : MinecraftModel
 		section = null;
 		return false;
 	}
-
 	public TurboModel GetOrCreateSection(string key)
 	{
 		foreach (TurboModel section in Sections)
@@ -47,7 +83,7 @@ public class TurboRig : MinecraftModel
 		Sections.Add(newSection);
 		return newSection;
 	}
-	public TurboModel AddSection()
+	public TurboModel Operation_AddSection()
 	{
 		Sections.Add(new TurboModel()
 		{
@@ -55,8 +91,18 @@ public class TurboRig : MinecraftModel
 		});
 		return Sections[Sections.Count - 1];
 	}
-
-	public void DuplicateSection(string partName)
+	public void Operation_RenameSection(string oldName, string newName)
+	{
+		for (int i = 0; i < Sections.Count; i++)
+		{
+			if (Sections[i].PartName == oldName)
+			{
+				Sections[i].PartName = newName;
+				break;
+			}
+		}
+	}
+	public void Operation_DuplicateSection(string partName)
 	{
 		for (int i = 0; i < Sections.Count; i++)
 		{
@@ -69,7 +115,7 @@ public class TurboRig : MinecraftModel
 			}
 		}
 	}
-	public void DuplicateSection(int index)
+	public void Operation_DuplicateSection(int index)
 	{
 		if (0 <= index && index < Sections.Count)
 		{
@@ -78,24 +124,27 @@ public class TurboRig : MinecraftModel
 			Sections.Insert(index + 1, copy);
 		}
 	}
-
-	public void DeleteSection(string partName)
+	public void Operation_DeleteSection(string partName)
 	{
 		for (int i = Sections.Count - 1; i >= 0; i--)
 			if (Sections[i].PartName == partName)
 				Sections.RemoveAt(i);
 	}
-	public void DeleteSection(int index)
+	public void Operation_DeleteSection(int index)
 	{
 		Sections.RemoveAt(index);
 	}
+	#endregion
+	// --------------------------------------------------------------------------
 
+	// --------------------------------------------------------------------------
+	#region Animation Parameters
+	// --------------------------------------------------------------------------
 	public float GetFloatParamOrDefault(string key, float defaultValue)
 	{
 		TryGetFloatParam(key, out float f, defaultValue);
 		return f;
 	}
-
 	public bool TryGetFloatParam(string key, out float value, float defaultValue = 0.0f)
 	{
 		foreach (AnimationParameter parameter in AnimationParameters)
@@ -107,18 +156,15 @@ public class TurboRig : MinecraftModel
 		value = defaultValue;
 		return false;
 	}
-
 	public Vector3 GetVec3ParamOrDefault(string key, Vector3 defaultValue)
 	{
 		TryGetVec3Param(key, out Vector3 v, defaultValue);
 		return v;
 	}
-
 	public bool TryGetVec3Param(string key, out Vector3 value)
 	{
 		return TryGetVec3Param(key, out value, Vector3.zero);
 	}
-
 	public bool TryGetVec3Param(string key, out Vector3 value, Vector3 defaultValue)
 	{
 		foreach (AnimationParameter parameter in AnimationParameters)
@@ -130,7 +176,6 @@ public class TurboRig : MinecraftModel
 		value = defaultValue;
 		return false;
 	}
-
 	public void RemoveAnimParameter(string key)
 	{
 		for (int i = AnimationParameters.Count - 1; i >= 0; i--)
@@ -139,7 +184,12 @@ public class TurboRig : MinecraftModel
 				AnimationParameters.RemoveAt(i);
 		}
 	}
+	#endregion
+	// --------------------------------------------------------------------------
 
+	// --------------------------------------------------------------------------
+	#region Attachment Heirarchy
+	// --------------------------------------------------------------------------
 	public bool IsAttached(string parent, string child, bool defaultValue = false)
 	{
 		foreach (AttachPoint ap in AttachPoints)
@@ -149,28 +199,6 @@ public class TurboRig : MinecraftModel
 		}
 		return defaultValue;
 	}
-
-	public void TranslateAll(float x, float y, float z)
-	{
-		foreach (TurboModel section in Sections)
-			section.TranslateAll(x, y, z);
-
-		foreach (AttachPoint ap in AttachPoints)
-			ap.position -= new Vector3(x, y, z);
-	}
-
-	public void FlipAll()
-	{
-		foreach (TurboModel section in Sections)
-			section.DoMirror(false, true, true);
-	}
-
-	public void GetSectionNames(List<string> names)
-	{
-		foreach (TurboModel section in Sections)
-			names.Add(section.PartName);
-	}
-
 	public AttachPoint GetOrCreate(string name)
 	{
 		if (name == "body")
@@ -235,85 +263,8 @@ public class TurboRig : MinecraftModel
 		if (ap != null)
 			ap.position = offset;
 	}
-	public override void GenerateUVPatches(Dictionary<string, UVPatch> patches)
-	{
-		foreach (TurboModel section in Sections)
-		{
-			for (int i = 0; i < section.Pieces.Count; i++)
-			{
-				if (section.Pieces[i].TryGenerateUVPatch(out UVPatch patch))
-				{
-					patches.Add($"{section.PartName}/{i}", patch);
-				}
-			}
-		}
-	}
-	public override void ExportUVMap(Dictionary<string, UVMap.UVPlacement> placements)
-	{
-		foreach (TurboModel section in Sections)
-		{
-			for (int i = 0; i < section.Pieces.Count; i++)
-			{
-				if (section.Pieces[i].TryGetUVPlacement(out UVMap.UVPlacement placement))
-				{
-					placements.Add($"{section.PartName}/{i}", placement);
-				}
-			}
-		}
-	}
-	public override void ApplyUVMap(UVMap map)
-	{
-		TextureX = map.MaxSize.x;
-		TextureY = map.MaxSize.y;
-		foreach(var kvp in map.Placements)
-		{
-			string[] keys = kvp.Key.Split('/');
-			if(keys.Length == 2)
-			{
-				if (TryGetSection(keys[0], out TurboModel section))
-				{
-					if (int.TryParse(keys[1], out int index))
-					{
-						TurboPiece piece = section.GetPiece(index);
-						if (piece != null)
-							piece.SetUVPlacement(kvp.Value);
-					}
-				}
-
-			}
-		}
-	}
-	public override bool IsUVMapSame(MinecraftModel other)
-	{
-		if (other is TurboRig otherRig)
-		{
-			if (Sections.Count != otherRig.Sections.Count)
-				return false;
-			for (int i = 0; i < Sections.Count; i++)
-			{
-				if (!Sections[i].IsUVMapSame(otherRig.Sections[i]))
-					return false;
-			}
-		}
-
-		return true;
-	}
-	public Vector2Int GetMaxUV()
-	{
-		Vector2Int max = Vector2Int.zero;
-		foreach (TurboModel section in Sections)
-		{
-			Vector2Int sectionMax = section.GetMaxUV();
-			if (sectionMax.x > max.x)
-				max.x = sectionMax.x;
-			if (sectionMax.y > max.y)
-				max.y = sectionMax.y;
-		}
-		return max;
-	}
-
 	#endregion
-	// --------------------------------------------------------------------------
+	// --------------------------------------------------------------------------	
 
 	// --------------------------------------------------------------------------
 	#region Poses
@@ -420,7 +371,6 @@ public class TurboRig : MinecraftModel
 				transform.Position = pos;
 		}
 	}
-
 	public void SetTransform(ItemTransformType type, Vector3 pos, Quaternion rot, Vector3 scale)
 	{
 		foreach (ItemTransform transform in Transforms)
@@ -469,20 +419,22 @@ public class TurboRig : MinecraftModel
 
 		using (builder.Tabulation("turboelements"))
 		{
-			foreach (TurboPiece wrapper in section.Pieces)
+			for (int n = 0; n < section.Pieces.Count; n++)
 			{
+				TurboPiece piece = section.Pieces[n];
+				BoxUVPlacement placement = BakedUVMap.GetPlacedPatch($"{section.PartName}/{n}");
 				using (builder.TableEntry())
 				{
 					using (builder.Tabulation("verts"))
 					{
-						Vector3[] verts = wrapper.GetVerts();
+						Vector3[] verts = piece.GetVerts();
 						for (int i = 0; i < 8; i++)
 						{
 							builder.CurrentTable.Add(JSONHelpers.ToJSON(verts[i]));
 						}
 					}
-					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(wrapper.Euler));
-					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(wrapper.Origin - origin));
+					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(piece.Euler));
+					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(piece.Origin - origin));
 					using (builder.Indentation("faces"))
 					{
 						System.Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
@@ -491,7 +443,7 @@ public class TurboRig : MinecraftModel
 							{
 								using (builder.Tabulation("uv"))
 								{
-									int[] uvs = wrapper.GetIntUV(wrapper.textureU, wrapper.textureV, face);
+									int[] uvs = wrapper.GetIntUV(placement.Origin.x, placement.Origin.y, face);
 									builder.CurrentTable.Add((float)uvs[0] / texX);
 									builder.CurrentTable.Add((float)uvs[1] / texY);
 									builder.CurrentTable.Add((float)uvs[2] / texX);
@@ -505,12 +457,12 @@ public class TurboRig : MinecraftModel
 							}
 						};
 
-						buildUVs(wrapper, "north", EFace.north, TextureX, TextureY);
-						buildUVs(wrapper, "east", EFace.east, TextureX, TextureY);
-						buildUVs(wrapper, "south", EFace.south, TextureX, TextureY);
-						buildUVs(wrapper, "west", EFace.west, TextureX, TextureY);
-						buildUVs(wrapper, "up", EFace.up, TextureX, TextureY);
-						buildUVs(wrapper, "down", EFace.down, TextureX, TextureY);
+						buildUVs(piece, "north", EFace.north, TextureX, TextureY);
+						buildUVs(piece, "east", EFace.east, TextureX, TextureY);
+						buildUVs(piece, "south", EFace.south, TextureX, TextureY);
+						buildUVs(piece, "west", EFace.west, TextureX, TextureY);
+						buildUVs(piece, "up", EFace.up, TextureX, TextureY);
+						buildUVs(piece, "down", EFace.down, TextureX, TextureY);
 					}
 				}
 			}
