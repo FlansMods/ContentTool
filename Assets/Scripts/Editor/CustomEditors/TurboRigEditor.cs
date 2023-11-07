@@ -37,12 +37,12 @@ public class TurboRigEditor : MinecraftModelEditor
 		List<string> existingTextures = new List<string>();
 		if (mcModel is TurboRig turboRig)
 		{
-			EditorGUI.BeginDisabledGroup(rig == null);
-			if(GUILayout.Button("Re-apply UVs to Preview"))
-			{
-				rig.SelectSkin(rig.SelectedSkin);
-			}
-			EditorGUI.EndDisabledGroup();
+			//EditorGUI.BeginDisabledGroup(rig == null);
+			//if(GUILayout.Button("Re-apply UVs to Preview"))
+			//{
+			//	rig.SelectSkin(rig.SelectedSkin);
+			//}
+			//EditorGUI.EndDisabledGroup();
 
 			// Draw a box for each texture
 			int indexToDelete = -1;
@@ -171,14 +171,16 @@ public class TurboRigEditor : MinecraftModelEditor
 				{
 					newSkinName += "_";
 				}
+				string fullPath = $"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png";
 
 				UVMap bakedMap = turboRig.BakedUVMap;
 				Texture2D newSkinTexture = new Texture2D(bakedMap.MaxSize.x, bakedMap.MaxSize.y);
 				newSkinTexture.name = newSkinName;
 				SkinGenerator.CreateDefaultTexture(bakedMap, newSkinTexture);
-				File.WriteAllBytes($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png", newSkinTexture.EncodeToPNG());
+				//AssetDatabase.CreateAsset(newSkinTexture, fullPath);
+				File.WriteAllBytes(fullPath, newSkinTexture.EncodeToPNG());
 				AssetDatabase.Refresh();
-				newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png");
+				newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
 				turboRig.Textures.Add(new MinecraftModel.NamedTexture()
 				{
 					Key = newSkinName,

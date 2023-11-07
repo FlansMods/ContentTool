@@ -322,12 +322,18 @@ public abstract class MinecraftModelEditor : Editor
 			{
 				SubPieceFoldouts.Add($"{parentPath}/{node.name}");
 			}
+
+			if (node.CanAdd())
+				if (GUILayout.Button(FlanStyles.AddEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+					ModelEditingSystem.ApplyOperation(node.Add());
 		}
 		else
 		{
 			//if (ModelSubEditors.ContainsKey(path))
 			//	ModelSubEditors.Remove(path);
 		}
+
+
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------
@@ -409,7 +415,7 @@ public abstract class MinecraftModelEditor : Editor
 					Selection.SetActiveObjectWithContext(pack, target);
 				}
 
-				if (RelatedDefinitions == null)
+				if (RelatedDefinitions == null || RelatedTextures == null || LinkedTextures == null)
 				{
 					RefreshMatches(pack, resLoc, mcModel);
 				}

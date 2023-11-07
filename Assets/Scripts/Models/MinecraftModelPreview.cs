@@ -17,6 +17,14 @@ public abstract class MinecraftModelPreview : MonoBehaviour
 	{
 		return Model;
 	}
+	public MinecraftModelPreview DuplicatePreviewObject()
+	{
+		MinecraftModelPreview clone = Instantiate(this);
+		clone._Mesh = null;
+		clone._MF = null;
+		clone._MR = null;
+		return clone;
+	}
 	// -------------------------------------------------------------------
 	#region Weird wrappers for required components
 	// -------------------------------------------------------------------

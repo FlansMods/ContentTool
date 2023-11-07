@@ -169,6 +169,7 @@ public static class JavaModelImporter
 			Debug.LogWarning($"Model {rig.name} had unapplied UV mappings after import");
 			rig.BakedUVMap.AutoPlacePatches();
 		}
+		rig.BakedUVMap.CalculateBounds();
 
 		return rig;
 	}

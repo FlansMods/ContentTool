@@ -8,7 +8,11 @@ using UnityEngine;
 [CustomEditor(typeof(ContentPack))]
 public class ContentPackEditor : Editor
 {
-    public override void OnInspectorGUI()
+	public bool VerificationFoldout = false;
+	public bool DebugFoldout = false;
+	public bool QuickActionsFoldout = true;
+
+	public override void OnInspectorGUI()
 	{
 		ContentPack pack = (ContentPack)target;
 		if(pack != null)
@@ -33,9 +37,26 @@ public class ContentPackEditor : Editor
 					verifications.Add(Verification.Success($"Model {model.name} has no outstanding issues."));
 				multiVerify.Add(model, verifications);
 			}
-			GUIVerify.VerificationsBox(multiVerify);
 
-			if(GUILayout.Button("Export"))
+			GUILayout.BeginHorizontal();
+			VerificationFoldout = EditorGUILayout.Foldout(VerificationFoldout, "Verification");
+			if(!VerificationFoldout)
+			{
+				GUIVerify.VerificationIcon(multiVerify);
+			}
+			GUILayout.EndHorizontal();
+			if (VerificationFoldout)
+			{
+				GUIVerify.VerificationsBox(multiVerify);
+			}
+
+			//QuickActionsFoldout = EditorGUILayout.Foldout(QuickActionsFoldout, "Quick Actions");
+			if (QuickActionsFoldout)
+			{
+				
+			}
+
+			if (GUILayout.Button("Export"))
 			{
 				ContentManager importExport = FindObjectOfType<ContentManager>();
 				if(importExport != null)
@@ -44,8 +65,12 @@ public class ContentPackEditor : Editor
 				}
 			}
 		}
-		base.OnInspectorGUI();
 
+		DebugFoldout = EditorGUILayout.Foldout(DebugFoldout, "Debug View");
+		if (DebugFoldout)
+		{
+			base.OnInspectorGUI();
+		}
 
 	}
 }

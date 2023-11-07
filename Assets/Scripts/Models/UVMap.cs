@@ -56,9 +56,9 @@ public class UVMap
 	{
 		BoxUVPlacement existingPlacement = GetPlacedPatch(key);
 		BoxUVPatch existingUnplacedPatch = GetUnplacedPatch(key);
-		if (existingPlacement != null)
+		if (existingPlacement.Valid)
 			existingPlacement.Origin = uvCoords;
-		else if(existingUnplacedPatch != null)
+		else if(existingUnplacedPatch.Valid)
 		{
 			PlacedBoxes.Add(new BoxUVPlacement()
 			{

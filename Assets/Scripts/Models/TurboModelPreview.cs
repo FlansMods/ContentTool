@@ -37,8 +37,13 @@ public class TurboModelPreview : MinecraftModelPreview
 				yield return piecePreview;
 		}
 	}
+	public override bool CanAdd() { return true; }
 	public override bool CanDelete() { return true; }
 	public override bool CanDuplicate() { return true; }
+	public override ModelEditOperation Add()
+	{
+		return new TurboAddNewPieceOperation(GetModel(), PartName);
+	}
 	public override ModelEditOperation Delete()
 	{
 		return new TurboDeleteSectionOperation(GetModel(), PartName);

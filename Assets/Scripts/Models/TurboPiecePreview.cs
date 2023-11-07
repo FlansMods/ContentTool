@@ -41,7 +41,6 @@ public class TurboPiecePreview : MinecraftModelPreview
 			return GetComponentInParent<ModelEditingRig>()?.GetPreviewUVMap();
 		}
 	}
-
 	private static readonly int[] OldVertexOrder = new int[] {
 		7, // V1 = +x, +y, +z
 		6, // V2 = -x, +y, +z

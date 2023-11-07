@@ -86,9 +86,10 @@ public class TurboRig : MinecraftModel
 	}
 	public TurboModel Operation_AddSection()
 	{
+		string newPartName = Sections.Count == 0 ? "body" : $"new_{Sections.Count}";
 		Sections.Add(new TurboModel()
 		{
-			PartName = $"new_{Sections.Count}"
+			PartName = newPartName
 		});
 		return Sections[Sections.Count - 1];
 	}
@@ -547,6 +548,27 @@ public class TurboRig : MinecraftModel
 				() =>
 				{
 					Textures[0].Key = "default";
+				}));
+			}
+		}
+		foreach (AnimationParameter param in AnimationParameters)
+		{
+			if(param.key.EndsWith("_attach_point"))
+			{
+				string apName = param.key.Substring(0, param.key.Length - 13);
+				verifications.Add(Verification.Failure($"{apName} AP is stored incorrectly as an AnimationParameter",
+				() =>
+				{
+					if(TryGetVec3Param($"{apName}_attach_point", out Vector3 value))
+					{
+						AttachPoints.Add(new AttachPoint()
+						{
+							name = apName,
+							attachedTo = "body",
+							position = value,
+						});
+						RemoveAnimParameter($"{apName}_attach_point");
+					}
 				}));
 			}
 		}

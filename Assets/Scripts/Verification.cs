@@ -56,6 +56,22 @@ public class Verification
 		};
 	}
 
+	public static VerifyType GetWorstState(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
+	{
+		VerifyType result = VerifyType.Pass;
+		foreach (var kvp in multiVerify)
+		{
+			foreach (Verification v in kvp.Value)
+			{
+				if (v.Type == VerifyType.Fail)
+					return VerifyType.Fail;
+				if (v.Type == VerifyType.Neutral)
+					result = VerifyType.Neutral;
+			}
+		}
+		return result;
+	}
+
 	public static VerifyType GetWorstState(List<Verification> verifications)
 	{
 		VerifyType result = VerifyType.Pass;
@@ -96,6 +112,23 @@ public class Verification
 		foreach (Verification v in verifications)
 			if (v.Func != null)
 				v.Func();
+	}
+	public static int CountQuickFixes(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
+	{
+		int count = 0;
+		foreach(var kvp in multiVerify)
+			foreach (Verification v in kvp.Value)
+				if (v.Func != null)
+					count++;
+		return count;
+	}
+
+	public static void ApplyAllQuickFixes(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
+	{
+		foreach (var kvp in multiVerify)
+			foreach (Verification v in kvp.Value)
+				if (v.Func != null)
+					v.Func();
 	}
 
 	public override string ToString()
@@ -203,6 +236,27 @@ public static class GUIVerify
 		}
 	}
 
+	public static void VerificationIcon(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
+	{
+		VerifyType type = Verification.GetWorstState(multiVerify);
+		int quickFixes = Verification.CountQuickFixes(multiVerify);
+		Texture2D tex = TickTexture;
+		switch (type)
+		{
+			case VerifyType.Pass: tex = TickTexture; break;
+			case VerifyType.Neutral: tex = NeutralTexture; break;
+			case VerifyType.Fail: tex = CrossTexture; break;
+		}
+		if (quickFixes > 0)
+		{
+			if (GUILayout.Button(tex, STATUS_ICON_OPTIONS))
+				Verification.ApplyAllQuickFixes(multiVerify);
+		}
+		else
+		{
+			GUILayout.Label(tex, STATUS_ICON_OPTIONS);
+		}
+	}
 	private static void Internal_VerificationsHeader()
 	{
 		GUILayout.BeginHorizontal();

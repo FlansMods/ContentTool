@@ -13,6 +13,66 @@ public class MultiModel : MinecraftModel
 	public MinecraftModel FixedModel;
 	public MinecraftModel GUIModel;
 
+	public MinecraftModel GetModel(ItemTransformType type)
+	{
+		 switch(type)
+		 {
+			case ItemTransformType.HEAD: 
+				return HeadModel;
+			case ItemTransformType.THIRD_PERSON_LEFT_HAND:
+			case ItemTransformType.THIRD_PERSON_RIGHT_HAND:
+				return ThirdPersonModel;
+			case ItemTransformType.FIRST_PERSON_LEFT_HAND:
+			case ItemTransformType.FIRST_PERSON_RIGHT_HAND:
+				return FirstPersonModel;
+			case ItemTransformType.GUI:
+				return GUIModel;
+			case ItemTransformType.FIXED:
+				return FixedModel;
+			case ItemTransformType.GROUND:
+			default:
+				return GroundModel;
+		}
+	}
+	public void SetModel(ItemTransformType type, MinecraftModel model)
+	{
+		if (FirstPersonModel == null && ThirdPersonModel == null && GUIModel == null
+		&& FixedModel == null && GroundModel == null && HeadModel == null)
+		{
+			HeadModel = model;
+			ThirdPersonModel = model;
+			FirstPersonModel = model;
+			GUIModel = model;
+			FixedModel = model;
+			GroundModel = model;
+		}
+
+		switch (type)
+		{
+			case ItemTransformType.HEAD:
+				HeadModel = model;
+				break;
+			case ItemTransformType.THIRD_PERSON_LEFT_HAND:
+			case ItemTransformType.THIRD_PERSON_RIGHT_HAND:
+				ThirdPersonModel = model;
+				break;
+			case ItemTransformType.FIRST_PERSON_LEFT_HAND:
+			case ItemTransformType.FIRST_PERSON_RIGHT_HAND:
+				FirstPersonModel = model;
+				break;
+			case ItemTransformType.GUI:
+				GUIModel = model;
+				break;
+			case ItemTransformType.FIXED:
+				FixedModel = model;
+				break;
+			case ItemTransformType.GROUND:
+				GroundModel = model;
+				break;
+		}
+	}
+
+
 	private List<MinecraftModel> ModelSet = new List<MinecraftModel>();
 	private void RefreshModelSet()
 	{
@@ -48,5 +108,32 @@ public class MultiModel : MinecraftModel
 		RefreshModelSet();
 		foreach (MinecraftModel model in ModelSet)
 			yield return model;
+	}
+
+	public override void GetVerifications(List<Verification> verifications)
+	{
+		base.GetVerifications(verifications);
+
+		if (FirstPersonModel == null && ThirdPersonModel == null && GUIModel == null
+			&& FixedModel == null && GroundModel == null && HeadModel == null)
+		{
+			verifications.Add(Verification.Failure("MultiModel has no models at all!"));
+		}
+		else
+		{
+			if (FirstPersonModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no First Person Model"));
+			if (ThirdPersonModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no Third Person Model"));
+			if (GUIModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no GUI Model"));
+			if (FixedModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no Fixed Model"));
+			if (GroundModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no Ground Model"));
+			if (HeadModel == null)
+				verifications.Add(Verification.Neutral("MultiModel has no Head Model"));
+		}
+
 	}
 }

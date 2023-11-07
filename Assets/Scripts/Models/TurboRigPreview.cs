@@ -26,6 +26,11 @@ public class TurboRigPreview : MinecraftModelPreview
 			}
 		}
 	}
+	public override bool CanAdd() { return true; }
+	public override ModelEditOperation Add()
+	{
+		return new TurboAddNewSectionOperation(GetModel());
+	}
 
 	// -------------------------------------------------------------------------------
 	#region Attach Point Management

@@ -46,11 +46,16 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		if(ExpectsModel())
 		{
 			ResourceLocation resLoc = this.GetLocation();
-			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{resLoc.IDWithoutPrefixes()}.asset";
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/item/{resLoc.IDWithoutPrefixes()}.asset";
 			MinecraftModel mcModel = AssetDatabase.LoadAssetAtPath<MinecraftModel>(modelPath);
 			if (mcModel == null)
 				verifications.Add(Verification.Failure(
-					$"Definition {name} does not have a matching model at {modelPath}"));
+					$"Definition {name} does not have a matching model at {modelPath}",
+					() => {
+						MultiModel multiModel = CreateInstance<MultiModel>();
+						multiModel.name = $"{resLoc.IDWithoutPrefixes()}";
+						AssetDatabase.CreateAsset(multiModel, modelPath);
+					}));
 		}
 	}
 

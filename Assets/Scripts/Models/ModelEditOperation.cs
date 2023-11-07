@@ -42,6 +42,18 @@ public abstract class TurboRigEditOperation : ModelEditOperation<TurboRig>
 		}
 	}
 }
+public class TurboAddNewSectionOperation : TurboRigEditOperation
+{
+	public TurboAddNewSectionOperation(MinecraftModel model)
+		: base(model) { }
+	public override string ID { get { return "TURBO_SECTION_ADD"; } }
+	public override string UndoMessage { get { return "Add TurboSection"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		RootModel.Operation_AddSection();
+	}
+}
 public class TurboAttachPointAddOperation : TurboRigEditOperation
 {
 	public TurboAttachPointAddOperation(MinecraftModel model)
@@ -250,7 +262,8 @@ public class TurboAddNewPieceOperation : TurboSectionEditOperation
 	}
 	protected override void ApplyToSectionPreview(TurboModelPreview sectionPreview)
 	{
-		// Nothing to do to the section
+		TurboPiecePreview piecePreview = sectionPreview.GetPiecePreview(Section.Pieces.Count - 1);
+		piecePreview.RefreshGeometry();
 	}
 }
 #endregion
@@ -372,11 +385,12 @@ public class TurboDuplicatePieceOperation : TurboPieceEditOperation
 		Transform existing = modelPreview.transform.Find($"{PieceIndex}");
 		if (existing != null)
 		{
-			Transform insert = UnityEngine.Object.Instantiate(existing);
+			TurboPiecePreview insert = (TurboPiecePreview)existing.GetComponent<TurboPiecePreview>().DuplicatePreviewObject();
 			insert.GetComponent<TurboPiecePreview>().PartIndex = PieceIndex + 1;
 			insert.name = $"{PieceIndex + 1}";
-			insert.SetParent(modelPreview.transform);
-			insert.SetSiblingIndex(PieceIndex + 1);
+			insert.transform.SetParent(modelPreview.transform);
+			insert.CopyToUnityTransform();
+			insert.transform.SetSiblingIndex(PieceIndex + 1);
 		}
 	}
 	protected override void ApplyToPiecePreview(TurboPiecePreview piecePreview)
