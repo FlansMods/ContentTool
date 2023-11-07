@@ -7,8 +7,6 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class TurboPiece
 {
-	public int textureU, textureV;
-
 	public Vector3 Pos = Vector3.zero;
 	public Vector3 Dim = Vector3.one;
 	public Vector3 Origin = Vector3.zero;
