@@ -36,12 +36,13 @@ public class TurboRig : MinecraftModel
 
 	public override void CollectUnplacedUVs(List<BoxUVPatch> unplacedPatches)
 	{
-		foreach(TurboModel section in Sections)
-			foreach(TurboPiece piece in section.Pieces)
-			{
+		foreach (TurboModel section in Sections)
+			for (int i = 0; i < section.Pieces.Count; i++)
+			{ 
+				TurboPiece piece = section.Pieces[i];	
 				unplacedPatches.Add(new BoxUVPatch()
 				{
-					Key = $"{section.PartName}/{piece}",
+					Key = $"{section.PartName}/{i}",
 					BoxDims = piece.BoxUVDims,
 				});
 			}

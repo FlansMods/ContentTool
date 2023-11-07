@@ -21,9 +21,13 @@ public class TurboRigEditor : MinecraftModelEditor
 			if (rig.TemporaryUVMap != null)
 			{
 				UVMapField("Temporary UV Map", rig.TemporaryUVMap);
-				if(GUILayout.Button("Apply"))
+				if (GUILayout.Button("Apply"))
 				{
-					
+
+				}
+				if (rig.DebugTexture != null)
+				{
+					RenderTextureAutoWidth(rig.DebugTexture);
 				}
 			}
 		}

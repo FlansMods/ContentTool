@@ -88,10 +88,9 @@ public static class ModelEditingSystem
 				{
 					// If this is being previewed, we need to apply a temporary texture and UV map
 					newMap.AutoPlacePatches();
-                    op.Model.ApplyUVMap(newMap);
 					foreach (ModelEditingRig rig in GetRigsPreviewing(op.Model))
 					{
-						rig.OnUVMapChange();
+						rig.SetPreivewUVMap(newMap);
 					}
 				}
 				// Otherwise, we are editing from the Project window, we should either warn or instantly apply the UV edits (dangerous)

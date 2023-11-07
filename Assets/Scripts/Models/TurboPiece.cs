@@ -83,14 +83,6 @@ public class TurboPiece
 	// ---------------------------------------------------------------------------
 	#region UV-Mapping information, (not actually stored in the TurboPiece)
 	// ---------------------------------------------------------------------------
-	public bool TryGenerateUVPatch(out UVPatch patch)
-	{
-		patch = new BoxUVPatch()
-		{
-			BoxDims = BoxUVDims,
-		};
-		return true;
-	}
 	public Vector2Int BoxUVSize
 	{
 		get

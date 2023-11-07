@@ -53,19 +53,25 @@ public static class UVCalculator
 	public static void AutoPlacePatch(this UVMap map, BoxUVPatch patch)
 	{
 		Vector2Int pos = GetAutoPlacementForPatch(map, patch);
-		map.PlacedBoxes.Add(new BoxUVPlacement()
+		BoxUVPlacement placement = new BoxUVPlacement()
 		{
 			Patch = patch,
 			Origin = pos,
-		});
+		};
+		map.PlacedBoxes.Add(placement);
+		if (placement.Bounds.xMax > map.MaxSize.x)
+			map.MaxSize.x = Mathf.NextPowerOfTwo(placement.Bounds.xMax);
+		if (placement.Bounds.yMax > map.MaxSize.y)
+			map.MaxSize.y = Mathf.NextPowerOfTwo(placement.Bounds.yMax);
 	}
 
 	public static Vector2Int GetAutoPlacementForPatch(this UVMap map, BoxUVPatch patch)
 	{
 		Queue<Vector2Int> possiblePositions = new Queue<Vector2Int>();
 		possiblePositions.Enqueue(Vector2Int.zero);
+		Queue<Vector2Int> expandingPositions = new Queue<Vector2Int>();
 
-		while (possiblePositions.Count > 0)
+		while (possiblePositions.Count > 0 || expandingPositions.Count > 0)
 		{
 			// Test this position for overlaps
 			Vector2Int testPos = possiblePositions.Dequeue();
@@ -78,9 +84,20 @@ public static class UVCalculator
 			}
 			else
 			{
-				possiblePositions.Enqueue(new Vector2Int(testPos.x, hintPosY));
-				possiblePositions.Enqueue(new Vector2Int(hintPosX, testPos.y));
+				if (hintPosX + patch.BoundingSize.x > map.MaxSize.x)
+					expandingPositions.Enqueue(new Vector2Int(hintPosX, testPos.y));
+				else
+					possiblePositions.Enqueue(new Vector2Int(hintPosX, testPos.y));
+
+				if (hintPosY + patch.BoundingSize.y > map.MaxSize.y)
+					expandingPositions.Enqueue(new Vector2Int(testPos.x, hintPosY));
+				else
+					possiblePositions.Enqueue(new Vector2Int(testPos.x, hintPosY));
 			}
+
+			// No possibilities left, move on to expanding possibilities
+			if (possiblePositions.Count == 0 && expandingPositions.Count > 0)
+				possiblePositions.Enqueue(expandingPositions.Dequeue());
 		}
 
 		Debug.LogError($"Failed to place UV patch {patch.Key}");

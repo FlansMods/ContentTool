@@ -279,14 +279,19 @@ public class ModelEditingRig : MonoBehaviour
 		SelectedSkin = "debug";
 		SkinMaterial.SetTexture("_MainTex", DebugTexture);
 	}
-	public void OnUVMapChange()
+	public void SetPreivewUVMap(UVMap temporaryUVs)
 	{
+		TemporaryUVMap = temporaryUVs;
+
 		// If we are live-editing UVs, we don't want to rip our textures up, so swap to debug
 		if(SelectedSkin != "debug")
 		{
 			SelectDebugTexture();
 		}
 		RegenerateDebugTexture();
+
+		foreach (MinecraftModelPreview subPreview in GetComponentsInChildren<MinecraftModelPreview>())
+			subPreview.RefreshGeometry();
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------------

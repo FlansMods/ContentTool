@@ -24,15 +24,15 @@ public static class SkinGenerator
 				foreach (BoxUVPlacement placement in from.PlacedBoxes)
 				{
 					RectInt area = placement.Bounds;
-					if (area.xMin + area.width >= textures[i].width
-					|| area.yMin + area.height >= textures[i].height)
+					if (area.xMin + area.width > textures[i].width
+					|| area.yMin + area.height > textures[i].height)
 						Debug.LogError($"Attempting to acquire invalid pixel patch of size {area} from texture of dimensions {textures[i].width}x{textures[i].height}");
 					else
 					{
 						pxPatches.Add(placement.Key, new PixelPatch()
 						{
 							Size = placement.Patch.BoundingSize,
-							Pixels = textures[i].GetPixels(area.xMin, area.yMin, area.width, area.height),
+							Pixels = GetPixels(textures[i], area.xMin, area.yMin, area.width, area.height),
 						});
 					}
 				}
@@ -49,7 +49,7 @@ public static class SkinGenerator
 						{
 							PixelPatch newPatch = placement.Patch.ConvertPixelsFromExistingPatch(srcPlacement.Patch, src);
 							RectInt bounds = placement.Bounds;
-							textures[i].SetPixels(bounds.xMin, bounds.yMin, bounds.width, bounds.height, newPatch.Pixels);
+							SetPixels(textures[i], bounds.xMin, bounds.yMin, bounds.width, bounds.height, newPatch.Pixels);
 						}
 					}
 					else
@@ -68,6 +68,16 @@ public static class SkinGenerator
 		}
 	}
 
+	private static void SetPixels(Texture2D texture, int x, int y, int w, int h, Color[] px)
+	{
+		texture.SetPixels(x, texture.height - y - h, w, h, px);
+	}
+
+	private static Color[] GetPixels(Texture2D texture, int x, int y, int w, int h)
+	{
+		return texture.GetPixels(x, texture.height - y - h, w, h);
+	}
+
 	public static void CreateDefaultTexture(UVMap map, Texture2D texture)
 	{
 		if (map == null)
@@ -76,7 +86,7 @@ public static class SkinGenerator
 		if (texture.width != map.MaxSize.x || texture.height != map.MaxSize.y)
 			texture.Reinitialize(map.MaxSize.x, map.MaxSize.y);
 
-		FillTexture(texture, 0, 0, texture.width, texture.height, Color.clear, Color.clear);
+		FillTexture(texture, 0, texture.width, 0, texture.height, Color.black, Color.black);
 		foreach (BoxUVPlacement placement in map.PlacedBoxes)
 		{
 			int x = placement.Patch.BoxDims.x;
