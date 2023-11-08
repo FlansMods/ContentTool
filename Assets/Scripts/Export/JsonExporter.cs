@@ -87,7 +87,7 @@ public static class JsonExporter
 		try
 		{
 			string texturePath = AssetDatabase.GetAssetPath(texture);
-			System.IO.File.Copy(texturePath, file);
+			System.IO.File.Copy(texturePath, file, true);
 			Debug.Log($"Exported {texture} to {file}");
 			return true;
 		}

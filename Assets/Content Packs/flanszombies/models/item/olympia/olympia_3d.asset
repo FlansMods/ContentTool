@@ -18,7 +18,39 @@ MonoBehaviour:
       Namespace: flanszombies
       ID: olympia
     Texture: {fileID: 0}
-  Transforms: []
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: -0.009348768, y: -0.01923077, z: -0.009348767}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 1.2307693, y: 1.2307693, z: 1.2307693}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
@@ -79,9 +111,7 @@ MonoBehaviour:
   Sections:
   - PartName: body
     Pieces:
-    - textureU: 0
-      textureV: 0
-      Pos: {x: -5, y: 2, z: -1}
+    - Pos: {x: -5, y: 2, z: -1}
       Dim: {x: 2, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -94,9 +124,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 8
-      textureV: 0
-      Pos: {x: -3, y: 2, z: -1}
+    - Pos: {x: -3, y: 2, z: -1}
       Dim: {x: 4, y: 3, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -109,9 +137,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: 0, y: -0.5, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 0
-      textureV: 5
-      Pos: {x: 1, y: 2, z: -1}
+    - Pos: {x: 1, y: 2, z: -1}
       Dim: {x: 2, y: 1, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -124,9 +150,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 10
-      textureV: 5
-      Pos: {x: 1, y: 3, z: -1}
+    - Pos: {x: 1, y: 3, z: -1}
       Dim: {x: 1, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -139,9 +163,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 30
-      textureV: 0
-      Pos: {x: -1.5, y: 4, z: -0.5}
+    - Pos: {x: -1.5, y: 4, z: -0.5}
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -154,9 +176,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 20
-      textureV: 2
-      Pos: {x: -9, y: 1, z: -1}
+    - Pos: {x: -9, y: 1, z: -1}
       Dim: {x: 4, y: 3, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -171,9 +191,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
   - PartName: break_action
     Pieces:
-    - textureU: 0
-      textureV: 12
-      Pos: {x: 3, y: 2, z: -1}
+    - Pos: {x: 3, y: 2, z: -1}
       Dim: {x: 8, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -186,9 +204,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 0
-      textureV: 8
-      Pos: {x: 2, y: 4, z: -0.5}
+    - Pos: {x: 2, y: 4, z: -0.5}
       Dim: {x: 15, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -201,9 +217,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 0
-      textureV: 10
-      Pos: {x: 2, y: 2.9, z: -0.5}
+    - Pos: {x: 2, y: 2.9, z: -0.5}
       Dim: {x: 15, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -216,9 +230,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 20
-      textureV: 13
-      Pos: {x: 2.25, y: 3.5, z: -0.25}
+    - Pos: {x: 2.25, y: 3.5, z: -0.25}
       Dim: {x: 14.5, y: 2, z: 0.5}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -233,9 +245,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
   - PartName: ammo_0
     Pieces:
-    - textureU: 20
-      textureV: 0
-      Pos: {x: 1.9, y: 3, z: -0.4}
+    - Pos: {x: 1.9, y: 3, z: -0.4}
       Dim: {x: 3, y: 0.8, z: 0.8}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -248,9 +258,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 20
-      textureV: 0
-      Pos: {x: 1.9, y: 4.1, z: -0.4}
+    - Pos: {x: 1.9, y: 4.1, z: -0.4}
       Dim: {x: 3, y: 0.8, z: 0.8}
       Origin: {x: 0, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}

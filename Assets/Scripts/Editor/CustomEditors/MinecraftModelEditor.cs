@@ -489,7 +489,7 @@ public abstract class MinecraftModelEditor : Editor
 		int indexToDelete = -1, indexToDuplicate = -1;
 		for(int i = 0; i < model.Transforms.Count; i++)
 		{
-			MinecraftModel.ItemTransform itemTransform = model.Transforms[i];
+			ItemTransform itemTransform = model.Transforms[i];
 			bool foldout = PoseFoldouts.Contains(i);
 			GUILayout.BeginHorizontal();
 			bool isAppliedToRig = rig != null && IsCurrentlyApplied(rig, itemTransform.Type);
@@ -592,8 +592,8 @@ public abstract class MinecraftModelEditor : Editor
 			case ItemTransformType.FIRST_PERSON_RIGHT_HAND: return new string[] { "FirstPerson_RightHandPose" };
 			case ItemTransformType.GUI: return new string[] { "GUIPose" };
 			case ItemTransformType.GROUND: return new string[] { "GroundItemPose" };
+			case ItemTransformType.FIXED: return new string[] { "ItemFramePose" };
 			case ItemTransformType.NONE:
-			case ItemTransformType.FIXED:
 			default: 
 				return new string[] { "DefaultPose" };
 		}
@@ -623,8 +623,9 @@ public abstract class MinecraftModelEditor : Editor
 				return;
 
 			// So we are attached to this pose, update it
-			rig.transform.localPosition = itemTransform.Position;
-			rig.transform.localRotation = itemTransform.Rotation;
+			rig.transform.localPosition = new Vector3(itemTransform.Position.x, itemTransform.Position.y, itemTransform.Position.z);
+			Vector3 euler = itemTransform.Rotation.eulerAngles;
+			rig.transform.localRotation = Quaternion.Euler(euler.x, -euler.y, euler.z);
 			rig.transform.localScale = itemTransform.Scale;
 		}
 	}
@@ -639,8 +640,9 @@ public abstract class MinecraftModelEditor : Editor
 			if (attachTo != null)
 			{
 				rig.transform.SetParent(attachTo);
-				rig.transform.localPosition = itemTransform.Position;
-				rig.transform.localRotation = itemTransform.Rotation;
+				rig.transform.localPosition = new Vector3(itemTransform.Position.x, itemTransform.Position.y, itemTransform.Position.z);
+				Vector3 euler = itemTransform.Rotation.eulerAngles;
+				rig.transform.localRotation = Quaternion.Euler(euler.x, -euler.y, euler.z);
 				rig.transform.localScale = itemTransform.Scale;
 			}
 			else Debug.LogError($"Could not attach rig to {targetName} as it could not be found");

@@ -59,7 +59,20 @@ public class ResourceLocation
     {
         return Namespace.Length > 0 && ID.Length > 0;
     }
-
+    public string ExportAsModelPath()
+    {
+        return $"{Namespace}:{IDWithSpecificPrefixStripped("models")}";
+    }
+	public string ExportAsTexturePath()
+	{
+		return $"{Namespace}:{IDWithSpecificPrefixStripped("textures")}";
+	}
+	public string IDWithSpecificPrefixStripped(string prefix)
+    {
+        if (ID.StartsWith(prefix))
+            return ID.Substring(prefix.Length + 1);
+        return ID;
+    }
     public string IDWithoutPrefixes()
     {
         int lastSlash = ID.LastIndexOf('/');

@@ -57,7 +57,7 @@ public class ItemModel : MinecraftModel
 		builder.Current.Add("parent", $"item/generated");
 		using (builder.Indentation("textures"))
 		{
-			builder.Current.Add("layer0", IconLocation.ResolveWithSubdir("item"));
+			builder.Current.Add("layer0", IconLocation.ExportAsTexturePath());
 		}
 		return base.ExportToJson(builder);
 	}

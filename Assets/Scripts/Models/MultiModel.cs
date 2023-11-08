@@ -94,12 +94,12 @@ public class MultiModel : MinecraftModel
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		builder.Current.Add("loader", "flansmod:multimodel");
-		builder.Current.Add("first_person_model", FirstPersonModel.GetLocation().ToString());
-		builder.Current.Add("third_person_model", ThirdPersonModel.GetLocation().ToString());
-		builder.Current.Add("head_model", HeadModel.GetLocation().ToString());
-		builder.Current.Add("ground_model", GroundModel.GetLocation().ToString());
-		builder.Current.Add("fixed_model", FixedModel.GetLocation().ToString());
-		builder.Current.Add("gui_model", GUIModel.GetLocation().ToString());
+		builder.Current.Add("first_person_model", FirstPersonModel.GetLocation().ExportAsModelPath());
+		builder.Current.Add("third_person_model", ThirdPersonModel.GetLocation().ExportAsModelPath());
+		builder.Current.Add("head_model", HeadModel.GetLocation().ExportAsModelPath());
+		builder.Current.Add("ground_model", GroundModel.GetLocation().ExportAsModelPath());
+		builder.Current.Add("fixed_model", FixedModel.GetLocation().ExportAsModelPath());
+		builder.Current.Add("gui_model", GUIModel.GetLocation().ExportAsModelPath());
 		return base.ExportToJson(builder);
 	}
 

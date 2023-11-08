@@ -60,6 +60,40 @@ public class FlansModToolbox : EditorWindow
 		}
 		GUILayout.EndVertical();
 		GUILayout.EndScrollView();
+
+		// Temp - For Flan if I need to iterate some things in editor quickly
+		if (GUILayout.Button("Do the thing"))
+		{
+			string[] guids = AssetDatabase.FindAssets("t:TurboRig");
+			foreach (string guid in guids)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(guid);
+				if (path != null)
+				{
+					TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
+					//foreach (MinecraftModel.ItemTransform transform in rig.Transforms)
+					//{
+						rig.Transforms.Clear();
+						rig.AddDefaultTransforms();
+						//if (transform.Type == MinecraftModel.ItemTransformType.FIRST_PERSON_LEFT_HAND
+						//|| transform.Type == MinecraftModel.ItemTransformType.FIRST_PERSON_RIGHT_HAND)
+						//{
+						//	transform.Position = new Vector3(-transform.Position.x, transform.Position.y, transform.Position.z);
+						//	Vector3 oldEuler = transform.Rotation.eulerAngles;
+						//	transform.Rotation = Quaternion.Euler(oldEuler.x, -oldEuler.y, oldEuler.z);
+						//
+						//	//if (transform.Type == MinecraftModel.ItemTransformType.FIXED)
+						//	//{
+						//	//	transform.Position = new Vector3(6, 6, 0);
+						//	//	transform.Rotation = Quaternion.Euler(0, 0, 45);
+						//	//	transform.Scale = Vector3.one;
+						//	//}
+						//}
+						EditorUtility.SetDirty(rig);
+					//}
+				}
+			}
+		}
 	}
 
 	// -------------------------------------------------------------------------------------------------------
@@ -223,6 +257,8 @@ public class FlansModToolbox : EditorWindow
 		"Alex_LeftHandPose",
 		"Steve_RightHandPose",
 		"Steve_LeftHandPose",
+		"FirstPerson_RightHandPose",
+		"FirstPerson_LeftHandPose",
 		"GUIPose",
 	};
 

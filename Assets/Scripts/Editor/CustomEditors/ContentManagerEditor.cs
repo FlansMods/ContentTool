@@ -249,7 +249,15 @@ public class ContentManagerEditor : Editor
 				}
 				if (GUILayout.Button(FlanStyles.ExportPackOverwrite, GUILayout.Width(32)))
 				{
-					instance.ExportPack(pack.ModName, true);
+					List<Verification> exportVerifications = new List<Verification>();
+					instance.ExportPack(pack.ModName, true, exportVerifications);
+					foreach (Verification verification in exportVerifications)
+					{
+						if (verification.Type == VerifyType.Fail)
+						{
+							Debug.LogError($"Verification Failure: {verification.Message}");
+						}
+					}
 				}
 			}
 			GUILayout.EndHorizontal();

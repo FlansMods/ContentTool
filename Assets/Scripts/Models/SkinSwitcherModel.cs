@@ -11,7 +11,7 @@ public class SkinSwitcherModel : MinecraftModel
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
 		if(DefaultModel != null)
-			builder.Current.Add("parent", DefaultModel.GetLocation().ToString());
+			builder.Current.Add("parent", DefaultModel.GetLocation().ExportAsModelPath());
 		using (builder.Tabulation("overrides"))
 		{
 			for (int i = 0; i < Models.Count; i++)
@@ -21,7 +21,7 @@ public class SkinSwitcherModel : MinecraftModel
 					{
 						builder.Current.Add("custom_model_data", i + 1);
 					}
-					builder.Current.Add("model", Models[i].GetLocation().ToString());
+					builder.Current.Add("model", Models[i].GetLocation().ExportAsModelPath());
 				}
 		}
 		return true;

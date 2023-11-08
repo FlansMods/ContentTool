@@ -289,7 +289,7 @@ public class TurboRig : MinecraftModel
 		Vector3 size = (max - min) / 2f;
 
 		offset = -center / 16f;
-		float maxDim = Mathf.Max(size.x, size.y, size.z) * 2f;
+		float maxDim = Mathf.Max(size.x, size.y, size.z);
 		if (maxDim <= 0.00001f)
 		{
 			scale = Vector3.one;
@@ -298,8 +298,8 @@ public class TurboRig : MinecraftModel
 		}
 		else
 		{
-			scale = Vector3.one / maxDim;
-			euler = new Vector3(-30f, 160f, 45f);
+			scale = Vector3.one * 16f / maxDim;
+			euler = new Vector3(0f, 135f, 90f);
 			offset = Quaternion.Euler(euler) * offset;
 			offset /= maxDim;
 		}
@@ -310,28 +310,28 @@ public class TurboRig : MinecraftModel
 		{
 			Type = ItemTransformType.FIRST_PERSON_RIGHT_HAND,
 			Position = new Vector3(8f, -7f, -13f),
-			Rotation = Quaternion.Euler(0f, -90f, 0f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
 			Scale = Vector3.one,
 		});
 		Transforms.Add(new ItemTransform()
 		{
 			Type = ItemTransformType.FIRST_PERSON_LEFT_HAND,
 			Position = new Vector3(-8f, -7f, -13f),
-			Rotation = Quaternion.Euler(0f, -90f, 0f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
 			Scale = Vector3.one,
 		});
 		Transforms.Add(new ItemTransform()
 		{
 			Type = ItemTransformType.THIRD_PERSON_RIGHT_HAND,
-			Position = new Vector3(0f, 3.25f, 0f),
+			Position = new Vector3(8f, 8f, 6f),
 			Rotation = Quaternion.Euler(0f, 90f, 0f),
 			Scale = Vector3.one,
 		});
 		Transforms.Add(new ItemTransform()
 		{
 			Type = ItemTransformType.THIRD_PERSON_LEFT_HAND,
-			Position = new Vector3(0f, 3.75f, 0f),
-			Rotation = Quaternion.Euler(0f, -90f, 0f),
+			Position = new Vector3(8f, 8f, 6f),
+			Rotation = Quaternion.Euler(0f, 90f, 0f),
 			Scale = Vector3.one,
 		});
 
@@ -360,8 +360,8 @@ public class TurboRig : MinecraftModel
 		Transforms.Add(new ItemTransform()
 		{
 			Type = ItemTransformType.FIXED,
-			Position = new Vector3(0.5f, 0.5f, 0f),
-			Rotation = Quaternion.Euler(0f, 160f, 0f),
+			Position = new Vector3(6f, 6f, 6f),
+			Rotation = Quaternion.Euler(0f, 0f, 45f),
 			Scale = Vector3.one,
 		});
 	}
@@ -483,9 +483,8 @@ public class TurboRig : MinecraftModel
 		{
 			foreach (var kvp in Textures)
 			{
-				builder.Current.Add(kvp.Key, kvp.Location.ResolveWithSubdir("skins"));
+				builder.Current.Add(kvp.Key, kvp.Location.ExportAsTexturePath());
 			}
-			builder.Current.Add("default", this.GetLocation().ResolveWithSubdir("skins"));
 			builder.Current.Add("particle", $"minecraft:block/iron_block");
 		}
 		using (builder.Indentation("animations"))

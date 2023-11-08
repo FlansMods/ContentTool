@@ -1249,6 +1249,8 @@ public class ContentManager : MonoBehaviour
 				ExportLangJson(packName, (ELang)i, verifications);
 			}
 			EditorUtility.ClearProgressBar();
+
+			
 		}
 		finally
 		{

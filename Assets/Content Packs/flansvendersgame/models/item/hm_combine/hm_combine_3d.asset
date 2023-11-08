@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: hm_combine_3d
   m_EditorClassIdentifier: 
   Textures:
-  - Key: hm_combine
+  - Key: default
     Location:
       Namespace: flansvendersgame
       ID: textures/skins/hm_combine
@@ -33,7 +33,39 @@ MonoBehaviour:
       Namespace: flansvendersgame
       ID: textures/skins/hm_combine_wood
     Texture: {fileID: 2800000, guid: 42a3597004cc7d74ca4f36511e0e7bfb, type: 3}
-  Transforms: []
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: -0.03409265, y: -0.05762987, z: -0.0072317775}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 0.83116883, y: 0.83116883, z: 0.83116883}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
@@ -166,9 +198,7 @@ MonoBehaviour:
   Sections:
   - PartName: body
     Pieces:
-    - textureU: 1
-      textureV: 1
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 12, y: 10, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -181,9 +211,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 1
-      Pos: {x: 0, y: -0, z: -1}
+    - Pos: {x: 0, y: -0, z: -1}
       Dim: {x: 4, y: 0, z: 1}
       Origin: {x: 11, y: 8.5, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -196,9 +224,7 @@ MonoBehaviour:
       - {x: -0.5, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: 0}
-    - textureU: 25
-      textureV: 1
-      Pos: {x: 0, y: -1, z: -2}
+    - Pos: {x: 0, y: -1, z: -2}
       Dim: {x: 2, y: 1, z: 2}
       Origin: {x: 9.5, y: 10, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -211,9 +237,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: -0.2}
       - {x: -0, y: 0, z: -0.2}
       - {x: 0, y: 0, z: -0.2}
-    - textureU: 41
-      textureV: 1
-      Pos: {x: 0, y: -3, z: -2}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 3, y: 3, z: 2}
       Origin: {x: 8.5, y: 9, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -226,9 +250,7 @@ MonoBehaviour:
       - {x: -1.5, y: -0.5, z: -0.2}
       - {x: 1, y: 0, z: -0.2}
       - {x: 0, y: 0, z: -0.2}
-    - textureU: 1
-      textureV: 9
-      Pos: {x: 0, y: -3, z: -2}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 5, y: 3, z: 2}
       Origin: {x: 9.5, y: 13, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -241,9 +263,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 9
-      Pos: {x: 0, y: -1, z: -2}
+    - Pos: {x: 0, y: -1, z: -2}
       Dim: {x: 18, y: 1, z: 2}
       Origin: {x: 9.5, y: 14, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -256,9 +276,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: -0.25}
       - {x: 0, y: 0, z: -0.25}
-    - textureU: 1
-      textureV: 17
-      Pos: {x: 0, y: -4, z: -2}
+    - Pos: {x: 0, y: -4, z: -2}
       Dim: {x: 2, y: 4, z: 2}
       Origin: {x: 7.5, y: 14, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -271,9 +289,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: -0.5, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 17
-      Pos: {x: 0, y: -4, z: -2}
+    - Pos: {x: 0, y: -4, z: -2}
       Dim: {x: 4, y: 4, z: 2}
       Origin: {x: 14.5, y: 12, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -286,9 +302,7 @@ MonoBehaviour:
       - {x: -0.5, y: 0.5, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: 0}
-    - textureU: 33
-      textureV: 17
-      Pos: {x: 0, y: -2, z: -2}
+    - Pos: {x: 0, y: -2, z: -2}
       Dim: {x: 10, y: 2, z: 2}
       Origin: {x: 17.5, y: 13, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -301,9 +315,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: 0.5, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 33
-      textureV: 33
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 14.5, y: 13, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -316,9 +328,7 @@ MonoBehaviour:
       - {x: 0.5, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0.5, y: 0, z: 0}
-    - textureU: 41
-      textureV: 33
-      Pos: {x: 0, y: -1, z: -3}
+    - Pos: {x: 0, y: -1, z: -3}
       Dim: {x: 2, y: 1, z: 3}
       Origin: {x: 18.5, y: 12.5, z: 7.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -331,9 +341,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: 1, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 1
-      textureV: 41
-      Pos: {x: 0, y: -1, z: -3}
+    - Pos: {x: 0, y: -1, z: -3}
       Dim: {x: 2, y: 1, z: 3}
       Origin: {x: 18.5, y: 11.5, z: 7.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -346,9 +354,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 41
-      Pos: {x: 0, y: -2, z: -3}
+    - Pos: {x: 0, y: -2, z: -3}
       Dim: {x: 11, y: 2, z: 3}
       Origin: {x: 20.5, y: 12.5, z: 7.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -361,9 +367,7 @@ MonoBehaviour:
       - {x: -0.5, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: 0}
-    - textureU: 1
-      textureV: 49
-      Pos: {x: 0, y: -2, z: -3}
+    - Pos: {x: 0, y: -2, z: -3}
       Dim: {x: 6, y: 2, z: 3}
       Origin: {x: 25.5, y: 14.5, z: 7.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -376,9 +380,7 @@ MonoBehaviour:
       - {x: -0.5, y: -0, z: 0}
       - {x: 2, y: 0, z: -0.5}
       - {x: -0.5, y: 0, z: -0.5}
-    - textureU: 9
-      textureV: 41
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 2, y: 1, z: 1}
       Origin: {x: 30.5, y: 14.25, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -391,9 +393,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 1
-      textureV: 57
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 18, y: 1, z: 1}
       Origin: {x: 9.5, y: 14.5, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -406,9 +406,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 49
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 2, y: 1, z: 1}
       Origin: {x: 9.5, y: 15.5, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -421,9 +419,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 41
-      textureV: 49
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 2, y: 1, z: 1}
       Origin: {x: 25.5, y: 15.5, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -438,9 +434,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
   - PartName: barrel
     Pieces:
-    - textureU: 49
-      textureV: 41
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 31, y: 13, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -453,9 +447,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 25
-      textureV: 49
-      Pos: {x: 0, y: -2, z: -2}
+    - Pos: {x: 0, y: -2, z: -2}
       Dim: {x: 3, y: 2, z: 2}
       Origin: {x: 34, y: 13.5, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -470,9 +462,7 @@ MonoBehaviour:
       - {x: 0, y: -0.25, z: -0.25}
   - PartName: stock
     Pieces:
-    - textureU: 1
-      textureV: 25
-      Pos: {x: 0, y: -3, z: -2}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 2, y: 3, z: 2}
       Origin: {x: 5.5, y: 13.5, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -485,9 +475,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 57
-      textureV: 1
-      Pos: {x: 0, y: -2, z: -1}
+    - Pos: {x: 0, y: -2, z: -1}
       Dim: {x: 2, y: 2, z: 1}
       Origin: {x: 3.5, y: 12.75, z: 6.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -500,9 +488,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: 0}
       - {x: 0.5, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - textureU: 17
-      textureV: 25
-      Pos: {x: 0, y: -2, z: -2}
+    - Pos: {x: 0, y: -2, z: -2}
       Dim: {x: 6, y: 2, z: 2}
       Origin: {x: -2, y: 12.25, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -515,9 +501,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: -0.25}
       - {x: 0.5, y: 0, z: -0.25}
       - {x: 0, y: 0, z: -0.25}
-    - textureU: 41
-      textureV: 25
-      Pos: {x: 0, y: -1, z: -2}
+    - Pos: {x: 0, y: -1, z: -2}
       Dim: {x: 2, y: 1, z: 2}
       Origin: {x: -2, y: 13.25, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -530,9 +514,7 @@ MonoBehaviour:
       - {x: 0, y: -0, z: -0.25}
       - {x: 0.5, y: 0, z: -0.25}
       - {x: -0.5, y: 0, z: -0.25}
-    - textureU: 1
-      textureV: 33
-      Pos: {x: 0, y: -2, z: -2}
+    - Pos: {x: 0, y: -2, z: -2}
       Dim: {x: 3, y: 2, z: 2}
       Origin: {x: -2, y: 10.25, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -545,9 +527,7 @@ MonoBehaviour:
       - {x: -1, y: -0, z: -0.25}
       - {x: 0.5, y: 0, z: -0.25}
       - {x: 0, y: 0, z: -0.25}
-    - textureU: 17
-      textureV: 33
-      Pos: {x: 0, y: -1, z: -2}
+    - Pos: {x: 0, y: -1, z: -2}
       Dim: {x: 4, y: 1, z: 2}
       Origin: {x: 1, y: 13.5, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -562,9 +542,7 @@ MonoBehaviour:
       - {x: 0, y: 0.5, z: 0}
   - PartName: ammo_0
     Pieces:
-    - textureU: 49
-      textureV: 49
-      Pos: {x: 0, y: -3, z: -2}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 3, y: 3, z: 2}
       Origin: {x: 14.75, y: 8.5, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -577,9 +555,7 @@ MonoBehaviour:
       - {x: 0.25, y: 0.25, z: -0.25}
       - {x: -0, y: 0, z: -0.25}
       - {x: 0, y: 0, z: -0.25}
-    - textureU: 41
-      textureV: 57
-      Pos: {x: 0, y: -3, z: -2}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 3, y: 3, z: 2}
       Origin: {x: 15, y: 5.5, z: 7}
       Euler: {x: 0, y: 0, z: 0}
@@ -594,9 +570,7 @@ MonoBehaviour:
       - {x: 0, y: 0.25, z: -0.25}
   - PartName: slide
     Pieces:
-    - textureU: 49
-      textureV: 33
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 4, y: 1, z: 1}
       Origin: {x: 14.5, y: 13, z: 6.2}
       Euler: {x: 0, y: 0, z: 0}
@@ -609,9 +583,7 @@ MonoBehaviour:
       - {x: -0.5, y: -0, z: 0}
       - {x: -0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: 0}
-    - textureU: 57
-      textureV: 25
-      Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 17, y: 13, z: 5.2}
       Euler: {x: 0, y: 0, z: 0}

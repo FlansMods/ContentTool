@@ -41,10 +41,14 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 		{
 			switch(Type)
 			{
+				case ItemTransformType.THIRD_PERSON_RIGHT_HAND:
+					return "thirdperson_righthand";
 				case ItemTransformType.THIRD_PERSON_LEFT_HAND:
-					return "thirdperson";
+					return "thirdperson_lefthand";
+				case ItemTransformType.FIRST_PERSON_RIGHT_HAND:
+					return "firstperson_righthand";
 				case ItemTransformType.FIRST_PERSON_LEFT_HAND:
-					return "firstperson";
+					return "firstperson_lefthand";
 				case ItemTransformType.HEAD:
 					return "head";
 				case ItemTransformType.GUI:
