@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: hm_1200_3d
   m_EditorClassIdentifier: 
   Textures:
-  - Key: default
+  - Key: hm_1200
     Location:
       Namespace: flansvendersgame
       ID: textures/skins/hm_1200
@@ -41,9 +41,9 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 6
-    Position: {x: -0.0032736438, y: -0.02083333, z: -0.0032736424}
-    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
-    Scale: {x: 1.1851852, y: 1.1851852, z: 1.1851852}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
@@ -59,228 +59,432 @@ MonoBehaviour:
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
-    - Origin: {x: 0, y: 0}
+    - Origin: {x: 1, y: 1}
       Patch:
         Key: body/0
-        BoxDims: {x: 7, y: 2, z: 2}
-    - Origin: {x: 0, y: 4}
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 9, y: 1}
       Patch:
         Key: body/1
-        BoxDims: {x: 12, y: 2, z: 1}
-    - Origin: {x: 16, y: 0}
+        BoxDims: {x: 0, y: 2, z: 1}
+    - Origin: {x: 17, y: 1}
       Patch:
         Key: body/2
-        BoxDims: {x: 1, y: 1, z: 1}
-    - Origin: {x: 0, y: 7}
+        BoxDims: {x: 4, y: 0, z: 1}
+    - Origin: {x: 33, y: 1}
       Patch:
         Key: body/3
-        BoxDims: {x: 2, y: 3, z: 2}
-    - Origin: {x: 18, y: 0}
+        BoxDims: {x: 0, y: 2, z: 1}
+    - Origin: {x: 41, y: 1}
       Patch:
         Key: body/4
-        BoxDims: {x: 1, y: 1, z: 2}
-    - Origin: {x: 8, y: 7}
+        BoxDims: {x: 8, y: 1, z: 2}
+    - Origin: {x: 1, y: 9}
       Patch:
-        Key: pump/0
-        BoxDims: {x: 4, y: 1, z: 2}
-    - Origin: {x: 8, y: 10}
+        Key: body/5
+        BoxDims: {x: 2, y: 1, z: 2}
+    - Origin: {x: 17, y: 9}
       Patch:
-        Key: stock/0
+        Key: body/6
         BoxDims: {x: 3, y: 3, z: 2}
-    - Origin: {x: 0, y: 12}
+    - Origin: {x: 33, y: 9}
       Patch:
-        Key: stock/1
-        BoxDims: {x: 2, y: 2, z: 2}
-    - Origin: {x: 18, y: 12}
+        Key: body/7
+        BoxDims: {x: 2, y: 3, z: 2}
+    - Origin: {x: 1, y: 17}
       Patch:
-        Key: stock/2
+        Key: body/8
+        BoxDims: {x: 9, y: 7, z: 2}
+    - Origin: {x: 25, y: 17}
+      Patch:
+        Key: body/9
+        BoxDims: {x: 8, y: 1, z: 2}
+    - Origin: {x: 49, y: 9}
+      Patch:
+        Key: body/10
         BoxDims: {x: 2, y: 2, z: 2}
-    - Origin: {x: 22, y: 0}
+    - Origin: {x: 25, y: 25}
+      Patch:
+        Key: body/11
+        BoxDims: {x: 8, y: 1, z: 1}
+    - Origin: {x: 49, y: 17}
+      Patch:
+        Key: body/12
+        BoxDims: {x: 4, y: 1, z: 1}
+    - Origin: {x: 49, y: 25}
+      Patch:
+        Key: body/13
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 1, y: 33}
+      Patch:
+        Key: body/14
+        BoxDims: {x: 18, y: 1, z: 1}
+    - Origin: {x: 57, y: 25}
+      Patch:
+        Key: body/15
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 1, y: 41}
+      Patch:
+        Key: body/16
+        BoxDims: {x: 19, y: 1, z: 1}
+    - Origin: {x: 1, y: 49}
+      Patch:
+        Key: body/17
+        BoxDims: {x: 12, y: 1, z: 1}
+    - Origin: {x: 41, y: 33}
+      Patch:
+        Key: body/18
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 49, y: 33}
+      Patch:
+        Key: body/19
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 0, y: 4}
       Patch:
         Key: ammo_0/0
-        BoxDims: {x: 2, y: 1, z: 1}
-    MaxSize: {x: 32, y: 16}
+        BoxDims: {x: 3, y: 1, z: 1}
+    - Origin: {x: 49, y: 41}
+      Patch:
+        Key: pump/0
+        BoxDims: {x: 3, y: 1, z: 1}
+    - Origin: {x: 33, y: 49}
+      Patch:
+        Key: pump/1
+        BoxDims: {x: 5, y: 2, z: 2}
+    - Origin: {x: 49, y: 49}
+      Patch:
+        Key: pump/2
+        BoxDims: {x: 3, y: 2, z: 2}
+    MaxSize: {x: 64, y: 64}
   Icon:
     Namespace: minecraft
     ID: null
-  TextureX: 32
-  TextureY: 16
+  TextureX: 64
+  TextureY: 64
   Sections:
   - PartName: body
     Pieces:
-    - Pos: {x: -1, y: 3, z: -1}
-      Dim: {x: 7, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: 6, y: 3, z: -0.5}
-      Dim: {x: 12, y: 2, z: 1}
-      Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
-      Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: 15, y: 5, z: -0.5}
+    - Pos: {x: 0, y: -1, z: -1}
       Dim: {x: 1, y: 1, z: 1}
-      Origin: {x: 0, y: 0, z: 0}
+      Origin: {x: -1, y: -0, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: -1, y: 0, z: -1}
-      Dim: {x: 2, y: 3, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -1}
+      Dim: {x: 0, y: 2, z: 1}
+      Origin: {x: 1.5, y: 0.5, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: 1, y: 2, z: -1}
-      Dim: {x: 1, y: 1, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -0, z: -1}
+      Dim: {x: 4, y: 0, z: 1}
+      Origin: {x: -2, y: -1.5, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-  - PartName: pump
-    Pieces:
-    - Pos: {x: 10, y: 2.8, z: -1}
-      Dim: {x: 4, y: 1, z: 2}
-      Origin: {x: 0, y: 0, z: 0}
+      - {x: -0, y: -0, z: -0}
+      - {x: -0.5, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -0.5, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0.5, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -1}
+      Dim: {x: 0, y: 2, z: 1}
+      Origin: {x: -2, y: 0.5, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 8, y: 1, z: 2}
+      Origin: {x: -1, y: 1, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-  - PartName: stock
-    Pieces:
-    - Pos: {x: -8, y: 0, z: -1}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 2, y: 1, z: 2}
+      Origin: {x: -2.5, y: 3, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: -0.5, y: -0, z: -0}
+      - {x: -0, y: -0.5, z: -0}
+      - {x: -0.5, y: 0, z: 0.5}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0.5, y: -0, z: 0}
+      - {x: -0, y: -0.5, z: 0}
+      - {x: -0.5, y: 0, z: -0.5}
+    - Pos: {x: 0, y: -3, z: -2}
       Dim: {x: 3, y: 3, z: 2}
-      Origin: {x: -1, y: -4, z: 0}
+      Origin: {x: -5, y: 3, z: 1}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: -1, z: -0}
+      - {x: -0.5, y: -0, z: -0}
+      - {x: -0, y: -1.5, z: -0}
+      - {x: -0.5, y: -0.5, z: -0}
+      - {x: -0, y: -1, z: 0}
+      - {x: -0.5, y: -0, z: 0}
+      - {x: -0, y: -1.5, z: 0}
+      - {x: -0.5, y: -0.5, z: 0}
+    - Pos: {x: 0, y: -3, z: -2}
+      Dim: {x: 2, y: 3, z: 2}
+      Origin: {x: -7, y: 1.5, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 1, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0.5, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 1, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0.5, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -7, z: -2}
+      Dim: {x: 9, y: 7, z: 2}
+      Origin: {x: -16, y: 2, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 4.5, z: -0}
+      - {x: -0, y: -1.5, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 4.5, z: 0}
+      - {x: -0, y: -1.5, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: -5, y: 1, z: -1}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 8, y: 1, z: 2}
+      Origin: {x: -1, y: 3, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 0.5}
+      - {x: 0, y: 0, z: 0.5}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -0.5}
+      - {x: 0, y: 0, z: -0.5}
+    - Pos: {x: 0, y: -2, z: -2}
       Dim: {x: 2, y: 2, z: 2}
-      Origin: {x: -1, y: -4, z: 0}
+      Origin: {x: -2.5, y: 2, z: 1}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-    - Pos: {x: -3, y: 2, z: -1}
-      Dim: {x: 2, y: 2, z: 2}
-      Origin: {x: -1, y: -4, z: 0}
+      - {x: -0, y: -0, z: -0}
+      - {x: -0.5, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -0.5, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0.5, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 8, y: 1, z: 1}
+      Origin: {x: -1, y: 2, z: 1}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 4, y: 1, z: 1}
+      Origin: {x: -1, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 6, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 18, y: 1, z: 1}
+      Origin: {x: 9, y: 2.75, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 7, y: 2.75, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: -0.1}
+      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
+      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: -0.1, z: 0.1}
+      - {x: -0, y: 0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 19, y: 1, z: 1}
+      Origin: {x: 7, y: 1.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: -0.1}
+      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
+      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: -0.1, z: 0.1}
+      - {x: -0, y: 0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 12, y: 1, z: 1}
+      Origin: {x: 7, y: 1.75, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.1}
+      - {x: 0, y: -0, z: 0.1}
+      - {x: -0, y: 0, z: 0.1}
+      - {x: 0, y: 0, z: 0.1}
+      - {x: -0, y: -0, z: -0.1}
+      - {x: 0, y: -0, z: -0.1}
+      - {x: -0, y: 0, z: -0.1}
+      - {x: 0, y: 0, z: -0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 24, y: 1.75, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.1}
+      - {x: 0, y: -0, z: 0.1}
+      - {x: -0, y: 0, z: 0.1}
+      - {x: 0, y: 0, z: 0.1}
+      - {x: -0, y: -0, z: -0.1}
+      - {x: 0, y: -0, z: -0.1}
+      - {x: -0, y: 0, z: -0.1}
+      - {x: 0, y: 0, z: -0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 24.5, y: 1.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0.25, z: -0.25}
+      - {x: 0, y: -0.25, z: -0.25}
+      - {x: -0, y: 0.25, z: -0.25}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: -0, y: -0.25, z: 0.25}
+      - {x: 0, y: -0.25, z: 0.25}
+      - {x: -0, y: 0.25, z: 0.25}
+      - {x: 0, y: 0.25, z: 0.25}
   - PartName: ammo_0
     Pieces:
-    - Pos: {x: 4, y: 3.5, z: -0.5}
-      Dim: {x: 2, y: 1, z: 1}
-      Origin: {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 3, y: 1, z: 1}
+      Origin: {x: 3, y: 2, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
       Offsets:
+      - {x: -0, y: 0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
+      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: -0.1, z: 0.1}
+      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
+      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: -0.1}
+  - PartName: pump
+    Pieces:
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 3, y: 1, z: 1}
+      Origin: {x: 3, y: 2, z: 0.19999981}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 5, y: 2, z: 2}
+      Origin: {x: 12, y: 1.5, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-      - {x: 0, y: 0, z: 0}
-  AnimationParameters:
-  - key: gun_slide_distance
-    isVec3: 0
-    floatValue: 0.5
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: pump_delay_after_reload
-    isVec3: 0
-    floatValue: 115
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: pump_delay
-    isVec3: 0
-    floatValue: 6
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: pump_time
-    isVec3: 0
-    floatValue: 9
-    vec3Value: {x: 0, y: 0, z: 0}
-  - key: num_bullets_in_reload_animation
-    isVec3: 0
-    floatValue: 7
-    vec3Value: {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 3, y: 2, z: 2}
+      Origin: {x: 17, y: 1.5, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 0.25, z: 0.25}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -0.25}
+  AnimationParameters: []
   AttachPoints:
-  - name: sights
-    attachedTo: none
-    position: {x: 3, y: 5, z: 0}
-  - name: stock
-    attachedTo: none
-    position: {x: 1, y: 4, z: 0}
-  - name: barrel
-    attachedTo: none
-    position: {x: 18, y: 4, z: 0}
-  - name: grip
-    attachedTo: pump
-    position: {x: 12, y: 3, z: 0}
-  - name: pump
+  - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
+  - name: pump
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
