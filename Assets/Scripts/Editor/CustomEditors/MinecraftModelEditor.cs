@@ -139,24 +139,28 @@ public abstract class MinecraftModelEditor : Editor
 			if (rigs[i].ModelOpenedForEdit == mcModel)
 				matchingRig = rigs[i];
 		}
-
-		if(matchingRig != null)
+		List<ModelEditingRig> sortedRigs = new List<ModelEditingRig>(rigs);
+		sortedRigs.Sort((ModelEditingRig a, ModelEditingRig b) =>
+		{
+			return a.name.CompareTo(b.name);
+		});
+		if (matchingRig != null)
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Model is open in:");
 			EditorGUILayout.ObjectField(matchingRig, typeof(ModelEditingRig), true);
 			GUILayout.EndHorizontal();
 		}
-		else if(rigs.Length > 0)
+		else if(sortedRigs.Count > 0)
 		{
 			GUILayout.Label("Model is not open. Select a rig in which to edit it.");
-			for (int i = 0; i < rigs.Length; i++)
+			for (int i = 0; i < sortedRigs.Count; i++)
 			{
 				GUILayout.BeginHorizontal();
-				EditorGUILayout.ObjectField(rigs[i], typeof(ModelEditingRig), true);
+				EditorGUILayout.ObjectField(sortedRigs[i], typeof(ModelEditingRig), true);
 				if(GUILayout.Button("Select"))
 				{
-					matchingRig = rigs[i];
+					matchingRig = sortedRigs[i];
 					matchingRig.OpenModel(mcModel);
 				}
 				GUILayout.EndHorizontal();

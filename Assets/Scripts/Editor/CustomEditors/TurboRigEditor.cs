@@ -165,11 +165,14 @@ public class TurboRigEditor : MinecraftModelEditor
 				string newSkinName = turboRig.name;
 				if (newSkinName.EndsWith("_3d"))
 					newSkinName = newSkinName.Substring(0, newSkinName.Length - 3);
-				newSkinName = $"{newSkinName}_new";
+				newSkinName = $"{newSkinName}";
 
 				while (File.Exists($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png"))
 				{
-					newSkinName += "_";
+					if(newSkinName.Contains("_new"))
+						newSkinName += "_";
+					else 
+					newSkinName += "_new";
 				}
 				string fullPath = $"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png";
 

@@ -46,7 +46,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		if(ExpectsModel())
 		{
 			ResourceLocation resLoc = this.GetLocation();
-			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/item/{resLoc.IDWithoutPrefixes()}.asset";
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.asset";
 			MinecraftModel mcModel = AssetDatabase.LoadAssetAtPath<MinecraftModel>(modelPath);
 			if (mcModel == null)
 				verifications.Add(Verification.Failure(
@@ -71,6 +71,12 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			return false;
 
 		return true;
+	}
+	public string GetModelFolder()
+	{
+		if (this is WorkbenchDefinition)
+			return "block";
+		return "item";
 	}
 
 	[System.Serializable]

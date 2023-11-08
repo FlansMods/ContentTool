@@ -12,26 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282f23e8eb487df49a216a877d039607, type: 3}
   m_Name: vender
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
   Skin: {fileID: 0}
   Icon: {fileID: 0}
   AdditionalTextures: []
-  LocalisedNames: []
+  LocalisedNames:
+  - Lang: 0
+    Name: Vender
   LocalisedExtras:
   - Unlocalised: npc.vender.hello.neutral.1
     Lang: 0
@@ -261,6 +247,9 @@ MonoBehaviour:
     count: 1
     damage: 0
     tags: '{}'
+  validActions: 
+  cooldownSecondsFriendly: 120
+  cooldownSecondsHostile: 300
   maxMerchantLevel: 5
   xpPerMerchantLevel: 0f0000002d000000780000002c010000bc020000
   offers:
