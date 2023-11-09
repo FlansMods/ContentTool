@@ -260,6 +260,7 @@ public class FlansModToolbox : EditorWindow
 		"FirstPerson_RightHandPose",
 		"FirstPerson_LeftHandPose",
 		"GUIPose",
+		"GreenScreenPose",
 	};
 
 	private void AttachPoseDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
