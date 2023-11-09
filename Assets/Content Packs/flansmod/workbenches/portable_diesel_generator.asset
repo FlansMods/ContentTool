@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9717990bd45d44ca23f90b0951c14c, type: 3}
-  m_Name: portable_coal_generator
+  m_Name: portable_diesel_generator
   m_EditorClassIdentifier: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
-  LocalisedNames: []
+  LocalisedNames:
+  - Lang: 0
+    Name: Portable Diesel Generator
   LocalisedExtras: []
-  titlestring: portable_coal_generator
+  titlestring: portable_diesel_generator
   bannerTextureLocation: 
   gunCrafting:
     isActive: 0
@@ -42,12 +41,12 @@ MonoBehaviour:
     disperseFEPerTick: 1000
     numBatterySlots: 0
     batterySlotStackSize: 1
-    liquidFuelStorage: 0
+    liquidFuelStorage: 32000
     liquidFuelFilter: 
-    liquidFEPerMillibucket: 0
-    numSolidFuelSlots: 1
+    liquidFEPerMillibucket: 8
+    numSolidFuelSlots: 0
     solidFuelFilter: 
-    solidFEPerFuelTime: 10
+    solidFEPerFuelTime: 0
   armourCrafting:
     isActive: 0
     pages: []

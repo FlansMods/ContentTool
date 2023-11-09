@@ -5,32 +5,9 @@ using UnityEngine;
 
 public abstract class Definition : ScriptableObject, IVerifiableAsset
 {
-	//public Model Model;
-	public Texture2D Skin;
-	public Texture2D Icon;
-
-	public Texture2D GetSkin(string name)
-	{
-		if (name == "default" || name.Length == 0)
-			return Skin;
-		foreach (AdditionalTexture tex in AdditionalTextures)
-			if (Utils.ToLowerWithUnderscores(tex.name) == name)
-				return tex.texture;
-		return null;
-	}
-	public Texture2D GetIcon(string name)
-	{
-		if (name == "default" || name.Length == 0)
-			return Icon;
-		foreach (AdditionalTexture tex in AdditionalTextures)
-			if (Utils.ToLowerWithUnderscores(tex.name) == name)
-				return tex.icon;
-		return null;
-	}
-
 	public virtual void GetVerifications(List<Verification> verifications)
 	{
-		if (LocalisedNames.Count < 1)
+		if (LocalisedNames.Count < 1 && this is not AnimationDefinition)
 			verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
 		if (name != Utils.ToLowerWithUnderscores(name))
 		{
@@ -52,9 +29,10 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 				verifications.Add(Verification.Failure(
 					$"Definition {name} does not have a matching model at {modelPath}",
 					() => {
-						MultiModel multiModel = CreateInstance<MultiModel>();
-						multiModel.name = $"{resLoc.IDWithoutPrefixes()}";
-						AssetDatabase.CreateAsset(multiModel, modelPath);
+						TurboRig turboRig = CreateInstance<TurboRig>();
+						turboRig.name = $"{resLoc.IDWithoutPrefixes()}";
+						turboRig.AddDefaultTransforms();
+						AssetDatabase.CreateAsset(turboRig, modelPath);
 					}));
 		}
 	}
@@ -78,16 +56,6 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			return "block";
 		return "item";
 	}
-
-	[System.Serializable]
-	public class AdditionalTexture
-	{
-		public string name;
-		public Texture2D texture;
-		public Texture2D icon;
-	}
-
-	public List<AdditionalTexture> AdditionalTextures = new List<AdditionalTexture>();
 
 	public enum ELang
 	{
