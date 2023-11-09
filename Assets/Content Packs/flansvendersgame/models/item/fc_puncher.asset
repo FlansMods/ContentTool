@@ -9,18 +9,296 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: fc_puncher
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_puncher
+    Texture: {fileID: 2800000, guid: 5086584f24096124985634066bae47eb, type: 3}
+  - Key: fc_puncher_birch
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_puncher_birch
+    Texture: {fileID: 2800000, guid: d426f6cb340f6344f9117c410d4a1637, type: 3}
+  - Key: fc_puncher_blackwood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_puncher_blackwood
+    Texture: {fileID: 2800000, guid: 77ae95abd99f0d34893087000cd19de5, type: 3}
+  - Key: fc_puncher_dark
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_puncher_dark
+    Texture: {fileID: 2800000, guid: 62d22e572d2674c438dc304d759652ed, type: 3}
+  - Key: fc_puncher_static
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_puncher_static
+    Texture: {fileID: 2800000, guid: 2df9dda87a8361248b6740a9a6f49d07, type: 3}
   Transforms:
-  - Type: 0
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
-  FirstPersonModel: {fileID: 11400000, guid: c10929c0f7bacb44b80e882b198b6cef, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: c10929c0f7bacb44b80e882b198b6cef, type: 2}
-  HeadModel: {fileID: 11400000, guid: c10929c0f7bacb44b80e882b198b6cef, type: 2}
-  GroundModel: {fileID: 11400000, guid: c10929c0f7bacb44b80e882b198b6cef, type: 2}
-  FixedModel: {fileID: 11400000, guid: c10929c0f7bacb44b80e882b198b6cef, type: 2}
-  GUIModel: {fileID: 11400000, guid: 52de21106e64e7e409994ac77b3cd582, type: 2}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: -0.018414421, y: -0.0000000023283298, z: -0.018414423}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 4, y: 3, z: 2}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 4, y: 2, z: 2}
+    - Origin: {x: 24, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 3, y: 3, z: 2}
+    - Origin: {x: 0, y: 5}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 5, y: 1, z: 2}
+    - Origin: {x: 0, y: 8}
+      Patch:
+        Key: break_action/0
+        BoxDims: {x: 13, y: 2, z: 2}
+    - Origin: {x: 14, y: 5}
+      Patch:
+        Key: break_action/1
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 0, y: 13}
+      Patch:
+        Key: break_action/2
+        BoxDims: {x: 4, y: 1, z: 2}
+    - Origin: {x: 12, y: 14}
+      Patch:
+        Key: break_action/3
+        BoxDims: {x: 3, y: 1, z: 1}
+    - Origin: {x: 34, y: -1}
+      Patch:
+        Key: break_action/4
+        BoxDims: {x: 1, y: 10, z: 7}
+    - Origin: {x: 20, y: 12}
+      Patch:
+        Key: ammo_0/0
+        BoxDims: {x: 3, y: 2, z: 2}
+    MaxSize: {x: 64, y: 16}
+  TextureX: 64
+  TextureY: 16
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_puncher
+    Texture: {fileID: 2800000, guid: 244a6f69aef06224a90dbc6335b790a6, type: 3}
+  - Key: fc_puncher_birch
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_puncher_birch
+    Texture: {fileID: 2800000, guid: e0f1c8ab40119184d819cef580c16d57, type: 3}
+  - Key: fc_puncher_blackwood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_puncher_blackwood
+    Texture: {fileID: 2800000, guid: 849d7c2ae2604d24a881f2cd88692f43, type: 3}
+  - Key: fc_puncher_dark
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_puncher_dark
+    Texture: {fileID: 2800000, guid: 1d305de608657e047a05ed1be84a02c5, type: 3}
+  - Key: fc_puncher_static
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_puncher_static
+    Texture: {fileID: 2800000, guid: 079455fc1a4fef04ab2f25e1439ebaef, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -8, y: 2, z: -1}
+      Dim: {x: 4, y: 3, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0.5, z: -0}
+      - {x: 0, y: -0.5, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -2, z: -0}
+      - {x: -0, y: -0.5, z: 0}
+      - {x: 0, y: -0.5, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 0}
+    - Pos: {x: -4, y: 2, z: -1}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 2, z: -1}
+      Dim: {x: 3, y: 3, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 3, y: 2, z: -1}
+      Dim: {x: 5, y: 1, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: break_action
+    Pieces:
+    - Pos: {x: 3, y: 3, z: -1}
+      Dim: {x: 13, y: 2, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 15, y: 5, z: -0.5}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 8, y: 2, z: -1}
+      Dim: {x: 4, y: 1, z: 2}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 3, y: 4.5, z: -0.5}
+      Dim: {x: 3, y: 1, z: 1}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 11, y: 5.0001, z: -3.5}
+      Dim: {x: 1, y: 10, z: 7}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 2.5}
+      - {x: 0, y: -0, z: 2.5}
+      - {x: -0, y: -6, z: 2.5}
+      - {x: 0, y: -6, z: 2.5}
+      - {x: -0, y: -0, z: -2.5}
+      - {x: 0, y: -0, z: -2.5}
+      - {x: -0, y: -6, z: -2.5}
+      - {x: 0, y: -6, z: -2.5}
+  - PartName: ammo_0
+    Pieces:
+    - Pos: {x: 2.9, y: 3.25, z: -0.75}
+      Dim: {x: 3, y: 1.5, z: 1.5}
+      Origin: {x: -4, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters:
+  - key: break_angle
+    isVec3: 0
+    floatValue: 60
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: gun_slide_distance
+    isVec3: 0
+    floatValue: 0.25
+    vec3Value: {x: 0, y: 0, z: 0}
+  AttachPoints:
+  - name: break_action
+    attachedTo: none
+    position: {x: 8, y: 2, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 11.5, y: 4, z: 0}
+  - name: sights
+    attachedTo: slide
+    position: {x: 7, y: 5, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

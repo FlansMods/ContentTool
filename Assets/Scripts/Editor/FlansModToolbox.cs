@@ -71,6 +71,10 @@ public class FlansModToolbox : EditorWindow
 				if (path != null)
 				{
 					TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
+
+
+
+
 					//foreach (MinecraftModel.ItemTransform transform in rig.Transforms)
 					//{
 						rig.Transforms.Clear();

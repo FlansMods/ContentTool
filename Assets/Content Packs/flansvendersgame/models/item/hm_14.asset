@@ -9,22 +9,663 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: hm_14
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: hm_14
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_14
+    Texture: {fileID: 2800000, guid: 6928a397b3de4ed488b9e71a272d3d05, type: 3}
+  - Key: hm_14_olive
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_14_olive
+    Texture: {fileID: 2800000, guid: 69b58e4df6fa44049aa92f143c05a69c, type: 3}
+  - Key: hm_14_racing
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_14_racing
+    Texture: {fileID: 2800000, guid: 1cf850d4d8351d741a9def95df1f0f8e, type: 3}
+  - Key: hm_14_wood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_14_wood
+    Texture: {fileID: 2800000, guid: ebbc18d4054c0b34eb7960eb494fc0b1, type: 3}
   Transforms:
-  - Type: 0
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
-    PlacedBoxes: []
-    MaxSize: {x: 4, y: 4}
-  FirstPersonModel: {fileID: 11400000, guid: 3d5a93f1e775670429978c1c04392305, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: 3d5a93f1e775670429978c1c04392305, type: 2}
-  HeadModel: {fileID: 11400000, guid: 3d5a93f1e775670429978c1c04392305, type: 2}
-  GroundModel: {fileID: 11400000, guid: 3d5a93f1e775670429978c1c04392305, type: 2}
-  FixedModel: {fileID: 11400000, guid: 3d5a93f1e775670429978c1c04392305, type: 2}
-  GUIModel: {fileID: 11400000, guid: 8043d8ee9c0e7bf46a30b6b404c4465f, type: 2}
+    PlacedBoxes:
+    - Origin: {x: 1, y: 1}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 3, y: 2, z: 3}
+    - Origin: {x: 17, y: 1}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 9, y: 6, z: 2}
+    - Origin: {x: 41, y: 1}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 2, y: 3, z: 2}
+    - Origin: {x: 57, y: 1}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 1, y: 9}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 0, y: 2, z: 1}
+    - Origin: {x: 9, y: 9}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 0, y: 2, z: 1}
+    - Origin: {x: 41, y: 9}
+      Patch:
+        Key: body/6
+        BoxDims: {x: 3, y: 0, z: 1}
+    - Origin: {x: 1, y: 17}
+      Patch:
+        Key: body/7
+        BoxDims: {x: 5, y: 2, z: 3}
+    - Origin: {x: 49, y: 9}
+      Patch:
+        Key: body/8
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 25, y: 17}
+      Patch:
+        Key: body/9
+        BoxDims: {x: 5, y: 2, z: 3}
+    - Origin: {x: 1, y: 25}
+      Patch:
+        Key: body/10
+        BoxDims: {x: 13, y: 1, z: 3}
+    - Origin: {x: 49, y: 17}
+      Patch:
+        Key: body/11
+        BoxDims: {x: 2, y: 1, z: 3}
+    - Origin: {x: 41, y: 25}
+      Patch:
+        Key: body/12
+        BoxDims: {x: 1, y: 2, z: 3}
+    - Origin: {x: 1, y: 9}
+      Patch:
+        Key: body/13
+        BoxDims: {x: 1, y: 1, z: 4}
+    - Origin: {x: 1, y: 33}
+      Patch:
+        Key: body/14
+        BoxDims: {x: 2, y: 2, z: 3}
+    - Origin: {x: 49, y: 25}
+      Patch:
+        Key: body/15
+        BoxDims: {x: 5, y: 1, z: 1}
+    - Origin: {x: 25, y: 33}
+      Patch:
+        Key: body/16
+        BoxDims: {x: 6, y: 1, z: 3}
+    - Origin: {x: 1, y: 41}
+      Patch:
+        Key: body/17
+        BoxDims: {x: 14, y: 1, z: 3}
+    - Origin: {x: 41, y: 41}
+      Patch:
+        Key: body/18
+        BoxDims: {x: 7, y: 1, z: 3}
+    - Origin: {x: 1, y: 49}
+      Patch:
+        Key: body/19
+        BoxDims: {x: 5, y: 1, z: 2}
+    - Origin: {x: 17, y: 49}
+      Patch:
+        Key: body/20
+        BoxDims: {x: 1, y: 2, z: 1}
+    - Origin: {x: 17, y: 17}
+      Patch:
+        Key: body/21
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 41, y: 17}
+      Patch:
+        Key: body/22
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 57, y: 17}
+      Patch:
+        Key: body/23
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 33, y: 25}
+      Patch:
+        Key: body/24
+        BoxDims: {x: 4, y: 1, z: 1}
+    - Origin: {x: 41, y: 33}
+      Patch:
+        Key: body/25
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 33, y: 41}
+      Patch:
+        Key: body/26
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 41, y: 49}
+      Patch:
+        Key: body/27
+        BoxDims: {x: 1, y: 3, z: 3}
+    - Origin: {x: 1, y: 57}
+      Patch:
+        Key: body/28
+        BoxDims: {x: 1, y: 3, z: 3}
+    - Origin: {x: 25, y: 49}
+      Patch:
+        Key: ammo_0/0
+        BoxDims: {x: 3, y: 4, z: 2}
+    - Origin: {x: 9, y: 33}
+      Patch:
+        Key: slide/0
+        BoxDims: {x: 8, y: 1, z: 1}
+    - Origin: {x: 57, y: 9}
+      Patch:
+        Key: slide/1
+        BoxDims: {x: 1, y: 1, z: 2}
+    - Origin: {x: 49, y: 33}
+      Patch:
+        Key: slide/2
+        BoxDims: {x: 5, y: 1, z: 2}
+    MaxSize: {x: 64, y: 64}
+  TextureX: 64
+  TextureY: 64
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_14
+    Texture: {fileID: 2800000, guid: 15468c40e7aae094084cf18ba0d45ce1, type: 3}
+  - Key: hm_14_olive
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_14_olive
+    Texture: {fileID: 2800000, guid: 685fed1dc3214fd4b9ffdbb7721bae4d, type: 3}
+  - Key: hm_14_racing
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_14_racing
+    Texture: {fileID: 2800000, guid: f50f73692c5187541887a17cd1d064e2, type: 3}
+  - Key: hm_14_wood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_14_wood
+    Texture: {fileID: 2800000, guid: c89fbaa6dfad21f4aa252300b5ea7976, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 3, y: 2, z: 3}
+      Origin: {x: -4, y: 2, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0.5, y: -2, z: 0.5}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0.5, y: -1, z: 0.5}
+      - {x: 0, y: 0, z: -0}
+      - {x: 0.5, y: -2, z: -0.5}
+      - {x: 0, y: -0, z: 0}
+      - {x: 0.5, y: -1, z: -0.5}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -6, z: -2}
+      Dim: {x: 9, y: 6, z: 2}
+      Origin: {x: -14.5, y: 1.25, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 1, y: -0, z: -0}
+      - {x: 0, y: 3.25, z: -0}
+      - {x: -0, y: -0.25, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: 1, y: -0, z: 0}
+      - {x: 0, y: 3.25, z: 0}
+      - {x: -0, y: -0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -3, z: -2}
+      Dim: {x: 2, y: 3, z: 2}
+      Origin: {x: -5.5, y: 1, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 0.5, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0.25, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 0.5, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 1, y: -0, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -1}
+      Dim: {x: 0, y: 2, z: 1}
+      Origin: {x: 0, y: 0.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -1}
+      Dim: {x: 0, y: 2, z: 1}
+      Origin: {x: 2.5, y: 0.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -0, z: -1}
+      Dim: {x: 3, y: 0, z: 1}
+      Origin: {x: 0, y: -1.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: -0.5, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -0.5, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0.5, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 5, y: 2, z: 3}
+      Origin: {x: -1, y: 2, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 2.5, y: -0, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 5, y: 2, z: 3}
+      Origin: {x: 4, y: 2, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 1, z: 0.25}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 1, z: -0.25}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 13, y: 1, z: 3}
+      Origin: {x: 9, y: 2, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 2, y: 1, z: 3}
+      Origin: {x: -0.5, y: 3, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: 0.5, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: 0.5, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 1, y: 2, z: 3}
+      Origin: {x: 1.5, y: 4, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -4}
+      Dim: {x: 1, y: 1, z: 4}
+      Origin: {x: 1.5, y: 4, z: 1.75}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0.2, y: 0.2, z: 0.5}
+      - {x: -0.2, y: 0.2, z: 0.5}
+      - {x: 0.2, y: -0.2, z: 0.5}
+      - {x: -0.2, y: -0.2, z: 0.5}
+      - {x: 0.2, y: 0.2, z: 0}
+      - {x: -0.2, y: 0.2, z: 0}
+      - {x: 0.2, y: -0.2, z: 0}
+      - {x: -0.2, y: -0.2, z: 0}
+    - Pos: {x: 0, y: -2, z: -3}
+      Dim: {x: 2, y: 2, z: 3}
+      Origin: {x: 2.5, y: 4, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: -0.5, z: 0.25}
+      - {x: 0, y: -1, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: -0.5, z: -0.25}
+      - {x: 0, y: -1, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 5, y: 1, z: 1}
+      Origin: {x: 4.5, y: 3, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 6, y: 1, z: 3}
+      Origin: {x: 9.5, y: 3, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.75}
+      - {x: 0, y: -0, z: 0.75}
+      - {x: -0, y: 0, z: 0.75}
+      - {x: 0, y: 0, z: 0.75}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 14, y: 1, z: 3}
+      Origin: {x: 8.5, y: 4, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: -0.5, y: -0, z: 0.25}
+      - {x: 0.5, y: -0.5, z: 0.75}
+      - {x: -0.5, y: -0.5, z: 0.75}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: -0.5, y: -0, z: -0.25}
+      - {x: 0.5, y: -0.5, z: -0.75}
+      - {x: -0.5, y: -0.5, z: -0.75}
+    - Pos: {x: 0, y: -1, z: -3}
+      Dim: {x: 7, y: 1, z: 3}
+      Origin: {x: 15.5, y: 3, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: -0.5, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: -0.5, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: -0.5, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: -0.5, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 5, y: 1, z: 2}
+      Origin: {x: 11.5, y: 4, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -2, z: -1}
+      Dim: {x: 1, y: 2, z: 1}
+      Origin: {x: 22, y: 3.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 23, y: 3.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
+      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: -0.1, z: 0.1}
+      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
+      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: -0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 23, y: 2.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 0.1, z: 0.1}
+      - {x: 0, y: 0.1, z: 0.1}
+      - {x: -0, y: -0.1, z: 0.1}
+      - {x: 0, y: -0.1, z: 0.1}
+      - {x: -0, y: 0.1, z: -0.1}
+      - {x: 0, y: 0.1, z: -0.1}
+      - {x: -0, y: -0.1, z: -0.1}
+      - {x: 0, y: -0.1, z: -0.1}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 24, y: 2.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: -1, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -1, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 4, y: 1, z: 1}
+      Origin: {x: 24, y: 3.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 25, y: 4.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 25, y: 2.25, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 0.25, z: 0.25}
+      - {x: 0, y: 0.25, z: 0.25}
+      - {x: -0, y: -0.25, z: 0.25}
+      - {x: 0, y: -0.25, z: 0.25}
+      - {x: -0, y: 0.25, z: -0.25}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: -0, y: -0.25, z: -0.25}
+      - {x: 0, y: -0.25, z: -0.25}
+    - Pos: {x: 0, y: -3.5, z: -3}
+      Dim: {x: 1, y: 3, z: 3}
+      Origin: {x: 19.5, y: 1.5, z: 1.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0.25, y: 2, z: 0.5}
+      - {x: -0.25, y: 2, z: 0.5}
+      - {x: 0.25, y: 0, z: 0.5}
+      - {x: -0.25, y: 0, z: 0.5}
+      - {x: 0.25, y: 2, z: -0.5}
+      - {x: -0.25, y: 2, z: -0.5}
+      - {x: 0.25, y: 0, z: -0.5}
+      - {x: -0.25, y: 0, z: -0.5}
+    - Pos: {x: 0, y: -3.8, z: -3}
+      Dim: {x: 1, y: 3, z: 3}
+      Origin: {x: -11.5, y: -3, z: 1.5}
+      Euler: {x: 0, y: 0, z: 23}
+      Offsets:
+      - {x: 0.25, y: 2, z: 0.75}
+      - {x: -0.25, y: 2, z: 0.75}
+      - {x: 0.25, y: 0, z: 0.75}
+      - {x: -0.25, y: 0, z: 0.75}
+      - {x: 0.25, y: 2, z: -0.75}
+      - {x: -0.25, y: 2, z: -0.75}
+      - {x: 0.25, y: 0, z: -0.75}
+      - {x: -0.25, y: 0, z: -0.75}
+  - PartName: ammo_0
+    Pieces:
+    - Pos: {x: 0, y: -4, z: -2}
+      Dim: {x: 3, y: 4, z: 2}
+      Origin: {x: 4, y: 0.5, z: 1}
+      Euler: {x: 0, y: 0, z: 3}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: 0.5, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: 0.5, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+  - PartName: slide
+    Pieces:
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 8, y: 1, z: 1}
+      Origin: {x: 7.5, y: 3, z: -0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 1, y: 1, z: 2}
+      Origin: {x: 7.5, y: 3, z: -1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: -0.5, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: -0.5, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: -0.5, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: -0.5, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 5, y: 1, z: 2}
+      Origin: {x: 4.5, y: 2.75, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 0.25}
+      - {x: 0, y: -0, z: 0.25}
+      - {x: -0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: -0, y: -0, z: -0.25}
+      - {x: 0, y: -0, z: -0.25}
+      - {x: -0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+  AnimationParameters: []
+  AttachPoints:
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

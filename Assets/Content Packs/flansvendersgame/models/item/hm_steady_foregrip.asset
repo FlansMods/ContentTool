@@ -9,18 +9,80 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: hm_steady_foregrip
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_steady_foregrip
+    Texture: {fileID: 2800000, guid: b0515759afeabf843a9a9249f2b0f7d2, type: 3}
   Transforms:
-  - Type: 0
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
-  FirstPersonModel: {fileID: 11400000, guid: 8ec69a2e3db975044b7df4f9ebd39ffb, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: 8ec69a2e3db975044b7df4f9ebd39ffb, type: 2}
-  HeadModel: {fileID: 11400000, guid: 8ec69a2e3db975044b7df4f9ebd39ffb, type: 2}
-  GroundModel: {fileID: 11400000, guid: 8ec69a2e3db975044b7df4f9ebd39ffb, type: 2}
-  FixedModel: {fileID: 11400000, guid: 8ec69a2e3db975044b7df4f9ebd39ffb, type: 2}
-  GUIModel: {fileID: 11400000, guid: d162e4ef45aecb3438122451c1d9fcb4, type: 2}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes: []
+    MaxSize: {x: 4, y: 4}
+  TextureX: 16
+  TextureY: 8
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_steady_foregrip
+    Texture: {fileID: 2800000, guid: 39f11c9e0511f3245a5462f60c9b0a5e, type: 3}
+  Sections:
+  - PartName: 
+    Pieces: []
+  AnimationParameters: []
+  AttachPoints:
+  - name: barrel
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: stock
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: sights
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: grip
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

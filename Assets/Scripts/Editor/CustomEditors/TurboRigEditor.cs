@@ -14,29 +14,117 @@ public class TurboRigEditor : MinecraftModelEditor
 	private Vector2 TexturePreviewScroller = Vector2.zero;
 	protected override void TexturingTabImpl(MinecraftModel mcModel)
 	{
-		UVMapField("Baked UV Map", mcModel.BakedUVMap);
-		ModelEditingRig rig = RigSelector(mcModel);
-		if (rig != null)
-		{
-			if (rig.TemporaryUVMap != null)
-			{
-				UVMapField("Temporary UV Map", rig.TemporaryUVMap);
-				if (GUILayout.Button("Apply"))
-				{
-
-				}
-				if (rig.DebugTexture != null)
-				{
-					RenderTextureAutoWidth(rig.DebugTexture);
-				}
-			}
-		}
-	
-
-		ResourceLocation modelLocation = mcModel.GetLocation();
-		List<string> existingTextures = new List<string>();
 		if (mcModel is TurboRig turboRig)
 		{
+			FlanStyles.BigHeader("Icons");
+			ResourceLocation thisLocation = turboRig.GetLocation();
+			string searchName = turboRig.name;
+			if (searchName.EndsWith("_3d"))
+				searchName = searchName.Substring(0, searchName.Length - 3);
+
+			List<string> existingNames = new List<string>();
+			int indexToRemove = -1;
+			for (int i = 0; i < turboRig.Icons.Count; i++)
+			{
+				MinecraftModel.NamedTexture icon = turboRig.Icons[i];
+				string existingName = icon.Location.IDWithoutPrefixes();
+				existingNames.Add(existingName);
+				GUILayout.BeginHorizontal();
+				string changedKey = EditorGUILayout.DelayedTextField(icon.Key);
+				if(changedKey != icon.Key)
+				{
+					icon.Key = changedKey;
+					EditorUtility.SetDirty(turboRig);
+				}
+				ResourceLocation changedLocation = ResourceLocation.EditorObjectField(icon.Location, icon.Texture, "textures/item");
+				if (changedLocation != icon.Location)
+				{
+					turboRig.Icons[i] = new MinecraftModel.NamedTexture()
+					{
+						Key = turboRig.Icons[i].Key,
+						Location = changedLocation,
+						Texture = changedLocation.Load<Texture2D>(),
+					};
+					EditorUtility.SetDirty(turboRig);
+				}
+				GUILayout.EndHorizontal();
+
+				if (!existingName.Contains(searchName))
+				{
+					GUILayout.BeginHorizontal();
+					GUIVerify.VerificationIcon(VerifyType.Neutral);
+					GUILayout.Label($"Skin {existingName} does not seem to match {searchName}");
+					if (GUILayout.Button("Remove"))
+					{
+						indexToRemove = i;
+					}
+					GUILayout.EndHorizontal();
+				}
+			}
+
+			if (indexToRemove != -1)
+			{
+				turboRig.Icons.RemoveAt(indexToRemove);
+				EditorUtility.SetDirty(turboRig);
+			}
+
+			string searchPath = $"Assets/Content Packs/{thisLocation.Namespace}/textures/item";
+			if (Directory.Exists(searchPath))
+			{
+				foreach (string file in Directory.EnumerateFiles(searchPath))
+				{
+					if (file.Contains(searchName))
+					{
+						string actualFileName = file.Substring(file.LastIndexOfAny(SLASHES) + 1);
+						actualFileName = actualFileName.Substring(0, actualFileName.LastIndexOf('.'));
+						if (!existingNames.Contains(actualFileName))
+						{
+							ResourceLocation iconLoc = new ResourceLocation(thisLocation.Namespace, $"textures/item/{actualFileName}");
+							if (iconLoc.TryLoad(out Texture2D icon))
+							{
+								GUILayout.Label($"Found possible additional icon {actualFileName} at {file}");
+								EditorGUILayout.ObjectField(icon, typeof(Texture2D), false);
+								if (GUILayout.Button("Add"))
+								{
+									turboRig.Icons.Add(new MinecraftModel.NamedTexture()
+									{
+										Key = actualFileName == searchName ? "default" : actualFileName,
+										Location = iconLoc,
+										Texture = icon,
+									});
+									EditorUtility.SetDirty(turboRig);
+								}
+							}
+						}
+					}
+				}
+			}
+
+
+			FlanStyles.BigHeader("Skins");
+
+			UVMapField("Baked UV Map", mcModel.BakedUVMap);
+			ModelEditingRig rig = RigSelector(mcModel);
+			if (rig != null)
+			{
+				if (rig.TemporaryUVMap != null)
+				{
+					UVMapField("Temporary UV Map", rig.TemporaryUVMap);
+					if (GUILayout.Button("Apply"))
+					{
+
+					}
+					if (rig.DebugTexture != null)
+					{
+						RenderTextureAutoWidth(rig.DebugTexture);
+					}
+				}
+			}
+	
+
+			ResourceLocation modelLocation = mcModel.GetLocation();
+			List<string> existingTextures = new List<string>();
+		
 			//EditorGUI.BeginDisabledGroup(rig == null);
 			//if(GUILayout.Button("Re-apply UVs to Preview"))
 			//{

@@ -199,6 +199,7 @@ public class ModelEditingRig : MonoBehaviour
 				_SkinMaterial.SetTexture("_MainTex", null);
 				_SkinMaterial.EnableKeyword("_NORMALMAP");
 				_SkinMaterial.EnableKeyword("_DETAIL_MULX2");
+				_SkinMaterial.SetOverrideTag("RenderType", "Cutout");
 			}
 			return _SkinMaterial;
 		}

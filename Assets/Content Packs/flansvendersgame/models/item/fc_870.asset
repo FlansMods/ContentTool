@@ -9,18 +9,320 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: fc_870
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_870
+    Texture: {fileID: 2800000, guid: 5fb24c0ff1c61904cb50f6667102b20a, type: 3}
+  - Key: fc_870_birch
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_870_birch
+    Texture: {fileID: 2800000, guid: bea7adceb0d6e2c409b0cb02a1b9d866, type: 3}
+  - Key: fc_870_dark
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_870_dark
+    Texture: {fileID: 2800000, guid: d7fbb0d50f44a5e4f875a6111baf7b9e, type: 3}
+  - Key: fc_870_redwood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_870_redwood
+    Texture: {fileID: 2800000, guid: 1ca1c8a5683b80b4b99d4e2c48024c4e, type: 3}
+  - Key: fc_870_vroom_vroom
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_870_vroom_vroom
+    Texture: {fileID: 2800000, guid: 14c1f43fca422e149a2ab5d41bd7ff0a, type: 3}
   Transforms:
-  - Type: 0
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
-  FirstPersonModel: {fileID: 11400000, guid: c42726c165a547a469f7f4a057cabc07, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: c42726c165a547a469f7f4a057cabc07, type: 2}
-  HeadModel: {fileID: 11400000, guid: c42726c165a547a469f7f4a057cabc07, type: 2}
-  GroundModel: {fileID: 11400000, guid: c42726c165a547a469f7f4a057cabc07, type: 2}
-  FixedModel: {fileID: 11400000, guid: c42726c165a547a469f7f4a057cabc07, type: 2}
-  GUIModel: {fileID: 11400000, guid: a78f69faa47afd548b44cbd511411f13, type: 2}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: -0.0016368228, y: -0.02083333, z: -0.0016368212}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 1.1851852, y: 1.1851852, z: 1.1851852}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 4, y: 2, z: 2}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 15, y: 1, z: 1}
+    - Origin: {x: 0, y: 4}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 4, y: 2, z: 2}
+    - Origin: {x: 0, y: 8}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 2, y: 2, z: 2}
+    - Origin: {x: 0, y: 12}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 3, y: 1, z: 2}
+    - Origin: {x: 12, y: 2}
+      Patch:
+        Key: pump/0
+        BoxDims: {x: 10, y: 1, z: 1}
+    - Origin: {x: 12, y: 4}
+      Patch:
+        Key: pump/1
+        BoxDims: {x: 4, y: 2, z: 2}
+    - Origin: {x: 10, y: 8}
+      Patch:
+        Key: stock/0
+        BoxDims: {x: 1, y: 3, z: 2}
+    - Origin: {x: 16, y: 8}
+      Patch:
+        Key: stock/1
+        BoxDims: {x: 5, y: 3, z: 2}
+    - Origin: {x: 14, y: 14}
+      Patch:
+        Key: ammo_0/0
+        BoxDims: {x: 2, y: 1, z: 1}
+    MaxSize: {x: 64, y: 16}
+  TextureX: 64
+  TextureY: 16
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_870
+    Texture: {fileID: 2800000, guid: 01e8d76f08038564ea3fa56da0c30d7b, type: 3}
+  - Key: fc_870_birch
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_870_birch
+    Texture: {fileID: 2800000, guid: bbc8aa85513811e45b28a2cdb1a02195, type: 3}
+  - Key: fc_870_dark
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_870_dark
+    Texture: {fileID: 2800000, guid: 9c33de3ca08b8e348bff4291ed5a335a, type: 3}
+  - Key: fc_870_redwood
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_870_redwood
+    Texture: {fileID: 2800000, guid: fd26b9eced4149247ab3c47900473f94, type: 3}
+  - Key: fc_870_vroom_vroom
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_870_vroom_vroom
+    Texture: {fileID: 2800000, guid: c5bc85466482bb6458dc543aa38bb975, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: 2, y: 3, z: -1}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 3, y: 4.5, z: -0.5}
+      Dim: {x: 15, y: 1, z: 1}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -2, y: 3, z: -1}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -1, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -1, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -2, y: 1, z: -1}
+      Dim: {x: 2, y: 2, z: 2}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 1, z: -0}
+      - {x: -0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 1, z: 0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 1, y: 2, z: -1}
+      Dim: {x: 3, y: 1, z: 2}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: pump
+    Pieces:
+    - Pos: {x: 2, y: 3.25, z: -0.5}
+      Dim: {x: 10, y: 1, z: 1}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 7, y: 2.75, z: -1}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: stock
+    Pieces:
+    - Pos: {x: -8, y: 1, z: -1}
+      Dim: {x: 1, y: 3, z: 2}
+      Origin: {x: -1, y: -5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -7, y: 1, z: -1}
+      Dim: {x: 5, y: 3, z: 2}
+      Origin: {x: -1, y: -5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 1, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: ammo_0
+    Pieces:
+    - Pos: {x: 4, y: 3.5, z: -0.5}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 0, y: -0.5, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters:
+  - key: gun_slide_distance
+    isVec3: 0
+    floatValue: 0.5
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: pump_delay_after_reload
+    isVec3: 0
+    floatValue: 115
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: pump_delay
+    isVec3: 0
+    floatValue: 6
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: pump_time
+    isVec3: 0
+    floatValue: 9
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: pump_handle_distance
+    isVec3: 0
+    floatValue: -0.25
+    vec3Value: {x: 0, y: 0, z: 0}
+  - key: num_bullets_in_reload_animation
+    isVec3: 0
+    floatValue: 7
+    vec3Value: {x: 0, y: 0, z: 0}
+  AttachPoints:
+  - name: sights
+    attachedTo: none
+    position: {x: 5, y: 5.5, z: 0}
+  - name: stock
+    attachedTo: none
+    position: {x: 1, y: 4.5, z: 0}
+  - name: barrel
+    attachedTo: none
+    position: {x: 18, y: 4.5, z: 0}
+  - name: grip
+    attachedTo: pump
+    position: {x: 9, y: 2.75, z: 0}
+  - name: pump
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}

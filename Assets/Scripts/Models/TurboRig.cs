@@ -6,14 +6,12 @@ using static UnityEditor.FilePathAttribute;
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
 public class TurboRig : MinecraftModel
 {
-
-
 	// --------------------------------------------------------------------------
 	#region Model definition and helpers
 	// --------------------------------------------------------------------------
-	public ResourceLocation Icon;
 	public int TextureX = 16;
 	public int TextureY = 16;
+	public List<NamedTexture> Icons = new List<NamedTexture>();
 	public List<TurboModel> Sections = new List<TurboModel>();
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
 	public List<AttachPoint> AttachPoints = new List<AttachPoint>();
@@ -486,6 +484,13 @@ public class TurboRig : MinecraftModel
 				builder.Current.Add(kvp.Key, kvp.Location.ExportAsTexturePath());
 			}
 			builder.Current.Add("particle", $"minecraft:block/iron_block");
+		}
+		using (builder.Indentation("icons"))
+		{
+			foreach(var kvp in Icons)
+			{
+				builder.Current.Add(kvp.Key, kvp.Location.ExportAsTexturePath());
+			}
 		}
 		using (builder.Indentation("animations"))
 		{

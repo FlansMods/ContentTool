@@ -9,18 +9,147 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: fc_premium_foregrip
   m_EditorClassIdentifier: 
-  Textures: []
-  Transforms: []
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_premium_foregrip
+    Texture: {fileID: 2800000, guid: fa97f426d1616a646af838e6ef79d19a, type: 3}
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: 0.044194166, y: 0.0000000055879354, z: 0.044194173}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 5.3333335, y: 5.3333335, z: 5.3333335}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
-    PlacedBoxes: []
-    MaxSize: {x: 4, y: 4}
-  FirstPersonModel: {fileID: 11400000, guid: faa616cd3cc245a40b8d48c753aff2c5, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: faa616cd3cc245a40b8d48c753aff2c5, type: 2}
-  HeadModel: {fileID: 11400000, guid: faa616cd3cc245a40b8d48c753aff2c5, type: 2}
-  GroundModel: {fileID: 11400000, guid: faa616cd3cc245a40b8d48c753aff2c5, type: 2}
-  FixedModel: {fileID: 11400000, guid: faa616cd3cc245a40b8d48c753aff2c5, type: 2}
-  GUIModel: {fileID: 11400000, guid: d3920c014b83f2f4e9a4900c7bdacde8, type: 2}
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 6, y: 0}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 3, y: 1, z: 2}
+    - Origin: {x: 22, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 1, y: 4, z: 2}
+    - Origin: {x: 0, y: 4}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 4, y: 1, z: 2}
+    MaxSize: {x: 32, y: 8}
+  TextureX: 16
+  TextureY: 16
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_premium_foregrip
+    Texture: {fileID: 2800000, guid: 9cb8afd480f7d4743b6f464c70e7ac86, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -2, y: -1, z: -1}
+      Dim: {x: 4, y: 1, z: 2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -2, y: -5, z: -0.75}
+      Dim: {x: 1, y: 4, z: 1.5}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -2, y: -6, z: -0.75}
+      Dim: {x: 3, y: 1, z: 1.5}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.5, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.5, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 1, y: -3, z: -0.75}
+      Dim: {x: 1, y: 2, z: 1.5}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: -0}
+      - {x: -0.5, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+      - {x: -0.5, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -0.75}
+      Dim: {x: 1, y: 2, z: 1.5}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 1, y: 0, z: -0}
+      - {x: 1, y: 0, z: -0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 1, y: 0, z: 0}
+      - {x: 1, y: 0, z: 0}
+  AnimationParameters: []
+  AttachPoints: []

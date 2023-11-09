@@ -9,18 +9,309 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b535659e94ca194da7a549bfbe91b9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: phantek_lock
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/phantek_lock
+    Texture: {fileID: 2800000, guid: ce68dcf60e3331c4db77d8c85892c8eb, type: 3}
+  - Key: phantek_lock_cottonmouth
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/phantek_lock_cottonmouth
+    Texture: {fileID: 2800000, guid: 513f62ec62dc9484d9a4df78bfbeb757, type: 3}
+  - Key: phantek_lock_deepslate
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/phantek_lock_deepslate
+    Texture: {fileID: 2800000, guid: 1f4bacbccd12d8c469cc87b9e779924d, type: 3}
+  - Key: phantek_lock_fade
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/phantek_lock_fade
+    Texture: {fileID: 2800000, guid: b3ecd4d536bf4764a9cb7c5b9b19f478, type: 3}
+  - Key: phantek_lock_venom
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/phantek_lock_venom
+    Texture: {fileID: 2800000, guid: f0535f365e87f9f4d9ed3755f062bac6, type: 3}
   Transforms:
-  - Type: 0
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
-  FirstPersonModel: {fileID: 11400000, guid: 9132ac5771ea6d04c84a37aeffa48c0e, type: 2}
-  ThirdPersonModel: {fileID: 11400000, guid: 9132ac5771ea6d04c84a37aeffa48c0e, type: 2}
-  HeadModel: {fileID: 11400000, guid: 9132ac5771ea6d04c84a37aeffa48c0e, type: 2}
-  GroundModel: {fileID: 11400000, guid: 9132ac5771ea6d04c84a37aeffa48c0e, type: 2}
-  FixedModel: {fileID: 11400000, guid: 9132ac5771ea6d04c84a37aeffa48c0e, type: 2}
-  GUIModel: {fileID: 11400000, guid: d14bd569b6d8fe043b3b13d8da57af81, type: 2}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: 0.0034432334, y: -0.03826737, z: 0.0034432372}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 2.682439, y: 2.682439, z: 2.682439}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 1, y: 1}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 2, y: 5, z: 2}
+    - Origin: {x: 17, y: 1}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 9, y: 1, z: 2}
+    - Origin: {x: 49, y: 1}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 7, y: 1, z: 1}
+    - Origin: {x: 41, y: 1}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 73, y: 1}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 2, y: 1, z: 1}
+    - Origin: {x: 129, y: 1}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 8, y: 1, z: 1}
+    - Origin: {x: 81, y: 1}
+      Patch:
+        Key: ammo_0/0
+        BoxDims: {x: 1, y: 5, z: 1}
+    - Origin: {x: 89, y: 1}
+      Patch:
+        Key: ammo_0/1
+        BoxDims: {x: 1, y: 5, z: 1}
+    - Origin: {x: 97, y: 1}
+      Patch:
+        Key: ammo_0/2
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 105, y: 1}
+      Patch:
+        Key: slide/0
+        BoxDims: {x: 9, y: 1, z: 2}
+    - Origin: {x: 153, y: 1}
+      Patch:
+        Key: slide/1
+        BoxDims: {x: 1, y: 1, z: 1}
+    MaxSize: {x: 256, y: 8}
+  TextureX: 256
+  TextureY: 8
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/phantek_lock
+    Texture: {fileID: 2800000, guid: 8f7e8d26719ed634b843256e14ba8045, type: 3}
+  - Key: phantek_lock_cottonmouth
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/phantek_lock_cottonmouth
+    Texture: {fileID: 2800000, guid: 0081a16d7bc994c4188271b206bf1101, type: 3}
+  - Key: phantek_lock_deepslate
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/phantek_lock_deepslate
+    Texture: {fileID: 2800000, guid: 63b869105a54df04dbf1317824ee224d, type: 3}
+  - Key: phantek_lock_fade
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/phantek_lock_fade
+    Texture: {fileID: 2800000, guid: 83a8f91299b08f34bb0e5a788dc8a9a4, type: 3}
+  - Key: phantek_lock_venom
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/phantek_lock_venom
+    Texture: {fileID: 2800000, guid: 26f875570d7fdfd45b03236688aea7ba, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: 0, y: -5, z: -2}
+      Dim: {x: 2, y: 5, z: 2}
+      Origin: {x: 0, y: 3.5, z: 1}
+      Euler: {x: -0, y: 0, z: 352}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 9, y: 1, z: 2}
+      Origin: {x: -1, y: 4, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 7, y: 1, z: 1}
+      Origin: {x: 1, y: 3.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 7.5, y: 4.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 2, y: 1, z: 1}
+      Origin: {x: 1.5, y: 2.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 8, y: 1, z: 1}
+      Origin: {x: 0, y: 4.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+  - PartName: ammo_0
+    Pieces:
+    - Pos: {x: 0, y: -5, z: -1}
+      Dim: {x: 1, y: 5, z: 1}
+      Origin: {x: 0, y: -1, z: 0.5}
+      Euler: {x: -0, y: 0, z: 352}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -5, z: -1}
+      Dim: {x: 1, y: 5, z: 1}
+      Origin: {x: -0.5, y: -0.9, z: 0.5}
+      Euler: {x: -0, y: 0, z: 352}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: -0.9, y: -5.3, z: 0.5}
+      Euler: {x: -0, y: 0, z: 352}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+  - PartName: slide
+    Pieces:
+    - Pos: {x: 0, y: -1, z: -2}
+      Dim: {x: 9, y: 1, z: 2}
+      Origin: {x: -1, y: 5, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -1, z: -1}
+      Dim: {x: 1, y: 1, z: 1}
+      Origin: {x: 7, y: 5.5, z: 0.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+  AnimationParameters:
+  - key: gun_slide_distance
+    isVec3: 0
+    floatValue: 0.2
+    vec3Value: {x: 0, y: 0, z: 0}
+  AttachPoints:
+  - name: barrel
+    attachedTo: none
+    position: {x: 8.5, y: 3, z: 0}
+  - name: sights
+    attachedTo: slide
+    position: {x: 3, y: 4, z: 0}
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
