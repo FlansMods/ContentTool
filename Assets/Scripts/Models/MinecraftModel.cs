@@ -169,7 +169,8 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 
 
 	public virtual void FixNamespaces() { }
-    public virtual bool ExportToJson(QuickJSONBuilder builder)
+	public virtual string WriteRawJson() { return ""; }
+	public virtual bool ExportToJson(QuickJSONBuilder builder)
 	{
 		using (builder.Indentation("display"))
 		{

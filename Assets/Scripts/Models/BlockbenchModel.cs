@@ -10,6 +10,7 @@ public class BlockbenchModel : MinecraftModel
 
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
-		return base.ExportToJson(builder);
+		return false;
 	}
+	public override string WriteRawJson() { return Json; }
 }

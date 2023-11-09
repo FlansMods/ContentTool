@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -24,6 +25,12 @@ public static class JsonModelExporter
 				if (model.ExportToJson(builder))
 				{
 					builder.Root.ExportToFile(exportDir.File($"{model.name}.json"));
+				}
+				else
+				{
+					string raw = model.WriteRawJson();
+					if (raw.Length > 0)
+						File.WriteAllText(exportDir.File($"{model.name}.json"), raw);
 				}
 			}
 		}
