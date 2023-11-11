@@ -29,6 +29,7 @@ public class AttachPoint
 			case "scope": return Vector3.up;
 			case "sights": return Vector3.up;
 			case "stock": return Vector3.left;
+			case "eye_line": return Vector3.right;
 		}
 		return Vector3.right;
 	}
@@ -38,10 +39,11 @@ public class AttachPoint
 		switch(name)
 		{
 			case "grip": return Color.magenta;
-			case "barrel": return Color.cyan;
+			case "barrel": return Color.blue;
 			case "scope": return Color.green;
 			case "sights": return Color.green;
 			case "stock": return Color.yellow;
+			case "eye_line": return Color.cyan;
 		}
 		return Color.red;
 	}

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Codice.Client.BaseCommands.Import.Commit;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class AttachPointHandle : MinecraftBoundsHandle
 {
@@ -17,7 +15,7 @@ public class AttachPointHandle : MinecraftBoundsHandle
 	}
 	public Vector3 Direction = Vector3.forward;
 
-
+	public bool[] IsInfinite = new bool[0];
 	public Vector3[] Origins = new Vector3[0];
 	public Vector3[] Directions = new Vector3[0];
 	public Color[] Colours = new Color[0];
@@ -27,22 +25,14 @@ public class AttachPointHandle : MinecraftBoundsHandle
 	{
 		Origins = new Vector3[points.Count];
 		Directions = new Vector3[points.Count];
+		IsInfinite = new bool[points.Count];
 		Colours = new Color[points.Count];
 		for(int i = 0; i < points.Count; i++)
 		{
 			Origins[i] = points[i].position;
 			Directions[i] = points[i].GuessDirection();
+			IsInfinite[i] = points[i].name == "eye_line";
 			Colours[i] = points[i].GetDebugColour();
-		}
-	}
-
-	public void CopyToAttachPoints(List<AttachPoint> points)
-	{
-		if (Origins.Length != points.Count)
-			return;
-		for (int i = 0; i < points.Count; i++)
-		{
-			points[i].position = Origins[i];
 		}
 	}
 
@@ -73,7 +63,14 @@ public class AttachPointHandle : MinecraftBoundsHandle
 		{
 			using (new Handles.DrawingScope(Handles.color * Colours[i]))
 			{
-				Handles.DrawLine(Origins[i], Origins[i] + Directions[i] * 3.0f);
+				if (IsInfinite[i])
+				{
+					Handles.DrawLine(Origins[i] - Directions[i] * 100f, Origins[i] + Directions[i] * 100f);
+				}
+				else
+				{
+					Handles.DrawLine(Origins[i], Origins[i] + Directions[i] * 3.0f);
+				}
 				Handles.DrawWireCube(Origins[i] + Directions[i] * (1.5f), (Vector3.one + Directions[i] * 6.0f) * HANDLE_SIZE);
 
 				EditorGUI.BeginChangeCheck();

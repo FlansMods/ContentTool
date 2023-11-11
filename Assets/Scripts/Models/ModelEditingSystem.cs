@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -38,7 +39,7 @@ public static class ModelEditingSystem
 
 	public static bool AppliedToAnyRig(MinecraftModel model)
     {
-		foreach (ModelEditingRig rig in Object.FindObjectsOfType<ModelEditingRig>())
+		foreach (ModelEditingRig rig in UnityEngine.Object.FindObjectsOfType<ModelEditingRig>())
             if (rig.ModelOpenedForEdit == model)
                 return true;
         return false;
@@ -46,7 +47,7 @@ public static class ModelEditingSystem
 
 	public static IEnumerable<ModelEditingRig> GetRigsPreviewing(MinecraftModel model)
     {
-        foreach(ModelEditingRig rig in Object.FindObjectsOfType<ModelEditingRig>())
+        foreach(ModelEditingRig rig in UnityEngine.Object.FindObjectsOfType<ModelEditingRig>())
         {
             if (rig.ModelOpenedForEdit == model)
                 yield return rig;
@@ -105,9 +106,16 @@ public static class ModelEditingSystem
 
 		EditorUtility.SetDirty(op.Model);
 
-		foreach (ModelEditingRig rig in GetRigsPreviewing(op.Model))
+        try
         {
-            op.ApplyToPreview(rig.Preview);
+            foreach (ModelEditingRig rig in GetRigsPreviewing(op.Model))
+            {
+                op.ApplyToPreview(rig.Preview);
+            }
+        }
+        catch(Exception)
+        {
+            // We don't care so much about the previews
         }
 	}
 }

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
-[EditorTool("Paint Model", typeof(MinecraftModelPreview))]
+//[EditorTool("Paint Model", typeof(MinecraftModelPreview))]
 public class ColourPaintingTool : MinecraftModelPaintingTool
 {
 	public override void OnEnable()

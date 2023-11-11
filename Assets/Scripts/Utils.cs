@@ -226,6 +226,8 @@ public static class Utils
 }
 public static class FlanStyles
 {
+    public static int Indent = 0;
+
 	public static readonly GUIStyle BoldLabel = GUI.skin.label.Clone()
 				.WithFontStyle(FontStyle.Bold);
     public static readonly GUIStyle GreenLabel = GUI.skin.label.Clone()

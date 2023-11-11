@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.Collections.Specialized.BitVector32;
 using static UnityEditor.FilePathAttribute;
 
 [CreateAssetMenu(menuName = "Minecraft Models/TurboRig")]
@@ -245,6 +246,14 @@ public class TurboRig : MinecraftModel
 				return point.position;
 		return Vector3.zero;
 	}
+	public void DuplicateAttachment(string key)
+	{
+		if(TryGetAttachPoint(key, out AttachPoint existing))
+		{
+			SetAttachment($"{existing.name}-", existing.attachedTo);
+			SetAttachmentOffset($"{existing.name}-", existing.position);
+		}
+	}
 	public void RemoveAttachment(string key)
 	{
 		for (int i = AttachPoints.Count - 1; i >= 0; i--)
@@ -256,6 +265,12 @@ public class TurboRig : MinecraftModel
 		AttachPoint ap = GetOrCreate(name);
 		if (ap != null)
 			ap.attachedTo = attachedTo;
+	}
+	public void RenameAttachment(string oldName, string newName)
+	{
+		for (int i = AttachPoints.Count - 1; i >= 0; i--)
+			if (AttachPoints[i].name == oldName)
+				AttachPoints[i].name = newName;
 	}
 	public void SetAttachmentOffset(string name, Vector3 offset)
 	{
@@ -573,6 +588,42 @@ public class TurboRig : MinecraftModel
 						});
 						RemoveAnimParameter($"{apName}_attach_point");
 					}
+				}));
+			}
+		}
+		foreach(AttachPoint ap in AttachPoints)
+		{
+			if (ap.name == "body")
+			{
+				if (ap.attachedTo != "none")
+				{
+					verifications.Add(Verification.Failure($"body Attach Point has been incorrectly attached to something",
+					() =>
+					{
+						ap.attachedTo = "none";
+					}));
+				}
+			}
+			else if (ap.attachedTo == "none" || ap.attachedTo.Length == 0)
+			{
+				verifications.Add(Verification.Failure($"Attach Point {ap.name} is not attached to anything",
+				() => {
+					ap.attachedTo = "body";
+				}));
+			}
+		}
+		foreach(TurboModel section in Sections)
+		{
+			if(section.PartName != "body" && !TryGetAttachPoint(section.PartName, out AttachPoint ap))
+			{
+				verifications.Add(Verification.Failure($"Model Piece {section.PartName} is defined, but has no AttachPoint",
+				() => {
+					AttachPoints.Add(new AttachPoint()
+					{
+						name = section.PartName,
+						attachedTo = "body",
+						position = Vector3.zero,
+					});
 				}));
 			}
 		}

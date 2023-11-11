@@ -63,7 +63,17 @@ public class TurboAttachPointAddOperation : TurboRigEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.SetAttachment("NewAttachPoint", "body");
+		RootModel.SetAttachment("new_ap", "body");
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview("new_ap");
+			if (apPreview != null)
+				apPreview.UpdatePreviewFromModel();
+		}
 	}
 }
 
@@ -89,7 +99,8 @@ public abstract class TurboAttachPointEditOperation : TurboRigEditOperation
 		if (previewer is TurboRigPreview rigPreview)
 		{
 			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview(PartName);
-			apPreview.UpdatePreviewFromModel();
+			if(apPreview != null)
+				apPreview.UpdatePreviewFromModel();	
 		}
 	}
 }
@@ -129,6 +140,25 @@ public class TurboAttachPointMoveOperation : TurboAttachPointEditOperation
 		}
 		RootModel.SetAttachmentOffset(PartName, LocalPos);
 	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview(PartName);
+			if (apPreview != null)
+				apPreview.UpdatePreviewFromModel();
+			if (LockPartPositions)
+			{
+				TurboModelPreview sectionPreview = rigPreview.GetSectionPreview(PartName);
+				foreach(TurboPiecePreview piecePreview in sectionPreview.GetChildren())
+				{
+					piecePreview.RefreshGeometry();
+				}
+			}
+		}
+		
+	}
 }
 public class TurboAttachPointReparentOperation : TurboAttachPointEditOperation
 {
@@ -145,6 +175,49 @@ public class TurboAttachPointReparentOperation : TurboAttachPointEditOperation
 	{
 		RootModel.SetAttachment(PartName, AttachedTo);
 	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview($"{PartName}");
+			TurboAttachPointPreview parentAPPreview = rigPreview.GetAPPreview($"{AttachedTo}");
+			if (apPreview != null && parentAPPreview != null)
+			{
+				apPreview.transform.SetParent(parentAPPreview.transform);
+				apPreview.transform.localPosition = rigPreview.Rig.GetAttachmentOffset(PartName);
+			}
+		}
+	}
+}
+public class TurboAttachPointRenameOperation : TurboAttachPointEditOperation
+{
+	public string NewName { get; private set; }
+	public TurboAttachPointRenameOperation(MinecraftModel model, string partName, string newName)
+		: base(model, partName)
+	{
+		NewName = newName;
+	}
+	public override string ID { get { return "TURBO_AP_REPARENT"; } }
+	public override string UndoMessage { get { return "Re-Parent TurboAttachPoint"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		RootModel.RenameAttachment(PartName, NewName);
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview($"{PartName}");
+			if (apPreview != null)
+			{
+				apPreview.PartName = NewName;
+				apPreview.name = $"AP_{NewName}";
+			}
+		}
+	}
 }
 public class TurboAttachPointDeleteOperation : TurboAttachPointEditOperation
 {
@@ -156,6 +229,38 @@ public class TurboAttachPointDeleteOperation : TurboAttachPointEditOperation
 	public override void ApplyToModel()
 	{
 		RootModel.RemoveAttachment(PartName);
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview($"{PartName}");
+			if (apPreview != null)
+				UnityEngine.Object.DestroyImmediate(apPreview.gameObject);
+		}
+	}
+}
+public class TurboAttachPointDuplicateOperation : TurboAttachPointEditOperation
+{
+	public TurboAttachPointDuplicateOperation(MinecraftModel model, string partName)
+		: base(model, partName) { }
+	public override string ID { get { return "TURBO_AP_DUPLICATE"; } }
+	public override string UndoMessage { get { return "Duplicate TurboAttachPoint"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		RootModel.DuplicateAttachment(PartName);
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview($"{PartName}-");
+			if(apPreview != null)
+				apPreview.UpdatePreviewFromModel();
+		}
 	}
 }
 #endregion

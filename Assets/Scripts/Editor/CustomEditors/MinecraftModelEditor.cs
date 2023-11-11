@@ -200,6 +200,7 @@ public abstract class MinecraftModelEditor : Editor
 			//	Selection.SetActiveObjectWithContext(rig.Preview, this);
 
 			InitialModellingNode(rig.Preview);
+			DoAttachPoints(rig.Preview);
 
 			Object objectToInspect = null;
 			if (Selection.activeGameObject != null)
@@ -234,11 +235,33 @@ public abstract class MinecraftModelEditor : Editor
 
 		ModellingNode(root, "", true);
 	}
-	public void AttachPointNode(TurboAttachPointPreview ap)
+	public void DoAttachPoints(MinecraftModelPreview root)
+	{
+		List<TurboAttachPointPreview> apPreviews = new List<TurboAttachPointPreview>();
+		foreach (Transform child in root.transform)
+		{
+			TurboAttachPointPreview apChild = child.GetComponent<TurboAttachPointPreview>();
+			if (apChild != null)
+			{
+				apPreviews.Add(apChild);
+			}
+		}
+
+		if (apPreviews.Count > 0)
+		{
+			GUILayout.Label("Attach Points", FlanStyles.BoldLabel);
+			foreach (TurboAttachPointPreview apPreview in apPreviews)
+				AttachPointNode(apPreview);
+		}
+
+		if (GUILayout.Button(FlanStyles.AddEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointAddOperation(root.GetModel()));
+	}
+	public void InitialAttachPointNode(TurboAttachPointPreview ap)
 	{
 		MinecraftModelPreview model = ap.Parent;
 		TurboAttachPointPreview apParent = ap.transform.parent.GetComponent<TurboAttachPointPreview>();
-		if(apParent != null)
+		if (apParent != null)
 		{
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button(FlanStyles.NavigateBack, GUILayout.Width(MODELLING_BUTTON_X)))
@@ -254,19 +277,85 @@ public abstract class MinecraftModelEditor : Editor
 			GUILayout.Label($"Parent: {model}");
 			GUILayout.EndHorizontal();
 		}
+		AttachPointNode(ap);
+	}
+	public void AttachPointNode(TurboAttachPointPreview ap)
+	{
+		if (ap == null || ap.Parent == null || ap.Parent.Rig == null)
+			return;
+		GUILayout.BeginHorizontal();
+		GUILayout.Box(GUIContent.none, GUILayout.Width(15 * FlanStyles.Indent), GUILayout.ExpandHeight(true));
 
-		foreach(Transform child in ap.transform)
+
+
+		List<string> possibleParents = new List<string> { "none", "body" };
+		foreach (AttachPoint otherAP in ap.Parent.Rig.AttachPoints)
+		{
+			if(otherAP.name != ap.name)
+				possibleParents.Add(otherAP.name);
+		}
+
+		foreach(TurboAttachPointPreview childPreview in ap.GetComponentsInChildren<TurboAttachPointPreview>())
+		{
+			if (possibleParents.Contains(childPreview.PartName))
+				possibleParents.Remove(childPreview.PartName);
+		}
+
+		int parentIndex = possibleParents.IndexOf(ap.Parent.Rig.GetAttachedTo(ap.PartName));
+		if (parentIndex == -1)
+			parentIndex = 0;
+
+
+		GUILayout.BeginVertical();
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("AP_");
+
+		string changedName = EditorGUILayout.DelayedTextField($"{ap.PartName}", GUILayout.Width(150));
+		if (changedName != ap.PartName)
+		{
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointRenameOperation(ap.Parent.Rig, ap.PartName, changedName));
+		}
+
+		if (ap.PartName != "body")
+		{
+			int changedParentIndex = EditorGUILayout.Popup(parentIndex, possibleParents.ToArray());
+			if (changedParentIndex != parentIndex)
+			{
+				ModelEditingSystem.ApplyOperation(new TurboAttachPointReparentOperation(ap.Parent.Rig, ap.PartName, possibleParents[changedParentIndex]));
+			}
+		}
+
+		GUILayout.FlexibleSpace();
+		
+		if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+			Selection.activeObject = ap;
+		if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointDuplicateOperation(ap.Parent.Rig, ap.PartName));
+		if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(MODELLING_BUTTON_X)))
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointDeleteOperation(ap.Parent.Rig, ap.PartName));
+		GUILayout.EndHorizontal();
+
+		Vector3 pos = ap.Parent.Rig.GetAttachmentOffset(ap.PartName);
+		Vector3 modifiedPos = EditorGUILayout.Vector3Field("Position", pos);
+		if (!modifiedPos.Approximately(pos))
+		{
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointMoveOperation(ap.Parent.Rig, ap.PartName, modifiedPos, ap.LockPartPositions, ap.LockAttachPoints));
+		}
+
+		foreach (Transform child in ap.transform)
 		{
 			TurboAttachPointPreview apChild = child.GetComponent<TurboAttachPointPreview>();
 			if(apChild != null)
 			{
-				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Child AP: {apChild.name}");
-				if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
-					Selection.activeObject = apChild;
-				GUILayout.EndHorizontal();
+				FlanStyles.Indent++;
+				AttachPointNode(apChild);
+				FlanStyles.Indent--;
 			}
 		}
+		GUILayout.EndVertical();
+
+
+		GUILayout.EndHorizontal();
 	}
 	private const float MODELLING_BUTTON_X = 32f;
 	private void ModellingNode(MinecraftModelPreview node, string parentPath, bool alwaysExpanded = false)
@@ -321,6 +410,7 @@ public abstract class MinecraftModelEditor : Editor
 				if(child != null)
 					ModellingNode(child, path);
 			}
+
 			EditorGUI.indentLevel--;
 			if (node.name != oldName)
 			{
@@ -581,6 +671,11 @@ public abstract class MinecraftModelEditor : Editor
 			EditorUtility.SetDirty(model);
 		}
 		GUILayout.EndHorizontal();
+
+
+
+		
+
 	}
 	private static string[] GetAttachTransformNames(ItemTransformType transformType)
 	{

@@ -200,7 +200,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
   - PartName: break_action
     Pieces:
-    - Pos: {x: 3, y: 3, z: -1}
+    - Pos: {x: -1, y: 0, z: -1}
       Dim: {x: 13, y: 2, z: 2}
       Origin: {x: -4, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -213,7 +213,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 15, y: 5, z: -0.5}
+    - Pos: {x: 11, y: 2.000001, z: -0.5}
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: -4, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -226,7 +226,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 8, y: 2, z: -1}
+    - Pos: {x: 3.9999995, y: -1, z: -1}
       Dim: {x: 4, y: 1, z: 2}
       Origin: {x: -4, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 3, y: 4.5, z: -0.5}
+    - Pos: {x: -1, y: 1.5000005, z: -0.5}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: -4, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -252,7 +252,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 11, y: 5.0001, z: -3.5}
+    - Pos: {x: 7, y: 2.000101, z: -3.5}
       Dim: {x: 1, y: 10, z: 7}
       Origin: {x: -4, y: 0, z: 0}
       Euler: {x: 0, y: 0, z: 0}
@@ -291,14 +291,20 @@ MonoBehaviour:
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: break_action
-    attachedTo: none
-    position: {x: 8, y: 2, z: 0}
+    attachedTo: body
+    position: {x: 4, y: 3, z: 0}
   - name: barrel
-    attachedTo: none
+    attachedTo: body
     position: {x: 11.5, y: 4, z: 0}
   - name: sights
-    attachedTo: slide
-    position: {x: 7, y: 5, z: 0}
+    attachedTo: break_action
+    position: {x: 3.5, y: 2, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+  - name: slide
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+  - name: eye_line
+    attachedTo: body
+    position: {x: 11, y: 6, z: 0}

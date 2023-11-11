@@ -21,7 +21,7 @@ public class TurboAttachPointPreviewEditor : Editor
 			RigEditor = CreateEditor(preview.Parent.Rig);
 		if (RigEditor is TurboRigEditor rigEditor)
 		{
-			rigEditor.AttachPointNode(preview);
+			rigEditor.InitialAttachPointNode(preview);
 		}
 
 		preview.LockPartPositions = GUILayout.Toggle(preview.LockPartPositions, "Lock Positions (pieces will stay still by altering their origins)");

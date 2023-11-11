@@ -20,6 +20,28 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			);
 		}
 
+		if(this is GunDefinition gunDef)
+		{
+			bool hasADSAction = false;
+			foreach(ActionDefinition actionDef in gunDef.secondary.actions)
+			{
+				if(actionDef.actionType == EActionType.AimDownSights || actionDef.actionType == EActionType.Scope)
+				{
+					hasADSAction = true;
+				}
+			}
+			if(hasADSAction && gunDef.secondary.repeatMode != ERepeatMode.Toggle)
+			{
+				verifications.Add(Verification.Neutral(
+					$"Aim down sights action is not a toggle",
+					() =>
+					{
+						gunDef.secondary.repeatMode = ERepeatMode.Toggle;
+					})
+				);
+			}
+		}
+
 		if(ExpectsModel())
 		{
 			ResourceLocation resLoc = this.GetLocation();

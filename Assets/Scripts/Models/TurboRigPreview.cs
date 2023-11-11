@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static System.Collections.Specialized.BitVector32;
 
 public class TurboRigPreview : MinecraftModelPreview
 {
