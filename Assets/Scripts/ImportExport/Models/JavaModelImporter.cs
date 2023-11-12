@@ -216,8 +216,8 @@ public static class JavaModelImporter
 			string[] split = line.Split(' ');
 			if (split.Length == 4)
 			{
-				if (split[1].Equals("textureX")) rig.TextureX = int.Parse(split[3].Trim(';'));
-				if (split[1].Equals("textureY")) rig.TextureY = int.Parse(split[3].Trim(';'));
+				if (split[1].Equals("textureX")) rig.BakedUVMap.MaxSize.x = int.Parse(split[3].Trim(';'));
+				if (split[1].Equals("textureY")) rig.BakedUVMap.MaxSize.y = int.Parse(split[3].Trim(';'));
 			}
 			else Debug.Assert(false, $"Invalid length textureX/Y string '{line}' in {file.name}");
 			return;

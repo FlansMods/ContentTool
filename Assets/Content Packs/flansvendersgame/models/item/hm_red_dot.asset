@@ -75,8 +75,6 @@ MonoBehaviour:
         Key: body/0
         BoxDims: {x: 4, y: 1, z: 2}
     MaxSize: {x: 32, y: 8}
-  TextureX: 16
-  TextureY: 16
   Icons:
   - Key: default
     Location:
@@ -152,4 +150,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: eye_line
+    attachedTo: body
+    position: {x: 3, y: 1.125, z: 0}

@@ -63,8 +63,6 @@ MonoBehaviour:
         Key: body/1
         BoxDims: {x: 3, y: 3, z: 3}
     MaxSize: {x: 16, y: 16}
-  TextureX: 16
-  TextureY: 16
   Icons:
   - Key: default
     Location:
@@ -126,21 +124,9 @@ MonoBehaviour:
     floatValue: 7
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
-  - name: sights
-    attachedTo: none
-    position: {x: 5, y: 5.5, z: 0}
-  - name: stock
-    attachedTo: none
-    position: {x: 1, y: 4.5, z: 0}
-  - name: barrel
-    attachedTo: none
-    position: {x: 18, y: 4.5, z: 0}
   - name: grip
     attachedTo: pump
     position: {x: 9, y: 2.75, z: 0}
-  - name: pump
+  - name: bullet_origin
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-  - name: ammo_0
-    attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 4, y: 0, z: 0}

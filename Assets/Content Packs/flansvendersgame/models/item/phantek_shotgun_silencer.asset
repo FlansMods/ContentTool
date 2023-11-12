@@ -67,8 +67,6 @@ MonoBehaviour:
         Key: body/0
         BoxDims: {x: 1, y: 2, z: 2}
     MaxSize: {x: 32, y: 8}
-  TextureX: 16
-  TextureY: 16
   Icons:
   - Key: default
     Location:
@@ -118,4 +116,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   AnimationParameters: []
-  AttachPoints: []
+  AttachPoints:
+  - name: bullet_origin
+    attachedTo: body
+    position: {x: 4.5, y: 0, z: -0}

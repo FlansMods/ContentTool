@@ -10,8 +10,6 @@ public class TurboRig : MinecraftModel
 	// --------------------------------------------------------------------------
 	#region Model definition and helpers
 	// --------------------------------------------------------------------------
-	public int TextureX = 16;
-	public int TextureY = 16;
 	public List<NamedTexture> Icons = new List<NamedTexture>();
 	public List<TurboModel> Sections = new List<TurboModel>();
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
@@ -459,25 +457,25 @@ public class TurboRig : MinecraftModel
 								using (builder.Tabulation("uv"))
 								{
 									int[] uvs = wrapper.GetIntUV(placement.Origin.x, placement.Origin.y, face);
-									builder.CurrentTable.Add((float)uvs[0] / texX);
-									builder.CurrentTable.Add((float)uvs[1] / texY);
 									builder.CurrentTable.Add((float)uvs[2] / texX);
 									builder.CurrentTable.Add((float)uvs[3] / texY);
+									builder.CurrentTable.Add((float)uvs[0] / texX);
+									builder.CurrentTable.Add((float)uvs[1] / texY);
 								}
 								if (face == EFace.up)
-									builder.Current.Add("rotation", 180);
-								if (face == EFace.down)
 									builder.Current.Add("rotation", 90);
+								if (face == EFace.down)
+									builder.Current.Add("rotation", 0);
 								builder.Current.Add("texture", "#default");
 							}
 						};
 
-						buildUVs(piece, "north", EFace.north, TextureX, TextureY);
-						buildUVs(piece, "east", EFace.east, TextureX, TextureY);
-						buildUVs(piece, "south", EFace.south, TextureX, TextureY);
-						buildUVs(piece, "west", EFace.west, TextureX, TextureY);
-						buildUVs(piece, "up", EFace.up, TextureX, TextureY);
-						buildUVs(piece, "down", EFace.down, TextureX, TextureY);
+						buildUVs(piece, "north", EFace.north, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
+						buildUVs(piece, "east", EFace.east, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
+						buildUVs(piece, "south", EFace.south, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
+						buildUVs(piece, "west", EFace.west, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
+						buildUVs(piece, "down", EFace.up, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
+						buildUVs(piece, "up", EFace.down, BakedUVMap.MaxSize.x, BakedUVMap.MaxSize.y);
 					}
 				}
 			}
@@ -486,11 +484,6 @@ public class TurboRig : MinecraftModel
 	}
 	public override bool ExportToJson(QuickJSONBuilder builder)
 	{
-		if (TextureX == 0)
-			TextureX = 16;
-		if (TextureY == 0)
-			TextureY = 16;
-
 		builder.Current.Add("loader", "flansmod:turborig");
 		using (builder.Indentation("textures"))
 		{
