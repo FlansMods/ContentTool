@@ -8,10 +8,19 @@ using UnityEngine;
 public abstract class MinecraftModelPreview : MonoBehaviour
 {
 	public static float TextureZoomLevel = 2;
-	protected MinecraftModel Model = null;
+	public MinecraftModel Model 
+	{ 
+		get
+		{
+			if (_Model == null)
+				_Model = GetComponentInParent<ModelEditingRig>()?.ModelOpenedForEdit;
+			return _Model;
+		}
+	}
+	private MinecraftModel _Model = null;
 	public void SetModel(MinecraftModel model)
 	{
-		Model = model;
+		//Model = model;
 	}
 	public virtual MinecraftModel GetModel()
 	{

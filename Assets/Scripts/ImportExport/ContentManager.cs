@@ -1031,7 +1031,8 @@ public class ContentManager : MonoBehaviour
 			return $"{ExportRoot}/assets/{packName}/{loc.ID}.json";
 		if (asset is Texture2D)
 			return $"{ExportRoot}/assets/{packName}/{loc.ID}.png";
-
+		if (asset is AudioClip)
+			return $"{ExportRoot}/assets/{packName}/{loc.ID}.ogg";
 		return $"{ExportRoot}/data/{packName}/{loc.ID}.json";
 	}
 
@@ -1087,13 +1088,15 @@ public class ContentManager : MonoBehaviour
 		}
 		else if(asset is AudioClip audio)
 		{
-			// TODO:
-			//sound.CheckAndExportToFile(outputDir.File())
-			//string src = AssetDatabase.GetAssetPath(sound);
-			//string dst = $"{soundsExportFolder}/{sound.name}{new FileInfo(src).Extension}";
-			//
-			//Debug.Log($"Copying sound from {src} to {dst}");
-			//File.Copy(src, dst, true);
+			try
+			{
+				audio.ExportToFile(exportPath);
+			}
+			catch (Exception e)
+			{
+				if (verifications != null)
+					verifications.Add(Verification.Failure(e));
+			}
 		}
 		else
 		{
@@ -1164,19 +1167,46 @@ public class ContentManager : MonoBehaviour
 		}
 	}
 
+	public string GetSoundJsonExportPath(string packName)
+	{
+		return $"{ExportRoot}/assets/{packName}/sounds.json";
+	}
 	public void ExportSoundsJson(string packName, List<Verification> verifications = null)
 	{
-		// TODO:
-		// Copy sound.json
-		//{
-		//	string src = $"{ASSET_ROOT}/{packName}/sounds.json";
-		//	if (File.Exists(src))
-		//	{
-		//		string dst = $"{assetExportFolder}/sounds.json";
-		//		Debug.Log($"Copying sounds.json from {src} to {dst}");
-		//		File.Copy(src, dst, true);
-		//	}
-		//}
+		ContentPack pack = FindContentPack(packName);
+		if (pack == null)
+		{
+			Debug.LogError($"Failed to find pack {packName}");
+			return;
+		}
+
+		QuickJSONBuilder builder = new QuickJSONBuilder();
+		foreach(SoundEventEntry entry in pack.AllSounds)
+		{
+			using (builder.Indentation(entry.Key))
+			{
+				builder.Current.Add("category", entry.Category);
+				using (builder.Tabulation("sounds"))
+				{
+					foreach (ResourceLocation soundLoc in entry.SoundLocations)
+					{
+						using (builder.TableEntry())
+						{
+							builder.Current.Add("name", soundLoc.ExportAsSoundPath());
+							builder.Current.Add("type", "file");
+						}
+					}
+				}
+			}
+		}
+
+		using (StringWriter stringWriter = new StringWriter())
+		using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+		{
+			jsonWriter.Formatting = Formatting.Indented;
+			builder.Root.WriteTo(jsonWriter);
+			File.WriteAllText(GetSoundJsonExportPath(packName), stringWriter.ToString());
+		}
 	}
 
 	public void ExportPack(string packName, bool overwrite, List<Verification> verifications = null)
@@ -1198,6 +1228,7 @@ public class ContentManager : MonoBehaviour
 			{
 				EditorUtility.DisplayProgressBar("Exporting Content", $"Exporting {processedCount + 1}/{contentCount} - {def.name}", (float)processedCount / contentCount);
 				ExportAsset(pack.ModName, def, verifications);
+				processedCount++;
 			}
 			EditorUtility.ClearProgressBar();
 			// ----------------------------------------------------------------------------------
@@ -1210,6 +1241,7 @@ public class ContentManager : MonoBehaviour
 			{
 				EditorUtility.DisplayProgressBar("Exporting Textures", $"Exporting {processedCount + 1}/{textureCount} - {texture.name}", (float)processedCount / textureCount);
 				ExportAsset(pack.ModName, texture, verifications);
+				processedCount++;
 			}
 			EditorUtility.ClearProgressBar();
 			// ----------------------------------------------------------------------------------
@@ -1222,6 +1254,7 @@ public class ContentManager : MonoBehaviour
 			{
 				EditorUtility.DisplayProgressBar("Exporting Textures", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
 				ExportAsset(pack.ModName, model, verifications);
+				processedCount++;
 			}
 			EditorUtility.ClearProgressBar();
 			// ----------------------------------------------------------------------------------
@@ -1230,10 +1263,18 @@ public class ContentManager : MonoBehaviour
 			// Export Sounds
 			int soundCount = pack.SoundCount;
 			processedCount = 0;
-			foreach (AudioClip sound in pack.AllSounds)
+			foreach (SoundEventEntry sound in pack.AllSounds)
 			{
-				EditorUtility.DisplayProgressBar("Exporting Sounds", $"Exporting {processedCount + 1}/{soundCount} - {sound.name}", (float)processedCount / soundCount);
-				ExportAsset(pack.ModName, sound, verifications);
+				EditorUtility.DisplayProgressBar("Exporting Sounds", $"Exporting {processedCount + 1}/{soundCount} - {sound.Key}", (float)processedCount / soundCount);
+				foreach (ResourceLocation soundLoc in sound.SoundLocations)
+				{
+					if (soundLoc.TryLoad(out AudioClip clip))
+					{
+						EditorUtility.DisplayProgressBar("Exporting Sounds", $"Exporting {processedCount + 1}/{soundCount} - {sound.Key} - {clip.name}", (float)processedCount / soundCount);
+						ExportAsset(pack.ModName, clip, verifications);
+					}
+				}
+				processedCount++;
 			}
 			EditorUtility.ClearProgressBar();
 			// ----------------------------------------------------------------------------------

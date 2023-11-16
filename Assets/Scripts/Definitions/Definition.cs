@@ -22,23 +22,27 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 
 		if(this is GunDefinition gunDef)
 		{
-			bool hasADSAction = false;
-			foreach(ActionDefinition actionDef in gunDef.secondary.actions)
+			
+			foreach (ActionGroupDefinition group in gunDef.actionGroups)
 			{
-				if(actionDef.actionType == EActionType.AimDownSights || actionDef.actionType == EActionType.Scope)
+				bool hasADSAction = false;
+				foreach (ActionDefinition actionDef in group.actions)
 				{
-					hasADSAction = true;
-				}
-			}
-			if(hasADSAction && gunDef.secondary.repeatMode != ERepeatMode.Toggle)
-			{
-				verifications.Add(Verification.Neutral(
-					$"Aim down sights action is not a toggle",
-					() =>
+					if (actionDef.actionType == EActionType.AimDownSights || actionDef.actionType == EActionType.Scope)
 					{
-						gunDef.secondary.repeatMode = ERepeatMode.Toggle;
-					})
-				);
+						hasADSAction = true;
+					}
+				}
+				if (hasADSAction && group.repeatMode != ERepeatMode.Toggle)
+				{
+					verifications.Add(Verification.Neutral(
+						$"Aim down sights action is not a toggle",
+						() =>
+						{
+							group.repeatMode = ERepeatMode.Toggle;
+						})
+					);
+				}
 			}
 		}
 
@@ -56,6 +60,66 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 						turboRig.AddDefaultTransforms();
 						AssetDatabase.CreateAsset(turboRig, modelPath);
 					}));
+			else
+			{
+				if(this is GunDefinition gun && mcModel is TurboRig rig)
+				{
+					foreach(MinecraftModel.NamedTexture iconTexture in rig.Icons)
+					{
+						if (iconTexture.Key != "default")
+						{
+							bool existsInDef = false;
+							foreach (PaintjobDefinition paint in gun.paints.paintjobs)
+							{
+								if (paint.textureName == iconTexture.Key)
+									existsInDef = true;
+							}
+
+							if (!existsInDef)
+							{
+								verifications.Add(Verification.Neutral(
+									$"Found icon {iconTexture.Key} in model {modelPath}, not referenced in paintable def {gun.name}",
+									() => {
+										List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
+										paintjobs.Add(new PaintjobDefinition()
+										{
+											textureName = iconTexture.Key,
+											paintBucketsRequired = 1,
+										});
+										gun.paints.paintjobs = paintjobs.ToArray();
+									}));
+							}
+						}
+					}
+
+					for(int i = 0; i < gun.paints.paintjobs.Length; i++)
+					{
+						PaintjobDefinition paintjob = gun.paints.paintjobs[i];
+						bool existsInModel = false;
+						foreach (MinecraftModel.NamedTexture skinTexture in rig.Textures)
+						{
+							if (paintjob.textureName == skinTexture.Key)
+								existsInModel = true;
+						}
+						foreach (MinecraftModel.NamedTexture iconTexture in rig.Icons)
+						{
+							if (paintjob.textureName == iconTexture.Key)
+								existsInModel = true;
+						}
+						if (!existsInModel)
+						{
+							int index = i;
+							verifications.Add(Verification.Neutral(
+									$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rig.name}",
+									() => {
+										List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
+										paintjobs.RemoveAt(index);
+										gun.paints.paintjobs = paintjobs.ToArray();
+									}));
+						}
+					}
+				}
+			}
 		}
 	}
 

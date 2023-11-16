@@ -4,6 +4,8 @@ using UnityEngine;
 public class MagazineSlotSettingsDefinition
 {
 	[JsonField]
+	public string key = "primary";
+	[JsonField]
 	public string[] matchByNames = new string[0];
 	[JsonField]
 	public string[] matchByTags = new string[0];

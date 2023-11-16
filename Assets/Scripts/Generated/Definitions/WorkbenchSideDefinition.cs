@@ -10,13 +10,8 @@ public class WorkbenchSideDefinition
 	[JsonField]
 	public int EUOutputPerTick = 0;
 	[JsonField]
+	public WorkbenchIOSettingDefinition[] ioSettings = new WorkbenchIOSettingDefinition[0];
+	[JsonField]
+[Tooltip("To-Do, potential option to directly access neighbour inventories when crafting")]
 	public bool workbenchCanUseInventoriesOnSide = false;
-	[JsonField]
-	public bool acceptItems = false;
-	[JsonField]
-	public string acceptFilter = "";
-	[JsonField]
-	public bool outputItems = false;
-	[JsonField]
-	public string outputFilter = "";
 }

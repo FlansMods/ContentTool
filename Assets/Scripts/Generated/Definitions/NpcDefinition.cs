@@ -21,14 +21,22 @@ public class NpcDefinition : Definition
 	[JsonField]
 	public ENpcActionType[] validActions = new ENpcActionType[0];
 	[JsonField]
+	public bool isRightHanded = true;
+	[JsonField]
 	public float cooldownSecondsFriendly = 120;
 	[JsonField]
 	public float cooldownSecondsHostile = 300;
+	[JsonField]
+	public EDamageSourceType[] invulnerabilities = new EDamageSourceType[0];
 	[JsonField]
 [Tooltip("If set to 0, this NPC will not be considered a merchant")]
 	public int maxMerchantLevel = 0;
 	[JsonField]
 	public int[] xpPerMerchantLevel = new int[0];
+	[JsonField]
+	public int minOffersToGive = 1;
+	[JsonField]
+	public int maxOffersToGive = 5;
 	[JsonField]
 	public MerchantOfferDefinition[] offers = new MerchantOfferDefinition[0];
 }

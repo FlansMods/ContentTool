@@ -10,9 +10,15 @@ public class MerchantOfferDefinition
 [Tooltip("The level at which this offer appears")]
 	public int merchantLevel = 0;
 	[JsonField]
-	public IngredientDefinition[] inputs = new IngredientDefinition[0];
+	public ItemStackDefinition[] inputs = new ItemStackDefinition[0];
 	[JsonField]
 	public ItemStackDefinition output = new ItemStackDefinition();
 	[JsonField]
-	public float merchantXP = 1.0f;
+	public int maxUses = 1;
+	[JsonField]
+	public int merchantXP = 1;
+	[JsonField]
+	public float priceMultiplier = 1.0f;
+	[JsonField]
+	public int demand = 0;
 }

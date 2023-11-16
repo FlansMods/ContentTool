@@ -136,39 +136,36 @@ public class GunConverter : Converter<GunType, GunDefinition>
 
 		def.itemSettings.maxStackSize = 1;
 		def.itemSettings.tags = GetTags(inf);
-		def.primaryMagazines = new MagazineSlotSettingsDefinition()
+		def.magazines = new MagazineSlotSettingsDefinition[]
 		{
-			matchByNames = GetMags(inf),
+			new MagazineSlotSettingsDefinition()
+			{
+				key = "primary",
+				matchByNames = GetMags(inf),
+			}
 		};
 
-		def.primaryReload = new ReloadDefinition()
+		def.reloads = new ReloadDefinition[] 
 		{
-			manualReloadAllowed = inf.canForceReload,
-			start = new ActionGroupDefinition() 
+			new ReloadDefinition()
 			{
-				//duration = inf.reloadTime * inf.tiltGunTime / 20f,
-				actions = CreateStartReloadActions(inf),
-			},
-			eject = new ActionGroupDefinition()
-			{
-				//duration = inf.reloadTime * inf.unloadClipTime / 20f,
-				actions = CreateEjectReloadActions(inf),
-			},
-			loadOne = new ActionGroupDefinition()
-			{
-				//duration = (inf.reloadTime * inf.loadClipTime / 20f) / inf.numAmmoItemsInGun,
-				actions = CreateLoadOneReloadActions(inf),
-			},
-			end = new ActionGroupDefinition()
-			{
-				//duration = inf.reloadTime * inf.untiltGunTime / 20f,
-				actions = CreateEndReloadActions(inf),
-			},
+				manualReloadAllowed = inf.canForceReload,
+				startActionKey = "primary_reload_start",
+				ejectActionKey = "primary_reload_eject",
+				loadOneActionKey = "primary_reload_load_one",
+				endActionKey = "primary_reload_end",
+			}
 		};
 
-		def.primary = CreatePrimaryActions(inf);
-		def.secondary = CreateSecondaryActions(inf);
-		def.lookAt = CreateLookAtActions(inf);
+		List<ActionGroupDefinition> actionGroups = new List<ActionGroupDefinition>();
+		actionGroups.Add(CreatePrimaryActions(inf));
+		actionGroups.Add(CreateSecondaryActions(inf));
+		actionGroups.Add(CreateLookAtActions(inf));
+		actionGroups.Add(CreateStartReloadActions(inf));
+		actionGroups.Add(CreateEjectReloadActions(inf));
+		actionGroups.Add(CreateLoadOneReloadActions(inf));
+		actionGroups.Add(CreateEndReloadActions(inf));
+		def.actionGroups = actionGroups.ToArray();
 
 		//def.idleSound = inf.idleSound;
 		//def.idleSoundLength = inf.idleSoundLength;
@@ -241,7 +238,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return tags.ToArray();
 	}
 
-	private ActionDefinition[] CreateStartReloadActions(GunType inf)
+	private ActionGroupDefinition CreateStartReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
 		if(TiltTime > 0.0f)
@@ -266,10 +263,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				}
 			});
 		}
-		return reloadActions.ToArray();
+		return new ActionGroupDefinition() 
+		{
+			key = "primary_reload_start",
+			actions = reloadActions.ToArray()
+		};
 	}
 
-	private ActionDefinition[] CreateEjectReloadActions(GunType inf)
+	private ActionGroupDefinition CreateEjectReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
 		if(UnloadTime > 0.0f &&
@@ -282,10 +283,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				anim = "reload_eject",
 			});
 		}
-		return reloadActions.ToArray();
+		return new ActionGroupDefinition()
+		{
+			key = "primary_reload_eject",
+			actions = reloadActions.ToArray()
+		};
 	}
 
-	private ActionDefinition[] CreateLoadOneReloadActions(GunType inf)
+	private ActionGroupDefinition CreateLoadOneReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
 		if(LoadTime > 0.0f)
@@ -297,10 +302,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				anim = "reload_load_one",
 			});
 		}
-		return reloadActions.ToArray();
+		return new ActionGroupDefinition()
+		{
+			key = "primary_reload_load_one",
+			actions = reloadActions.ToArray()
+		};
 	}
 
-	private ActionDefinition[] CreateEndReloadActions(GunType inf)
+	private ActionGroupDefinition CreateEndReloadActions(GunType inf)
 	{
 		List<ActionDefinition> reloadActions = new List<ActionDefinition>();
 
@@ -313,8 +322,11 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				anim = "reload_end",
 			});
 		}
-
-		return reloadActions.ToArray();
+		return new ActionGroupDefinition()
+		{
+			key = "primary_reload_end",
+			actions = reloadActions.ToArray()
+		};
 	}
 
 	private ActionGroupDefinition CreateLookAtActions(GunType inf)
@@ -785,24 +797,68 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 		{
 			if(input.hasScopeOverlay)
 			{
-				output.secondaryActions = new ActionDefinition[] {
-					new ActionDefinition()
+				output.handlerOverrides = new HandlerDefinition[]
+				{
+					new HandlerDefinition()
 					{
-						actionType = EActionType.Scope,
-						scopeOverlay = input.zoomOverlay,
-						// Legacy, people much prefer FOV zoom to regular ZOOM
-						fovFactor = Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel, 
+						inputType = EPlayerInput.Fire2,
+						nodes = new HandlerNodeDefinition[]
+						{
+							new HandlerNodeDefinition()
+							{
+								actionGroupToTrigger = "scope",
+							}
+						}
+					}
+				};
+				output.actionOverrides = new ActionGroupDefinition[]
+				{
+					new ActionGroupDefinition()
+					{
+						key = "scope",
+						actions = new ActionDefinition[]
+						{
+							new ActionDefinition()
+							{
+								actionType = EActionType.Scope,
+								scopeOverlay = input.zoomOverlay,
+								// Legacy, people much prefer FOV zoom to regular ZOOM
+								fovFactor = Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel,
+							}
+						}
 					}
 				};
 			}
 			else
 			{
-				output.secondaryActions = new ActionDefinition[] {
-					new ActionDefinition()
+				output.handlerOverrides = new HandlerDefinition[]
+				{
+					new HandlerDefinition()
 					{
-						actionType = EActionType.AimDownSights,
-						scopeOverlay = input.zoomOverlay,
-						fovFactor = input.FOVZoomLevel,
+						inputType = EPlayerInput.Fire2,
+						nodes = new HandlerNodeDefinition[] 
+						{
+							new HandlerNodeDefinition()
+							{
+								actionGroupToTrigger = "ads",
+							}
+						}
+					}
+				};
+				output.actionOverrides = new ActionGroupDefinition[]
+				{
+					new ActionGroupDefinition()
+					{
+						key = "ads",
+						actions = new ActionDefinition[]
+						{
+							new ActionDefinition()
+							{
+								actionType = EActionType.AimDownSights,
+								scopeOverlay = input.zoomOverlay,
+								fovFactor = input.FOVZoomLevel,
+							}
+						}
 					}
 				};
 			}
@@ -1702,8 +1758,19 @@ public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
 			}
 		}
 
-		output.primaryActions = primaryActions.ToArray();
-		output.secondaryActions = secondaryActions.ToArray();
+		output.actionOverrides = new ActionGroupDefinition[]
+		{
+			new ActionGroupDefinition()
+			{
+				key = "primary",
+				actions = primaryActions.ToArray(),
+			},
+			new ActionGroupDefinition()
+			{
+				key = "secondary",
+				actions = secondaryActions.ToArray(),
+			}
+		};
 
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 		if(!Mathf.Approximately(input.speedMultiplier, 1f))

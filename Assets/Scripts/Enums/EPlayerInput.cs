@@ -19,6 +19,9 @@ public enum EPlayerInput
 	Fire1,
 	Fire2,
 	Fire3,
+	Reload1,
+	Reload2,
+	Reload3,
 	Jump,
 	Sprint,
 

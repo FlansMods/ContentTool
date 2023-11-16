@@ -23,6 +23,11 @@ public static class ModelEditingSystem
     // This could be used to let you modify a Unity transform lots and then click apply
     public static bool ShouldSkipRefresh(MinecraftModel model, string partName, int pieceIndex)
     {
+        foreach(ModelEditOperation op in Operations.ToArray())
+        {
+            if (op.Model == model)
+                return true;
+        }
         return false;
     }
 

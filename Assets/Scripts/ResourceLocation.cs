@@ -67,6 +67,10 @@ public class ResourceLocation
 	{
 		return $"{Namespace}:{IDWithSpecificPrefixStripped("textures")}";
 	}
+	public string ExportAsSoundPath()
+	{
+		return $"{Namespace}:{IDWithSpecificPrefixStripped("sounds")}";
+	}
 	public string IDWithSpecificPrefixStripped(string prefix)
     {
         if (ID.StartsWith(prefix))
@@ -123,6 +127,8 @@ public class ResourceLocation
 		string extension = "asset";
 		if (typeof(T) == typeof(Texture2D))
 			extension = "png";
+        if (typeof(T) == typeof(AudioClip))
+            extension = "ogg";
            
 		string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{ID}.{extension}";
 		if (ID.Contains(subfolder))
@@ -134,6 +140,9 @@ public class ResourceLocation
 
 	public T Load<T>(string subfolder = "") where T : Object
     {
+        if (ID == "null")
+            return null;
+
         if (TryLoad(out T result, subfolder))
             return result;
 

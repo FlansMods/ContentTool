@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using static System.Collections.Specialized.BitVector32;
 
+[ExecuteInEditMode]
 public class TurboAttachPointPreview : MonoBehaviour
 {
     public TurboRigPreview Parent { get { return GetComponentInParent<TurboRigPreview>(); } }
@@ -48,20 +49,34 @@ public class TurboAttachPointPreview : MonoBehaviour
 	// -------------------------------------------------------------------------------
 	#region Unity Transform
 	// -------------------------------------------------------------------------------
-	protected void Update()
+
+	protected virtual void OnEnable()
 	{
-		if (HasUnityTransformBeenChanged())
-		{
-			ModelEditingSystem.ApplyOperation(
-				new TurboAttachPointMoveOperation(
-					Parent.GetModel(),
-					PartName,
-					transform.localPosition,
-					LockPartPositions,
-					LockAttachPoints));
-		}
-		if (!ModelEditingSystem.ShouldSkipRefresh(Parent.GetModel(), PartName, 0))
-			CopyToUnityTransform();
+		EditorApplication.update += EditorUpdate;
+	}
+
+	protected virtual void OnDisable()
+	{
+		EditorApplication.update -= EditorUpdate;
+	}
+
+	protected virtual void EditorUpdate()
+	{
+		if (Parent.Rig == null)
+			return;
+
+		//if (HasUnityTransformBeenChanged())
+		//{
+		//	ModelEditingSystem.ApplyOperation(
+		//		new TurboAttachPointMoveOperation(
+		//			Parent.GetModel(),
+		//			PartName,
+		//			transform.localPosition,
+		//			LockPartPositions,
+		//			LockAttachPoints));
+		//}
+		//if (!ModelEditingSystem.ShouldSkipRefresh(Parent.GetModel(), PartName, 0))
+		//	CopyToUnityTransform();
 	}
 	private bool HasUnityTransformBeenChanged()
 	{

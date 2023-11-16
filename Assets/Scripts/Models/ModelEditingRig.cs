@@ -452,6 +452,13 @@ public class ModelEditingRig : MonoBehaviour
 			{
 				TimeSpan timeToAdd = DateTime.Now - LastEditorTick;
 				AnimProgressSeconds += (float)(timeToAdd.TotalMilliseconds / 1000d);
+				if (AnimProgressSeconds >= GetPreviewDurationSeconds())
+				{
+					if (Looping)
+						AnimProgressSeconds -= GetPreviewDurationSeconds();
+					else
+						AnimProgressSeconds = GetPreviewDurationSeconds();
+				}
 			}
 			LastEditorTick = DateTime.Now;
 
@@ -480,13 +487,7 @@ public class ModelEditingRig : MonoBehaviour
 					break;
 
 				progressInTicks -= duration;
-				if (i == PreviewSequences.Count - 1)
-				{
-					if (Looping)
-						AnimProgressSeconds -= GetPreviewDurationSeconds();
-					else
-						AnimProgressSeconds = GetPreviewDurationSeconds();
-				}
+				
 			}
 
 			if (keyframe != null)
@@ -530,16 +531,18 @@ public class ModelEditingRig : MonoBehaviour
 						}
 
 
-						foreach (var sectionPreview in GetComponentsInChildren<TurboModelPreview>())
+						
+						foreach (var apPreview in Preview.GetComponentsInChildren<TurboAttachPointPreview>())
 						{
-							PoseDefinition fromPose = GetPose(from.name, sectionPreview.PartName);
-							PoseDefinition toPose = GetPose(to.name, sectionPreview.PartName);
+							PoseDefinition fromPose = GetPose(from.name, apPreview.PartName);
+							PoseDefinition toPose = GetPose(to.name, apPreview.PartName);
 							Vector3 pos = LerpPosition(fromPose, toPose, outputParameter);
 							Quaternion ori = LerpRotation(fromPose, toPose, outputParameter);
-
-							sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
-							sectionPreview.transform.localRotation = ori;
-							sectionPreview.transform.localScale = Vector3.one;
+							if (ModelOpenedForEdit is TurboRig rig)
+								pos += rig.GetAttachmentOffset(apPreview.PartName);
+							apPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
+							apPreview.transform.localRotation = ori;
+							apPreview.transform.localScale = Vector3.one;
 						}
 					}
 				}
@@ -557,11 +560,18 @@ public class ModelEditingRig : MonoBehaviour
 	}
 	private void SetDefaultPose()
 	{
-		foreach (TurboModelPreview section in GetComponentsInChildren<TurboModelPreview>())
+		foreach (var apPreview in Preview.GetComponentsInChildren<TurboAttachPointPreview>())
 		{
-			section.transform.localPosition = Vector3.zero;
-			section.transform.localRotation = Quaternion.identity;
-			section.transform.localScale = Vector3.one;
+			if (ModelOpenedForEdit is TurboRig rig)
+			{
+				apPreview.transform.localPosition = rig.GetAttachmentOffset(apPreview.PartName);
+			}
+			else
+			{
+				apPreview.transform.localPosition = Vector3.zero;
+			}
+			apPreview.transform.localRotation = Quaternion.identity;
+			apPreview.transform.localScale = Vector3.one;
 		}
 	}
 	private void ApplyPose(KeyframeDefinition keyframe)
@@ -573,6 +583,9 @@ public class ModelEditingRig : MonoBehaviour
 			{
 				Vector3 pos = Resolve(pose.position);
 				Vector3 euler = Resolve(pose.rotation);
+				if (ModelOpenedForEdit is TurboRig rig)
+					pos += rig.GetAttachmentOffset(pose.applyTo);
+
 				sectionPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
 				sectionPreview.transform.localEulerAngles = euler;
 				sectionPreview.transform.localScale = pose.scale;

@@ -21,7 +21,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 	[SerializeField]
 	private List<string> IDs = new List<string>();
 	[SerializeField]
-	private List<AudioClip> Sounds = new List<AudioClip>();
+	private List<SoundEventList> Sounds = new List<SoundEventList>();
 	public List<Definition.LocalisedExtra> ExtraLocalisation = new List<Definition.LocalisedExtra>();
 	public string ModName { get { return name; } }
 
@@ -60,13 +60,14 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 		}
 	}
 	public int SoundCount { get { Refresh(); return Sounds.Count; } }
-	public IEnumerable<AudioClip> AllSounds
+	public IEnumerable<SoundEventEntry> AllSounds
 	{
 		get
 		{
 			Refresh();
-			foreach (AudioClip sound in Sounds)
-				yield return sound;
+			foreach (SoundEventList list in Sounds)
+				foreach(SoundEventEntry entry in list.SoundEvents)
+					yield return entry;
 		}
 	}
 	public IEnumerable<string> AllIDs
@@ -118,7 +119,15 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 							Models.Add(model);
 						else
 						{
-							Debug.LogError($"Unknown asset type at {assetPath} in pack {name}");
+							SoundEventList soundList = AssetDatabase.LoadAssetAtPath<SoundEventList>(assetPath);
+							if (soundList != null)
+							{
+								Sounds.Add(soundList);
+							}
+							else
+							{
+								Debug.LogError($"Unknown asset type at {assetPath} in pack {name}");
+							}
 						}
 					}
 				}
@@ -133,22 +142,22 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 					}
 				}
 
-				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
-				{
-					AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-					if (clip != null)
-						Sounds.Add(clip);
-					else
-						Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
-				}
-				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
-				{
-					AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-					if (clip != null)
-						Sounds.Add(clip);
-					else
-						Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
-				}
+				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
+				//{
+				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				//	if (clip != null)
+				//		Sounds.Add(clip);
+				//	else
+				//		Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
+				//}
+				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
+				//{
+				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				//	if (clip != null)
+				//		Sounds.Add(clip);
+				//	else
+				//		Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+				//}
 			}
 
 			if (count != Content.Count + Models.Count + Textures.Count)
@@ -166,9 +175,11 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			foreach (MinecraftModel model in Models)
 				if (model.TryGetLocation(out ResourceLocation modelLoc))
 					IDs.Add(modelLoc.ID);
-			foreach (AudioClip sound in Sounds)
-				if (sound.TryGetLocation(out ResourceLocation soundLoc))
-					IDs.Add(soundLoc.ID);
+			foreach (SoundEventList list in Sounds)
+			{
+				foreach (SoundEventEntry entry in list.SoundEvents)
+					IDs.Add($"sounds/{entry.Key}");
+			}
 			LastContentCheck = DateTime.Now;
 		}
 	}

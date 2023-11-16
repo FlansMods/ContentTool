@@ -17,7 +17,5 @@ public class ModifierDefinition
 [Tooltip("For non-numeric values, such as enums, this is a simple override")]
 	public string SetValue = "";
 	[JsonField]
-	public bool ApplyToPrimary = true;
-	[JsonField]
-	public bool ApplyToSecondary = false;
+	public string[] ApplyFilters = new string[0];
 }

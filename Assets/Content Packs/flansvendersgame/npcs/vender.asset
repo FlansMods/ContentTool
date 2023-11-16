@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282f23e8eb487df49a216a877d039607, type: 3}
   m_Name: vender
   m_EditorClassIdentifier: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Vender
@@ -66,7 +63,7 @@ MonoBehaviour:
   - type: 1
     unlocalisedstring: npc.vender.hello.neutral.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/hello_neutral
+      sound: flansvendersgame:vender_greeting_neutral
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -77,7 +74,7 @@ MonoBehaviour:
   - type: 1
     unlocalisedstring: npc.vender.hello.neutral.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/hello_neutral
+      sound: flansvendersgame:vender_greeting_neutral
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -88,7 +85,7 @@ MonoBehaviour:
   - type: 3
     unlocalisedstring: npc.vender.hello.angry
     audioClip:
-      sound: flansvendersgame:sounds/vender/hello_angry
+      sound: flansvendersgame:vender_greeting_hostile
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -99,7 +96,7 @@ MonoBehaviour:
   - type: 2
     unlocalisedstring: npc.vender.hello.happy
     audioClip:
-      sound: flansvendersgame:sounds/vender/hello_happy
+      sound: flansvendersgame:vender_greeting_friendly
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -110,7 +107,7 @@ MonoBehaviour:
   - type: 0
     unlocalisedstring: npc.vender.chat.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/chat
+      sound: flansvendersgame:vender_chat_neutral
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -121,7 +118,7 @@ MonoBehaviour:
   - type: 0
     unlocalisedstring: npc.vender.chat.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/chat
+      sound: flansvendersgame:vender_chat_neutral
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -132,7 +129,7 @@ MonoBehaviour:
   - type: 6
     unlocalisedstring: npc.vender.buy_from_player.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/buy_from_player
+      sound: flansvendersgame:vender_buy_from_player
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -143,7 +140,7 @@ MonoBehaviour:
   - type: 6
     unlocalisedstring: npc.vender.buy_from_player.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/buy_from_player
+      sound: flansvendersgame:vender_buy_from_player
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -154,7 +151,7 @@ MonoBehaviour:
   - type: 5
     unlocalisedstring: npc.vender.sell_to_player.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/sell_to_player
+      sound: flansvendersgame:vender_sell_to_player
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -165,7 +162,7 @@ MonoBehaviour:
   - type: 5
     unlocalisedstring: npc.vender.sell_to_player.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/sell_to_player
+      sound: flansvendersgame:vender_sell_to_player
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -176,7 +173,7 @@ MonoBehaviour:
   - type: 4
     unlocalisedstring: npc.vender.goodbye.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/goodbye
+      sound: flansvendersgame:vender_goodbye
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -187,7 +184,7 @@ MonoBehaviour:
   - type: 4
     unlocalisedstring: npc.vender.goodbye.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/goodbye
+      sound: flansvendersgame:vender_goodbye
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -198,7 +195,7 @@ MonoBehaviour:
   - type: 7
     unlocalisedstring: npc.vender.hurt.1
     audioClip:
-      sound: flansvendersgame:sounds/vender/hurt
+      sound: flansvendersgame:vender_hurt
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -209,7 +206,7 @@ MonoBehaviour:
   - type: 7
     unlocalisedstring: npc.vender.hurt.2
     audioClip:
-      sound: flansvendersgame:sounds/vender/hurt
+      sound: flansvendersgame:vender_hurt
       length: 2
       minPitchMultiplier: 1
       maxPitchMultiplier: 1
@@ -247,31 +244,445 @@ MonoBehaviour:
     count: 1
     damage: 0
     tags: '{}'
-  validActions: 
+  validActions: 0000000001000000020000000300000004000000050000000600000008000000
+  isRightHanded: 1
   cooldownSecondsFriendly: 120
   cooldownSecondsHostile: 300
+  invulnerabilities: 
   maxMerchantLevel: 5
   xpPerMerchantLevel: 0f0000002d000000780000002c010000bc020000
+  minOffersToGive: 1
+  maxOffersToGive: 5
   offers:
   - weighting: 1
     merchantLevel: 1
     inputs:
-    - count: 16
-      compareItemName: 1
-      itemName: minecraft:emerald
-      compareDamage: 0
-      minAllowedDamage: 0
-      maxAllowedDamage: 0
-      compareItemTags: 0
-      requiredTags: []
-      materialTags: []
-      disallowedTags: []
-      compareNBT: 0
-      requiredNBT: []
-      disallowedNBT: []
+    - item: minecraft:emerald
+      count: 31
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_9
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 44
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_1200
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 43
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_14
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 35
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_16
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 42
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_combine
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 63
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_krank
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 36
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:hm_pocket
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 10
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 25
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_90
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 32
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_auto_12
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 33
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_battlemage
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 52
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_eye
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 41
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_fury
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 17
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_lock
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.75
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:diamond
+      count: 46
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:phantek_seeker
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 25
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 13
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:fc_49
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 17
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:fc_56
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 21
+      damage: 0
+      tags: '{}'
     output:
       item: flansvendersgame:fc_700
       count: 1
       damage: 0
       tags: 
-    merchantXP: 0
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 13
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:fc_870
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 15
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:fc_hawk
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.6
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:nautilus_shell
+      count: 31
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:fc_puncher
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 1
+    merchantXP: 50
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 4
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 2
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:pistol_bullet
+      count: 64
+      damage: 0
+      tags: 
+    maxUses: 8
+    merchantXP: 2
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 3
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 5
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:rifle_bullet
+      count: 64
+      damage: 0
+      tags: 
+    maxUses: 8
+    merchantXP: 2
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 2
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 2
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:shotgun_shell_buckshot
+      count: 16
+      damage: 0
+      tags: 
+    maxUses: 16
+    merchantXP: 2
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 2
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:emerald
+      count: 2
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:shotgun_shell_birdshot
+      count: 16
+      damage: 0
+      tags: 
+    maxUses: 16
+    merchantXP: 2
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.5
+    merchantLevel: 2
+    inputs:
+    - item: minecraft:emerald
+      count: 15
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:projectile_grenade_impact
+      count: 3
+      damage: 0
+      tags: 
+    maxUses: 8
+    merchantXP: 15
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.25
+    merchantLevel: 3
+    inputs:
+    - item: minecraft:emerald
+      count: 8
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansbasicparts:artillery_shell
+      count: 1
+      damage: 0
+      tags: 
+    maxUses: 4
+    merchantXP: 2
+    priceMultiplier: 1
+    demand: 0
+  - weighting: 0.1
+    merchantLevel: 1
+    inputs:
+    - item: minecraft:totem_of_undying
+      count: 1
+      damage: 0
+      tags: '{}'
+    output:
+      item: flansvendersgame:venders_customs_viper
+      count: 1
+      damage: 0
+      tags: '{}'
+    maxUses: 1
+    merchantXP: 200
+    priceMultiplier: 1
+    demand: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 public class ActionGroupDefinition
 {
 	[JsonField]
+	public string key = "default";
+	[JsonField]
 	public bool canActUnderwater = true;
 	[JsonField]
 	public bool canActUnderOtherLiquid = false;

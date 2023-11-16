@@ -32,27 +32,27 @@ MonoBehaviour:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 1
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 6
     Position: {x: -0.0019234853, y: -0.02042079, z: -0.0017520712}
     Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
     Scale: {x: 0.63366336, y: 0.63366336, z: 0.63366336}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Rotation: {x: 0.70710677, y: 0, z: 0, w: -0.70710677}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 7
     Position: {x: 0, y: 0.15, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -60,7 +60,7 @@ MonoBehaviour:
   - Type: 8
     Position: {x: 6, y: 6, z: 6}
     Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
@@ -253,8 +253,6 @@ MonoBehaviour:
         Key: bolt/2
         BoxDims: {x: 1, y: 1, z: 1}
     MaxSize: {x: 64, y: 128}
-  TextureX: 64
-  TextureY: 128
   Icons:
   - Key: default
     Location:
@@ -904,12 +902,9 @@ MonoBehaviour:
   - name: slide
     attachedTo: body
     position: {x: 0, y: 3, z: 0}
-  - name: backpack
-    attachedTo: slide
-    position: {x: 0, y: 0, z: 0}
   - name: bolt
     attachedTo: slide
     position: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
-    position: {x: -3, y: 3.125, z: 0}
+    position: {x: 0, y: 0, z: 0}

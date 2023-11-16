@@ -98,6 +98,22 @@ public static class JsonExporter
 		}
 	}
 
+	public static bool ExportToFile(this AudioClip audioClip, string file)
+	{
+		try
+		{
+			string clipPath = AssetDatabase.GetAssetPath(audioClip);
+			System.IO.File.Copy(clipPath, file, true);
+			Debug.Log($"Exported {audioClip} to {file}");
+			return true;
+		}
+		catch (Exception e)
+		{
+			Debug.LogError($"Failed to export {audioClip} to {file} due to {e.Message}");
+			return false;
+		}
+	}
+
 	public static Dictionary<Type, Writer> Writers = null;
 	public static bool CheckInit()
 	{

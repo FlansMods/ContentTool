@@ -12,106 +12,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
   m_Name: knife
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: ww2knife
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
   LocalisedNames: []
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
     - flansmod:gun
   paints:
     paintjobs: []
-  primaryReload:
-    manualReloadAllowed: 1
-    autoReloadWhenEmpty: 1
-    start:
-      duration: 0
-      actions:
-      - actionType: 2
-        duration: 0
-        sounds: []
-        itemStack: 
-        modifiers: []
-        fovFactor: 1.25
-        scopeOverlay: 
-        anim: reload_start
-        toolLevel: 1
-        harvestSpeed: 1
-        reach: 1
-    eject:
-      duration: 0
-      actions:
-      - actionType: 2
-        duration: 0
-        sounds: []
-        itemStack: 
-        modifiers: []
-        fovFactor: 1.25
-        scopeOverlay: 
-        anim: reload_eject
-        toolLevel: 1
-        harvestSpeed: 1
-        reach: 1
-    loadOne:
-      duration: 0
-      actions:
-      - actionType: 2
-        duration: 0
-        sounds: []
-        itemStack: 
-        modifiers: []
-        fovFactor: 1.25
-        scopeOverlay: 
-        anim: reload_load_one
-        toolLevel: 1
-        harvestSpeed: 1
-        reach: 1
-    end:
-      duration: 0
-      actions:
-      - actionType: 2
-        duration: 0
-        sounds: []
-        itemStack: 
-        modifiers: []
-        fovFactor: 1.25
-        scopeOverlay: 
-        anim: reload_end
-        toolLevel: 1
-        harvestSpeed: 1
-        reach: 1
-  secondaryReload:
-    manualReloadAllowed: 1
-    autoReloadWhenEmpty: 1
-    start:
-      duration: 1
-      actions: []
-    eject:
-      duration: 1
-      actions: []
-    loadOne:
-      duration: 1
-      actions: []
-    end:
-      duration: 1
-      actions: []
-  primary:
+  inputHandlers:
+  - inputType: 10
+    nodes:
+    - actionGroupToTrigger: primary
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 11
+    nodes:
+    - actionGroupToTrigger: 
+      modalCheck: 
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: 
+      modalCheck: 
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: ads
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 18
+    nodes:
+    - actionGroupToTrigger: look
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 13
+    nodes:
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  actionGroups:
+  - key: primary
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -120,6 +93,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions:
     - actionType: 8
       duration: 0
@@ -151,17 +125,18 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  secondary:
+  - key: ads
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
     twoHanded: 1
-    repeatMode: 1
+    repeatMode: 4
     repeatDelay: 0
     repeatCount: 3
     spinUpDuration: 1.5
+    loudness: 150
     actions: []
-  lookAt:
+  - key: look
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -170,6 +145,7 @@ MonoBehaviour:
     repeatDelay: 0
     repeatCount: 0
     spinUpDuration: 1
+    loudness: 150
     actions:
     - actionType: 2
       duration: 2.5
@@ -182,53 +158,132 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  primaryMagazines:
+  - key: reload_primary_start
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_start
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_eject
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_eject
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_load_one
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_load_one
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_end
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_end
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  magazines:
+  - key: primary
     matchByNames: []
     matchByTags: []
     baseCostToSwap: 0
-  secondaryMagazines:
-    matchByNames: []
-    matchByTags: []
-    baseCostToSwap: 0
-  startSpinUpActions: []
-  reachMaxSpinActions: []
-  startSpinDownActions: []
-  reachZeroSpinActions: []
+  reloads:
+  - key: primary
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    startActionKey: reload_primary_start
+    ejectActionKey: reload_primary_eject
+    loadOneActionKey: reload_primary_load_one
+    endActionKey: reload_primary_end
   loopingSounds: []
   barrelAttachments:
     allowlist: []
     allowAll: 0
     numAttachmentSlots: 0
-    attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   gripAttachments:
     allowlist: []
     allowAll: 0
     numAttachmentSlots: 0
-    attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   stockAttachments:
     allowlist: []
     allowAll: 0
     numAttachmentSlots: 0
-    attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []
     allowAll: 0
     numAttachmentSlots: 0
-    attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   genericAttachments:
     allowlist: []
     allowAll: 1
     numAttachmentSlots: 0
-    attachToMesh: body
-    attachPoint: {x: 0, y: 0, z: 0}
     hideDefaultMesh: 1
   modelParts: []
   animationSet: 

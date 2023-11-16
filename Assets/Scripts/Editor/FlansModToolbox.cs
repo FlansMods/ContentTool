@@ -64,37 +64,167 @@ public class FlansModToolbox : EditorWindow
 		// Temp - For Flan if I need to iterate some things in editor quickly
 		if (GUILayout.Button("Do the thing"))
 		{
-			string[] guids = AssetDatabase.FindAssets("t:TurboRig");
+			string[] guids = AssetDatabase.FindAssets("t:GunDefinition");
 			foreach (string guid in guids)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guid);
 				if (path != null)
 				{
-					TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
+					GunDefinition gun = AssetDatabase.LoadAssetAtPath<GunDefinition>(path);
 
+					List<HandlerDefinition> handlers = new List<HandlerDefinition>(gun.inputHandlers);
+					handlers.Add(new HandlerDefinition()
+					{
+						inputType = EPlayerInput.Reload1,
+						nodes = new HandlerNodeDefinition[]{
+							new HandlerNodeDefinition()
+							{
+								actionGroupToTrigger = "reload_primary_start",
+								attachmentType = EAttachmentType.Barrel,
+								attachmentIndex = 0,
+							},
+							new HandlerNodeDefinition()
+							{
+								actionGroupToTrigger = "reload_primary_start",
+							}
+						}
+					});
+					foreach(HandlerDefinition handler in handlers)
+					{
+						if (handler.inputType == EPlayerInput.Reload3)
+							handler.inputType = EPlayerInput.SpecialKey1;
+					}
+					gun.inputHandlers = handlers.ToArray();
 
-
-
-					//foreach (MinecraftModel.ItemTransform transform in rig.Transforms)
+					//for (int i = 0; i < gun.inputHandlers.Length; i++)
 					//{
-						rig.Transforms.Clear();
-						rig.AddDefaultTransforms();
-						//if (transform.Type == MinecraftModel.ItemTransformType.FIRST_PERSON_LEFT_HAND
-						//|| transform.Type == MinecraftModel.ItemTransformType.FIRST_PERSON_RIGHT_HAND)
-						//{
-						//	transform.Position = new Vector3(-transform.Position.x, transform.Position.y, transform.Position.z);
-						//	Vector3 oldEuler = transform.Rotation.eulerAngles;
-						//	transform.Rotation = Quaternion.Euler(oldEuler.x, -oldEuler.y, oldEuler.z);
-						//
-						//	//if (transform.Type == MinecraftModel.ItemTransformType.FIXED)
-						//	//{
-						//	//	transform.Position = new Vector3(6, 6, 0);
-						//	//	transform.Rotation = Quaternion.Euler(0, 0, 45);
-						//	//	transform.Scale = Vector3.one;
-						//	//}
-						//}
-						EditorUtility.SetDirty(rig);
+					//	if(gun.inputHandlers[i].inputType == EPlayerInput.Fire1)
+					//	{
+					//		List<HandlerNodeDefinition> newNodes = new List<HandlerNodeDefinition>(gun.inputHandlers[i].nodes);
+					//		newNodes.Add(new HandlerNodeDefinition()
+					//		{
+					//			actionGroupToTrigger = "primary_reload_start",
+					//		});
+					//		gun.inputHandlers[i].nodes = newNodes.ToArray();
+					//	}
 					//}
+
+					//foreach(HandlerDefinition handler in gun.inputHandlers)
+					//{
+					//	foreach (HandlerNodeDefinition node in handler.nodes)
+					//	{
+					//		
+					//	}
+					//}
+
+					//foreach(HandlerDefinition handler in gun.inputHandlers)
+					//{
+					//	foreach(HandlerNodeDefinition node in handler.nodes)
+					//	{
+					//		if (node.actionGroupToTrigger == "primary_reload_start")
+					//			node.actionGroupToTrigger = "reload_primary_start";
+					//	}
+					//}
+					//
+					//gun.reloads = new ReloadDefinition[] {
+					//	new ReloadDefinition()
+					//	{
+					//		startActionKey = "reload_primary_start",
+					//		ejectActionKey = "reload_primary_eject",
+					//		loadOneActionKey = "reload_primary_load_one",
+					//		endActionKey = "reload_primary_end",
+					//	}
+					//};
+
+
+					List<ActionGroupDefinition> groups = new List<ActionGroupDefinition>();
+
+					//gun.primary.key = "primary";
+					//groups.Add(gun.primary);
+					//
+					//gun.secondary.key = "ads";
+					//groups.Add(gun.secondary);
+					//
+					//gun.lookAt.key = "look";
+					//groups.Add(gun.lookAt);
+					//
+					//if(gun.primaryReload.start.actions.Length > 0)
+					//{
+					//	gun.primaryReload.start.key = "reload_primary_start";
+					//	groups.Add(gun.primaryReload.start);
+					//}
+					//if (gun.primaryReload.eject.actions.Length > 0)
+					//{
+					//	gun.primaryReload.eject.key = "reload_primary_eject";
+					//	groups.Add(gun.primaryReload.eject);
+					//}
+					//if (gun.primaryReload.loadOne.actions.Length > 0)
+					//{
+					//	gun.primaryReload.loadOne.key = "reload_primary_load_one";
+					//	groups.Add(gun.primaryReload.loadOne);
+					//}
+					//if (gun.primaryReload.end.actions.Length > 0)
+					//{
+					//	gun.primaryReload.end.key = "reload_primary_end";
+					//	groups.Add(gun.primaryReload.end);
+					//}
+					//gun.actionGroups = groups.ToArray();
+					//
+					//List<HandlerDefinition> handlers = new List<HandlerDefinition>();
+					//
+					//handlers.Add(new HandlerDefinition()
+					//{
+					//	inputType = EPlayerInput.Fire1,
+					//	nodes = new HandlerNodeDefinition[] {
+					//		new HandlerNodeDefinition()
+					//		{
+					//			actionGroupToTrigger = "primary",
+					//		}
+					//	}
+					//});
+					//
+					//handlers.Add(new HandlerDefinition()
+					//{
+					//	inputType = EPlayerInput.Fire2,
+					//	nodes = new HandlerNodeDefinition[] {
+					//		new HandlerNodeDefinition()
+					//		{
+					//			deferToAttachment = true,
+					//			attachmentType = EAttachmentType.Sights,
+					//			attachmentIndex = 0,
+					//		},
+					//		new HandlerNodeDefinition()
+					//		{
+					//			deferToAttachment = true,
+					//			attachmentType = EAttachmentType.Grip,
+					//			attachmentIndex = 0,
+					//		},
+					//		new HandlerNodeDefinition()
+					//		{
+					//			actionGroupToTrigger = "ads",
+					//		}
+					//	}
+					//});
+					//
+					//handlers.Add(new HandlerDefinition()
+					//{
+					//	inputType = EPlayerInput.SpecialKey1,
+					//	nodes = new HandlerNodeDefinition[] {
+					//		new HandlerNodeDefinition()
+					//		{
+					//			actionGroupToTrigger = "look"
+					//		}
+					//	}
+					//});
+					//
+					//gun.inputHandlers = handlers.ToArray();
+					//
+					//gun.primaryMagazines.key = "primary";
+					//gun.magazines = new MagazineSlotSettingsDefinition[] {
+					//	gun.primaryMagazines
+					//};
+
+					EditorUtility.SetDirty(gun);
 				}
 			}
 		}

@@ -115,8 +115,6 @@ MonoBehaviour:
         Key: ammo_0/0
         BoxDims: {x: 11, y: 1, z: 2}
     MaxSize: {x: 64, y: 16}
-  TextureX: 64
-  TextureY: 16
   Icons:
   - Key: default
     Location:
@@ -287,14 +285,14 @@ MonoBehaviour:
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
   - name: sights
-    attachedTo: none
-    position: {x: 7.5, y: 5, z: 0}
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
   - name: barrel
-    attachedTo: none
-    position: {x: 10, y: 2, z: 0}
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
-    position: {x: 9, y: 6.25, z: 0}
+    position: {x: 0, y: 0, z: 0}

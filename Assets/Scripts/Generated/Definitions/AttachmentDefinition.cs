@@ -15,15 +15,11 @@ public class AttachmentDefinition : Definition
 	[JsonField]
 	public string mechaEffectFilter = "";
 	[JsonField]
-	public ActionDefinition[] primaryActions = new ActionDefinition[0];
+	public HandlerDefinition[] handlerOverrides = new HandlerDefinition[0];
 	[JsonField]
-	public ActionDefinition[] secondaryActions = new ActionDefinition[0];
+	public ActionGroupDefinition[] actionOverrides = new ActionGroupDefinition[0];
 	[JsonField]
-[Tooltip("If true, adding this attachment will swap the primaryActions array. Otherwise, it will be additive")]
-	public bool replacePrimaryAction = false;
-	[JsonField]
-[Tooltip("If true, adding this attachment will swap the secondaryActions array. Otherwise, it will be additive")]
-	public bool replaceSecondaryAction = false;
+	public ReloadDefinition[] reloadOverrides = new ReloadDefinition[0];
 	[JsonField]
 	public ERepeatMode modeOverride = ERepeatMode.FullAuto;
 	[JsonField]
