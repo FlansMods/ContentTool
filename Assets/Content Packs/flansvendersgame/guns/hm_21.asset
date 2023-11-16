@@ -12,185 +12,135 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
   m_Name: hm_21
   m_EditorClassIdentifier: 
-  LocalisedNames: []
+  LocalisedNames:
+  - Lang: 0
+    Name: HM21
   LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
     - flansmod:gun
   paints:
-    paintjobs: []
-  primaryReload:
-    manualReloadAllowed: 1
-    autoReloadWhenEmpty: 1
-    start:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions:
-      - actionType: 1
-        duration: 0
-        sounds:
-        - sound: flansvendersgame:reload1
-          length: 1
-          minPitchMultiplier: 1
-          maxPitchMultiplier: 1
-          minVolume: 1
-          maxVolume: 1
-          maxRange: 100
-          LODs: []
-        itemStack: 
-        modifiers: []
-        fovFactor: 1.25
-        scopeOverlay: 
-        anim: 
-        toolLevel: 1
-        harvestSpeed: 1
-        reach: 1
-    eject:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-    loadOne:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-    end:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-  secondaryReload:
-    manualReloadAllowed: 1
-    autoReloadWhenEmpty: 1
-    start:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-    eject:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-    loadOne:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-    end:
-      canActUnderwater: 1
-      canActUnderOtherLiquid: 0
-      canBeOverriden: 0
-      twoHanded: 0
-      repeatMode: 1
-      repeatDelay: 0
-      repeatCount: 0
-      spinUpDuration: 1
-      loudness: 150
-      actions: []
-  primary:
+    paintjobs:
+    - textureName: hm_21_olive
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: hm_21_racing
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: hm_21_wood
+      paintBucketsRequired: 1
+      entitlementKey: 
+  inputHandlers:
+  - inputType: 10
+    nodes:
+    - actionGroupToTrigger: primary
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 11
+    nodes:
+    - actionGroupToTrigger: 
+      modalCheck: 
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: 
+      modalCheck: 
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: ads
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 18
+    nodes:
+    - actionGroupToTrigger: look
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 13
+    nodes:
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  actionGroups:
+  - key: primary
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
     twoHanded: 1
-    repeatMode: 1
-    repeatDelay: 0.75
+    repeatMode: 0
+    repeatDelay: 0.1
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
     actions:
     - actionType: 3
-      duration: 0.75
+      duration: 0.1
       sounds: []
       itemStack: 
       modifiers:
       - Stat: vertical_recoil
         Filter: 
         Add: 0
-        Multiply: 10
+        Multiply: 2
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       - Stat: spread
         Filter: 
         Add: 0
-        Multiply: 0
+        Multiply: 15
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       - Stat: speed
         Filter: 
         Add: 0
         Multiply: 0
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       - Stat: bullet_count
         Filter: 
         Add: 0
         Multiply: 1
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       - Stat: impact_damage
         Filter: 
         Add: 0
-        Multiply: 15
+        Multiply: 4
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       - Stat: knockback
         Filter: 
         Add: 0
         Multiply: 0
         SetValue: 
-        ApplyToPrimary: 1
-        ApplyToSecondary: 0
+        ApplyFilters: []
       fovFactor: 1
       scopeOverlay: 
       anim: 
@@ -200,7 +150,7 @@ MonoBehaviour:
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansvendersgame:m249shoot
+      - sound: flansmod:gunshot_clang
         length: 0
         minPitchMultiplier: 0.8333333
         maxPitchMultiplier: 1.25
@@ -217,7 +167,7 @@ MonoBehaviour:
       harvestSpeed: 1
       reach: 1
     - actionType: 2
-      duration: 0.75
+      duration: 0.1
       sounds: []
       itemStack: 
       modifiers: []
@@ -227,13 +177,13 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  secondary:
+  - key: ads
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
     twoHanded: 1
-    repeatMode: 1
-    repeatDelay: 0.75
+    repeatMode: 4
+    repeatDelay: 0.1
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
@@ -243,7 +193,7 @@ MonoBehaviour:
       sounds: []
       itemStack: 
       modifiers: []
-      fovFactor: 2
+      fovFactor: 1.25
       scopeOverlay: 
       anim: 
       toolLevel: 1
@@ -260,7 +210,7 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  lookAt:
+  - key: look
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -282,19 +232,127 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  primaryMagazines:
-    matchByNames:
-    - hm_21_internal_mag_5
-    matchByTags: []
-    baseCostToSwap: 0
-  secondaryMagazines:
+  - key: reload_primary_start
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_start
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmodernweapons:mwmp44reload
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_eject
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_eject
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_load_one
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_load_one
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: reload_primary_end
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 2
+      duration: 0.5
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: reload_end
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  magazines:
+  - key: primary
     matchByNames: []
-    matchByTags: []
+    matchByTags:
+    - flansvendersgame:hm_21
     baseCostToSwap: 0
-  startSpinUpActions: []
-  reachMaxSpinActions: []
-  startSpinDownActions: []
-  reachZeroSpinActions: []
+  reloads:
+  - key: primary
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    startActionKey: reload_primary_start
+    ejectActionKey: reload_primary_eject
+    loadOneActionKey: reload_primary_load_one
+    endActionKey: reload_primary_end
   loopingSounds: []
   barrelAttachments:
     allowlist: []

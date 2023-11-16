@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de068354cbd1ebd4e90a6ea29ffc3718, type: 2}
   - {fileID: 11400000, guid: fa82c1247cf0f0244ad79599012aa982, type: 2}
   - {fileID: 11400000, guid: 39536aa2f29bc534b9ba2fdb49eb623a, type: 2}
+  - {fileID: 11400000, guid: d5920b3684916f54aba728f899e9c1ff, type: 2}
   - {fileID: 11400000, guid: fe1d26606ae76d449af75b13b2fb3d0a, type: 2}
   - {fileID: 11400000, guid: e0e0d2f67d5923343a54e7970024d8c8, type: 2}
   - {fileID: 11400000, guid: a65803434538ccc4191a9950ed97a3d1, type: 2}
@@ -38,7 +39,8 @@ MonoBehaviour:
   - animations/ar_bullpup
   - animations/ar_load_from_bottom
   - animations/back_loaded
-  - animations/bolt_action_rifle
+  - animations/bolt_action_individually_fed
+  - animations/bolt_action_magazine_fed
   - animations/end_loaded
   - animations/g11
   - animations/martini_action
@@ -80,4 +82,433 @@ MonoBehaviour:
   ExtraLocalisation:
   - Unlocalised: tooltip.format.attached
     Lang: 0
-    Localised: \u00A72+%s
+    Localised: "\xA72+%s"
+  - Unlocalised: tooltip.format.impact_damage
+    Lang: 0
+    Localised: "\uE780%.0f"
+  - Unlocalised: tooltip.format.impact_damage.advanced
+    Lang: 0
+    Localised: "\uE780 Impact Damage %.0f"
+  - Unlocalised: tooltip.format.vertical_recoil
+    Lang: 0
+    Localised: "\uE781%.0f"
+  - Unlocalised: tooltip.format.vertical_recoil.advanced
+    Lang: 0
+    Localised: "\uE781 Recoil %.0f"
+  - Unlocalised: tooltip.format.horizontal_recoil
+    Lang: 0
+    Localised: "\uE781%.0f"
+  - Unlocalised: tooltip.format.horizontal_recoil.advanced
+    Lang: 0
+    Localised: "\uE781 Horizontal Recoil %.0f"
+  - Unlocalised: tooltip.format.speed
+    Lang: 0
+    Localised: "\uE782%.0f"
+  - Unlocalised: tooltip.format.speed.advanced
+    Lang: 0
+    Localised: "\uE782 Speed %.0f"
+  - Unlocalised: tooltip.format.spread
+    Lang: 0
+    Localised: "\uE783%.0f"
+  - Unlocalised: tooltip.format.spread.advanced
+    Lang: 0
+    Localised: "\uE783 Bullet Spread %.0f"
+  - Unlocalised: tooltip.format.bullet_count
+    Lang: 0
+    Localised: '%d'
+  - Unlocalised: tooltip.format.bullet_count.advanced
+    Lang: 0
+    Localised: Projectiles per Shot %d
+  - Unlocalised: tooltip.format.knockback
+    Lang: 0
+    Localised: '%.0f'
+  - Unlocalised: tooltip.format.knockback.advanced
+    Lang: 0
+    Localised: Knockback %.0f
+  - Unlocalised: tooltip.format.fullautorpm
+    Lang: 0
+    Localised: "\uE784%dRPM"
+  - Unlocalised: tooltip.format.fullautorpm.advanced
+    Lang: 0
+    Localised: "\uE784 Fully-Automatic %dRPM"
+  - Unlocalised: tooltip.format.minigunrpm
+    Lang: 0
+    Localised: "\uE784%dRPM"
+  - Unlocalised: tooltip.format.minigunrpm.advanced
+    Lang: 0
+    Localised: "\uE784 Charge-Up to Max %dRPM"
+  - Unlocalised: tooltip.format.burstfirerpm
+    Lang: 0
+    Localised: "\uE785\uE785\uE785%dRPM"
+  - Unlocalised: tooltip.format.burstfirerpm.advanced
+    Lang: 0
+    Localised: "\uE785\uE785\uE785%d Shot Burst %dRPM"
+  - Unlocalised: tooltip.format.singlefire
+    Lang: 0
+    Localised: "\uE785"
+  - Unlocalised: tooltip.format.singlefire.advanced
+    Lang: 0
+    Localised: "\uE785 Semi-Automatic"
+  - Unlocalised: tooltip.format.toggle
+    Lang: 0
+    Localised: "\uE786"
+  - Unlocalised: tooltip.format.toggle.advanced
+    Lang: 0
+    Localised: "\uE786 Toggleable"
+  - Unlocalised: tooltip.format.single_bullet_stack
+    Lang: 0
+    Localised: '%s'
+  - Unlocalised: tooltip.format.single_bullet_stack_with_durability
+    Lang: 0
+    Localised: '%s (%d/%d)'
+  - Unlocalised: tooltip.format.multiple_bullet_stack
+    Lang: 0
+    Localised: '%dx %s'
+  - Unlocalised: tooltip.format.engine_speed_modifier
+    Lang: 0
+    Localised: Max Speed x%d%%
+  - Unlocalised: tooltip.format.engine_acceleration_modifier
+    Lang: 0
+    Localised: Acceleration x%d%%
+  - Unlocalised: tooltip.format.engine_acceleration_and_deceleration_modifier
+    Lang: 0
+    Localised: Acceleration and Deceleration x%d%%
+  - Unlocalised: tooltip.format.engine_deceleration_modifier
+    Lang: 0
+    Localised: Deceleration x%d%%
+  - Unlocalised: tooltip.format.engine_liquid_fuel_consumption
+    Lang: 0
+    Localised: Consumes %dmB liquid fuel per tick
+  - Unlocalised: tooltip.format.engine_solid_fuel_consumption
+    Lang: 0
+    Localised: Consumes solid fuel at %d coal per hour
+  - Unlocalised: tooltip.format.engine_electric_fuel_consumption
+    Lang: 0
+    Localised: Consumes %s per tick
+  - Unlocalised: tooltip.format.engine_liquid_fuel_storage
+    Lang: 0
+    Localised: '%dmB internal liquid storage and %d input slots'
+  - Unlocalised: tooltip.format.engine_solid_fuel_storage
+    Lang: 0
+    Localised: '%d solid fuel slots'
+  - Unlocalised: tooltip.format.engine_electric_fuel_storage
+    Lang: 0
+    Localised: '%s internal charge and %d battery slots'
+  - Unlocalised: tooltip.format.part_misc_tier
+    Lang: 0
+    Localised: '%sTier %d Misc Material'
+  - Unlocalised: tooltip.format.part_wood_tier
+    Lang: 0
+    Localised: '%sTier %d Wood'
+  - Unlocalised: tooltip.format.part_glass_tier
+    Lang: 0
+    Localised: '%sTier %d Glass'
+  - Unlocalised: tooltip.format.part_metal_tier
+    Lang: 0
+    Localised: '%sTier %d Metal'
+  - Unlocalised: tooltip.format.part_composite_tier
+    Lang: 0
+    Localised: '%sTier %d Composite'
+  - Unlocalised: tooltip.format.part_electronic_tier
+    Lang: 0
+    Localised: '%sTier %d Electronics'
+  - Unlocalised: tooltip.format.part_fabric_tier
+    Lang: 0
+    Localised: '%sTier %d Fabric'
+  - Unlocalised: tooltip.tier_colour.0
+    Lang: 0
+    Localised: "\xA7f"
+  - Unlocalised: tooltip.tier_colour.1
+    Lang: 0
+    Localised: "\xA7b"
+  - Unlocalised: tooltip.tier_colour.2
+    Lang: 0
+    Localised: "\xA79"
+  - Unlocalised: tooltip.tier_colour.3
+    Lang: 0
+    Localised: "\xA7d"
+  - Unlocalised: tooltip.tier_colour.4
+    Lang: 0
+    Localised: "\xA7c"
+  - Unlocalised: tooltip.tier_colour.5
+    Lang: 0
+    Localised: "\xA76"
+  - Unlocalised: tooltip.tier_colour.6
+    Lang: 0
+    Localised: "\xA7e"
+  - Unlocalised: tooltip.tier_colour.7
+    Lang: 0
+    Localised: "\xA7a"
+  - Unlocalised: tooltip.format.primarystatline
+    Lang: 0
+    Localised: "\uE780%.0f \uE781%.0f %s \uE783%.0f"
+  - Unlocalised: tooltip.format.secondarystatline
+    Lang: 0
+    Localised: "Alt.:\uE780%.0f \uE781%.0f %s \uE783%.0f"
+  - Unlocalised: tooltip.crafted_from
+    Lang: 0
+    Localised: '[%s]'
+  - Unlocalised: tooltip.crafted_from.modifier_format
+    Lang: 0
+    Localised: '> %s'
+  - Unlocalised: modifier.increase_stat
+    Lang: 0
+    Localised: +%s %s
+  - Unlocalised: modifier.decrease_stat
+    Lang: 0
+    Localised: -%s %s
+  - Unlocalised: modifier.increase_stat_percent
+    Lang: 0
+    Localised: +%s%% %s
+  - Unlocalised: modifier.decrease_stat_percent
+    Lang: 0
+    Localised: -%s%% %s
+  - Unlocalised: modifier.override_value
+    Lang: 0
+    Localised: Set %s to %s
+  - Unlocalised: modifier.unknown
+    Lang: 0
+    Localised: Unknown Modifier
+  - Unlocalised: modifier.stat_name.spread
+    Lang: 0
+    Localised: Bullet Spread
+  - Unlocalised: modifier.stat_name.rpm
+    Lang: 0
+    Localised: RPM
+  - Unlocalised: modifier.stat_name.engine_speed
+    Lang: 0
+    Localised: Engine Speed
+  - Unlocalised: modifier.stat_name.damage
+    Lang: 0
+    Localised: Impact Damage
+  - Unlocalised: modifier.stat_name.recoil
+    Lang: 0
+    Localised: Recoil
+  - Unlocalised: modifier.stat_name.speed
+    Lang: 0
+    Localised: Speed
+  - Unlocalised: modifier.stat_name.vertical_recoil
+    Lang: 0
+    Localised: Vertical Recoil
+  - Unlocalised: modifier.stat_name.horizontal_recoil
+    Lang: 0
+    Localised: Horizontal Recoil
+  - Unlocalised: modifier.stat_name.bullet_count
+    Lang: 0
+    Localised: Bullet Count
+  - Unlocalised: modifier.stat_name.penetration power
+    Lang: 0
+    Localised: Penetration Power
+  - Unlocalised: modifier.stat_name.spread_pattern
+    Lang: 0
+    Localised: Spread Pattern
+  - Unlocalised: modifier.stat_name.knockback
+    Lang: 0
+    Localised: Knockback
+  - Unlocalised: modifier.stat_name.multiplier_vs_players
+    Lang: 0
+    Localised: Damage vs. Players
+  - Unlocalised: modifier.stat_name.multiplier_vs_vehicles
+    Lang: 0
+    Localised: Damage vs. Vehicles
+  - Unlocalised: modifier.stat_name.splash_damage_radius
+    Lang: 0
+    Localised: Splash Damage Radius
+  - Unlocalised: modifier.stat_name.splash_damage_falloff
+    Lang: 0
+    Localised: Splash Damage Falloff
+  - Unlocalised: modifier.stat_name.set_fire_to_target
+    Lang: 0
+    Localised: Burn Time
+  - Unlocalised: modifier.stat_name.fire_spread_radius
+    Lang: 0
+    Localised: Fire Spread Radius
+  - Unlocalised: modifier.stat_name.fire_spread_amount
+    Lang: 0
+    Localised: Fire Spread Coverage
+  - Unlocalised: magazine.num_rounds
+    Lang: 0
+    Localised: '%d Rounds'
+  - Unlocalised: magazine.flansmod.magazines/null
+    Lang: 0
+    Localised: INVALID MAGAZINE
+  - Unlocalised: magazine.cost.1
+    Lang: 0
+    Localised: Modify for 1 Magazine Upgrade
+  - Unlocalised: magazine.cost
+    Lang: 0
+    Localised: Modify for %d Magazine Upgrades
+  - Unlocalised: magazine.match_bullet_name
+    Lang: 0
+    Localised: Accepts %s
+  - Unlocalised: magazine.required_bullet_tag
+    Lang: 0
+    Localised: Accepts bullets tagged %s
+  - Unlocalised: magazine.disallowed_bullet_tag
+    Lang: 0
+    Localised: Except bullets tagged %s
+  - Unlocalised: paintjob.default
+    Lang: 0
+    Localised: Default Paint
+  - Unlocalised: paintjob.cost.1
+    Lang: 0
+    Localised: Paint for 1 Rainbow Paint Can
+  - Unlocalised: paintjob.cost
+    Lang: 0
+    Localised: Paint for %d Rainbow Paint Cans
+  - Unlocalised: paintjob.free_to_swap
+    Lang: 0
+    Localised: Restore default paint for free
+  - Unlocalised: workbench.slot.gun
+    Lang: 0
+    Localised: Place gun here
+  - Unlocalised: workbench.slot.attachments.grip
+    Lang: 0
+    Localised: Grip
+  - Unlocalised: workbench.slot.attachments.stock
+    Lang: 0
+    Localised: Stock
+  - Unlocalised: workbench.slot.attachments.barrel
+    Lang: 0
+    Localised: Barrel
+  - Unlocalised: workbench.slot.attachments.sights
+    Lang: 0
+    Localised: Sights
+  - Unlocalised: workbench.slot.paint_can
+    Lang: 0
+    Localised: Add Rainbow Paintcans to paint your gun
+  - Unlocalised: workbench.slot.mag_upgrade
+    Lang: 0
+    Localised: Add Magazine Upgrades to swap magazine
+  - Unlocalised: workbench.tab_materials
+    Lang: 0
+    Localised: Materials
+  - Unlocalised: workbench.tab_power
+    Lang: 0
+    Localised: Power
+  - Unlocalised: workbench.tab_gun_crafting
+    Lang: 0
+    Localised: Gun Fabrication
+  - Unlocalised: workbench.tab_armour_crafting
+    Lang: 0
+    Localised: Armor Fabrication
+  - Unlocalised: workbench.tab_part_crafting
+    Lang: 0
+    Localised: Part Fabrication
+  - Unlocalised: workbench.tab_modification
+    Lang: 0
+    Localised: Gun Modification
+  - Unlocalised: workbench.input
+    Lang: 0
+    Localised: Input
+  - Unlocalised: workbench.output
+    Lang: 0
+    Localised: Output
+  - Unlocalised: workbench.queue
+    Lang: 0
+    Localised: Queue
+  - Unlocalised: workbench.craft.1
+    Lang: 0
+    Localised: Craft 1
+  - Unlocalised: workbench.craft.n
+    Lang: 0
+    Localised: Craft %d
+  - Unlocalised: workbench.craft.all
+    Lang: 0
+    Localised: Craft All (%d)
+  - Unlocalised: material.metal
+    Lang: 0
+    Localised: Metal
+  - Unlocalised: material.composite
+    Lang: 0
+    Localised: Composite
+  - Unlocalised: material.glass
+    Lang: 0
+    Localised: Glass
+  - Unlocalised: material.electronics
+    Lang: 0
+    Localised: Electronics
+  - Unlocalised: material.wood
+    Lang: 0
+    Localised: Wood
+  - Unlocalised: material.fabric
+    Lang: 0
+    Localised: Fabric
+  - Unlocalised: material.misc
+    Lang: 0
+    Localised: Other Material
+  - Unlocalised: material.unknown
+    Lang: 0
+    Localised: Unknown Material
+  - Unlocalised: crafting.parts.filter.only_craftable
+    Lang: 0
+    Localised: Only Craftable
+  - Unlocalised: crafting.parts.filter.match_tier
+    Lang: 0
+    Localised: Tier %d
+  - Unlocalised: crafting.select_a_recipe
+    Lang: 0
+    Localised: <- Select a recipe
+  - Unlocalised: crafting.with_tag
+    Lang: 0
+    Localised: Tagged as %s
+  - Unlocalised: crafting.match_tiers_between
+    Lang: 0
+    Localised: Is between Tier %d and %d
+  - Unlocalised: crafting.match_mixed_tiers
+    Lang: 0
+    Localised: Is a Tier in {%s}
+  - Unlocalised: crafting.match_tiers_above
+    Lang: 0
+    Localised: At least Tier %d
+  - Unlocalised: crafting.match_any_material
+    Lang: 0
+    Localised: Is any material
+  - Unlocalised: crafting.match_single
+    Lang: 0
+    Localised: Is %s
+  - Unlocalised: crafting.match_multiple.2
+    Lang: 0
+    Localised: Is either %s or %s
+  - Unlocalised: crafting.match_multiple.3
+    Lang: 0
+    Localised: Is one of %s, %s or %s
+  - Unlocalised: crafting.match_multiple.4
+    Lang: 0
+    Localised: Is one of %s, %s, %s or %s
+  - Unlocalised: crafting.match_multiple.5
+    Lang: 0
+    Localised: Is one of %s, %s, %s, %s or %s
+  - Unlocalised: crafting.match_multiple.6
+    Lang: 0
+    Localised: Is one of %s, %s, %s, %s, %s or %s
+  - Unlocalised: crafting.one_of
+    Lang: 0
+    Localised: Is one of...
+  - Unlocalised: crafting.exact_stack
+    Lang: 0
+    Localised: '%dx %s'
+  - Unlocalised: crafting.match_stack
+    Lang: 0
+    Localised: '%dx An item matching the following:'
+  - Unlocalised: crafting.disallowed_tag
+    Lang: 0
+    Localised: Does not have tag '%s'
+  - Unlocalised: crafting.required_tag
+    Lang: 0
+    Localised: Has tag '%s'
+  - Unlocalised: crafting.auto_fill_ingredients
+    Lang: 0
+    Localised: Insert best match
+  - Unlocalised: crafting.switch_to_part_crafting
+    Lang: 0
+    Localised: Craft this part
+  - Unlocalised: crafting.auto_add_best_parts
+    Lang: 0
+    Localised: Auto-Add best parts
+  - Unlocalised: crafting.parts.num_in_progress
+    Lang: 0
+    Localised: Crafting %d
+  - Unlocalised: crafting.parts.num_in_progress.named
+    Lang: 0
+    Localised: Crafting %d %s
