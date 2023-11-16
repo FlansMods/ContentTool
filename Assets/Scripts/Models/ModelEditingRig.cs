@@ -483,7 +483,7 @@ public class ModelEditingRig : MonoBehaviour
 					duration = PreviewSequences[i].DurationTicks;
 				}
 
-				if (progressInTicks < duration)
+				if (progressInTicks <= duration)
 					break;
 
 				progressInTicks -= duration;

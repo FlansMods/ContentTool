@@ -12,23 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
   m_Name: p90
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
+  LocalisedNames: []
+  LocalisedExtras: []
   keyframes:
   - name: idle
     poses:
@@ -54,7 +39,7 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -3
+        xValue: -2
         yOverride: 
         yValue: 1
         zOverride: 
@@ -65,12 +50,12 @@ MonoBehaviour:
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 10
+        zValue: 5
       scale: {x: 1, y: 1, z: 1}
     - applyTo: slide
       position:
         xOverride: 
-        xValue: -2
+        xValue: -1
         yOverride: 
         yValue: 0
         zOverride: 
@@ -376,7 +361,7 @@ MonoBehaviour:
     - ready_to_cock
   sequences:
   - name: shoot
-    ticks: 8
+    ticks: 5
     frames:
     - tick: 0
       entry: 1
@@ -386,7 +371,7 @@ MonoBehaviour:
       entry: 0
       exit: 1
       frame: shot_fired
-    - tick: 8
+    - tick: 5
       entry: 1
       exit: 0
       frame: idle
@@ -417,13 +402,13 @@ MonoBehaviour:
       exit: 1
       frame: ready_to_reload
   - name: reload_end
-    ticks: 0
+    ticks: 6
     frames:
     - tick: 0
       entry: 2
       exit: 2
       frame: ready_to_reload
-    - tick: 0
+    - tick: 6
       entry: 1
       exit: 1
       frame: idle
