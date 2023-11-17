@@ -101,7 +101,7 @@ public class TurboRigPreview : MinecraftModelPreview
 		TurboAttachPointPreview parentAP = GetAPPreview(partName);
 		GameObject go = new GameObject(partName);
 		go.transform.SetParent(parentAP.transform);
-		go.transform.localPosition = Vector3.one;
+		go.transform.localPosition = Vector3.zero;
 		go.transform.localRotation = Quaternion.identity;
 		go.transform.localScale = Vector3.one;
 		TurboModelPreview section = go.AddComponent<TurboModelPreview>();

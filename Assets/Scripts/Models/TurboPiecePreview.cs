@@ -289,7 +289,7 @@ public class TurboPiecePreview : MinecraftModelPreview
 		Mesh.SetUVs(0, uvs);
 		Mesh.SetTriangles(GenerateTrisForUV(), 0);
 		Mesh.SetNormals(GenerateNormalsForUV());
-
+		Mesh.RecalculateBounds();
 		MR.sharedMaterial = GetComponentInParent<ModelEditingRig>()?.SkinMaterial;
 	}
 

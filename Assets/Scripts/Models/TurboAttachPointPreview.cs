@@ -42,8 +42,19 @@ public class TurboAttachPointPreview : MonoBehaviour
 						LockPartPositions,
 						LockAttachPoints));
 		}
+		Vector3 euler = Parent.Rig.GetAttachmentEuler(PartName);
+		Vector3 changedEuler = EditorGUILayout.Vector3Field("Euler:", euler);
+		if (!Mathf.Approximately((euler - changedEuler).sqrMagnitude, 0f))
+		{
+			ModelEditingSystem.ApplyOperation(
+					new TurboAttachPointRotateOperation(
+						Parent.GetModel(),
+						PartName,
+						changedEuler,
+						LockPartPositions,
+						LockAttachPoints));
+		}
 
-		
 	}
 
 	// -------------------------------------------------------------------------------

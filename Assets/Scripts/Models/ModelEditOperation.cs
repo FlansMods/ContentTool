@@ -63,7 +63,7 @@ public class TurboAttachPointAddOperation : TurboRigEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.SetAttachment("new_ap", "body");
+		RootModel.Operation_SetAttachment("new_ap", "body");
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{
@@ -138,7 +138,7 @@ public class TurboAttachPointMoveOperation : TurboAttachPointEditOperation
 				if (ap.attachedTo == PartName)
 					ap.position -= delta;
 		}
-		RootModel.SetAttachmentOffset(PartName, LocalPos);
+		RootModel.Operation_SetAttachmentOffset(PartName, LocalPos);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{
@@ -160,6 +160,62 @@ public class TurboAttachPointMoveOperation : TurboAttachPointEditOperation
 		
 	}
 }
+public class TurboAttachPointRotateOperation : TurboAttachPointEditOperation
+{
+	public Vector3 LocalEuler { get; private set; }
+	public bool LockPartPositions { get; private set; }
+	public bool LockAttachPoints { get; private set; }
+	public TurboAttachPointRotateOperation(MinecraftModel model, string partName, Vector3 localEuler, bool lockParts, bool lockAPs)
+		: base(model, partName)
+	{
+		LocalEuler = localEuler;
+		LockPartPositions = lockParts;
+		LockAttachPoints = lockAPs;
+	}
+	public override string ID { get { return "TURBO_AP_ROTATE"; } }
+	public override string UndoMessage { get { return "Rotate TurboAttachPoint"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		Vector3 existingEuler = RootModel.GetAttachmentOffset(PartName);
+		Vector3 delta = LocalEuler - existingEuler;
+		//if (LockPartPositions)
+		//{
+		//	TurboModel section = RootModel.GetSection(PartName);
+		//	if (section != null)
+		//	{
+		//		foreach (TurboPiece piece in section.Pieces)
+		//			piece.Pos -= delta;
+		//	}
+		//}
+		//if (LockAttachPoints)
+		//{
+		//	foreach (AttachPoint ap in RootModel.AttachPoints)
+		//		if (ap.attachedTo == PartName)
+		//			ap.position -= delta;
+		//}
+		RootModel.Operation_SetAttachmentEuler(PartName, LocalEuler);
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			TurboAttachPointPreview apPreview = rigPreview.GetAPPreview(PartName);
+			if (apPreview != null)
+				apPreview.UpdatePreviewFromModel();
+			if (LockPartPositions)
+			{
+				TurboModelPreview sectionPreview = rigPreview.GetSectionPreview(PartName);
+				foreach (TurboPiecePreview piecePreview in sectionPreview.GetChildren())
+				{
+					piecePreview.RefreshGeometry();
+				}
+			}
+		}
+
+	}
+}
 public class TurboAttachPointReparentOperation : TurboAttachPointEditOperation
 {
 	public string AttachedTo { get; private set; }
@@ -173,7 +229,7 @@ public class TurboAttachPointReparentOperation : TurboAttachPointEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.SetAttachment(PartName, AttachedTo);
+		RootModel.Operation_SetAttachment(PartName, AttachedTo);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{
@@ -203,7 +259,7 @@ public class TurboAttachPointRenameOperation : TurboAttachPointEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.RenameAttachment(PartName, NewName);
+		RootModel.Operation_RenameAttachment(PartName, NewName);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{
@@ -228,7 +284,7 @@ public class TurboAttachPointDeleteOperation : TurboAttachPointEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.RemoveAttachment(PartName);
+		RootModel.Operation_RemoveAttachment(PartName);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{
@@ -250,7 +306,7 @@ public class TurboAttachPointDuplicateOperation : TurboAttachPointEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		RootModel.DuplicateAttachment(PartName);
+		RootModel.Operation_DuplicateAttachment(PartName);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
 	{

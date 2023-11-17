@@ -12,24 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
   m_Name: end_loaded
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   keyframes:
   - name: idle
     poses:
@@ -105,46 +89,6 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     parents:
     - idle_empty
-  - name: ammo_ejected
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: 4
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 0
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - ready_to_reload
-  - name: ammo_ejected_physics
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: -25
-        yOverride: 
-        yValue: -20
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: -60
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - ready_to_reload
   - name: ammo_grab_from_left
     poses:
     - applyTo: ammo_0
@@ -161,7 +105,7 @@ MonoBehaviour:
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 0
+        zValue: 90
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
@@ -336,6 +280,26 @@ MonoBehaviour:
         zValue: 30
       scale: {x: 1, y: 1, z: 1}
     parents: []
+  - name: ammo_at_end
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: 20
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
   sequences:
   - name: shoot
     ticks: 8
@@ -364,7 +328,7 @@ MonoBehaviour:
       exit: 1
       frame: ready_to_reload
   - name: reload_load_one
-    ticks: 12
+    ticks: 17
     frames:
     - tick: 0
       entry: 1
@@ -373,8 +337,8 @@ MonoBehaviour:
     - tick: 10
       entry: 2
       exit: 1
-      frame: ammo_ejected
-    - tick: 12
+      frame: ammo_at_end
+    - tick: 17
       entry: 1
       exit: 1
       frame: ready_to_reload

@@ -140,7 +140,7 @@ public class ResourceLocation
 
 	public T Load<T>(string subfolder = "") where T : Object
     {
-        if (ID == "null")
+        if (ID == "null" || Namespace == "minecraft")
             return null;
 
         if (TryLoad(out T result, subfolder))

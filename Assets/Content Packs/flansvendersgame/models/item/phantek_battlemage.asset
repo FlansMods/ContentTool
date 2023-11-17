@@ -40,19 +40,19 @@ MonoBehaviour:
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 1
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 6
     Position: {x: -0.0037336447, y: 0.0021551717, z: -0.0046480084}
     Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
     Scale: {x: 1.1034483, y: 1.1034483, z: 1.1034483}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Rotation: {x: 0.70710677, y: 0, z: 0, w: -0.70710677}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 7
     Position: {x: 0, y: 0.15, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -60,7 +60,7 @@ MonoBehaviour:
   - Type: 8
     Position: {x: 6, y: 6, z: 6}
     Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
@@ -620,18 +620,24 @@ MonoBehaviour:
   - name: grip
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: scope
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: barrel
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: sights
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}

@@ -254,7 +254,7 @@ MonoBehaviour:
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:mwmp44reload
+      - sound: flansmod:item_raise_hup
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -292,6 +292,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+    - actionType: 1
+      duration: 0.5
+      sounds:
+      - sound: flansmod:magazine_unload_chunky
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
   - key: reload_primary_load_one
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -314,6 +333,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+    - actionType: 1
+      duration: 0.5
+      sounds:
+      - sound: flansmod:magazine_load_chunky
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
   - key: reload_primary_end
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -333,6 +371,25 @@ MonoBehaviour:
       fovFactor: 1.25
       scopeOverlay: 
       anim: reload_end
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 1
+      duration: 0.5
+      sounds:
+      - sound: flansmod:item_lower_hup
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
@@ -377,4 +434,4 @@ MonoBehaviour:
     numAttachmentSlots: 0
     hideDefaultMesh: 1
   modelParts: []
-  animationSet: flansmod:ar_load_from_bottom
+  animationSet: flansmod:rifle_priming_handle_magazine_fed

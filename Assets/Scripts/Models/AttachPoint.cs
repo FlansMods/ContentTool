@@ -8,6 +8,7 @@ public class AttachPoint
 	public string name = "";
 	public string attachedTo = "";
 	public Vector3 position = Vector3.zero;
+	public Vector3 euler = Vector3.zero;
 
 	public AttachPoint()
 	{
@@ -22,14 +23,17 @@ public class AttachPoint
 
 	public Vector3 GuessDirection()
 	{
-		switch (name)
+		if (euler.Approximately(Vector3.zero))
 		{
-			case "grip": return Vector3.down;
-			case "barrel": return Vector3.right;
-			case "scope": return Vector3.up;
-			case "sights": return Vector3.up;
-			case "stock": return Vector3.left;
-			case "eye_line": return Vector3.right;
+			switch (name)
+			{
+				case "grip": return Vector3.down;
+				case "barrel": return Vector3.right;
+				case "scope": return Vector3.up;
+				case "sights": return Vector3.up;
+				case "stock": return Vector3.left;
+				case "eye_line": return Vector3.right;
+			}
 		}
 		return Vector3.right;
 	}

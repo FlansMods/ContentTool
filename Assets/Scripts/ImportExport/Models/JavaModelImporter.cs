@@ -157,7 +157,7 @@ public static class JavaModelImporter
 		{
 			if(!rig.TryGetAttachPoint(section.PartName, out AttachPoint ap))
 			{
-				rig.SetAttachment(section.PartName, "body");
+				rig.Operation_SetAttachment(section.PartName, "body");
 			}
 			for(int i = 0; i < section.Pieces.Count; i++)
 			{
@@ -688,13 +688,13 @@ public static class JavaModelImporter
 				case "loadClipTime":
 					return true; // Consumed in ContentManager:ImportType_Internal
 				case "gripIsOnPump":
-					rig.SetAttachment("grip", "pump");
+					rig.Operation_SetAttachment("grip", "pump");
 					return true;
 				case "scopeIsOnSlide":
-					rig.SetAttachment("sights", "slide");
+					rig.Operation_SetAttachment("sights", "slide");
 					return true;
 				case "scopeIsOnBreakAction":
-					rig.SetAttachment("sights", "break_action");
+					rig.Operation_SetAttachment("sights", "break_action");
 					return true;
 				default:
 					if (floats.Count == 1)
@@ -748,25 +748,25 @@ public static class JavaModelImporter
 					rig.SetTransformPos(MinecraftModel.ItemTransformType.THIRD_PERSON_LEFT_HAND, pos);
 					break;
 				case "barrelBreakPoint":
-					rig.SetAttachmentOffset("break_action", pos);
+					rig.Operation_SetAttachmentOffset("break_action", pos);
 					break;
 				case "revolverFlipPoint":
-					rig.SetAttachmentOffset("revolver_barrel", pos);
+					rig.Operation_SetAttachmentOffset("revolver_barrel", pos);
 					break;
 				case "minigunBarrelOrigin":
-					rig.SetAttachmentOffset("minigun_rotator", pos);
+					rig.Operation_SetAttachmentOffset("minigun_rotator", pos);
 					break;
 				case "stockAttachPoint":
-					rig.SetAttachmentOffset("stock", pos);
+					rig.Operation_SetAttachmentOffset("stock", pos);
 					break;
 				case "barrelAttachPoint":
-					rig.SetAttachmentOffset("barrel", pos);
+					rig.Operation_SetAttachmentOffset("barrel", pos);
 					break;
 				case "scopeAttachPoint":
-					rig.SetAttachmentOffset("sights", pos);
+					rig.Operation_SetAttachmentOffset("sights", pos);
 					break;
 				case "gripAttachPoint":
-					rig.SetAttachmentOffset("grip", pos);
+					rig.Operation_SetAttachmentOffset("grip", pos);
 					break;
 				default:
 					rig.AnimationParameters.Add(new AnimationParameter()

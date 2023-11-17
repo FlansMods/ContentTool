@@ -115,6 +115,28 @@ public class ModelEditingRigEditor : Editor
 		{
 			bool dirty = EditorUtility.IsDirty(rig.SelectedAnimation);
 			GUILayout.Label(dirty ? $"*{rig.SelectedAnimation.name} has unsaved changes" : $"{rig.SelectedAnimation.name} has no changes.");
+
+			ResourceLocation resLoc = rig.ModelOpenedForEdit.GetLocation();
+			ContentPack pack = ContentManager.inst.FindContentPack(resLoc.Namespace);
+			if(pack != null)
+			{
+				if(pack.TryGetContent(resLoc.IDWithoutPrefixes(), out Definition result))
+				{
+					if(result is GunDefinition gunDef)
+					{
+						ResourceLocation animLoc = rig.SelectedAnimation.GetLocation();
+						if (gunDef.animationSet != $"{animLoc.Namespace}:{animLoc.IDWithoutPrefixes()}")
+						{
+							GUILayout.Label($"This animation set '{animLoc}' is not applied to the GunDefinition");
+							if (GUILayout.Button("Apply"))
+							{
+								gunDef.animationSet = $"{animLoc.Namespace}:{animLoc.IDWithoutPrefixes()}";
+								EditorUtility.SetDirty(gunDef);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		GUILayout.BeginHorizontal();

@@ -369,8 +369,12 @@ public class AnimationEditor : Editor
 						{
 							frameDef.frame = frameNames[newIndex];
 						}
+						EditorGUI.BeginDisabledGroup(j == 0);
 						frameDef.entry = (ESmoothSetting)EditorGUILayout.EnumPopup(frameDef.entry, GUILayout.Width(64));
+						EditorGUI.EndDisabledGroup();
+						EditorGUI.BeginDisabledGroup(j == instance.sequences[i].frames.Length - 1);
 						frameDef.exit = (ESmoothSetting)EditorGUILayout.EnumPopup(frameDef.exit, GUILayout.Width(64));
+						EditorGUI.EndDisabledGroup();
 						frameDef.tick = EditorGUILayout.IntField(frameDef.tick, GUILayout.Width(32));
 						if(GUILayout.Button("Delete", GUILayout.Width(48)))
 						{

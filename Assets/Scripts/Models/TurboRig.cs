@@ -244,37 +244,50 @@ public class TurboRig : MinecraftModel
 				return point.position;
 		return Vector3.zero;
 	}
-	public void DuplicateAttachment(string key)
+	public Vector3 GetAttachmentEuler(string key)
+	{
+		foreach (AttachPoint point in AttachPoints)
+			if (point.name == key)
+				return point.euler;
+		return Vector3.zero;
+	}
+	public void Operation_DuplicateAttachment(string key)
 	{
 		if(TryGetAttachPoint(key, out AttachPoint existing))
 		{
-			SetAttachment($"{existing.name}-", existing.attachedTo);
-			SetAttachmentOffset($"{existing.name}-", existing.position);
+			Operation_SetAttachment($"{existing.name}-", existing.attachedTo);
+			Operation_SetAttachmentOffset($"{existing.name}-", existing.position);
 		}
 	}
-	public void RemoveAttachment(string key)
+	public void Operation_RemoveAttachment(string key)
 	{
 		for (int i = AttachPoints.Count - 1; i >= 0; i--)
 			if (AttachPoints[i].name == key)
 				AttachPoints.RemoveAt(i);
 	}
-	public void SetAttachment(string name, string attachedTo)
+	public void Operation_SetAttachment(string name, string attachedTo)
 	{
 		AttachPoint ap = GetOrCreate(name);
 		if (ap != null)
 			ap.attachedTo = attachedTo;
 	}
-	public void RenameAttachment(string oldName, string newName)
+	public void Operation_RenameAttachment(string oldName, string newName)
 	{
 		for (int i = AttachPoints.Count - 1; i >= 0; i--)
 			if (AttachPoints[i].name == oldName)
 				AttachPoints[i].name = newName;
 	}
-	public void SetAttachmentOffset(string name, Vector3 offset)
+	public void Operation_SetAttachmentOffset(string name, Vector3 offset)
 	{
 		AttachPoint ap = GetOrCreate(name);
 		if (ap != null)
 			ap.position = offset;
+	}
+	public void Operation_SetAttachmentEuler(string name, Vector3 euler)
+	{
+		AttachPoint ap = GetOrCreate(name);
+		if (ap != null)
+			ap.euler = euler;
 	}
 	#endregion
 	// --------------------------------------------------------------------------	
@@ -536,6 +549,8 @@ public class TurboRig : MinecraftModel
 						builder.Current.Add("name", attachPoint.name);
 					builder.Current.Add("attachTo", attachPoint.attachedTo);
 					builder.Current.Add("offset", JSONHelpers.ToJSON(attachPoint.position));
+					if(!attachPoint.euler.Approximately(Vector3.zero))
+						builder.Current.Add("euler", JSONHelpers.ToJSON(attachPoint.euler));
 				}
 			}
 		}

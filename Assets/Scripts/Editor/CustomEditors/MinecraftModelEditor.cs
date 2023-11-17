@@ -342,6 +342,13 @@ public abstract class MinecraftModelEditor : Editor
 			ModelEditingSystem.ApplyOperation(new TurboAttachPointMoveOperation(ap.Parent.Rig, ap.PartName, modifiedPos, ap.LockPartPositions, ap.LockAttachPoints));
 		}
 
+		Vector3 euler = ap.Parent.Rig.GetAttachmentEuler(ap.PartName);
+		Vector3 modifiedEuler = EditorGUILayout.Vector3Field("Euler", euler);
+		if (!modifiedEuler.Approximately(euler))
+		{
+			ModelEditingSystem.ApplyOperation(new TurboAttachPointRotateOperation(ap.Parent.Rig, ap.PartName, modifiedEuler, ap.LockPartPositions, ap.LockAttachPoints));
+		}
+
 		foreach (Transform child in ap.transform)
 		{
 			TurboAttachPointPreview apChild = child.GetComponent<TurboAttachPointPreview>();
@@ -721,7 +728,7 @@ public abstract class MinecraftModelEditor : Editor
 			rig.transform.localPosition = new Vector3(itemTransform.Position.x, itemTransform.Position.y, itemTransform.Position.z);
 			Vector3 euler = itemTransform.Rotation.eulerAngles;
 			rig.transform.localRotation = Quaternion.Euler(euler.x, -euler.y, euler.z);
-			rig.transform.localScale = itemTransform.Scale;
+			rig.transform.localScale = new Vector3(itemTransform.Scale.x, itemTransform.Scale.y, -itemTransform.Scale.z);
 		}
 	}
 	private void ApplyPose(ModelEditingRig rig, ItemTransform itemTransform, int index)
@@ -738,7 +745,7 @@ public abstract class MinecraftModelEditor : Editor
 				rig.transform.localPosition = new Vector3(itemTransform.Position.x, itemTransform.Position.y, itemTransform.Position.z);
 				Vector3 euler = itemTransform.Rotation.eulerAngles;
 				rig.transform.localRotation = Quaternion.Euler(euler.x, -euler.y, euler.z);
-				rig.transform.localScale = itemTransform.Scale;
+				rig.transform.localScale = new Vector3(itemTransform.Scale.x, itemTransform.Scale.y, -itemTransform.Scale.z);
 			}
 			else Debug.LogError($"Could not attach rig to {targetName} as it could not be found");
 		}

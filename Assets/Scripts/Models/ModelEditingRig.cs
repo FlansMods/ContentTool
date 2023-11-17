@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
@@ -539,7 +540,11 @@ public class ModelEditingRig : MonoBehaviour
 							Vector3 pos = LerpPosition(fromPose, toPose, outputParameter);
 							Quaternion ori = LerpRotation(fromPose, toPose, outputParameter);
 							if (ModelOpenedForEdit is TurboRig rig)
+							{
 								pos += rig.GetAttachmentOffset(apPreview.PartName);
+								ori *= Quaternion.Euler(rig.GetAttachmentEuler(apPreview.PartName));
+							}
+						
 							apPreview.transform.localPosition = new Vector3(pos.x, pos.y, pos.z);
 							apPreview.transform.localRotation = ori;
 							apPreview.transform.localScale = Vector3.one;
@@ -565,12 +570,13 @@ public class ModelEditingRig : MonoBehaviour
 			if (ModelOpenedForEdit is TurboRig rig)
 			{
 				apPreview.transform.localPosition = rig.GetAttachmentOffset(apPreview.PartName);
+				apPreview.transform.localRotation = Quaternion.Euler(rig.GetAttachmentEuler(apPreview.PartName));
 			}
 			else
 			{
 				apPreview.transform.localPosition = Vector3.zero;
+				apPreview.transform.localRotation = Quaternion.identity;
 			}
-			apPreview.transform.localRotation = Quaternion.identity;
 			apPreview.transform.localScale = Vector3.one;
 		}
 	}

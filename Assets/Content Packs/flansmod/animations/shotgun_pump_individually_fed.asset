@@ -74,30 +74,31 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -2
+        xValue: 6
         yOverride: 
-        yValue: 2
+        yValue: -2
         zOverride: 
         zValue: 6
       rotation:
         xOverride: 
-        xValue: -35
+        xValue: 35
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: -10
+        zValue: 40
       scale: {x: 1, y: 1, z: 1}
-    parents: []
+    parents:
+    - pump_action
   - name: ammo_grab_from_left
     poses:
     - applyTo: ammo_0
       position:
         xOverride: 
-        xValue: -15
+        xValue: -20
         yOverride: 
-        yValue: -5
+        yValue: -20
         zOverride: 
-        zValue: 20
+        zValue: 0
       rotation:
         xOverride: 
         xValue: 0
@@ -317,6 +318,42 @@ MonoBehaviour:
         zOverride: 
         zValue: 0
       scale: {x: 1, y: 1, z: 1}
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 7
+        yOverride: 
+        yValue: -2
+        zOverride: 
+        zValue: 7
+      rotation:
+        xOverride: 
+        xValue: 35
+        yOverride: 
+        yValue: -2
+        zOverride: 
+        zValue: 40
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
+  - name: ammo_ready_to_insert
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -2
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: -45
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
   sequences:
@@ -359,7 +396,7 @@ MonoBehaviour:
       exit: 1
       frame: ready_to_reload
   - name: reload_load_one
-    ticks: 12
+    ticks: 15
     frames:
     - tick: 0
       entry: 1
@@ -367,10 +404,14 @@ MonoBehaviour:
       frame: ammo_grab_from_left
     - tick: 10
       entry: 2
-      exit: 1
+      exit: 2
+      frame: ammo_ready_to_insert
+    - tick: 13
+      entry: 2
+      exit: 2
       frame: ammo_in_magazine
-    - tick: 12
-      entry: 1
+    - tick: 15
+      entry: 2
       exit: 1
       frame: ready_to_reload
   - name: reload_end

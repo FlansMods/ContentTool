@@ -35,19 +35,19 @@ MonoBehaviour:
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 1
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 6
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Rotation: {x: 0.70710677, y: 0, z: 0, w: -0.70710677}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 7
     Position: {x: 0, y: 0.15, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -55,7 +55,7 @@ MonoBehaviour:
   - Type: 8
     Position: {x: 6, y: 6, z: 6}
     Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes:
@@ -156,8 +156,6 @@ MonoBehaviour:
         Key: pump/2
         BoxDims: {x: 3, y: 2, z: 2}
     MaxSize: {x: 64, y: 64}
-  TextureX: 64
-  TextureY: 64
   Icons:
   - Key: default
     Location:
@@ -449,7 +447,7 @@ MonoBehaviour:
       - {x: 0, y: 0.25, z: 0.25}
   - PartName: ammo_0
     Pieces:
-    - Pos: {x: 0, y: -1, z: -1}
+    - Pos: {x: -4, y: -2.5, z: -1}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 3, y: 2, z: 0.5}
       Euler: {x: 0, y: 0, z: 0}
@@ -507,10 +505,13 @@ MonoBehaviour:
   AttachPoints:
   - name: ammo_0
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 4, y: 1.5, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: pump
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
     position: {x: 0, y: 2, z: 0}
+    euler: {x: 0, y: 0, z: 0}

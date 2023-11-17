@@ -32,11 +32,11 @@ MonoBehaviour:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 0.576, y: 0.576, z: 0.576}
+    Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 0.576, y: 0.576, z: 0.576}
+    Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
@@ -896,15 +896,20 @@ MonoBehaviour:
   - name: sights
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: slide
     attachedTo: body
     position: {x: 0, y: 3, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: bolt
     attachedTo: slide
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}

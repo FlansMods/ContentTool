@@ -183,8 +183,6 @@ MonoBehaviour:
         Key: break_action/2
         BoxDims: {x: 3, y: 1, z: 1}
     MaxSize: {x: 64, y: 128}
-  TextureX: 64
-  TextureY: 128
   Icons:
   - Key: default
     Location:
@@ -663,4 +661,12 @@ MonoBehaviour:
     isVec3: 0
     floatValue: 0.4
     vec3Value: {x: 0, y: 0, z: 0}
-  AttachPoints: []
+  AttachPoints:
+  - name: ammo_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: break_action
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
