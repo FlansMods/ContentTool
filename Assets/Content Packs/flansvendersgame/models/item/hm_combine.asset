@@ -43,12 +43,12 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Position: {x: 0, y: -2, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 1
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Position: {x: 0, y: -2, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 6
     Position: {x: -0.03409265, y: -0.05762987, z: -0.0072317775}
@@ -632,5 +632,9 @@ MonoBehaviour:
     euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: -4, y: 10, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: shoot_origin
+    attachedTo: body
+    position: {x: 27.5, y: 7.75, z: 0}
     euler: {x: 0, y: 0, z: 0}

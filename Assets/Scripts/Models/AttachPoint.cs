@@ -35,6 +35,10 @@ public class AttachPoint
 				case "eye_line": return Vector3.right;
 			}
 		}
+		else
+		{
+			return Quaternion.Euler(euler) * Vector3.right;
+		}
 		return Vector3.right;
 	}
 

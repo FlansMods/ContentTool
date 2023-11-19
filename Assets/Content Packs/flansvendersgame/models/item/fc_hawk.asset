@@ -58,12 +58,12 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Position: {x: 0, y: -2, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 1
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Position: {x: 0, y: -2, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 6
     Position: {x: -0.018071566, y: -0.010442687, z: -0.018071571}
@@ -562,15 +562,20 @@ MonoBehaviour:
   - name: barrel
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: sights
     attachedTo: slide
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: slide
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}

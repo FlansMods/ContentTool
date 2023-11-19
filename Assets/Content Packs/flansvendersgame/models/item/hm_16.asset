@@ -38,13 +38,13 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Position: {x: 0, y: 1, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 1
-    Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 1, y: 1, z: 1}
+    Position: {x: 0, y: 1, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.576, y: 0.576, z: 0.576}
   - Type: 6
     Position: {x: -0.011438492, y: -0.019852942, z: -0.012478354}
     Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
@@ -639,5 +639,13 @@ MonoBehaviour:
     euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: -6, y: 5.5, z: 0}
     euler: {x: 0, y: 0, z: 0}
+  - name: shoot_origin
+    attachedTo: body
+    position: {x: 28, y: 1.75, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: grip
+    attachedTo: body
+    position: {x: 10, y: 0.25, z: 0}
+    euler: {x: 0, y: 0, z: -85}
