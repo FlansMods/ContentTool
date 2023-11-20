@@ -37,7 +37,7 @@ MonoBehaviour:
   inputHandlers:
   - inputType: 10
     nodes:
-    - actionGroupToTrigger: primary
+    - actionGroupToTrigger: primary_fire
       modalCheck: 
       deferToAttachment: 0
       attachmentType: 4
@@ -92,7 +92,7 @@ MonoBehaviour:
       attachmentIndex: 0
       andContinueEvaluating: 0
   actionGroups:
-  - key: primary
+  - key: primary_fire
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -260,7 +260,7 @@ MonoBehaviour:
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:grenade_launcher_reload
+      - sound: flansmod:break_action_open_clack
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -320,6 +320,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmod:shell_insert_shloop_double
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
   - key: reload_primary_end
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -342,6 +361,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound: flansmod:break_action_close_clack
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
   magazines:
   - key: primary
     matchByNames: []
@@ -349,7 +387,7 @@ MonoBehaviour:
     - flansvendersgame:fc_puncher
     baseCostToSwap: 0
   reloads:
-  - key: primary
+  - key: primary_fire
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     startActionKey: reload_primary_start

@@ -71,162 +71,44 @@ public class FlansModToolbox : EditorWindow
 				if (path != null)
 				{
 					GunDefinition gun = AssetDatabase.LoadAssetAtPath<GunDefinition>(path);
-
-					List<HandlerDefinition> handlers = new List<HandlerDefinition>(gun.inputHandlers);
-					handlers.Add(new HandlerDefinition()
+					foreach (HandlerDefinition handler in gun.inputHandlers)
 					{
-						inputType = EPlayerInput.Reload1,
-						nodes = new HandlerNodeDefinition[]{
-							new HandlerNodeDefinition()
-							{
-								actionGroupToTrigger = "reload_primary_start",
-								attachmentType = EAttachmentType.Barrel,
-								attachmentIndex = 0,
-							},
-							new HandlerNodeDefinition()
-							{
-								actionGroupToTrigger = "reload_primary_start",
-							}
+						foreach (HandlerNodeDefinition node in handler.nodes)
+						{
+							if (node.actionGroupToTrigger == "primary")
+								node.actionGroupToTrigger = "primary_fire";
 						}
-					});
-					foreach(HandlerDefinition handler in handlers)
-					{
-						if (handler.inputType == EPlayerInput.Reload3)
-							handler.inputType = EPlayerInput.SpecialKey1;
 					}
-					gun.inputHandlers = handlers.ToArray();
 
-					//for (int i = 0; i < gun.inputHandlers.Length; i++)
-					//{
-					//	if(gun.inputHandlers[i].inputType == EPlayerInput.Fire1)
-					//	{
-					//		List<HandlerNodeDefinition> newNodes = new List<HandlerNodeDefinition>(gun.inputHandlers[i].nodes);
-					//		newNodes.Add(new HandlerNodeDefinition()
-					//		{
-					//			actionGroupToTrigger = "primary_reload_start",
-					//		});
-					//		gun.inputHandlers[i].nodes = newNodes.ToArray();
-					//	}
-					//}
+					foreach (ActionGroupDefinition actionGroup in gun.actionGroups)
+					{
+						if (actionGroup.key == "primary")
+							actionGroup.key = "primary_fire";
+					}
 
-					//foreach(HandlerDefinition handler in gun.inputHandlers)
-					//{
-					//	foreach (HandlerNodeDefinition node in handler.nodes)
-					//	{
-					//		
-					//	}
-					//}
-
-					//foreach(HandlerDefinition handler in gun.inputHandlers)
-					//{
-					//	foreach(HandlerNodeDefinition node in handler.nodes)
-					//	{
-					//		if (node.actionGroupToTrigger == "primary_reload_start")
-					//			node.actionGroupToTrigger = "reload_primary_start";
-					//	}
-					//}
-					//
-					//gun.reloads = new ReloadDefinition[] {
-					//	new ReloadDefinition()
-					//	{
-					//		startActionKey = "reload_primary_start",
-					//		ejectActionKey = "reload_primary_eject",
-					//		loadOneActionKey = "reload_primary_load_one",
-					//		endActionKey = "reload_primary_end",
-					//	}
-					//};
-
-
-					List<ActionGroupDefinition> groups = new List<ActionGroupDefinition>();
-
-					//gun.primary.key = "primary";
-					//groups.Add(gun.primary);
-					//
-					//gun.secondary.key = "ads";
-					//groups.Add(gun.secondary);
-					//
-					//gun.lookAt.key = "look";
-					//groups.Add(gun.lookAt);
-					//
-					//if(gun.primaryReload.start.actions.Length > 0)
-					//{
-					//	gun.primaryReload.start.key = "reload_primary_start";
-					//	groups.Add(gun.primaryReload.start);
-					//}
-					//if (gun.primaryReload.eject.actions.Length > 0)
-					//{
-					//	gun.primaryReload.eject.key = "reload_primary_eject";
-					//	groups.Add(gun.primaryReload.eject);
-					//}
-					//if (gun.primaryReload.loadOne.actions.Length > 0)
-					//{
-					//	gun.primaryReload.loadOne.key = "reload_primary_load_one";
-					//	groups.Add(gun.primaryReload.loadOne);
-					//}
-					//if (gun.primaryReload.end.actions.Length > 0)
-					//{
-					//	gun.primaryReload.end.key = "reload_primary_end";
-					//	groups.Add(gun.primaryReload.end);
-					//}
-					//gun.actionGroups = groups.ToArray();
-					//
-					//List<HandlerDefinition> handlers = new List<HandlerDefinition>();
-					//
-					//handlers.Add(new HandlerDefinition()
-					//{
-					//	inputType = EPlayerInput.Fire1,
-					//	nodes = new HandlerNodeDefinition[] {
-					//		new HandlerNodeDefinition()
-					//		{
-					//			actionGroupToTrigger = "primary",
-					//		}
-					//	}
-					//});
-					//
-					//handlers.Add(new HandlerDefinition()
-					//{
-					//	inputType = EPlayerInput.Fire2,
-					//	nodes = new HandlerNodeDefinition[] {
-					//		new HandlerNodeDefinition()
-					//		{
-					//			deferToAttachment = true,
-					//			attachmentType = EAttachmentType.Sights,
-					//			attachmentIndex = 0,
-					//		},
-					//		new HandlerNodeDefinition()
-					//		{
-					//			deferToAttachment = true,
-					//			attachmentType = EAttachmentType.Grip,
-					//			attachmentIndex = 0,
-					//		},
-					//		new HandlerNodeDefinition()
-					//		{
-					//			actionGroupToTrigger = "ads",
-					//		}
-					//	}
-					//});
-					//
-					//handlers.Add(new HandlerDefinition()
-					//{
-					//	inputType = EPlayerInput.SpecialKey1,
-					//	nodes = new HandlerNodeDefinition[] {
-					//		new HandlerNodeDefinition()
-					//		{
-					//			actionGroupToTrigger = "look"
-					//		}
-					//	}
-					//});
-					//
-					//gun.inputHandlers = handlers.ToArray();
-					//
-					//gun.primaryMagazines.key = "primary";
-					//gun.magazines = new MagazineSlotSettingsDefinition[] {
-					//	gun.primaryMagazines
-					//};
-
+					foreach(ReloadDefinition reloadDef in gun.reloads)
+					{
+						if (reloadDef.key == "primary")
+							reloadDef.key = "primary_fire";
+					}
 					EditorUtility.SetDirty(gun);
 				}
 			}
+			/*
+			guids = AssetDatabase.FindAssets("t:MagazineDefinition");
+			foreach (string guid in guids)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(guid);
+				if (path != null)
+				{
+					MagazineDefinition mag = AssetDatabase.LoadAssetAtPath<MagazineDefinition>(path);
+					foreach (ModifierDefinition modifier in mag.modifiers)
+						if (modifier.ApplyFilters.Length > 0 && modifier.ApplyFilters[0] == "primary_reload")
+							modifier.ApplyFilters[0] = "reload_primary";
+					EditorUtility.SetDirty(mag);
+				}
+			}
+			*/
 		}
 	}
 

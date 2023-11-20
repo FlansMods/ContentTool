@@ -19,13 +19,13 @@ MonoBehaviour:
   tags:
   - flansvendersgame:phantek_fury
   modifiers:
-  - Stat: reload_speed
+  - Stat: duration
     Filter: 
     Add: 0
     Multiply: 0.75
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 1
+    ApplyFilters:
+    - reload_primary
   ammoLoadMode: 2
   ammoConsumeMode: 2
   upgradeCost: 0

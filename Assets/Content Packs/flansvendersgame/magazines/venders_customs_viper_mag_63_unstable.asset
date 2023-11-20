@@ -19,13 +19,18 @@ MonoBehaviour:
   tags:
   - flansvendersgame:venders_customs_viper
   modifiers:
-  - Stat: recoil
+  - Stat: vertical_recoil
     Filter: 
     Add: 0
     Multiply: 3
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 1
+    ApplyFilters: []
+  - Stat: horizontal_recoil
+    Filter: 
+    Add: 0
+    Multiply: 3
+    SetValue: 
+    ApplyFilters: []
   ammoLoadMode: 0
   ammoConsumeMode: 2
   upgradeCost: 1

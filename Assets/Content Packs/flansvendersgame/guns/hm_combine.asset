@@ -34,7 +34,7 @@ MonoBehaviour:
   inputHandlers:
   - inputType: 10
     nodes:
-    - actionGroupToTrigger: primary
+    - actionGroupToTrigger: primary_fire
       modalCheck: 
       deferToAttachment: 0
       attachmentType: 4
@@ -89,7 +89,7 @@ MonoBehaviour:
       attachmentIndex: 0
       andContinueEvaluating: 0
   actionGroups:
-  - key: primary
+  - key: primary_fire
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -254,25 +254,6 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-    - actionType: 1
-      duration: 0
-      sounds:
-      - sound: flansmodernweapons:mwmp44reload
-        length: 1
-        minPitchMultiplier: 1
-        maxPitchMultiplier: 1
-        minVolume: 1
-        maxVolume: 1
-        maxRange: 100
-        LODs: []
-      itemStack: 
-      modifiers: []
-      fovFactor: 1.25
-      scopeOverlay: 
-      anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
   - key: reload_primary_eject
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -295,6 +276,25 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+    - actionType: 1
+      duration: 0.375
+      sounds:
+      - sound: flansmod:magazine_unload_chunky
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
   - key: reload_primary_load_one
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -314,6 +314,25 @@ MonoBehaviour:
       fovFactor: 1.25
       scopeOverlay: 
       anim: reload_load_one
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+    - actionType: 1
+      duration: 0.375
+      sounds:
+      - sound: flansmod:magazine_load_chunky
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1.25
+      scopeOverlay: 
+      anim: 
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
@@ -346,7 +365,7 @@ MonoBehaviour:
     - flansvendersgame:hm_combine
     baseCostToSwap: 0
   reloads:
-  - key: primary
+  - key: primary_fire
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     startActionKey: reload_primary_start

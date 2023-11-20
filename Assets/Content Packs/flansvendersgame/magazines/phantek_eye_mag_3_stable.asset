@@ -19,13 +19,18 @@ MonoBehaviour:
   tags:
   - flansvendersgame:phantek_eye
   modifiers:
-  - Stat: recoil
+  - Stat: vertical_recoil
     Filter: 
     Add: 0
     Multiply: 0.5
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 1
+    ApplyFilters: []
+  - Stat: horizontal_recoil
+    Filter: 
+    Add: 0
+    Multiply: 0.5
+    SetValue: 
+    ApplyFilters: []
   ammoLoadMode: 2
   ammoConsumeMode: 2
   upgradeCost: 2

@@ -40,7 +40,7 @@ MonoBehaviour:
   inputHandlers:
   - inputType: 10
     nodes:
-    - actionGroupToTrigger: primary
+    - actionGroupToTrigger: primary_fire
       modalCheck: 
       deferToAttachment: 0
       attachmentType: 4
@@ -101,7 +101,7 @@ MonoBehaviour:
       attachmentIndex: 0
       andContinueEvaluating: 0
   actionGroups:
-  - key: primary
+  - key: primary_fire
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -338,7 +338,7 @@ MonoBehaviour:
     matchByTags: []
     baseCostToSwap: 0
   reloads:
-  - key: primary
+  - key: primary_fire
     manualReloadAllowed: 1
     autoReloadWhenEmpty: 1
     startActionKey: reload_primary_start

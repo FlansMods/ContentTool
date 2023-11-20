@@ -20,7 +20,9 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			);
 		}
 
-		if(this is GunDefinition gunDef)
+		VerifyModifiers(verifications);
+
+		if (this is GunDefinition gunDef)
 		{
 			
 			foreach (ActionGroupDefinition group in gunDef.actionGroups)
@@ -122,6 +124,74 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			}
 		}
 	}
+
+	public void VerifyModifiers(List<Verification> verifications)
+	{
+		if (this is GunDefinition gunDef)
+			foreach (ActionGroupDefinition actionGroup in gunDef.actionGroups)
+				foreach (ActionDefinition action in actionGroup.actions)
+					foreach (ModifierDefinition modifier in action.modifiers)
+						VerifyModifier(modifier, verifications);
+		else if (this is AttachmentDefinition attachmentDef)
+			foreach (ModifierDefinition modifier in attachmentDef.modifiers)
+				VerifyModifier(modifier, verifications);
+		else if (this is MagazineDefinition magDef)
+			foreach (ModifierDefinition modifier in magDef.modifiers)
+				VerifyModifier(modifier, verifications);
+	}
+
+	public void VerifyModifier(ModifierDefinition modDef, List<Verification> verifications)
+	{
+		if (!ValidModifierKeys.Contains(modDef.Stat))
+			verifications.Add(Verification.Neutral($"Unknown modifier {modDef.Stat}"));
+	}
+
+	private static List<string> ValidModifierKeys = new List<string>()
+	{
+		"repeat_mode",
+		"repeat_delay",
+		"repeat_count",
+		"spin_up_duration",
+		"loudness",
+		"spread",
+		"vertical_recoil",
+		"horizontal_recoil",
+		"speed",
+		"bullet_count",
+		"penetration_power",
+		"spread_pattern",
+		"impact_damage",
+		"potion_effect_on_target",
+		"knockback",
+		"multiplier_vs_players",
+		"multiplier_vs_vehicles",
+		"splash_damage",
+		"splash_damage_radius",
+		"splash_damage_falloff",
+		"potion_effect_on_splash",
+		"set_fire_to_target",
+		"fire_spread_radius",
+		"fire_spread_amount",
+		"explosion_radius",
+		"melee_damage",
+		"reach",
+		"tool_level",
+		"harvest_speed",
+		"fov_factor",
+		"scope_overlay",
+		"anim",
+		"block_id",
+		"duration",
+		"heal_amount",
+		"feed_amount",
+		"feed_saturation",
+		"pitch",
+		"flashlight_strength",
+		"flashlight_range",
+		"entity_tag",
+		"entity_id",
+		"action_key",
+	};
 
 	public bool ExpectsModel()
 	{

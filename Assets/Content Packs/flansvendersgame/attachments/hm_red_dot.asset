@@ -12,107 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e008fc4365cab3145b710bfa08dafb1d, type: 3}
   m_Name: hm_red_dot
   m_EditorClassIdentifier: 
-  Model:
-    Type: 1
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: red_dot_sight
-    textureX: 128
-    textureY: 32
-    sections:
-    - partName: attachment
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -16, y: 0, z: -8}
-        Dim: {x: 32, y: 3, z: 16}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 96
-        textureV: 0
-        Pos: {x: 15, y: 3, z: 7}
-        Dim: {x: 1, y: 14, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 100
-        textureV: 0
-        Pos: {x: 15, y: 3, z: -8}
-        Dim: {x: 1, y: 14, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 88
-        textureV: 3
-        Pos: {x: 15, y: 17, z: -8}
-        Dim: {x: 1, y: 1, z: 16}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 0
-        textureV: 0
-        Pos: {x: 15, y: 9.5, z: -0.5}
-        Dim: {x: 1, y: 1, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: red_dot
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 2800000, guid: 89f5ce26fe011194c8e5de280e353c6f, type: 3}
-  Icon: {fileID: 2800000, guid: 78fdd6b329626c34588e63dcfb990d11, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: HitMarket All-Weather Red Dot Sight
@@ -129,31 +28,23 @@ MonoBehaviour:
     Add: 0
     Multiply: 0.5
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 0
-  - Stat: recoil
+    ApplyFilters: []
+  - Stat: vertical_recoil
     Filter: 
     Add: 0
     Multiply: 0.8
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 0
+    ApplyFilters: []
+  - Stat: horizontal_recoil
+    Filter: 
+    Add: 0
+    Multiply: 0.8
+    SetValue: 
+    ApplyFilters: []
   mechaEffects: 
   mechaEffectFilter: 
-  primaryActions: []
-  secondaryActions:
-  - actionType: 4
-    duration: 0
-    sounds: []
-    itemStack: 
-    modifiers: []
-    fovFactor: 1.5
-    scopeOverlay: 
-    anim: 
-    toolLevel: 1
-    harvestSpeed: 1
-    reach: 1
-  replacePrimaryAction: 0
-  replaceSecondaryAction: 0
+  handlerOverrides: []
+  actionOverrides: []
+  reloadOverrides: []
   modeOverride: 0
   overrideFireMode: 0
