@@ -447,6 +447,9 @@ public class ModelEditingRig : MonoBehaviour
 	}
 	public void UpdateAnims()
 	{
+		if (Preview == null)
+			return;
+
 		if (ApplyAnimation && PreviewSequences.Count > 0)
 		{
 			if (Playing && !StepThrough)
