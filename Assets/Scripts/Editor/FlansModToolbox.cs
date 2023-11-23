@@ -196,6 +196,10 @@ public class FlansModToolbox : EditorWindow
 			ActiveRigs.Add(rig);
 			modelNames.Add(rig.ModelOpenedForEdit != null ? rig.ModelOpenedForEdit.name : "No model opened");
 		}
+		ActiveRigs.Sort((ModelEditingRig a, ModelEditingRig b) =>
+		{
+			return string.Compare(a.name, b.name);
+		});
 
 		FlanStyles.BigHeader("Rig Editor");
 
@@ -203,6 +207,22 @@ public class FlansModToolbox : EditorWindow
 		{
 			GameObject newGO = new GameObject("ModelRig");
 			newGO.AddComponent<ModelEditingRig>();
+		}
+		if(GUILayout.Button("Fan out all Rigs"))
+		{
+			GameObject root = GameObject.Find("Rig Gallery");
+			if (root == null)
+				root = new GameObject("Rig Gallery");
+
+			for(int i = 0; i < ActiveRigs.Count; i++)
+			{
+				ModelEditingRig rig = ActiveRigs[i];
+				rig.transform.SetParent(root.transform);
+				rig.transform.localPosition = new Vector3(0f, 0f, i * -10f);
+				rig.transform.localRotation = Quaternion.identity;
+				rig.transform.localScale = Vector3.one;
+				
+			}
 		}
 
 		var RIG_COL_X = GUILayout.Width(64);

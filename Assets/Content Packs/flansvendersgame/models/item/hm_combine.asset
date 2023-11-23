@@ -35,11 +35,11 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 42a3597004cc7d74ca4f36511e0e7bfb, type: 3}
   Transforms:
   - Type: 4
-    Position: {x: 0, y: -7, z: -13}
+    Position: {x: 8, y: -11, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
-    Position: {x: -8, y: -7, z: -13}
+    Position: {x: -8, y: -11, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
@@ -637,4 +637,12 @@ MonoBehaviour:
   - name: shoot_origin
     attachedTo: body
     position: {x: 27.5, y: 7.75, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: grip
+    attachedTo: body
+    position: {x: 12, y: 4.5, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: sights
+    attachedTo: body
+    position: {x: 5, y: 8.5, z: 0}
     euler: {x: 0, y: 0, z: 0}

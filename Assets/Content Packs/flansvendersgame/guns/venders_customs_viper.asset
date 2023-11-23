@@ -141,7 +141,7 @@ MonoBehaviour:
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmod:gunshot_ptoo
+      - sound: flansmod:gunshot_slam
         length: 0
         minPitchMultiplier: 0.8333333
         maxPitchMultiplier: 1.25
@@ -351,14 +351,9 @@ MonoBehaviour:
       reach: 1
   magazines:
   - key: primary
-    matchByNames:
-    - m9ammo
-    - makarov_ammo
-    - m1911ammo
-    - sig_p226ammo
-    - usp_ammo
-    - usp_poison_ammo
-    matchByTags: []
+    matchByNames: []
+    matchByTags:
+    - flansvendersgame:venders_customs_viper
     baseCostToSwap: 0
   reloads:
   - key: primary_fire
@@ -382,7 +377,7 @@ MonoBehaviour:
   stockAttachments:
     allowlist: []
     allowAll: 1
-    numAttachmentSlots: 0
+    numAttachmentSlots: 1
     hideDefaultMesh: 1
   scopeAttachments:
     allowlist: []

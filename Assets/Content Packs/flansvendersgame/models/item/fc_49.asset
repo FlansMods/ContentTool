@@ -32,11 +32,11 @@ MonoBehaviour:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 0.576, y: 0.576, z: 0.576}
+    Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
     Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-    Scale: {x: 0.576, y: 0.576, z: 0.576}
+    Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -655,13 +655,13 @@ MonoBehaviour:
     floatValue: 0.1875
     vec3Value: {x: 0, y: 0, z: 0}
   AttachPoints:
-  - name: scope
+  - name: sights
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
     euler: {x: 0, y: 0, z: 0}
   - name: barrel
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 31.75, y: 3, z: 0}
     euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
@@ -673,5 +673,13 @@ MonoBehaviour:
     euler: {x: 0, y: 0, z: 0}
   - name: eye_line
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 5, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: shoot_origin
+    attachedTo: body
+    position: {x: 31.75, y: 3, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: grip
+    attachedTo: body
+    position: {x: 12, y: 0.5, z: 0}
     euler: {x: 0, y: 0, z: 0}

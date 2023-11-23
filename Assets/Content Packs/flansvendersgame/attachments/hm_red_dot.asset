@@ -43,8 +43,38 @@ MonoBehaviour:
     ApplyFilters: []
   mechaEffects: 
   mechaEffectFilter: 
-  handlerOverrides: []
-  actionOverrides: []
+  handlerOverrides:
+  - inputType: 11
+    nodes:
+    - actionGroupToTrigger: ads
+      modalCheck: 
+      deferToAttachment: 0
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  actionOverrides:
+  - key: ads
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 1
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 4
+    repeatDelay: 1
+    repeatCount: 0
+    spinUpDuration: 0
+    loudness: 0
+    actions:
+    - actionType: 4
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers: []
+      fovFactor: 1
+      scopeOverlay: 
+      anim: 
+      toolLevel: 0
+      harvestSpeed: 0
+      reach: 0
   reloadOverrides: []
   modeOverride: 0
   overrideFireMode: 0

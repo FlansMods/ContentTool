@@ -81,11 +81,11 @@ MonoBehaviour:
         zValue: 0
       rotation:
         xOverride: 
-        xValue: 5
+        xValue: 30
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: -10
+        zValue: 10
       scale: {x: 1, y: 1, z: 1}
     parents:
     - idle_empty
@@ -359,6 +359,42 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_cock
+  - name: ammo_inserted
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: -10
+        yOverride: 
+        yValue: 1
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 30
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 10
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
   sequences:
   - name: shoot
     ticks: 5
@@ -391,12 +427,12 @@ MonoBehaviour:
     frames:
     - tick: 0
       entry: 1
-      exit: 2
+      exit: 1
       frame: ammo_grab_from_left
     - tick: 6
-      entry: 2
-      exit: 2
-      frame: ammo_ejected
+      entry: 1
+      exit: 1
+      frame: ammo_inserted
     - tick: 12
       entry: 1
       exit: 1

@@ -118,8 +118,8 @@ MonoBehaviour:
     Pieces:
     - Pos: {x: -15, y: 2.5, z: -1}
       Dim: {x: 25, y: 2, z: 2}
-      Origin: {x: 0, y: 0, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -131,8 +131,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: -16, y: 2, z: -1.5}
       Dim: {x: 1, y: 3, z: 3}
-      Origin: {x: 0, y: 0, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -144,8 +144,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: 10, y: 2, z: -1.5}
       Dim: {x: 2, y: 3, z: 3}
-      Origin: {x: 0, y: 0, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -157,8 +157,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: 0, y: -0.5, z: -0.5}
       Dim: {x: 1, y: 3, z: 1}
-      Origin: {x: 0, y: 0, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -170,8 +170,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: 3, y: -0.5, z: -1}
       Dim: {x: 6, y: 3, z: 2}
-      Origin: {x: 0, y: 0, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -185,8 +185,8 @@ MonoBehaviour:
     Pieces:
     - Pos: {x: -0.5, y: -10, z: -0.5}
       Dim: {x: 1, y: 20, z: 1}
-      Origin: {x: 0, y: 3.5, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 3.5, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -198,8 +198,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: -1, y: -10, z: 0}
       Dim: {x: 2, y: 1, z: 0}
-      Origin: {x: 0, y: 3.5, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 3.5, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -211,8 +211,8 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
     - Pos: {x: 0, y: -10, z: -1}
       Dim: {x: 0, y: 1, z: 2}
-      Origin: {x: 0, y: 3.5, z: 2}
-      Euler: {x: 0, y: 0, z: 0}
+      Origin: {x: 0, y: 3.5, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -234,11 +234,11 @@ MonoBehaviour:
   AttachPoints:
   - name: sights
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
-    euler: {x: 0, y: 0, z: 0}
+    position: {x: 6, y: 3.5, z: 1}
+    euler: {x: 90, y: 0, z: 0}
   - name: barrel
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 12, y: 3.5, z: 0}
     euler: {x: 0, y: 0, z: 0}
   - name: stock
     attachedTo: body
@@ -250,5 +250,9 @@ MonoBehaviour:
     euler: {x: 0, y: 0, z: -90}
   - name: eye_line
     attachedTo: body
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 3.5, z: 2.5}
+    euler: {x: 0, y: 0, z: 0}
+  - name: shoot_origin
+    attachedTo: body
+    position: {x: 12, y: 3.5, z: 0}
     euler: {x: 0, y: 0, z: 0}

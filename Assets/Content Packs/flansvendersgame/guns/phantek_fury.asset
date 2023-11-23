@@ -15,7 +15,16 @@ MonoBehaviour:
   LocalisedNames:
   - Lang: 0
     Name: PhanTek Fury
-  LocalisedExtras: []
+  LocalisedExtras:
+  - Unlocalised: paintjob.flansvendersgame.phantek_fury_aqua
+    Lang: 0
+    Localised: PhanTek Fury Aqua
+  - Unlocalised: paintjob.flansvendersgame.phantek_fury_service
+    Lang: 0
+    Localised: PhanTek Fury Service
+  - Unlocalised: paintjob.flansvendersgame.phantek_fury_redline
+    Lang: 0
+    Localised: PhanTek Fury Redline
   itemSettings:
     maxStackSize: 1
     tags:
@@ -25,19 +34,10 @@ MonoBehaviour:
     - textureName: phantek_fury_aqua
       paintBucketsRequired: 1
       entitlementKey: 
-    - textureName: phantek_fury_hazard
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: phantek_fury_platypus
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: phantek_fury_redline
-      paintBucketsRequired: 1
-      entitlementKey: 
     - textureName: phantek_fury_service
       paintBucketsRequired: 1
       entitlementKey: 
-    - textureName: phantek_fury_white
+    - textureName: phantek_fury_redline
       paintBucketsRequired: 1
       entitlementKey: 
   inputHandlers:
@@ -159,7 +159,7 @@ MonoBehaviour:
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmod:gunshot_ptoo
+      - sound: flansmod:gunshot_toast
         length: 0
         minPitchMultiplier: 0.5
         maxPitchMultiplier: 0.8

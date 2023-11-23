@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -7,6 +8,8 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 {
 	public virtual void GetVerifications(List<Verification> verifications)
 	{
+		ResourceLocation resLoc = this.GetLocation();
+
 		if (LocalisedNames.Count < 1 && this is not AnimationDefinition)
 			verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
 		if (name != Utils.ToLowerWithUnderscores(name))
@@ -24,7 +27,6 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 
 		if (this is GunDefinition gunDef)
 		{
-			
 			foreach (ActionGroupDefinition group in gunDef.actionGroups)
 			{
 				bool hasADSAction = false;
@@ -46,11 +48,38 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 					);
 				}
 			}
+
+			for (int i = 0; i < gunDef.paints.paintjobs.Length; i++)
+			{
+				PaintjobDefinition paintjob = gunDef.paints.paintjobs[i];
+				bool hasLoc = false;
+				foreach (LocalisedExtra loc in gunDef.LocalisedExtras)
+				{
+					if (loc.Unlocalised == $"paintjob.{resLoc.Namespace}.{paintjob.textureName}")
+					{
+						hasLoc = true;
+						break;
+					}
+				}
+				if (!hasLoc)
+				{
+					verifications.Add(Verification.Neutral(
+						$"Paintjob with key {paintjob.textureName} in paintable def {gunDef.name}, has no localised name",
+						() => {
+							gunDef.LocalisedExtras.Add(new LocalisedExtra()
+							{
+								Unlocalised = $"paintjob.{resLoc.Namespace}.{paintjob.textureName}",
+								Localised = paintjob.textureName.Replace("_", " "),
+								Lang = ELang.en_us,
+							});
+						}));
+				}
+			}
 		}
 
 		if(ExpectsModel())
 		{
-			ResourceLocation resLoc = this.GetLocation();
+			
 			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.asset";
 			MinecraftModel mcModel = AssetDatabase.LoadAssetAtPath<MinecraftModel>(modelPath);
 			if (mcModel == null)

@@ -118,7 +118,49 @@ public class TurboAttachPointPreview : MonoBehaviour
 		if(ap != null)
 		{
 			Gizmos.color = Color.magenta;
-			Gizmos.DrawLine(ap.transform.position, transform.position);
+			//Gizmos.DrawLine(ap.transform.position, transform.position);
+
+			Gizmos.matrix = transform.localToWorldMatrix;
+
+			switch(PartName)
+			{
+				case "eye_line":
+					Gizmos.color = Color.cyan;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(-Vector3.right * 10f, Vector3.right * 100f);
+					Gizmos.DrawSphere(-Vector3.right * 10f, 0.5f);
+					break;
+				case "shoot_origin":
+					Gizmos.color = Color.red;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(Vector3.zero, Vector3.right * 10f);
+					Gizmos.DrawCube(Vector3.zero + Vector3.right * 5f, Vector3.one * 0.7f);
+					Gizmos.DrawCube(Vector3.zero + Vector3.right * 10f, Vector3.one * 1.2f);
+					break;
+				case "sights":
+					Gizmos.color = Color.blue;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(Vector3.zero, Vector3.up * 5.0f);
+					Gizmos.DrawWireCube(Vector3.up * 1.5f, new Vector3(6f, 2f, 2f));
+					break;
+				case "grip":
+					Gizmos.color = Color.yellow;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(Vector3.zero, Vector3.down * 5.0f);
+					Gizmos.DrawWireCube(Vector3.down * 0.5f, new Vector3(4f, 1f, 2f));
+					Gizmos.DrawWireCube(Vector3.down * 3f, new Vector3(1.5f, 4f, 1.5f));
+					break;
+				case "barrel":
+					Gizmos.color = Color.white;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(Vector3.zero, Vector3.right * 5.0f);
+					Gizmos.DrawWireCube(Vector3.right * 2f, new Vector3(4f, 1f, 1f));
+					break;
+				default:
+					Gizmos.color = Color.green;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					break;
+			}
 		}
 	}
 }
