@@ -31,9 +31,6 @@ MonoBehaviour:
     - flansmod:gun
   paints:
     paintjobs:
-    - textureName: phantek_fury_aqua
-      paintBucketsRequired: 1
-      entitlementKey: 
     - textureName: phantek_fury_service
       paintBucketsRequired: 1
       entitlementKey: 
@@ -45,12 +42,14 @@ MonoBehaviour:
     nodes:
     - actionGroupToTrigger: primary_fire
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 0
       attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
     - actionGroupToTrigger: reload_primary_start
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 0
       attachmentType: 4
       attachmentIndex: 0
@@ -59,18 +58,21 @@ MonoBehaviour:
     nodes:
     - actionGroupToTrigger: 
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 1
       attachmentType: 1
       attachmentIndex: 0
       andContinueEvaluating: 0
     - actionGroupToTrigger: 
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 1
       attachmentType: 3
       attachmentIndex: 0
       andContinueEvaluating: 0
     - actionGroupToTrigger: ads
       modalCheck: 
+      canTriggerWhileReloading: 1
       deferToAttachment: 0
       attachmentType: 4
       attachmentIndex: 0
@@ -79,6 +81,7 @@ MonoBehaviour:
     nodes:
     - actionGroupToTrigger: look
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 0
       attachmentType: 4
       attachmentIndex: 0
@@ -87,12 +90,14 @@ MonoBehaviour:
     nodes:
     - actionGroupToTrigger: reload_primary_start
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 1
       attachmentType: 0
       attachmentIndex: 0
       andContinueEvaluating: 0
     - actionGroupToTrigger: reload_primary_start
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 0
       attachmentType: 4
       attachmentIndex: 0
@@ -197,13 +202,13 @@ MonoBehaviour:
     spinUpDuration: 1.5
     loudness: 150
     actions:
-    - actionType: 4
+    - actionType: 5
       duration: 0
       sounds: []
       itemStack: 
       modifiers: []
       fovFactor: 1.25
-      scopeOverlay: 
+      scopeOverlay: flansvendersgame:phantek_fury_default_scope
       anim: 
       toolLevel: 1
       harvestSpeed: 1

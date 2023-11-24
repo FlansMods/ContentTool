@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
+  m_Name: radio
+  m_EditorClassIdentifier: 
+  LocalisedNames: []
+  LocalisedExtras: []
+  keyframes:
+  - name: idle
+    poses: []
+    parents: []
+  - name: holding_up
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 3
+        yOverride: 
+        yValue: 4
+        zOverride: 
+        zValue: 8
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 60
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - idle
+  - name: bobbing_about
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 3
+        yOverride: 
+        yValue: 5
+        zOverride: 
+        zValue: 8
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 60
+        zOverride: 
+        zValue: 15
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - holding_up
+  - name: bobbing_about_alt
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 3
+        yOverride: 
+        yValue: 5
+        zOverride: 
+        zValue: 8
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 60
+        zOverride: 
+        zValue: -15
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - holding_up
+  sequences:
+  - name: speaking
+    ticks: 24
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: idle
+    - tick: 8
+      entry: 1
+      exit: 2
+      frame: holding_up
+    - tick: 10
+      entry: 2
+      exit: 2
+      frame: bobbing_about
+    - tick: 12
+      entry: 2
+      exit: 2
+      frame: holding_up
+    - tick: 14
+      entry: 2
+      exit: 2
+      frame: bobbing_about_alt
+    - tick: 16
+      entry: 2
+      exit: 1
+      frame: holding_up
+    - tick: 24
+      entry: 1
+      exit: 1
+      frame: idle

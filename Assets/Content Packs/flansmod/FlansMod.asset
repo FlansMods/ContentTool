@@ -23,6 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d2bc06b136945e6409684c5c1f06ca33, type: 2}
   - {fileID: 11400000, guid: aabc4e90c75c1c14b904ebe02feb3962, type: 2}
   - {fileID: 11400000, guid: 22b81d425374e3046bf9ccc6a9658649, type: 2}
+  - {fileID: 11400000, guid: 55146b1a913042346a05dc16043f967b, type: 2}
   - {fileID: 11400000, guid: 2ee545c9b93ed3949b280697ada8253a, type: 2}
   - {fileID: 11400000, guid: 6bcd962a2a406b346a19b00020aa6adc, type: 2}
   - {fileID: 11400000, guid: fa82c1247cf0f0244ad79599012aa982, type: 2}
@@ -36,7 +37,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0f519df39ec98ce4cb9b3d567e84e6bf, type: 2}
   - {fileID: 11400000, guid: 6bd9c782784b02d4ba09d16bac662588, type: 2}
   - {fileID: 11400000, guid: 66874e0ea85d8db438f460e8c81a7028, type: 2}
-  Textures: []
+  - {fileID: 11400000, guid: ee417f2312bf7fa459307271fe0c561f, type: 2}
+  - {fileID: 11400000, guid: 9382a24c513b6024e967bf64af6a01e5, type: 2}
+  Textures:
+  - {fileID: 2800000, guid: e9a1958960cac784682672187a07496c, type: 3}
   IDs:
   - animations/ar_bullpup
   - animations/back_loaded
@@ -48,6 +52,7 @@ MonoBehaviour:
   - animations/martini_action
   - animations/p90
   - animations/pistol_slide_magazine_fed
+  - animations/radio
   - animations/revolver
   - animations/rifle_magazine_fed_linear
   - animations/rifle_priming_handle_magazine_fed
@@ -55,11 +60,14 @@ MonoBehaviour:
   - workbenches/gun_modification_table
   - workbenches/portable_coal_generator
   - workbenches/portable_diesel_generator
+  - textures/skins/muzzle_flash_small
   - models/block/bullet_fabricator
   - models/block/gun_modification_table
   - models/block/part_fabricator
   - models/block/portable_coal_generator
   - models/block/portable_diesel_generator
+  - models/effects/muzzle_flash_medium
+  - models/effects/muzzle_flash_small
   - sounds/bolt_close_clicky
   - sounds/bolt_open_clicky
   - sounds/bolt_prime_oiled
@@ -81,6 +89,21 @@ MonoBehaviour:
   - sounds/shell_insert_clicky
   - sounds/shell_insert_shloop_double
   - sounds/shell_insert_tinny
+  - sounds/item_lower_hup
+  - sounds/item_raise_hup
+  - sounds/shell_insert_shloop
+  - sounds/gunshot_toast
+  - sounds/slide_close_rattle
+  - sounds/slide_open_rattle
+  - sounds/magazine_load_tinny
+  - sounds/magazine_unload_tinny
+  - sounds/gunshot_snap
+  - sounds/gunshot_forceful
+  - sounds/gunshot_feathers
+  - sounds/gunshot_slam
+  - sounds/pump_close_sluggish
+  - sounds/pump_open_sluggish
+  - sounds/shell_insert_plop
   Sounds:
   - {fileID: 11400000, guid: e125944e1dfb2ed4589066a637c59868, type: 2}
   ExtraLocalisation:

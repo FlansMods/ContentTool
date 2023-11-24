@@ -75,21 +75,9 @@ public class FlansModToolbox : EditorWindow
 					{
 						foreach (HandlerNodeDefinition node in handler.nodes)
 						{
-							if (node.actionGroupToTrigger == "primary")
-								node.actionGroupToTrigger = "primary_fire";
+							if (node.actionGroupToTrigger == "ads")
+								node.canTriggerWhileReloading = true;
 						}
-					}
-
-					foreach (ActionGroupDefinition actionGroup in gun.actionGroups)
-					{
-						if (actionGroup.key == "primary")
-							actionGroup.key = "primary_fire";
-					}
-
-					foreach(ReloadDefinition reloadDef in gun.reloads)
-					{
-						if (reloadDef.key == "primary")
-							reloadDef.key = "primary_fire";
 					}
 					EditorUtility.SetDirty(gun);
 				}
