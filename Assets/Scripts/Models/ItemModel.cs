@@ -21,7 +21,38 @@ public class ItemModel : MinecraftModel
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);
-		// TODO: Check for skins
+
+		ResourceLocation thisLocation = this.GetLocation();
+		bool differentNamespace = IconLocation.Namespace != thisLocation.Namespace;
+		bool differentName = IconLocation.IDWithoutPrefixes() != thisLocation.IDWithoutPrefixes();
+		//if (differentNamespace)
+		//{
+		//	verifications.Add(Verification.Neutral($"Icon {IconLocation} is from another content pack"));
+		//}
+		//if (differentName)
+		//{
+		//	verifications.Add(Verification.Neutral($"Icon {IconLocation} does not match the name of this Icon model"));
+		//}
+		if (differentNamespace || differentName)
+		{
+			string check = thisLocation.IDWithoutPrefixes();
+			if (check.EndsWith("_icon"))
+				check = check.Substring(0, check.Length - 5);
+			if (check.EndsWith("_default"))
+				check = check.Substring(0, check.Length - 8);
+
+			ResourceLocation betterLocation = new ResourceLocation(thisLocation.Namespace, $"textures/item/{check}");
+			if (betterLocation.TryLoad(out Texture2D texture))
+			{
+				verifications.Add(Verification.Neutral(
+					$"Possible better match found at {betterLocation}",
+					() =>
+					{
+						IconLocation = betterLocation;
+						Icon = texture;
+					}));
+			}
+		}
 	}
 
 	public Texture2D GetIcon()

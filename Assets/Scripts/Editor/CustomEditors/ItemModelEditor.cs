@@ -27,10 +27,7 @@ public class ItemModelEditor : MinecraftModelEditor
 
 			ResourceLocation thisLocation = itemModel.GetLocation();
 			bool differentNamespace = itemModel.IconLocation.Namespace != thisLocation.Namespace;
-			bool differentName = 
-				thisLocation.IDWithoutPrefixes().Contains("_default") 
-				? thisLocation.IDWithoutPrefixes() != $"{itemModel.IconLocation.IDWithoutPrefixes()}_default_icon"
-				: thisLocation.IDWithoutPrefixes() != $"{itemModel.IconLocation.IDWithoutPrefixes()}_icon";
+			bool differentName = itemModel.IconLocation.IDWithoutPrefixes() != thisLocation.IDWithoutPrefixes(); 
 			if (differentNamespace)
 			{
 				GUILayout.BeginHorizontal();

@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: artillery_rocket
+  m_EditorClassIdentifier: 
+  Textures:
+  - Key: artillery_rocket
+    Location:
+      Namespace: flansbasicparts
+      ID: textures/skins/artillery_rocket
+    Texture: {fileID: 2800000, guid: f7b53b1c90e18824c84297e32502b92f, type: 3}
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: -0, y: -0, z: 0}
+    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Scale: {x: 10.666667, y: 10.666667, z: 10.666667}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 3, y: 4, z: 1}
+    - Origin: {x: 8, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 3, y: 4, z: 1}
+    - Origin: {x: 0, y: 5}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 2, y: 2, z: 2}
+    - Origin: {x: 0, y: 9}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 11, y: 2, z: 2}
+    MaxSize: {x: 32, y: 16}
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansbasicparts
+      ID: textures/item/artillery_rocket
+    Texture: {fileID: 2800000, guid: e4da65c7b21a9b1489be2d061ed7be41, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -6, y: -0.8, z: -0.8}
+      Dim: {x: 11, y: 1.6, z: 1.6}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 5, y: -0.8, z: -0.8}
+      Dim: {x: 2, y: 1.6, z: 1.6}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.8, z: 0.8}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.8, z: 0.8}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0, y: 0.8, z: -0.8}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0, y: -0.8, z: -0.8}
+    - Pos: {x: -5.8, y: -1.6, z: -0.1}
+      Dim: {x: 3, y: 3.2, z: 0.2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.6, z: 0}
+    - Pos: {x: -5.8, y: -1.6, z: -0.1}
+      Dim: {x: 3, y: 3.2, z: 0.2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 90, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.6, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -0.6, z: 0}
+  AnimationParameters: []
+  AttachPoints: []

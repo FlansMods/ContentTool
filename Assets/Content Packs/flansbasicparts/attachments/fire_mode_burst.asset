@@ -12,24 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e008fc4365cab3145b710bfa08dafb1d, type: 3}
   m_Name: fire_mode_burst
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: burst_fire
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: d51f35b65c708a14794c3b51c289cb59, type: 3}
-  AdditionalTextures: []
+  LocalisedNames:
+  - Lang: 0
+    Name: 3-Shot Burst Fire Mode
+  LocalisedExtras: []
   itemSettings:
     maxStackSize: 1
     tags:
@@ -39,9 +25,8 @@ MonoBehaviour:
   modifiers: []
   mechaEffects: 
   mechaEffectFilter: 
-  primaryActions: []
-  secondaryActions: []
-  replacePrimaryAction: 0
-  replaceSecondaryAction: 0
-  modeOverride: 0
-  overrideFireMode: 0
+  handlerOverrides: []
+  actionOverrides: []
+  reloadOverrides: []
+  modeOverride: 2
+  overrideFireMode: 1
