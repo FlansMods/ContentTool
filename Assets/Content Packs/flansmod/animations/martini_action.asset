@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
   m_Name: martini_action
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
   LocalisedNames: []
   LocalisedExtras: []
   keyframes:
@@ -227,6 +208,25 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     parents:
     - reload_pose
+  - name: look_pose_0
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -4
+      rotation:
+        xOverride: 
+        xValue: -20
+        yOverride: 
+        yValue: 40
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
   sequences:
   - name: shoot
     ticks: 8
@@ -291,3 +291,22 @@ MonoBehaviour:
       entry: 2
       exit: 1
       frame: reload_eject
+  - name: look_at
+    ticks: 20
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: idle
+    - tick: 5
+      entry: 2
+      exit: 2
+      frame: look_pose_0
+    - tick: 15
+      entry: 2
+      exit: 2
+      frame: look_pose_0
+    - tick: 20
+      entry: 2
+      exit: 1
+      frame: idle

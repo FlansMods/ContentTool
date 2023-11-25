@@ -98,21 +98,21 @@ MonoBehaviour:
     - applyTo: ammo_0
       position:
         xOverride: 
-        xValue: -0
+        xValue: -15
         yOverride: 
         yValue: -12
         zOverride: 
-        zValue: 16
+        zValue: 0
       rotation:
         xOverride: 
-        xValue: 0
+        xValue: 160
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: -60
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents:
-    - bolt_open
+    - reload_bolt_open
   - name: ammo_load_end
     poses:
     - applyTo: ammo_0
@@ -132,7 +132,7 @@ MonoBehaviour:
         zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents:
-    - bolt_open
+    - reload_bolt_open
   - name: ammo_clip_dropped
     poses:
     - applyTo: ammo_0
@@ -152,7 +152,7 @@ MonoBehaviour:
         zValue: -180
       scale: {x: 1, y: 1, z: 1}
     parents:
-    - bolt_open
+    - reload_bolt_open
   - name: keyframe_7
     poses: []
     parents: []
@@ -185,6 +185,104 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
+  - name: look_at_0
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -2
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 80
+        zOverride: 
+        zValue: 30
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: look_at_1
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 5
+        zOverride: 
+        zValue: -2
+      rotation:
+        xOverride: 
+        xValue: -140
+        yOverride: 
+        yValue: 70
+        zOverride: 
+        zValue: -20
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: look_at_open_bolt
+    poses:
+    - applyTo: slide
+      position:
+        xOverride: 
+        xValue: -5
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - look_at_1
+  - name: reload_bolt_open
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 30
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 15
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - bolt_open
+  - name: ammo_whack_it
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: -0.5
+        yOverride: 
+        yValue: 0.5
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 35
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 20
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ammo_load_end
   sequences:
   - name: shoot
     ticks: 20
@@ -228,40 +326,79 @@ MonoBehaviour:
       entry: 1
       exit: 1
       frame: idle
-    - tick: 10
+    - tick: 7
       entry: 1
       exit: 1
       frame: ready_to_reload
+    - tick: 10
+      entry: 1
+      exit: 1
+      frame: reload_bolt_open
   - name: reload_load_one
-    ticks: 5
+    ticks: 10
     frames:
     - tick: 0
       entry: 1
       exit: 1
       frame: ammo_load_start
     - tick: 5
-      entry: 1
+      entry: 2
+      exit: 2
+      frame: ammo_load_end
+    - tick: 7
+      entry: 2
+      exit: 2
+      frame: ammo_whack_it
+    - tick: 10
+      entry: 2
       exit: 1
       frame: ammo_load_end
   - name: reload_end
-    ticks: 5
-    frames:
-    - tick: 0
-      entry: 1
-      exit: 1
-      frame: ammo_load_end
-    - tick: 5
-      entry: 1
-      exit: 1
-      frame: idle
-  - name: reload_eject
-    ticks: 5
+    ticks: 8
     frames:
     - tick: 0
       entry: 1
       exit: 2
       frame: ammo_load_end
-    - tick: 5
+    - tick: 8
+      entry: 2
+      exit: 1
+      frame: idle
+  - name: reload_eject
+    ticks: 7
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: reload_bolt_open
+    - tick: 7
       entry: 2
       exit: 1
       frame: ammo_clip_dropped
+  - name: look_at
+    ticks: 40
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: idle
+    - tick: 10
+      entry: 2
+      exit: 2
+      frame: look_at_0
+    - tick: 20
+      entry: 2
+      exit: 1
+      frame: look_at_1
+    - tick: 25
+      entry: 1
+      exit: 1
+      frame: look_at_open_bolt
+    - tick: 30
+      entry: 1
+      exit: 2
+      frame: look_at_1
+    - tick: 40
+      entry: 2
+      exit: 1
+      frame: idle

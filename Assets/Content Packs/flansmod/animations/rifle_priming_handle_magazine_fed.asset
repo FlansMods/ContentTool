@@ -39,7 +39,7 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -3
+        xValue: -5
         yOverride: 
         yValue: 1
         zOverride: 
@@ -50,12 +50,12 @@ MonoBehaviour:
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 10
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     - applyTo: slide
       position:
         xOverride: 
-        xValue: -2
+        xValue: -4
         yOverride: 
         yValue: 0
         zOverride: 
@@ -74,326 +74,246 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -2
+        xValue: 1
         yOverride: 
-        yValue: 2
+        yValue: 0
         zOverride: 
-        zValue: 0
+        zValue: 3
       rotation:
         xOverride: 
-        xValue: -10
+        xValue: 5
         yOverride: 
         yValue: 0
-        zOverride: 
-        zValue: 60
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - idle_empty
-  - name: ammo_ejected
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: 3
-        yOverride: 
-        yValue: -6
-        zOverride: 
-        zValue: 2
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 22.5
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - ready_to_reload
-  - name: ammo_ejected_physics
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: -15
-        yOverride: 
-        yValue: -15
-        zOverride: 
-        zValue: -10
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 270
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - ready_to_reload
-  - name: ammo_grab_from_left
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: -15
-        yOverride: 
-        yValue: -5
-        zOverride: 
-        zValue: -20
-      rotation:
-        xOverride: 
-        xValue: 90
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: -45
-      scale: {x: 1, y: 1, z: 1}
-    parents:
-    - ready_to_reload
-  - name: idle_empty
-    poses:
-    - applyTo: slide
-      position:
-        xOverride: 
-        xValue: -3
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 0
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: look_at_pose_0
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -1
-        yOverride: 
-        yValue: 5
         zOverride: 
         zValue: 5
-      rotation:
-        xOverride: 
-        xValue: 45
-        yOverride: 
-        yValue: 90
-        zOverride: 
-        zValue: 160
       scale: {x: 1, y: 1, z: 1}
     parents: []
-  - name: look_at_pose_1
+  - name: bolt_open
     poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 6
-      rotation:
-        xOverride: 
-        xValue: -30
-        yOverride: 
-        yValue: -45
-        zOverride: 
-        zValue: 60
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: spin_0
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -0
-        yOverride: 
-        yValue: -2
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 120
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: spin_1
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -0
-        yOverride: 
-        yValue: -2
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 240
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: spin_over
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 0
-      rotation:
-        xOverride: 
-        xValue: 0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 10
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: melee_pull_back
-    poses:
-    - applyTo: body
+    - applyTo: slide
       position:
         xOverride: 
         xValue: -5
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: -5
-      rotation:
-        xOverride: 
-        xValue: -30
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 90
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: melee_swing_0
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: -0
-        yOverride: 
-        yValue: 0
-        zOverride: 
-        zValue: 2
-      rotation:
-        xOverride: 
-        xValue: -60
-        yOverride: 
-        yValue: -90
-        zOverride: 
-        zValue: 60
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: melee_swing_1
-    poses:
-    - applyTo: body
-      position:
-        xOverride: 
-        xValue: 5
-        yOverride: 
-        yValue: 5
-        zOverride: 
-        zValue: 6
-      rotation:
-        xOverride: 
-        xValue: -50
-        yOverride: 
-        yValue: -170
-        zOverride: 
         zValue: 0
-      scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: ammo_ejected_high_point
-    poses:
-    - applyTo: ammo_0
-      position:
-        xOverride: 
-        xValue: 4
-        yOverride: 
-        yValue: -4
-        zOverride: 
-        zValue: -3
       rotation:
         xOverride: 
         xValue: 0
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 120
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
-  - name: ready_to_cock
+    - bolt_up
+  - name: ammo_load_start
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: -15
+        yOverride: 
+        yValue: -12
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 160
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - reload_bolt_open
+  - name: ammo_load_end
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - reload_bolt_open
+  - name: ammo_clip_dropped
+    poses:
+    - applyTo: ammo_0
+      position:
+        xOverride: 
+        xValue: 5
+        yOverride: 
+        yValue: -20
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -180
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - reload_bolt_open
+  - name: keyframe_7
+    poses: []
+    parents: []
+  - name: keyframe_8
+    poses: []
+    parents: []
+  - name: keyframe_9
+    poses: []
+    parents: []
+  - name: keyframe_10
+    poses: []
+    parents: []
+  - name: bolt_up
+    poses:
+    - applyTo: bolt
+      position:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: -60
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - ready_to_reload
+  - name: look_at_0
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -2
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 80
+        zOverride: 
+        zValue: 30
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: look_at_1
     poses:
     - applyTo: body
       position:
         xOverride: 
         xValue: -0
         yOverride: 
-        yValue: -4
+        yValue: 5
+        zOverride: 
+        zValue: -2
+      rotation:
+        xOverride: 
+        xValue: -140
+        yOverride: 
+        yValue: 70
+        zOverride: 
+        zValue: -20
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: look_at_open_bolt
+    poses:
+    - applyTo: slide
+      position:
+        xOverride: 
+        xValue: -5
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents:
+    - look_at_1
+  - name: reload_bolt_open
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
         zOverride: 
         zValue: 0
       rotation:
         xOverride: 
         xValue: 30
         yOverride: 
-        yValue: -15
+        yValue: 0
         zOverride: 
-        zValue: 0
+        zValue: 15
       scale: {x: 1, y: 1, z: 1}
-    parents: []
-  - name: cocking
+    parents:
+    - bolt_open
+  - name: ammo_whack_it
     poses:
-    - applyTo: slide
+    - applyTo: body
       position:
         xOverride: 
-        xValue: -2
+        xValue: -0.5
         yOverride: 
-        yValue: 0
+        yValue: 0.5
         zOverride: 
         zValue: 0
       rotation:
         xOverride: 
-        xValue: 0
+        xValue: 35
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 0
+        zValue: 20
       scale: {x: 1, y: 1, z: 1}
     parents:
-    - ready_to_cock
+    - ammo_load_end
   sequences:
   - name: shoot
-    ticks: 8
+    ticks: 4
     frames:
     - tick: 0
       entry: 1
       exit: 0
       frame: idle
     - tick: 1
-      entry: 0
+      entry: 2
       exit: 1
       frame: shot_fired
-    - tick: 8
-      entry: 1
-      exit: 0
+    - tick: 4
+      entry: 2
+      exit: 1
       frame: idle
   - name: reload_start
     ticks: 10
@@ -402,67 +322,55 @@ MonoBehaviour:
       entry: 1
       exit: 1
       frame: idle
-    - tick: 10
+    - tick: 7
       entry: 1
       exit: 1
       frame: ready_to_reload
+    - tick: 10
+      entry: 1
+      exit: 1
+      frame: reload_bolt_open
   - name: reload_load_one
-    ticks: 12
+    ticks: 10
     frames:
     - tick: 0
       entry: 1
-      exit: 2
-      frame: ammo_grab_from_left
-    - tick: 10
+      exit: 1
+      frame: ammo_load_start
+    - tick: 5
       entry: 2
       exit: 2
-      frame: ammo_ejected
-    - tick: 12
-      entry: 1
-      exit: 1
-      frame: ready_to_reload
-  - name: reload_end
-    ticks: 20
-    frames:
-    - tick: 0
-      entry: 1
-      exit: 2
-      frame: ready_to_reload
-    - tick: 10
-      entry: 2
-      exit: 2
-      frame: ready_to_cock
-    - tick: 12
-      entry: 1
-      exit: 1
-      frame: cocking
-    - tick: 14
-      entry: 1
-      exit: 1
-      frame: ready_to_cock
-    - tick: 20
-      entry: 1
-      exit: 1
-      frame: idle
-  - name: reload_eject
-    ticks: 15
-    frames:
-    - tick: 0
-      entry: 1
-      exit: 1
-      frame: ready_to_reload
-    - tick: 3
-      entry: 1
-      exit: 2
-      frame: ammo_ejected
+      frame: ammo_load_end
     - tick: 7
       entry: 2
       exit: 2
-      frame: ammo_ejected_high_point
-    - tick: 15
+      frame: ammo_whack_it
+    - tick: 10
       entry: 2
       exit: 1
-      frame: ammo_ejected_physics
+      frame: ammo_load_end
+  - name: reload_end
+    ticks: 8
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: ammo_load_end
+    - tick: 8
+      entry: 2
+      exit: 1
+      frame: idle
+  - name: reload_eject
+    ticks: 7
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 2
+      frame: reload_bolt_open
+    - tick: 7
+      entry: 2
+      exit: 1
+      frame: ammo_clip_dropped
   - name: look_at
     ticks: 35
     frames:
@@ -470,73 +378,27 @@ MonoBehaviour:
       entry: 1
       exit: 2
       frame: idle
-    - tick: 5
+    - tick: 10
       entry: 2
-      exit: 1
-      frame: look_at_pose_0
-    - tick: 15
-      entry: 1
       exit: 2
-      frame: look_at_pose_0
+      frame: look_at_0
     - tick: 20
       entry: 2
       exit: 1
-      frame: look_at_pose_1
-    - tick: 30
+      frame: look_at_1
+    - tick: 22
+      entry: 1
+      exit: 1
+      frame: look_at_open_bolt
+    - tick: 26
+      entry: 1
+      exit: 1
+      frame: look_at_open_bolt
+    - tick: 28
       entry: 1
       exit: 2
-      frame: look_at_pose_1
+      frame: look_at_1
     - tick: 35
       entry: 2
-      exit: 1
-      frame: idle
-  - name: spin
-    ticks: 10
-    frames:
-    - tick: 0
-      entry: 1
-      exit: 1
-      frame: idle
-    - tick: 1
-      entry: 1
-      exit: 1
-      frame: spin_over
-    - tick: 4
-      entry: 1
-      exit: 1
-      frame: spin_0
-    - tick: 6
-      entry: 1
-      exit: 1
-      frame: spin_1
-    - tick: 8
-      entry: 1
-      exit: 1
-      frame: spin_over
-    - tick: 10
-      entry: 1
-      exit: 1
-      frame: idle
-  - name: melee
-    ticks: 15
-    frames:
-    - tick: 0
-      entry: 1
-      exit: 1
-      frame: idle
-    - tick: 5
-      entry: 2
-      exit: 2
-      frame: melee_pull_back
-    - tick: 8
-      entry: 2
-      exit: 2
-      frame: melee_swing_0
-    - tick: 10
-      entry: 2
-      exit: 2
-      frame: melee_swing_1
-    - tick: 15
-      entry: 1
       exit: 1
       frame: idle

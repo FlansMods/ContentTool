@@ -12,24 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
   m_Name: pistol_slide_magazine_fed
   m_EditorClassIdentifier: 
-  Model:
-    Type: 0
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
+  LocalisedNames: []
+  LocalisedExtras: []
   keyframes:
   - name: idle
     poses:
@@ -154,14 +138,14 @@ MonoBehaviour:
         yOverride: 
         yValue: -5
         zOverride: 
-        zValue: 15
+        zValue: -15
       rotation:
         xOverride: 
-        xValue: 0
+        xValue: -90
         yOverride: 
         yValue: 0
         zOverride: 
-        zValue: 90
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents:
     - ready_to_reload
@@ -189,18 +173,34 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -1
+        xValue: 2
         yOverride: 
-        yValue: 5
+        yValue: 1
         zOverride: 
-        zValue: 5
+        zValue: 0
       rotation:
         xOverride: 
-        xValue: 45
+        xValue: 30
         yOverride: 
-        yValue: 90
+        yValue: 0
         zOverride: 
-        zValue: 160
+        zValue: 50
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: slide
+      position:
+        xOverride: 
+        xValue: -3
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents: []
   - name: look_at_pose_1
@@ -208,18 +208,18 @@ MonoBehaviour:
     - applyTo: body
       position:
         xOverride: 
-        xValue: -0
+        xValue: 1
         yOverride: 
-        yValue: 0
+        yValue: 3
         zOverride: 
-        zValue: 6
+        zValue: -6
       rotation:
         xOverride: 
-        xValue: -30
+        xValue: -60
         yOverride: 
         yValue: -45
         zOverride: 
-        zValue: 60
+        zValue: 45
       scale: {x: 1, y: 1, z: 1}
     parents: []
   - name: spin_0

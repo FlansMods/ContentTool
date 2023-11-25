@@ -40,6 +40,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee417f2312bf7fa459307271fe0c561f, type: 2}
   - {fileID: 11400000, guid: 9382a24c513b6024e967bf64af6a01e5, type: 2}
   Textures:
+  - {fileID: 2800000, guid: 7e04235566c199342b201d0c826a07de, type: 3}
   - {fileID: 2800000, guid: e9a1958960cac784682672187a07496c, type: 3}
   IDs:
   - animations/ar_bullpup
@@ -60,6 +61,7 @@ MonoBehaviour:
   - workbenches/gun_modification_table
   - workbenches/portable_coal_generator
   - workbenches/portable_diesel_generator
+  - textures/skins/muzzle_flash_medium
   - textures/skins/muzzle_flash_small
   - models/block/bullet_fabricator
   - models/block/gun_modification_table
@@ -539,3 +541,9 @@ MonoBehaviour:
   - Unlocalised: crafting.parts.num_in_progress.named
     Lang: 0
     Localised: Crafting %d %s
+  - Unlocalised: action.summon_npc.on_cooldown
+    Lang: 0
+    Localised: You called too recently, try again in %d seconds
+  - Unlocalised: action.summon_npc.already_spawned
+    Lang: 0
+    Localised: They are already in the area, take a look around

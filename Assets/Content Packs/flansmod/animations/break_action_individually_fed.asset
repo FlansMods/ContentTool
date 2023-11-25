@@ -115,16 +115,16 @@ MonoBehaviour:
         xOverride: 
         xValue: -1
         yOverride: 
-        yValue: 5
+        yValue: 3
         zOverride: 
-        zValue: 5
+        zValue: -4
       rotation:
         xOverride: 
-        xValue: 45
+        xValue: -45
         yOverride: 
         yValue: 90
         zOverride: 
-        zValue: 160
+        zValue: 0
       scale: {x: 1, y: 1, z: 1}
     parents: []
   - name: look_at_pose_1
@@ -145,7 +145,8 @@ MonoBehaviour:
         zOverride: 
         zValue: 60
       scale: {x: 1, y: 1, z: 1}
-    parents: []
+    parents:
+    - break_action_open
   - name: spin_0
     poses:
     - applyTo: body
