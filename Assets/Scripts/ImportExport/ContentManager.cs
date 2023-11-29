@@ -697,6 +697,7 @@ public class ContentManager : MonoBehaviour
 	{
 		DirectoryInfo langFolder = new DirectoryInfo($"{IMPORT_ROOT}/{packName}/assets/flansmod/lang/");
 		string itemNamePrefix = $"item.{packName}.";
+		string blockNamePrefix = $"block.{packName}.";
 		string magNamePrefix = $"magazine.{packName}.";
 		string materialNamePrefix = $"material.{packName}.";
 		ContentPack pack = FindContentPack(packName);
@@ -720,6 +721,8 @@ public class ContentManager : MonoBehaviour
 							foreach (var kvp in translations)
 							{
 								if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+								{ }
+								else if(TryImportLocalisationLine(blockNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 								{ }
 								else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 								{ }
@@ -1129,6 +1132,8 @@ public class ContentManager : MonoBehaviour
 			return "magazine";
 		if (def is MaterialDefinition)
 			return "material";
+		if (def is WorkbenchDefinition)
+			return "block";
 		return "item";
 	}
 	public void ExportLangJson(string packName, ELang lang, List<Verification> verifications = null)
