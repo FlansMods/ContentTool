@@ -1134,6 +1134,8 @@ public class ContentManager : MonoBehaviour
 			return "material";
 		if (def is WorkbenchDefinition)
 			return "block";
+		if (def is NpcDefinition)
+			return "entity";
 		return "item";
 	}
 	public void ExportLangJson(string packName, ELang lang, List<Verification> verifications = null)
