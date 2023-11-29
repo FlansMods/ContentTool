@@ -207,19 +207,22 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 	public virtual void GetVerifications(List<Verification> verifications)
 	{
 		List<Texture2D> textureRefs = new List<Texture2D>();
-		foreach(NamedTexture texture in Textures)
+		if (Textures != null)
 		{
-			if(texture.Texture == null)
+			foreach (NamedTexture texture in Textures)
 			{
-				verifications.Add(Verification.Neutral($"Texture missing at {texture.Location}, could be from another mod"));
-			}
-			else
-			{
-				if(textureRefs.Contains(texture.Texture))
-					verifications.Add(Verification.Neutral($"Texture {texture.Texture} referenced twice in model"));
+				if (texture.Texture == null)
+				{
+					verifications.Add(Verification.Neutral($"Texture missing at {texture.Location}, could be from another mod"));
+				}
 				else
-					textureRefs.Add(texture.Texture);
-				verifications.Add(Verification.Success($"Texture {texture.Location} located"));
+				{
+					if (textureRefs.Contains(texture.Texture))
+						verifications.Add(Verification.Neutral($"Texture {texture.Texture} referenced twice in model"));
+					else
+						textureRefs.Add(texture.Texture);
+					verifications.Add(Verification.Success($"Texture {texture.Location} located"));
+				}
 			}
 		}
 		if(Transforms.Count == 0)
