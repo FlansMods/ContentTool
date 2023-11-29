@@ -1024,84 +1024,98 @@ public class ContentManager : MonoBehaviour
 	// ---------------------------------------------------------------------------------------
 	public string ExportRoot = "Export";
 	private static readonly char[] SLASHES = new char[] { '/', '\\' };
-	public string GetExportPath(string packName, UnityEngine.Object asset)
+	public string[] GetExportPaths(string packName, UnityEngine.Object asset)
 	{
 		ResourceLocation loc = asset.GetLocation();
 		if(asset is MinecraftModel)
-			return $"{ExportRoot}/assets/{packName}/{loc.ID}.json";
+			return new string[] { $"{ExportRoot}/assets/{packName}/{loc.ID}.json" };
 		if (asset is Texture2D)
-			return $"{ExportRoot}/assets/{packName}/{loc.ID}.png";
+			return new string[] { $"{ExportRoot}/assets/{packName}/{loc.ID}.png" };
 		if (asset is AudioClip)
-			return $"{ExportRoot}/assets/{packName}/{loc.ID}.ogg";
-		return $"{ExportRoot}/data/{packName}/{loc.ID}.json";
+			return new string[] { $"{ExportRoot}/assets/{packName}/{loc.ID}.ogg" };
+
+		// Some server-only assets
+		if(asset is TeamDefinition || asset is LoadoutPoolDefinition || asset is ClassDefinition)
+			return new string[] { $"{ExportRoot}/data/{packName}/{loc.ID}.json" };
+
+		// Duplicate data that needs to be on client and server
+		return new string[] 
+		{ 
+			$"{ExportRoot}/data/{packName}/{loc.ID}.json",
+			$"{ExportRoot}/assets/{packName}/{loc.ID}.json"
+		};
 	}
 
 	public bool ExportedAssetAlreadyExists(string packName, UnityEngine.Object asset)
 	{
-		string exportPath = GetExportPath(packName, asset);
-		return File.Exists(exportPath);
+		foreach (string exportPath in GetExportPaths(packName, asset))
+			if (File.Exists(exportPath))
+				return true;
+		return false;
 	}
 
 	public void ExportAsset(string packName, UnityEngine.Object asset, List<Verification> verifications = null)
 	{
-		string exportPath = GetExportPath(packName, asset);
-		string exportFolder = exportPath.Substring(0, exportPath.LastIndexOfAny(SLASHES));
-		if (!Directory.Exists(exportFolder))
-			Directory.CreateDirectory(exportFolder);
-		if (asset is Definition def)
+		foreach (string exportPath in GetExportPaths(packName, asset))
 		{
-			try
+			string exportFolder = exportPath.Substring(0, exportPath.LastIndexOfAny(SLASHES));
+			if (!Directory.Exists(exportFolder))
+				Directory.CreateDirectory(exportFolder);
+			if (asset is Definition def)
 			{
-				def.CheckAndExportToFile(exportPath);
+				try
+				{
+					def.CheckAndExportToFile(exportPath);
+				}
+				catch (Exception e)
+				{
+					if (verifications != null)
+						verifications.Add(Verification.Failure(e));
+				}
 			}
-			catch (Exception e)
+			else if (asset is MinecraftModel model)
 			{
-				if(verifications != null)
-					verifications.Add(Verification.Failure(e));
+				try
+				{
+					List<string> outputFiles = new List<string>();
+					ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
+					model.ExportToModelJsonFiles(exportDir, outputFiles);
+				}
+				catch (Exception e)
+				{
+					if (verifications != null)
+						verifications.Add(Verification.Failure(e));
+				}
 			}
-		}
-		else if(asset is MinecraftModel model)
-		{
-			try
+			else if (asset is Texture2D texture)
 			{
-				List<string> outputFiles = new List<string>();
-				ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
-				model.ExportToModelJsonFiles(exportDir, outputFiles);
+				try
+				{
+					texture.CheckAndExportToFile(exportPath);
+				}
+				catch (Exception e)
+				{
+					if (verifications != null)
+						verifications.Add(Verification.Failure(e));
+				}
 			}
-			catch (Exception e)
+			else if (asset is AudioClip audio)
+			{
+				try
+				{
+					audio.ExportToFile(exportPath);
+				}
+				catch (Exception e)
+				{
+					if (verifications != null)
+						verifications.Add(Verification.Failure(e));
+				}
+			}
+			else
 			{
 				if (verifications != null)
-					verifications.Add(Verification.Failure(e));
+					verifications.Add(Verification.Failure($"Unknown asset type {asset.GetType()} for {asset}"));
 			}
-		}
-		else if(asset is Texture2D texture)
-		{
-			try
-			{
-				texture.CheckAndExportToFile(exportPath);
-			}
-			catch (Exception e)
-			{
-				if (verifications != null)
-					verifications.Add(Verification.Failure(e));
-			}
-		}
-		else if(asset is AudioClip audio)
-		{
-			try
-			{
-				audio.ExportToFile(exportPath);
-			}
-			catch (Exception e)
-			{
-				if (verifications != null)
-					verifications.Add(Verification.Failure(e));
-			}
-		}
-		else
-		{
-			if (verifications != null)
-				verifications.Add(Verification.Failure($"Unknown asset type {asset.GetType()} for {asset}"));
 		}
 	}
 
