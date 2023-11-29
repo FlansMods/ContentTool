@@ -13,93 +13,197 @@ MonoBehaviour:
   m_Name: portable_diesel_generator
   m_EditorClassIdentifier: 
   Textures: []
-  Transforms: []
+  Transforms:
+  - Type: 0
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
     PlacedBoxes: []
     MaxSize: {x: 4, y: 4}
   Json: "{ \t\"credit\": \"Made with Blockbench\", \t\"textures\": { \t\t\"1\": \"flansmod:block/portable_diesel_generator\",
     \t\t\"particle\": \"flansmod:block/portable_diesel_generator\" \t}, \t\"elements\":
-    [ \t\t{ \t\t\t\"from\": [2, 8, 4], \t\t\t\"to\": [14, 14, 12], \t\t\t\"faces\":
-    { \t\t\t\t\"north\": {\"uv\": [4, 2, 16, 8], \"texture\": \"#1\"}, \t\t\t\t\"east\":
-    {\"uv\": [8, 2, 16, 8], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [4,
-    2, 16, 8], \"rotation\": 180, \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\":
-    [8, 2, 16, 8], \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [16, 16, 4, 8],
-    \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [16, 8, 4, 16], \"texture\":
-    \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [10, 2, 5], \t\t\t\"to\": [14, 8,
-    11], \t\t\t\"rotation\": {\"angle\": 0, \"axis\": \"y\", \"origin\": [8, -6,
-    0]}, \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\": [10, 2, 14, 8], \"texture\":
-    \"#1\"}, \t\t\t\t\"east\": {\"uv\": [10, 9, 16, 15], \"texture\": \"#1\"}, \t\t\t\t\"south\":
-    {\"uv\": [10, 2, 14, 8], \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [10,
-    9, 16, 15], \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [8, 15, 4, 9], \"texture\":
-    \"#1\"}, \t\t\t\t\"down\": {\"uv\": [14, 2, 10, 8], \"texture\": \"#1\"} \t\t\t}
-    \t\t}, \t\t{ \t\t\t\"from\": [6.5, 6, 10], \t\t\t\"to\": [9.5, 8, 12], \t\t\t\"rotation\":
-    {\"angle\": 0, \"axis\": \"y\", \"origin\": [4, -2, 2]}, \t\t\t\"faces\": { \t\t\t\t\"north\":
-    {\"uv\": [11, 2, 14, 4], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [10,
-    14, 12, 16], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [11, 2, 14, 4],
-    \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [10, 14, 12, 16], \"texture\":
-    \"#1\"}, \t\t\t\t\"up\": {\"uv\": [10, 16, 7, 14], \"texture\": \"#1\"}, \t\t\t\t\"down\":
-    {\"uv\": [10, 14, 7, 16], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
-    [2.5, 4, 6.9], \t\t\t\"to\": [6.5, 8, 10.9], \t\t\t\"rotation\": {\"angle\":
-    45, \"axis\": \"x\", \"origin\": [4, 7, 8.9]}, \t\t\t\"faces\": { \t\t\t\t\"north\":
-    {\"uv\": [10, 7, 14, 11], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [10,
-    3, 14, 7], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [10, 7, 14, 11],
-    \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [6, 3, 10, 7], \"rotation\":
-    270, \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [14, 11, 10, 7], \"texture\":
-    \"#1\"}, \t\t\t\t\"down\": {\"uv\": [14, 7, 10, 11], \"texture\": \"#1\"} \t\t\t}
-    \t\t}, \t\t{ \t\t\t\"from\": [6, 3.5, 5.5], \t\t\t\"to\": [11, 8.5, 10.5], \t\t\t\"rotation\":
-    {\"angle\": 45, \"axis\": \"x\", \"origin\": [8.5, 6, 8.5]}, \t\t\t\"faces\":
-    { \t\t\t\t\"north\": {\"uv\": [10, 6, 15, 11], \"texture\": \"#1\"}, \t\t\t\t\"east\":
-    {\"uv\": [10, 6, 15, 11], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [10,
-    6, 15, 11], \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [10, 6, 15, 11],
-    \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [15, 11, 10, 6], \"texture\":
-    \"#1\"}, \t\t\t\t\"down\": {\"uv\": [15, 6, 10, 11], \"texture\": \"#1\"} \t\t\t}
-    \t\t}, \t\t{ \t\t\t\"from\": [14, 2, 13], \t\t\t\"to\": [16, 14, 15], \t\t\t\"faces\":
-    { \t\t\t\t\"north\": {\"uv\": [0, 4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"east\":
-    {\"uv\": [0, 4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0,
-    4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [0, 4, 2, 16], \"texture\":
-    \"#1\"}, \t\t\t\t\"up\": {\"uv\": [2, 2, 0, 0], \"texture\": \"#1\"}, \t\t\t\t\"down\":
-    {\"uv\": [2, 2, 0, 4], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
-    [14, 13, 3], \t\t\t\"to\": [16, 15, 13], \t\t\t\"faces\": { \t\t\t\t\"north\":
-    {\"uv\": [0, 0, 2, 2], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [6, 0,
-    16, 2], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0, 0, 2, 2], \"texture\":
-    \"#1\"}, \t\t\t\t\"west\": {\"uv\": [6, 0, 16, 2], \"texture\": \"#1\"}, \t\t\t\t\"up\":
-    {\"uv\": [2, 16, 0, 6], \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [2,
-    6, 0, 16], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [0, 13,
-    3], \t\t\t\"to\": [2, 15, 13], \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\":
-    [0, 0, 2, 2], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [2, 0, 12, 2],
-    \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0, 2, 2, 4], \"texture\":
-    \"#1\"}, \t\t\t\t\"west\": {\"uv\": [4, 0, 14, 2], \"texture\": \"#1\"}, \t\t\t\t\"up\":
-    {\"uv\": [2, 16, 0, 6], \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [2,
-    4, 0, 14], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [0, 2, 1],
-    \t\t\t\"to\": [2, 14, 3], \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\": [0,
-    2, 2, 14], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [0, 2, 2, 14], \"texture\":
-    \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0, 4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"west\":
-    {\"uv\": [0, 4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [4, 2,
-    2, 0], \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [2, 0, 0, 2], \"texture\":
-    \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [0, 2, 13], \t\t\t\"to\": [2, 14,
-    15], \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\": [2, 2, 4, 14], \"texture\":
-    \"#1\"}, \t\t\t\t\"east\": {\"uv\": [0, 2, 2, 14], \"texture\": \"#1\"}, \t\t\t\t\"south\":
-    {\"uv\": [0, 2, 2, 14], \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [0,
-    4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [4, 2, 2, 0], \"texture\":
-    \"#1\"}, \t\t\t\t\"down\": {\"uv\": [2, 0, 0, 2], \"texture\": \"#1\"} \t\t\t}
-    \t\t}, \t\t{ \t\t\t\"from\": [1, 0, 13], \t\t\t\"to\": [15, 2, 15], \t\t\t\"faces\":
-    { \t\t\t\t\"north\": {\"uv\": [0, 0, 14, 2], \"texture\": \"#1\"}, \t\t\t\t\"east\":
-    {\"uv\": [0, 0, 2, 2], \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [2,
-    0, 16, 2], \"texture\": \"#1\"}, \t\t\t\t\"west\": {\"uv\": [0, 2, 2, 4], \"texture\":
-    \"#1\"}, \t\t\t\t\"up\": {\"uv\": [16, 2, 2, 0], \"texture\": \"#1\"}, \t\t\t\t\"down\":
-    {\"uv\": [14, 0, 0, 2], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
-    [1, 0, 1], \t\t\t\"to\": [15, 2, 3], \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\":
-    [0, 0, 14, 2], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [0, 2, 2, 4],
-    \"texture\": \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0, 0, 14, 2], \"texture\":
-    \"#1\"}, \t\t\t\t\"west\": {\"uv\": [2, 0, 4, 2], \"texture\": \"#1\"}, \t\t\t\t\"up\":
-    {\"uv\": [16, 2, 2, 0], \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [16,
-    0, 2, 2], \"texture\": \"#1\"} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [14, 2, 1],
-    \t\t\t\"to\": [16, 14, 3], \t\t\t\"faces\": { \t\t\t\t\"north\": {\"uv\": [2,
-    2, 4, 14], \"texture\": \"#1\"}, \t\t\t\t\"east\": {\"uv\": [0, 2, 2, 14], \"texture\":
-    \"#1\"}, \t\t\t\t\"south\": {\"uv\": [0, 2, 2, 14], \"texture\": \"#1\"}, \t\t\t\t\"west\":
-    {\"uv\": [0, 4, 2, 16], \"texture\": \"#1\"}, \t\t\t\t\"up\": {\"uv\": [4, 2,
-    2, 0], \"texture\": \"#1\"}, \t\t\t\t\"down\": {\"uv\": [2, 0, 0, 2], \"texture\":
-    \"#1\"} \t\t\t} \t\t} \t], \t\"groups\": [ \t\t0, \t\t1, \t\t2, \t\t3, \t\t4,
-    \t\t{ \t\t\t\"name\": \"group\", \t\t\t\"origin\": [0, 0, 0], \t\t\t\"color\":
-    0, \t\t\t\"children\": [5, 6, 7, 8, 9, 10, 11, 12] \t\t} \t] }"
+    [ \t\t{ \t\t\t\"from\": [ \t\t\t\t2, \t\t\t\t8, \t\t\t\t4 \t\t\t], \t\t\t\"to\":
+    [ \t\t\t\t14, \t\t\t\t14, \t\t\t\t12 \t\t\t], \t\t\t\"faces\": { \t\t\t\t\"north\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t16, \t\t\t\t\t\t8
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t8, \t\t\t\t\t\t2, \t\t\t\t\t\t16, \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t4, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t16, \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"rotation\": 180, \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t8, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t16, \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t16, \t\t\t\t\t\t16, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t16, \t\t\t\t\t\t8, \t\t\t\t\t\t4, \t\t\t\t\t\t16
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t10, \t\t\t\t2, \t\t\t\t5 \t\t\t], \t\t\t\"to\": [ \t\t\t\t14, \t\t\t\t8,
+    \t\t\t\t11 \t\t\t], \t\t\t\"rotation\": { \t\t\t\t\"angle\": 0, \t\t\t\t\"axis\":
+    \"y\", \t\t\t\t\"origin\": [ \t\t\t\t\t8, \t\t\t\t\t-6, \t\t\t\t\t0 \t\t\t\t]
+    \t\t\t}, \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t14, \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t9,
+    \t\t\t\t\t\t16, \t\t\t\t\t\t15 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t2, \t\t\t\t\t\t14,
+    \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t9, \t\t\t\t\t\t16, \t\t\t\t\t\t15
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t8, \t\t\t\t\t\t15, \t\t\t\t\t\t4, \t\t\t\t\t\t9 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t14, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t10, \t\t\t\t\t\t8 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}
+    \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [ \t\t\t\t6.5, \t\t\t\t6, \t\t\t\t10 \t\t\t],
+    \t\t\t\"to\": [ \t\t\t\t9.5, \t\t\t\t8, \t\t\t\t12 \t\t\t], \t\t\t\"rotation\":
+    { \t\t\t\t\"angle\": 0, \t\t\t\t\"axis\": \"y\", \t\t\t\t\"origin\": [ \t\t\t\t\t4,
+    \t\t\t\t\t-2, \t\t\t\t\t2 \t\t\t\t] \t\t\t}, \t\t\t\"faces\": { \t\t\t\t\"north\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t11, \t\t\t\t\t\t2, \t\t\t\t\t\t14, \t\t\t\t\t\t4
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t10, \t\t\t\t\t\t14, \t\t\t\t\t\t12, \t\t\t\t\t\t16 \t\t\t\t\t],
+    \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t11, \t\t\t\t\t\t2, \t\t\t\t\t\t14, \t\t\t\t\t\t4 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t14,
+    \t\t\t\t\t\t12, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t16, \t\t\t\t\t\t7,
+    \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t14, \t\t\t\t\t\t7, \t\t\t\t\t\t16
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t2.5, \t\t\t\t4, \t\t\t\t6.9 \t\t\t], \t\t\t\"to\": [ \t\t\t\t6.5, \t\t\t\t8,
+    \t\t\t\t10.9 \t\t\t], \t\t\t\"rotation\": { \t\t\t\t\"angle\": 45, \t\t\t\t\"axis\":
+    \"x\", \t\t\t\t\"origin\": [ \t\t\t\t\t4, \t\t\t\t\t7, \t\t\t\t\t8.9 \t\t\t\t]
+    \t\t\t}, \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10,
+    \t\t\t\t\t\t7, \t\t\t\t\t\t14, \t\t\t\t\t\t11 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t3,
+    \t\t\t\t\t\t14, \t\t\t\t\t\t7 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t7, \t\t\t\t\t\t14,
+    \t\t\t\t\t\t11 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t6, \t\t\t\t\t\t3, \t\t\t\t\t\t10, \t\t\t\t\t\t7
+    \t\t\t\t\t], \t\t\t\t\t\"rotation\": 270, \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t14, \t\t\t\t\t\t11, \t\t\t\t\t\t10,
+    \t\t\t\t\t\t7 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t14, \t\t\t\t\t\t7, \t\t\t\t\t\t10, \t\t\t\t\t\t11
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t6, \t\t\t\t3.5, \t\t\t\t5.5 \t\t\t], \t\t\t\"to\": [ \t\t\t\t11, \t\t\t\t8.5,
+    \t\t\t\t10.5 \t\t\t], \t\t\t\"rotation\": { \t\t\t\t\"angle\": 45, \t\t\t\t\"axis\":
+    \"x\", \t\t\t\t\"origin\": [ \t\t\t\t\t8.5, \t\t\t\t\t6, \t\t\t\t\t8.5 \t\t\t\t]
+    \t\t\t}, \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10,
+    \t\t\t\t\t\t6, \t\t\t\t\t\t15, \t\t\t\t\t\t11 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t6,
+    \t\t\t\t\t\t15, \t\t\t\t\t\t11 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t6, \t\t\t\t\t\t15,
+    \t\t\t\t\t\t11 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t10, \t\t\t\t\t\t6, \t\t\t\t\t\t15, \t\t\t\t\t\t11
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t15, \t\t\t\t\t\t11, \t\t\t\t\t\t10, \t\t\t\t\t\t6 \t\t\t\t\t],
+    \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t15, \t\t\t\t\t\t6, \t\t\t\t\t\t10, \t\t\t\t\t\t11 \t\t\t\t\t],
+    \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t14, \t\t\t\t2, \t\t\t\t13 \t\t\t], \t\t\t\"to\": [ \t\t\t\t16, \t\t\t\t14,
+    \t\t\t\t15 \t\t\t], \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t16
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t0, \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t0, \t\t\t\t\t\t4 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}
+    \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [ \t\t\t\t14, \t\t\t\t13, \t\t\t\t3 \t\t\t],
+    \t\t\t\"to\": [ \t\t\t\t16, \t\t\t\t15, \t\t\t\t13 \t\t\t], \t\t\t\"faces\":
+    { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t6, \t\t\t\t\t\t0, \t\t\t\t\t\t16, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t6, \t\t\t\t\t\t0,
+    \t\t\t\t\t\t16, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t16, \t\t\t\t\t\t0,
+    \t\t\t\t\t\t6 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t6, \t\t\t\t\t\t0, \t\t\t\t\t\t16
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t0, \t\t\t\t13, \t\t\t\t3 \t\t\t], \t\t\t\"to\": [ \t\t\t\t2, \t\t\t\t15,
+    \t\t\t\t13 \t\t\t], \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t0,
+    \t\t\t\t\t\t12, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t4 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t4, \t\t\t\t\t\t0, \t\t\t\t\t\t14, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t2, \t\t\t\t\t\t16, \t\t\t\t\t\t0, \t\t\t\t\t\t6 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t0, \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}
+    \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [ \t\t\t\t0, \t\t\t\t2, \t\t\t\t1 \t\t\t],
+    \t\t\t\"to\": [ \t\t\t\t2, \t\t\t\t14, \t\t\t\t3 \t\t\t], \t\t\t\"faces\": {
+    \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t14
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t0, \t\t\t\t2, \t\t\t\t13 \t\t\t], \t\t\t\"to\": [ \t\t\t\t2, \t\t\t\t14,
+    \t\t\t\t15 \t\t\t], \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t4, \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t16
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t0,
+    \t\t\t\t\t\t0, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}
+    \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [ \t\t\t\t1, \t\t\t\t0, \t\t\t\t13 \t\t\t],
+    \t\t\t\"to\": [ \t\t\t\t15, \t\t\t\t2, \t\t\t\t15 \t\t\t], \t\t\t\"faces\": {
+    \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t14,
+    \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t2, \t\t\t\t\t\t0, \t\t\t\t\t\t16, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t4 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t16, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t14, \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t}, \t\t{ \t\t\t\"from\":
+    [ \t\t\t\t1, \t\t\t\t0, \t\t\t\t1 \t\t\t], \t\t\t\"to\": [ \t\t\t\t15, \t\t\t\t2,
+    \t\t\t\t3 \t\t\t], \t\t\t\"faces\": { \t\t\t\t\"north\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t14, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"east\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t4 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"south\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t14,
+    \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"west\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t0, \t\t\t\t\t\t4, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"up\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t16, \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"down\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t16, \t\t\t\t\t\t0,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t2 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}
+    \t\t\t} \t\t}, \t\t{ \t\t\t\"from\": [ \t\t\t\t14, \t\t\t\t2, \t\t\t\t1 \t\t\t],
+    \t\t\t\"to\": [ \t\t\t\t16, \t\t\t\t14, \t\t\t\t3 \t\t\t], \t\t\t\"faces\": {
+    \t\t\t\t\"north\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"east\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t14
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"south\": { \t\t\t\t\t\"uv\":
+    [ \t\t\t\t\t\t0, \t\t\t\t\t\t2, \t\t\t\t\t\t2, \t\t\t\t\t\t14 \t\t\t\t\t], \t\t\t\t\t\"texture\":
+    \"#1\" \t\t\t\t}, \t\t\t\t\"west\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t0, \t\t\t\t\t\t4,
+    \t\t\t\t\t\t2, \t\t\t\t\t\t16 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t},
+    \t\t\t\t\"up\": { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t4, \t\t\t\t\t\t2, \t\t\t\t\t\t2,
+    \t\t\t\t\t\t0 \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t}, \t\t\t\t\"down\":
+    { \t\t\t\t\t\"uv\": [ \t\t\t\t\t\t2, \t\t\t\t\t\t0, \t\t\t\t\t\t0, \t\t\t\t\t\t2
+    \t\t\t\t\t], \t\t\t\t\t\"texture\": \"#1\" \t\t\t\t} \t\t\t} \t\t} \t], \t\"groups\":
+    [ \t\t0, \t\t1, \t\t2, \t\t3, \t\t4, \t\t{ \t\t\t\"name\": \"group\", \t\t\t\"origin\":
+    [ \t\t\t\t0, \t\t\t\t0, \t\t\t\t0 \t\t\t], \t\t\t\"color\": 0, \t\t\t\"children\":
+    [ \t\t\t\t5, \t\t\t\t6, \t\t\t\t7, \t\t\t\t8, \t\t\t\t9, \t\t\t\t10, \t\t\t\t11,
+    \t\t\t\t12 \t\t\t] \t\t} \t], \t\"display\": { \t\t\"firstperson_righthand\":
+    { \t\t\t\"rotation\": [ \t\t\t\t0, \t\t\t\t-36, \t\t\t\t0 \t\t\t], \t\t\t\"translation\":
+    [ \t\t\t\t2, \t\t\t\t1.5, \t\t\t\t-4.75 \t\t\t] \t\t}, \t\t\"firstperson_lefthand\":
+    { \t\t\t\"rotation\": [ \t\t\t\t0, \t\t\t\t-33, \t\t\t\t0 \t\t\t], \t\t\t\"translation\":
+    [ \t\t\t\t6.25, \t\t\t\t-0.75, \t\t\t\t-8.5 \t\t\t] \t\t}, \t\t\"gui\": { \t\t\t\"rotation\":
+    [ \t\t\t\t33, \t\t\t\t45, \t\t\t\t0 \t\t\t], \t\t\t\"translation\": [ \t\t\t\t0,
+    \t\t\t\t-0.75, \t\t\t\t0 \t\t\t], \t\t\t\"scale\": [ \t\t\t\t0.6, \t\t\t\t0.6,
+    \t\t\t\t0.6 \t\t\t] \t\t} \t} }"

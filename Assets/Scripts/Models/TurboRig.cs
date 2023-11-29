@@ -599,8 +599,19 @@ public class TurboRig : MinecraftModel
 				}));
 			}
 		}
-		foreach(AttachPoint ap in AttachPoints)
-		{
+		List<string> apNames = new List<string>();
+		for (int i = 0; i < AttachPoints.Count; i++)
+		{ 
+			AttachPoint ap = AttachPoints[i];		
+			if(apNames.Contains(ap.name))
+			{
+				int index = i;
+				verifications.Add(Verification.Failure($"{ap.name} Attach Point appears twice",
+				() => {
+					AttachPoints.RemoveAt(index);
+				}));
+			}
+			else apNames.Add(ap.name);
 			if (ap.name == "body")
 			{
 				if (ap.attachedTo != "none")
