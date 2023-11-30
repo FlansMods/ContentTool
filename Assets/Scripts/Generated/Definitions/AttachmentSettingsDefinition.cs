@@ -4,9 +4,9 @@ using UnityEngine;
 public class AttachmentSettingsDefinition
 {
 	[JsonField]
-	public string[] allowlist = new string[0];
+	public string[] matchNames = new string[0];
 	[JsonField]
-	public bool allowAll = true;
+	public string[] matchTags = new string[0];
 	[JsonField]
 	public int numAttachmentSlots = 0;
 	[JsonField]

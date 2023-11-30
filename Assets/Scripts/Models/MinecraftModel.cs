@@ -225,25 +225,29 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 				}
 			}
 		}
-		if(Transforms.Count == 0)
+		if (Transforms != null)
 		{
-			verifications.Add(Verification.Failure($"Model has no transforms", () => {
-				AddDefaultTransforms();
-			}));
-		}
-		else
-		{
-			//verifications.Add(Verification.Success($"Model has {Transforms.Count} transforms"));
-			List<ItemTransformType> foundTypes = new List<ItemTransformType>();
-			for(int i = 0; i < Transforms.Count; i++)
+			if (Transforms.Count == 0)
 			{
-				if (foundTypes.Contains(Transforms[i].Type))
-					verifications.Add(Verification.Failure($"Model has a duplicate transform for {Transforms[i].Type.ToNiceString()}"));
-				else
-					foundTypes.Add(Transforms[i].Type);
+				verifications.Add(Verification.Failure($"Model has no transforms", () =>
+				{
+					AddDefaultTransforms();
+				}));
+			}
+			else
+			{
+				//verifications.Add(Verification.Success($"Model has {Transforms.Count} transforms"));
+				List<ItemTransformType> foundTypes = new List<ItemTransformType>();
+				for (int i = 0; i < Transforms.Count; i++)
+				{
+					if (foundTypes.Contains(Transforms[i].Type))
+						verifications.Add(Verification.Failure($"Model has a duplicate transform for {Transforms[i].Type.ToNiceString()}"));
+					else
+						foundTypes.Add(Transforms[i].Type);
 
-				if (Transforms[i].Scale.sqrMagnitude <= 0.00001f)
-					verifications.Add(Verification.Neutral($"{Transforms[i].Type.ToNiceString()} transform has 0 scale. (This might be intentional)"));
+					if (Transforms[i].Scale.sqrMagnitude <= 0.00001f)
+						verifications.Add(Verification.Neutral($"{Transforms[i].Type.ToNiceString()} transform has 0 scale. (This might be intentional)"));
+				}
 			}
 		}
 	}

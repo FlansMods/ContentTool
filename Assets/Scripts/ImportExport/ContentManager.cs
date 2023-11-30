@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static Definition;
+using static UnityEditor.ObjectChangeEventStream;
 
 [ExecuteInEditMode]
 public class ContentManager : MonoBehaviour
@@ -1187,7 +1188,11 @@ public class ContentManager : MonoBehaviour
 				verifications.Add(Verification.Failure(e));
 		}
 	}
-
+	public string GetTagJsonExportPath(string tag)
+	{
+		ResourceLocation tagLoc = new ResourceLocation(tag);
+		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/items/{tagLoc.ID}.json";
+	}
 	public string GetSoundJsonExportPath(string packName)
 	{
 		return $"{ExportRoot}/assets/{packName}/sounds.json";
@@ -1227,6 +1232,108 @@ public class ContentManager : MonoBehaviour
 			jsonWriter.Formatting = Formatting.Indented;
 			builder.Root.WriteTo(jsonWriter);
 			File.WriteAllText(GetSoundJsonExportPath(packName), stringWriter.ToString());
+		}
+	}
+
+	public void ExportItemTags(ContentPack pack)
+	{
+		Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
+		foreach(Definition def in pack.AllContent)
+		{
+			ItemDefinition itemSettings = def.GetItemSettings();
+			if(itemSettings != null)
+			{
+				foreach(string tag in itemSettings.tags)
+				{
+					if (!tags.ContainsKey(tag))
+						tags.Add(tag, new List<string>());
+					tags[tag].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
+				}
+			}
+		}
+
+		foreach(var kvp in tags)
+		{
+			using (StringWriter stringWriter = new StringWriter())
+			using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+			{
+				jsonWriter.Formatting = Formatting.Indented;
+				QuickJSONBuilder builder = new QuickJSONBuilder();
+				builder.Current.Add("replace", "false");
+				using (builder.Tabulation("values"))
+				{
+					foreach(string itemLoc in kvp.Value)
+						builder.CurrentTable.Add(itemLoc);
+				}
+				builder.Root.WriteTo(jsonWriter);
+				string tagJsonPath = GetTagJsonExportPath(kvp.Key);
+				string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
+				if (!Directory.Exists(tagJsonFolder))
+					Directory.CreateDirectory(tagJsonFolder);
+
+				tagJsonPath = tagJsonPath.Insert(tagJsonPath.LastIndexOf('.'), $"_{pack.ModName}");
+
+				Debug.Log($"Exporting partial tag file {tagJsonPath}");
+					
+				File.WriteAllText(tagJsonPath, stringWriter.ToString());
+			}
+		}
+	}
+
+	public void CompileAllItemTags()
+	{
+		foreach(string modDir in Directory.EnumerateDirectories($"{ExportRoot}/data/"))
+		{
+			Dictionary<string, List<string>> allTags = new Dictionary<string, List<string>>();
+			string modID = modDir.Substring(modDir.LastIndexOfAny(SLASHES) + 1);
+			if (Directory.Exists($"{modDir}/tags/"))
+			{
+				foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/tags/", "*.json", SearchOption.AllDirectories))
+				{
+					string tagFileName = tagFilePath.Substring(tagFilePath.LastIndexOfAny(SLASHES) + 1);
+					tagFileName = tagFileName.Substring(0, tagFileName.LastIndexOf('.'));
+					if (tagFileName.Contains("_"))
+					{
+						string tagModID = tagFileName.Substring(tagFileName.LastIndexOf('_') + 1);
+						if (FindContentPack(tagModID))
+						{
+							Debug.Log($"Found partial tag file {tagFileName}");
+							string rootTagID = tagFileName.Substring(0, tagFileName.LastIndexOf('_'));
+							JObject jTagRoot = JObject.Parse(File.ReadAllText(tagFilePath));
+							if (jTagRoot.TryGetValue("values", out JToken jToken) && jToken is JArray jArray)
+							{
+								if (!allTags.ContainsKey(rootTagID))
+									allTags.Add(rootTagID, new List<string>());
+
+								foreach (JToken entry in jArray)
+									allTags[rootTagID].Add(entry.ToString());
+							}
+						}
+					}
+				}
+
+				// Now repackage the tags into a final .json with all in it
+				foreach (var kvp in allTags)
+				{
+					using (StringWriter stringWriter = new StringWriter())
+					using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+					{
+						jsonWriter.Formatting = Formatting.Indented;
+						QuickJSONBuilder builder = new QuickJSONBuilder();
+						builder.Current.Add("replace", "false");
+						using (builder.Tabulation("values"))
+						{
+							foreach (string itemLoc in kvp.Value)
+								builder.CurrentTable.Add(itemLoc);
+						}
+						builder.Root.WriteTo(jsonWriter);
+						string tagJsonPath = GetTagJsonExportPath($"{modID}:{kvp.Key}");
+
+						Debug.Log($"Exporting compiled tag file {tagJsonPath}");
+						File.WriteAllText(tagJsonPath, stringWriter.ToString());
+					}
+				}
+			}
 		}
 	}
 
@@ -1312,7 +1419,8 @@ public class ContentManager : MonoBehaviour
 			}
 			EditorUtility.ClearProgressBar();
 
-			
+			ExportItemTags(pack);
+			CompileAllItemTags();
 		}
 		finally
 		{

@@ -19,8 +19,8 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 1
     tags:
-    - flansmod:bullet
-    - flansmod:sights
+    - flansmod:attach_to_any
+    - flansmod:sights_attach
   attachmentType: 1
   modifiers:
   - Stat: spread
@@ -48,6 +48,7 @@ MonoBehaviour:
     nodes:
     - actionGroupToTrigger: ads
       modalCheck: 
+      canTriggerWhileReloading: 0
       deferToAttachment: 0
       attachmentType: 0
       attachmentIndex: 0
@@ -59,7 +60,7 @@ MonoBehaviour:
     canBeOverriden: 0
     twoHanded: 0
     repeatMode: 4
-    repeatDelay: 1
+    repeatDelay: 0.05
     repeatCount: 0
     spinUpDuration: 0
     loudness: 0

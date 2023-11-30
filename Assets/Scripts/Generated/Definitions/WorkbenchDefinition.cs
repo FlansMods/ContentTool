@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorkbenchDefinition : Definition
 {
 	[JsonField]
-	public string titlestring = "workbench";
+	public string titleString = "workbench";
 	[JsonField]
 	public string bannerTextureLocation = "";
 	[JsonField]

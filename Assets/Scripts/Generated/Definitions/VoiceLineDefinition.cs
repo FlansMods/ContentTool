@@ -6,7 +6,7 @@ public class VoiceLineDefinition
 	[JsonField]
 	public EVoiceLineType type = EVoiceLineType.Chat;
 	[JsonField]
-	public string unlocalisedstring = "npc.unknown.chat";
+	public string unlocalisedString = "npc.unknown.chat";
 	[JsonField]
 	public SoundDefinition audioClip = new SoundDefinition();
 }

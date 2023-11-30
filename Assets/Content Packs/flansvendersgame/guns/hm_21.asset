@@ -200,7 +200,7 @@ MonoBehaviour:
     canBeOverriden: 1
     twoHanded: 1
     repeatMode: 4
-    repeatDelay: 0.1
+    repeatDelay: 0.05
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
@@ -391,28 +391,38 @@ MonoBehaviour:
     endActionKey: reload_primary_end
   loopingSounds: []
   barrelAttachments:
-    allowlist: []
-    allowAll: 1
+    matchNames: []
+    matchTags:
+    - flansmod:attach_to_rifle
+    - flansmod:attach_to_any
     numAttachmentSlots: 1
     hideDefaultMesh: 1
   gripAttachments:
-    allowlist: []
-    allowAll: 1
+    matchNames: []
+    matchTags:
+    - flansmod:attach_to_rifle
+    - flansmod:attach_to_any
     numAttachmentSlots: 0
     hideDefaultMesh: 1
   stockAttachments:
-    allowlist: []
-    allowAll: 1
+    matchNames: []
+    matchTags:
+    - flansmod:attach_to_rifle
+    - flansmod:attach_to_any
     numAttachmentSlots: 0
     hideDefaultMesh: 1
   scopeAttachments:
-    allowlist: []
-    allowAll: 1
+    matchNames: []
+    matchTags:
+    - flansmod:attach_to_rifle
+    - flansmod:attach_to_any
     numAttachmentSlots: 1
     hideDefaultMesh: 1
   genericAttachments:
-    allowlist: []
-    allowAll: 1
+    matchNames: []
+    matchTags:
+    - flansmod:attach_to_rifle
+    - flansmod:attach_to_any
     numAttachmentSlots: 0
     hideDefaultMesh: 1
   modelParts: []

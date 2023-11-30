@@ -12,107 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e008fc4365cab3145b710bfa08dafb1d, type: 3}
   m_Name: fc_deluxe_foregrip
   m_EditorClassIdentifier: 
-  Model:
-    Type: 1
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: quickreloadgrip
-    textureX: 16
-    textureY: 8
-    sections:
-    - partName: attachment
-      pieces:
-      - textureU: 0
-        textureV: 0
-        Pos: {x: -2, y: -1, z: -1}
-        Dim: {x: 4, y: 1, z: 2}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 10
-        textureV: 1
-        Pos: {x: -1, y: -4, z: -0.5}
-        Dim: {x: 1, y: 3, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 2
-        textureV: 1
-        Pos: {x: 1, y: -2, z: -0.5}
-        Dim: {x: 1, y: 1, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 2
-        textureV: 1
-        Pos: {x: 2, y: -4, z: -0.5}
-        Dim: {x: 1, y: 2, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-      - textureU: 2
-        textureV: 1
-        Pos: {x: 0, y: -5, z: -0.5}
-        Dim: {x: 2, y: 1, z: 1}
-        Origin: {x: 0, y: 0, z: 0}
-        Euler: {x: 0, y: 0, z: 0}
-        Shape: 0
-        Offsets:
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-        - {x: 0, y: 0, z: 0}
-    name: quickreloadgrip
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 2800000, guid: 59b9d36cfdf57a94886a57046471e59f, type: 3}
-  Icon: {fileID: 2800000, guid: b3a805728279e2147817e4e51e34e005, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Flint & Cobblesons Deluxe Stability Foregrip
@@ -120,8 +19,8 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 1
     tags:
-    - flansmod:bullet
-    - flansmod:grip
+    - flansmod:attach_to_any
+    - flansmod:grip_attach
   attachmentType: 3
   modifiers:
   - Stat: vertical_recoil
@@ -129,20 +28,17 @@ MonoBehaviour:
     Add: 0
     Multiply: 0.5
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 0
+    ApplyFilters: []
   - Stat: horizontal_recoil
     Filter: 
     Add: 0
     Multiply: 0
     SetValue: 
-    ApplyToPrimary: 1
-    ApplyToSecondary: 0
+    ApplyFilters: []
   mechaEffects: 
   mechaEffectFilter: 
-  primaryActions: []
-  secondaryActions: []
-  replacePrimaryAction: 0
-  replaceSecondaryAction: 0
+  handlerOverrides: []
+  actionOverrides: []
+  reloadOverrides: []
   modeOverride: 0
   overrideFireMode: 0

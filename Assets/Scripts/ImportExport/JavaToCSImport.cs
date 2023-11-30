@@ -88,6 +88,6 @@ public class JavaToCSImport : MonoBehaviour
 		.Replace("Vec3", "Vector3")
 		.Replace("Vector3f", "Vector3")
 		.Replace("boolean", "bool")
-		.Replace("String", "string");
+		.Replace(" String", " string");
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -152,6 +153,25 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 				}
 			}
 		}
+	}
+
+	public ItemDefinition GetItemSettings()
+	{
+		if (this is GunDefinition gunDef)
+			return gunDef.itemSettings;
+		else if (this is BulletDefinition bulletDef)
+			return bulletDef.itemSettings;
+		else if (this is AttachmentDefinition attachmentDef)
+			return attachmentDef.itemSettings;
+		else if (this is ArmourDefinition armourDef)
+			return armourDef.itemSettings;
+		else if (this is GrenadeDefinition grenadeDef)
+			return grenadeDef.itemSettings;
+		else if (this is ToolDefinition toolDef)
+			return toolDef.itemSettings;
+		else if (this is VehicleDefinition vehicleDef)
+			return vehicleDef.itemSettings;
+		return null;
 	}
 
 	public void VerifyModifiers(List<Verification> verifications)

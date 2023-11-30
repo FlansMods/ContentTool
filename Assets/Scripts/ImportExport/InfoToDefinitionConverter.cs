@@ -178,26 +178,22 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		def.barrelAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowBarrelAttachments ? 1 : 0,
-			allowAll = inf.allowAllAttachments,
-			allowlist = inf.allowedAttachments.ToArray(),
+			matchNames = inf.allowedAttachments.ToArray(),
 		};
 		def.gripAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowGripAttachments ? 1 : 0,
-			allowAll = inf.allowAllAttachments,
-			allowlist = inf.allowedAttachments.ToArray(),
+			matchNames = inf.allowedAttachments.ToArray(),
 		};
 		def.stockAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowStockAttachments ? 1 : 0,
-			allowAll = inf.allowAllAttachments,
-			allowlist = inf.allowedAttachments.ToArray(),
+			matchNames = inf.allowedAttachments.ToArray(),
 		};
 		def.scopeAttachments = new AttachmentSettingsDefinition()
 		{
 			numAttachmentSlots = inf.allowScopeAttachments ? 1 : 0,
-			allowAll = inf.allowAllAttachments,
-			allowlist = inf.allowedAttachments.ToArray(),
+			matchNames = inf.allowedAttachments.ToArray(),
 		};
 		//def.genericAttachments
 		//def.userMoveSpeedModifier = inf.moveSpeedModifier;
