@@ -459,7 +459,7 @@ public class TurboRig : MinecraftModel
 							builder.CurrentTable.Add(JSONHelpers.ToJSON(verts[i]));
 						}
 					}
-					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(piece.Euler));
+					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(new Vector3(-piece.Euler.x, piece.Euler.y, piece.Euler.z)));
 					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(piece.Origin - origin));
 					using (builder.Indentation("faces"))
 					{
