@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
   m_Name: artillery_shell
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: artillery_shell
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: 7e740ebd153075348bd646dbfe292c58, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Artillery Shell
@@ -46,7 +27,7 @@ MonoBehaviour:
     horizontalRecoil: 0
     spread: 1
     spreadPattern: 1
-    speed: 0
+    speed: 10
     bulletCount: 1
     spinSpeed: 360
     breaksMaterials:
@@ -57,10 +38,10 @@ MonoBehaviour:
       damageToTarget: 1
       multiplierVsPlayers: 1
       multiplierVsVehicles: 100
-      knockback: 0
+      knockback: 1
       potionEffectOnTarget: 
       splashDamage: 0
-      splashDamageRadius: 0
+      splashDamageRadius: 6
       splashDamageFalloff: 1
       potionEffectOnSplash: 
       setFireToTarget: 0
@@ -69,7 +50,7 @@ MonoBehaviour:
       explosionRadius: 3
       hitSounds: []
       onImpactActions: []
-    hitscan: 1
+    hitscan: 0
     fuseTime: 0
     gravityFactor: 1
     sticky: 0
