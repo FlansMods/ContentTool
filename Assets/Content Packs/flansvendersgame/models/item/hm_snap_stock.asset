@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
   m_Name: hm_snap_stock
   m_EditorClassIdentifier: 
-  Textures: []
+  Textures:
+  - Key: hm_snap_stock
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/hm_snap_stock
+    Texture: {fileID: 2800000, guid: 5a9b106ddd59d3a41bc2e5a2ffe0d719, type: 3}
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
@@ -48,9 +53,84 @@ MonoBehaviour:
     Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
-    PlacedBoxes: []
-    MaxSize: {x: 4, y: 4}
-  Icons: []
-  Sections: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 4, y: 1, z: 2}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 4, y: 1, z: 2}
+    - Origin: {x: 24, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 0, y: 3}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 2, y: 2, z: 2}
+    MaxSize: {x: 32, y: 8}
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/hm_snap_stock
+    Texture: {fileID: 2800000, guid: 0784931ddc272a74aa774c7d481c8979, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -2, y: -1, z: -1}
+      Dim: {x: 2, y: 2, z: 2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: -7, y: -1, z: -1}
+      Dim: {x: 1, y: 2, z: 2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0.25, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: 0.25}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0.25, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+      - {x: 0, y: 0, z: -0.25}
+    - Pos: {x: -6, y: 0.5, z: -0.6}
+      Dim: {x: 4, y: 0.25, z: 1.2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -6, y: -0.25, z: -0.6}
+      Dim: {x: 4, y: 0.25, z: 1.2}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0.25, z: 0}
+      - {x: 0, y: 0, z: 0}
   AnimationParameters: []
   AttachPoints: []
