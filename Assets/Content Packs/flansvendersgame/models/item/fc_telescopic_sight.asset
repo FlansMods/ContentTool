@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: fc_telescopic_sight
+  m_EditorClassIdentifier: 
+  Textures:
+  - Key: fc_telescopic_sight
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/fc_telescopic_sight
+    Texture: {fileID: 2800000, guid: c9635b09f771af04abf72d85f8511546, type: 3}
+  Transforms: []
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/7
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 0, y: 2}
+      Patch:
+        Key: body/6
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 4, y: 0}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 2, y: 2, z: 2}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 2, y: 2, z: 2}
+    - Origin: {x: 20, y: 0}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 12, y: 2, z: 2}
+    - Origin: {x: 48, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 1, y: 2, z: 2}
+    - Origin: {x: 54, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 1, y: 1, z: 1}
+    - Origin: {x: 58, y: 0}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 2, y: 1, z: 1}
+    MaxSize: {x: 64, y: 4}
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/fc_telescopic_sight
+    Texture: {fileID: 2800000, guid: cfea7663548907b438a93e343f4b2ec5, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 2, y: 1, z: 0.5}
+      Origin: {x: 0.000000059604645, y: 0, z: -0.25}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: -1, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: -1, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 1, y: 1, z: 0.5}
+      Origin: {x: 0, y: 0, z: 0.25}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 1, y: 1.5, z: 1.5}
+      Origin: {x: 0.000000059604645, y: 1, z: -0.75}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 12, y: 1.1, z: 1.1}
+      Origin: {x: -1.62, y: 1.25, z: -0.55}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 2, y: 1.3, z: 1.3}
+      Origin: {x: -3.6, y: 1.125, z: -0.65}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 2, y: 1.3, z: 1.3}
+      Origin: {x: 10.31, y: 1.125, z: -0.65}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 0.5, y: 0.5, z: 0.5}
+      Origin: {x: 0.24999991, y: 1.53, z: 0.7500001}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: 0}
+      Dim: {x: 0.5, y: 0.5, z: 0.5}
+      Origin: {x: 0.25000003, y: 2.53, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters: []
+  AttachPoints:
+  - name: eye_line
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
