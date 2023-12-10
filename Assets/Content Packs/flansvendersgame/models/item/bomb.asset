@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: bomb
+  m_EditorClassIdentifier: 
+  Textures:
+  - Key: bomb
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/bomb
+    Texture: {fileID: 2800000, guid: 2b1c8f970966a3d488c8ab15046cff6d, type: 3}
+  Transforms: []
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/6
+        BoxDims: {x: 5, y: 4, z: 1}
+    - Origin: {x: 12, y: 0}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 5, y: 4, z: 1}
+    - Origin: {x: 0, y: 5}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 5, y: 4, z: 1}
+    - Origin: {x: 12, y: 5}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 5, y: 4, z: 1}
+    - Origin: {x: 24, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 5, y: 6, z: 6}
+    - Origin: {x: 46, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 15, y: 6, z: 6}
+    - Origin: {x: 0, y: 12}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 15, y: 6, z: 6}
+    MaxSize: {x: 128, y: 32}
+  Icons: []
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -10, y: 0, z: -3}
+      Dim: {x: 15, y: 6, z: 6}
+      Origin: {x: 0, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 5, y: 0, z: -3}
+      Dim: {x: 15, y: 6, z: 6}
+      Origin: {x: 0, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: -2}
+    - Pos: {x: -15, y: 0, z: -3}
+      Dim: {x: 5, y: 6, z: 6}
+      Origin: {x: 0, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: -2}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -0.5}
+      Dim: {x: 5, y: 4, z: 1}
+      Origin: {x: 14.5, y: -3, z: 0}
+      Euler: {x: 45.000004, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -0.5}
+      Dim: {x: 5, y: 4, z: 1}
+      Origin: {x: 14.5, y: -3, z: 0}
+      Euler: {x: 45.000004, y: 180, z: 180}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -0.5}
+      Dim: {x: 5, y: 4, z: 1}
+      Origin: {x: 14.5, y: -3, z: 0}
+      Euler: {x: 315, y: 180, z: 180}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -0.5}
+      Dim: {x: 5, y: 4, z: 1}
+      Origin: {x: 14.5, y: -3, z: 0}
+      Euler: {x: 315, y: 0.000005008955, z: 0.000005008955}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters: []
+  AttachPoints: []

@@ -1,0 +1,2146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: adder
+  m_EditorClassIdentifier: 
+  Textures:
+  - Key: adder
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder
+    Texture: {fileID: 2800000, guid: b3df82174e6db3c41afddce5d39ddbd9, type: 3}
+  - Key: adder_arctic
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_arctic
+    Texture: {fileID: 2800000, guid: eadb9972f17e5454da62a3759216ec2b, type: 3}
+  - Key: adder_blacktail
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_blacktail
+    Texture: {fileID: 2800000, guid: c5d745a446ece704ab46f813d3e93e7d, type: 3}
+  - Key: adder_desert
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_desert
+    Texture: {fileID: 2800000, guid: c6daaba8e625fc049a774df30145d78c, type: 3}
+  - Key: adder_jungle
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_jungle
+    Texture: {fileID: 2800000, guid: f710b58ad91dd2e428269b2f629c4501, type: 3}
+  - Key: adder_marine
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_marine
+    Texture: {fileID: 2800000, guid: b96879b5e1f5f3f49961193b7dfaf45f, type: 3}
+  - Key: adder_trainer
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/adder_trainer
+    Texture: {fileID: 2800000, guid: 436a1c9fe48fad748a2b140edb0391fe, type: 3}
+  Transforms:
+  - Type: 4
+    Position: {x: 8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 3
+    Position: {x: -8, y: -7, z: -13}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 2
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 1
+    Position: {x: 8, y: 8, z: 6}
+    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 6
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 5
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Scale: {x: 1, y: 1, z: 1}
+  - Type: 7
+    Position: {x: 0, y: 0.15, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
+  - Type: 8
+    Position: {x: 6, y: 6, z: 6}
+    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Scale: {x: 1, y: 1, z: 1}
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 1, y: 1}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 17, y: 8, z: 18}
+    - Origin: {x: 73, y: 1}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 16, y: 4, z: 21}
+    - Origin: {x: 153, y: 1}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 17, y: 8, z: 18}
+    - Origin: {x: 225, y: 1}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 25, y: 4, z: 21}
+    - Origin: {x: 321, y: 1}
+      Patch:
+        Key: body/4
+        BoxDims: {x: 23, y: 10, z: 21}
+    - Origin: {x: 417, y: 1}
+      Patch:
+        Key: body/5
+        BoxDims: {x: 2, y: 10, z: 21}
+    - Origin: {x: 1, y: 33}
+      Patch:
+        Key: body/6
+        BoxDims: {x: 62, y: 15, z: 21}
+    - Origin: {x: 449, y: 1}
+      Patch:
+        Key: body/7
+        BoxDims: {x: 25, y: 17, z: 2}
+    - Origin: {x: 297, y: 1}
+      Patch:
+        Key: body/8
+        BoxDims: {x: 16, y: 17, z: 2}
+    - Origin: {x: 153, y: 33}
+      Patch:
+        Key: body/9
+        BoxDims: {x: 25, y: 17, z: 2}
+    - Origin: {x: 393, y: 1}
+      Patch:
+        Key: body/10
+        BoxDims: {x: 16, y: 17, z: 2}
+    - Origin: {x: 465, y: 25}
+      Patch:
+        Key: body/11
+        BoxDims: {x: 12, y: 23, z: 2}
+    - Origin: {x: 209, y: 33}
+      Patch:
+        Key: body/12
+        BoxDims: {x: 12, y: 23, z: 2}
+    - Origin: {x: 57, y: 1}
+      Patch:
+        Key: body/13
+        BoxDims: {x: 12, y: 2, z: 2}
+    - Origin: {x: 129, y: 1}
+      Patch:
+        Key: body/14
+        BoxDims: {x: 15, y: 2, z: 2}
+    - Origin: {x: 241, y: 33}
+      Patch:
+        Key: body/15
+        BoxDims: {x: 26, y: 2, z: 2}
+    - Origin: {x: 209, y: 1}
+      Patch:
+        Key: body/16
+        BoxDims: {x: 15, y: 2, z: 2}
+    - Origin: {x: 305, y: 33}
+      Patch:
+        Key: body/17
+        BoxDims: {x: 26, y: 2, z: 2}
+    - Origin: {x: 57, y: 9}
+      Patch:
+        Key: body/18
+        BoxDims: {x: 12, y: 2, z: 2}
+    - Origin: {x: 505, y: 1}
+      Patch:
+        Key: body/19
+        BoxDims: {x: 2, y: 18, z: 1}
+    - Origin: {x: 497, y: 25}
+      Patch:
+        Key: body/20
+        BoxDims: {x: 2, y: 18, z: 1}
+    - Origin: {x: 345, y: 33}
+      Patch:
+        Key: body/21
+        BoxDims: {x: 9, y: 3, z: 21}
+    - Origin: {x: 409, y: 33}
+      Patch:
+        Key: body/22
+        BoxDims: {x: 9, y: 23, z: 21}
+    - Origin: {x: 217, y: 41}
+      Patch:
+        Key: body/23
+        BoxDims: {x: 41, y: 23, z: 21}
+    - Origin: {x: 153, y: 65}
+      Patch:
+        Key: body/24
+        BoxDims: {x: 21, y: 3, z: 21}
+    - Origin: {x: 345, y: 65}
+      Patch:
+        Key: body/25
+        BoxDims: {x: 10, y: 12, z: 11}
+    - Origin: {x: 1, y: 73}
+      Patch:
+        Key: body/26
+        BoxDims: {x: 19, y: 12, z: 11}
+    - Origin: {x: 41, y: 73}
+      Patch:
+        Key: body/27
+        BoxDims: {x: 11, y: 20, z: 27}
+    - Origin: {x: 361, y: 81}
+      Patch:
+        Key: body/28
+        BoxDims: {x: 11, y: 20, z: 27}
+    - Origin: {x: 217, y: 89}
+      Patch:
+        Key: body/29
+        BoxDims: {x: 13, y: 20, z: 27}
+    - Origin: {x: 97, y: 97}
+      Patch:
+        Key: body/30
+        BoxDims: {x: 10, y: 23, z: 27}
+    - Origin: {x: 417, y: 81}
+      Patch:
+        Key: body/31
+        BoxDims: {x: 12, y: 3, z: 21}
+    - Origin: {x: 273, y: 89}
+      Patch:
+        Key: body/32
+        BoxDims: {x: 8, y: 3, z: 21}
+    - Origin: {x: 145, y: 97}
+      Patch:
+        Key: body/33
+        BoxDims: {x: 17, y: 12, z: 11}
+    - Origin: {x: 97, y: 81}
+      Patch:
+        Key: body/34
+        BoxDims: {x: 19, y: 2, z: 11}
+    - Origin: {x: 385, y: 33}
+      Patch:
+        Key: body/35
+        BoxDims: {x: 6, y: 2, z: 11}
+    - Origin: {x: 313, y: 89}
+      Patch:
+        Key: body/36
+        BoxDims: {x: 14, y: 2, z: 11}
+    - Origin: {x: 473, y: 57}
+      Patch:
+        Key: body/37
+        BoxDims: {x: 8, y: 10, z: 11}
+    - Origin: {x: 417, y: 113}
+      Patch:
+        Key: body/38
+        BoxDims: {x: 16, y: 15, z: 21}
+    - Origin: {x: 1, y: 121}
+      Patch:
+        Key: body/39
+        BoxDims: {x: 16, y: 3, z: 21}
+    - Origin: {x: 353, y: 129}
+      Patch:
+        Key: body/40
+        BoxDims: {x: 16, y: 9, z: 21}
+    - Origin: {x: 129, y: 9}
+      Patch:
+        Key: body/41
+        BoxDims: {x: 10, y: 3, z: 5}
+    - Origin: {x: 465, y: 217}
+      Patch:
+        Key: body/42
+        BoxDims: {x: 5, y: 23, z: 11}
+    - Origin: {x: 369, y: 233}
+      Patch:
+        Key: body/43
+        BoxDims: {x: 14, y: 6, z: 11}
+    - Origin: {x: 353, y: 225}
+      Patch:
+        Key: body/44
+        BoxDims: {x: 5, y: 7, z: 7}
+    - Origin: {x: 1, y: 249}
+      Patch:
+        Key: body/45
+        BoxDims: {x: 19, y: 11, z: 3}
+    - Origin: {x: 49, y: 249}
+      Patch:
+        Key: body/46
+        BoxDims: {x: 19, y: 11, z: 3}
+    - Origin: {x: 409, y: 233}
+      Patch:
+        Key: body/47
+        BoxDims: {x: 19, y: 6, z: 3}
+    - Origin: {x: 409, y: 249}
+      Patch:
+        Key: body/48
+        BoxDims: {x: 14, y: 1, z: 11}
+    - Origin: {x: 465, y: 257}
+      Patch:
+        Key: body/49
+        BoxDims: {x: 19, y: 6, z: 3}
+    - Origin: {x: 369, y: 257}
+      Patch:
+        Key: body/50
+        BoxDims: {x: 10, y: 18, z: 11}
+    - Origin: {x: 265, y: 265}
+      Patch:
+        Key: body/51
+        BoxDims: {x: 6, y: 7, z: 7}
+    - Origin: {x: 297, y: 265}
+      Patch:
+        Key: body/52
+        BoxDims: {x: 6, y: 10, z: 9}
+    - Origin: {x: 449, y: 257}
+      Patch:
+        Key: body/53
+        BoxDims: {x: 2, y: 10, z: 11}
+    - Origin: {x: 449, y: 41}
+      Patch:
+        Key: body/54
+        BoxDims: {x: 4, y: 3, z: 2}
+    - Origin: {x: 161, y: 9}
+      Patch:
+        Key: body/55
+        BoxDims: {x: 2, y: 5, z: 2}
+    - Origin: {x: 0, y: 286}
+      Patch:
+        Key: body/56
+        BoxDims: {x: 5, y: 3, z: 5}
+    - Origin: {x: 153, y: 137}
+      Patch:
+        Key: tail/0
+        BoxDims: {x: 76, y: 3, z: 21}
+    - Origin: {x: 345, y: 161}
+      Patch:
+        Key: tail/1
+        BoxDims: {x: 76, y: 3, z: 5}
+    - Origin: {x: 1, y: 169}
+      Patch:
+        Key: tail/2
+        BoxDims: {x: 76, y: 14, z: 19}
+    - Origin: {x: 305, y: 121}
+      Patch:
+        Key: tail/3
+        BoxDims: {x: 17, y: 4, z: 11}
+    - Origin: {x: 1, y: 153}
+      Patch:
+        Key: tail/4
+        BoxDims: {x: 17, y: 3, z: 11}
+    - Origin: {x: 49, y: 153}
+      Patch:
+        Key: tail/5
+        BoxDims: {x: 42, y: 4, z: 5}
+    - Origin: {x: 209, y: 9}
+      Patch:
+        Key: tail/6
+        BoxDims: {x: 11, y: 4, z: 5}
+    - Origin: {x: 193, y: 169}
+      Patch:
+        Key: tail/7
+        BoxDims: {x: 11, y: 30, z: 5}
+    - Origin: {x: 321, y: 41}
+      Patch:
+        Key: tail/8
+        BoxDims: {x: 12, y: 4, z: 5}
+    - Origin: {x: 233, y: 169}
+      Patch:
+        Key: tail/9
+        BoxDims: {x: 15, y: 2, z: 17}
+    - Origin: {x: 281, y: 177}
+      Patch:
+        Key: tail/10
+        BoxDims: {x: 15, y: 2, z: 17}
+    - Origin: {x: 473, y: 121}
+      Patch:
+        Key: tail/11
+        BoxDims: {x: 13, y: 4, z: 5}
+    - Origin: {x: 377, y: 209}
+      Patch:
+        Key: tail/12
+        BoxDims: {x: 7, y: 9, z: 2}
+    - Origin: {x: 457, y: 209}
+      Patch:
+        Key: tail/13
+        BoxDims: {x: 23, y: 2, z: 2}
+    - Origin: {x: 73, y: 17}
+      Patch:
+        Key: tail/14
+        BoxDims: {x: 4, y: 2, z: 2}
+    - Origin: {x: 305, y: 209}
+      Patch:
+        Key: turret/0
+        BoxDims: {x: 16, y: 10, z: 11}
+    - Origin: {x: 473, y: 193}
+      Patch:
+        Key: turret/1
+        BoxDims: {x: 16, y: 10, z: 3}
+    - Origin: {x: 177, y: 209}
+      Patch:
+        Key: turret/2
+        BoxDims: {x: 16, y: 10, z: 3}
+    - Origin: {x: 329, y: 177}
+      Patch:
+        Key: leftWing/0
+        BoxDims: {x: 18, y: 3, z: 21}
+    - Origin: {x: 465, y: 81}
+      Patch:
+        Key: leftWing/1
+        BoxDims: {x: 14, y: 5, z: 4}
+    - Origin: {x: 1, y: 1}
+      Patch:
+        Key: leftWing/2
+        BoxDims: {x: 4, y: 5, z: 4}
+    - Origin: {x: 377, y: 65}
+      Patch:
+        Key: leftWing/3
+        BoxDims: {x: 11, y: 5, z: 3}
+    - Origin: {x: 393, y: 201}
+      Patch:
+        Key: rightWing/0
+        BoxDims: {x: 18, y: 3, z: 21}
+    - Origin: {x: 1, y: 97}
+      Patch:
+        Key: rightWing/1
+        BoxDims: {x: 14, y: 5, z: 4}
+    - Origin: {x: 1, y: 33}
+      Patch:
+        Key: rightWing/2
+        BoxDims: {x: 4, y: 5, z: 4}
+    - Origin: {x: 353, y: 89}
+      Patch:
+        Key: rightWing/3
+        BoxDims: {x: 11, y: 5, z: 3}
+    - Origin: {x: 481, y: 177}
+      Patch:
+        Key: barrel/0
+        BoxDims: {x: 9, y: 4, z: 4}
+    - Origin: {x: 385, y: 49}
+      Patch:
+        Key: barrel/1
+        BoxDims: {x: 17, y: 1, z: 1}
+    - Origin: {x: 465, y: 97}
+      Patch:
+        Key: barrel/2
+        BoxDims: {x: 17, y: 1, z: 1}
+    - Origin: {x: 81, y: 121}
+      Patch:
+        Key: barrel/3
+        BoxDims: {x: 17, y: 1, z: 1}
+    - Origin: {x: 145, y: 121}
+      Patch:
+        Key: barrel/4
+        BoxDims: {x: 17, y: 1, z: 1}
+    - Origin: {x: 1, y: 169}
+      Patch:
+        Key: barrel/5
+        BoxDims: {x: 4, y: 5, z: 5}
+    - Origin: {x: 209, y: 97}
+      Patch:
+        Key: skids/0
+        BoxDims: {x: 4, y: 3, z: 8}
+    - Origin: {x: 417, y: 81}
+      Patch:
+        Key: skids/1
+        BoxDims: {x: 4, y: 9, z: 5}
+    - Origin: {x: 481, y: 105}
+      Patch:
+        Key: skids/2
+        BoxDims: {x: 4, y: 3, z: 8}
+    - Origin: {x: 273, y: 89}
+      Patch:
+        Key: skids/3
+        BoxDims: {x: 4, y: 9, z: 5}
+    - Origin: {x: 169, y: 225}
+      Patch:
+        Key: skids/4
+        BoxDims: {x: 60, y: 5, z: 5}
+    - Origin: {x: 409, y: 33}
+      Patch:
+        Key: skids/5
+        BoxDims: {x: 5, y: 5, z: 5}
+    - Origin: {x: 57, y: 121}
+      Patch:
+        Key: skids/6
+        BoxDims: {x: 4, y: 3, z: 8}
+    - Origin: {x: 337, y: 105}
+      Patch:
+        Key: skids/7
+        BoxDims: {x: 4, y: 9, z: 5}
+    - Origin: {x: 177, y: 121}
+      Patch:
+        Key: skids/8
+        BoxDims: {x: 4, y: 3, z: 8}
+    - Origin: {x: 1, y: 113}
+      Patch:
+        Key: skids/9
+        BoxDims: {x: 4, y: 9, z: 5}
+    - Origin: {x: 1, y: 233}
+      Patch:
+        Key: skids/10
+        BoxDims: {x: 60, y: 5, z: 5}
+    - Origin: {x: 153, y: 73}
+      Patch:
+        Key: skids/11
+        BoxDims: {x: 5, y: 5, z: 5}
+    - Origin: {x: 489, y: 145}
+      Patch:
+        Key: skids/12
+        BoxDims: {x: 5, y: 5, z: 5}
+    - Origin: {x: 353, y: 209}
+      Patch:
+        Key: skids/13
+        BoxDims: {x: 5, y: 5, z: 5}
+    - Origin: {x: 329, y: 169}
+      Patch:
+        Key: heliMainRotor_0/0
+        BoxDims: {x: 4, y: 17, z: 4}
+    - Origin: {x: 329, y: 137}
+      Patch:
+        Key: heliMainRotor_0/1
+        BoxDims: {x: 12, y: 4, z: 8}
+    - Origin: {x: 169, y: 57}
+      Patch:
+        Key: heliMainRotor_0/2
+        BoxDims: {x: 12, y: 2, z: 4}
+    - Origin: {x: 121, y: 241}
+      Patch:
+        Key: heliMainRotor_0/3
+        BoxDims: {x: 114, y: 2, z: 14}
+    - Origin: {x: 97, y: 73}
+      Patch:
+        Key: heliMainRotor_0/4
+        BoxDims: {x: 12, y: 2, z: 4}
+    - Origin: {x: 1, y: 265}
+      Patch:
+        Key: heliMainRotor_0/5
+        BoxDims: {x: 114, y: 2, z: 14}
+    - Origin: {x: 1, y: 129}
+      Patch:
+        Key: heliTailRotor_0/0
+        BoxDims: {x: 2, y: 2, z: 6}
+    - Origin: {x: 433, y: 153}
+      Patch:
+        Key: heliTailRotor_0/1
+        BoxDims: {x: 20, y: 5, z: 2}
+    - Origin: {x: 385, y: 33}
+      Patch:
+        Key: heliTailRotor_0/2
+        BoxDims: {x: 3, y: 5, z: 2}
+    - Origin: {x: 449, y: 33}
+      Patch:
+        Key: heliTailRotor_0/3
+        BoxDims: {x: 3, y: 5, z: 2}
+    - Origin: {x: 281, y: 169}
+      Patch:
+        Key: heliTailRotor_0/4
+        BoxDims: {x: 20, y: 5, z: 2}
+    MaxSize: {x: 512, y: 512}
+  Icons:
+  - Key: default
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder
+    Texture: {fileID: 2800000, guid: 0491a890781cba24a86bfca5c6d4a6f0, type: 3}
+  - Key: adder_arctic
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_arctic
+    Texture: {fileID: 2800000, guid: 56114c573808e7b458bd1318bd594471, type: 3}
+  - Key: adder_blacktail
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_blacktail
+    Texture: {fileID: 2800000, guid: 786ecbafb34c12747bcd01ef89c7b92f, type: 3}
+  - Key: adder_desert
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_desert
+    Texture: {fileID: 2800000, guid: 4116f9b338e636042b7afbe83ee0d9f4, type: 3}
+  - Key: adder_jungle
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_jungle
+    Texture: {fileID: 2800000, guid: b5e95a05f02153d408cc3c55b114f0cf, type: 3}
+  - Key: adder_marine
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_marine
+    Texture: {fileID: 2800000, guid: 47888bfd8e3dd0444bb517fe80af4578, type: 3}
+  - Key: adder_trainer
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/item/adder_trainer
+    Texture: {fileID: 2800000, guid: a822ea7aa23c8bc44a11a88047e23bad, type: 3}
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: 0, y: -8, z: -18}
+      Dim: {x: 17, y: 8, z: 18}
+      Origin: {x: -87, y: 16, z: 9}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 6, z: 6}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 6}
+      - {x: 0, y: 3, z: -0}
+      - {x: -0, y: 6, z: -6}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -6}
+      - {x: 0, y: 3, z: 0}
+    - Pos: {x: 0, y: -4, z: -21}
+      Dim: {x: 16, y: 4, z: 21}
+      Origin: {x: -70, y: 12, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 1.5}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 1.5}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: -1.5}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -1.5}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -8, z: -18}
+      Dim: {x: 17, y: 8, z: 18}
+      Origin: {x: -87, y: 24, z: 9}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 6}
+      - {x: 0, y: 3, z: -0}
+      - {x: -0, y: -6, z: 7}
+      - {x: -3, y: 0, z: 3}
+      - {x: -0, y: -0, z: -6}
+      - {x: 0, y: 3, z: 0}
+      - {x: -0, y: -6, z: -7}
+      - {x: -3, y: 0, z: -3}
+    - Pos: {x: 0, y: -4, z: -21}
+      Dim: {x: 25, y: 4, z: 21}
+      Origin: {x: -54, y: 12, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -10, z: -21}
+      Dim: {x: 23, y: 10, z: 21}
+      Origin: {x: -52, y: 8, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -10, z: -21}
+      Dim: {x: 2, y: 10, z: 21}
+      Origin: {x: -54, y: 8, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 2}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 2}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: -2}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -2}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -15, z: -21}
+      Dim: {x: 62, y: 15, z: 21}
+      Origin: {x: -29, y: 16, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -17, z: -2}
+      Dim: {x: 25, y: 17, z: 2}
+      Origin: {x: -54, y: 29, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -6.444, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -6.444, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -17, z: -2}
+      Dim: {x: 16, y: 17, z: 2}
+      Origin: {x: -70, y: 29, z: 9}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: 1.5}
+      - {x: -0, y: -10, z: -0}
+      - {x: 0, y: -6.444, z: 1.5}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 1.5}
+      - {x: -0, y: -10, z: 0}
+      - {x: 0, y: -6.444, z: 1.5}
+    - Pos: {x: 0, y: -17, z: -2}
+      Dim: {x: 25, y: 17, z: 2}
+      Origin: {x: -54, y: 29, z: -8.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -6.444, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -6.444, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -17, z: -2}
+      Dim: {x: 16, y: 17, z: 2}
+      Origin: {x: -70, y: 29, z: -7}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -1.5}
+      - {x: -0, y: -10, z: -0}
+      - {x: 0, y: -6.444, z: -1.5}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: -1.5}
+      - {x: -0, y: -10, z: 0}
+      - {x: 0, y: -6.444, z: -1.5}
+    - Pos: {x: 0, y: -23, z: -2}
+      Dim: {x: 12, y: 23, z: 2}
+      Origin: {x: -29, y: 39, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -10, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -10, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -23, z: -2}
+      Dim: {x: 12, y: 23, z: 2}
+      Origin: {x: -29, y: 39, z: -8.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -10, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -10, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 12, y: 2, z: 2}
+      Origin: {x: -73, y: 24, z: 6}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 1, y: -1, z: -0}
+      - {x: 0, y: 12, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 12, z: -0}
+      - {x: 1, y: -1, z: 0}
+      - {x: 0, y: 12, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 12, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 15, y: 2, z: 2}
+      Origin: {x: -61, y: 36, z: 6}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 6, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 6, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 26, y: 2, z: 2}
+      Origin: {x: -46, y: 42, z: 6}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 3, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 3, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 15, y: 2, z: 2}
+      Origin: {x: -61, y: 36, z: -4}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 6, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 6, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 26, y: 2, z: 2}
+      Origin: {x: -46, y: 42, z: -4}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 3, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 3, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -2}
+      Dim: {x: 12, y: 2, z: 2}
+      Origin: {x: -73, y: 24, z: -4}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 1, y: -1, z: -0}
+      - {x: 0, y: 12, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 12, z: -0}
+      - {x: 1, y: -1, z: 0}
+      - {x: 0, y: 12, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 12, z: 0}
+    - Pos: {x: 0, y: -17.3, z: -1}
+      Dim: {x: 2, y: 18, z: 1}
+      Origin: {x: -51, y: 39, z: 6}
+      Euler: {x: 345, y: 0.9999999, z: 26}
+      Offsets:
+      - {x: -0, y: 0.5, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 0.5, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -17.3, z: -1}
+      Dim: {x: 2, y: 18, z: 1}
+      Origin: {x: -51, y: 39, z: -5}
+      Euler: {x: 15.000002, y: 359, z: 26}
+      Offsets:
+      - {x: -0, y: 0.5, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 0.5, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 9, y: 3, z: 21}
+      Origin: {x: -17, y: 42, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -3, y: 0, z: 3}
+      - {x: 0, y: -3, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -3, z: 0}
+      - {x: -3, y: 0, z: -3}
+      - {x: 0, y: -3, z: -3}
+    - Pos: {x: 0, y: -23, z: -21}
+      Dim: {x: 9, y: 23, z: 21}
+      Origin: {x: -17, y: 39, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: 0, y: -23, z: -21}
+      Dim: {x: 41, y: 23, z: 21}
+      Origin: {x: -8, y: 39, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -3, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -3, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 21, y: 3, z: 21}
+      Origin: {x: -8, y: 39, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 3}
+      - {x: 0, y: 0, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -3}
+      - {x: 0, y: 0, z: -3}
+    - Pos: {x: 0, y: -12, z: -11}
+      Dim: {x: 10, y: 12, z: 11}
+      Origin: {x: -16, y: 51, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 7, y: 0, z: 2}
+      - {x: 0, y: 0, z: 2}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: 7, y: 0, z: -2}
+      - {x: 0, y: 0, z: -2}
+    - Pos: {x: 0, y: -12, z: -11}
+      Dim: {x: 19, y: 12, z: 11}
+      Origin: {x: -6, y: 51, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 2}
+      - {x: 0, y: 0, z: 2}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -2}
+      - {x: 0, y: 0, z: -2}
+    - Pos: {x: 0, y: -20, z: -27}
+      Dim: {x: 11, y: 20, z: 27}
+      Origin: {x: -2, y: 42, z: 13.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 2, z: 3}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -6, z: 3}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 2, z: -3}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -6, z: -3}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -20, z: -27}
+      Dim: {x: 11, y: 20, z: 27}
+      Origin: {x: 22, y: 42, z: 13.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: 3}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -3, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: -3}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -3, z: -3}
+    - Pos: {x: 0, y: -20, z: -27}
+      Dim: {x: 13, y: 20, z: 27}
+      Origin: {x: 9, y: 42, z: 13.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -23, z: -27}
+      Dim: {x: 10, y: 23, z: 27}
+      Origin: {x: 33, y: 42, z: 13.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 6, z: 3}
+      - {x: 0, y: 6, z: 7}
+      - {x: -0, y: -3, z: 3}
+      - {x: 0, y: -3, z: 7}
+      - {x: -0, y: 6, z: -3}
+      - {x: 0, y: 6, z: -7}
+      - {x: -0, y: -3, z: -3}
+      - {x: 0, y: -3, z: -7}
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 12, y: 3, z: 21}
+      Origin: {x: 30, y: 42, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -3, z: 4}
+      - {x: -0, y: 0, z: 3}
+      - {x: 0, y: -3, z: 7}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -3, z: -4}
+      - {x: -0, y: 0, z: -3}
+      - {x: 0, y: -3, z: -7}
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 8, y: 3, z: 21}
+      Origin: {x: 22, y: 42, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 3}
+      - {x: 0, y: 0, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -3}
+      - {x: 0, y: 0, z: -3}
+    - Pos: {x: 0, y: -12, z: -11}
+      Dim: {x: 17, y: 12, z: 11}
+      Origin: {x: 13, y: 51, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: -0}
+      - {x: -0, y: 0, z: 2}
+      - {x: -10, y: 0, z: 2}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: 0}
+      - {x: -0, y: 0, z: -2}
+      - {x: -10, y: 0, z: -2}
+    - Pos: {x: 0, y: -2, z: -11}
+      Dim: {x: 19, y: 2, z: 11}
+      Origin: {x: -6, y: 53, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -11}
+      Dim: {x: 6, y: 2, z: 11}
+      Origin: {x: -12, y: 53, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 3}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: 3}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: -3}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: -3}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -11}
+      Dim: {x: 14, y: 2, z: 11}
+      Origin: {x: 13, y: 53, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: 3}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: -3}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -3}
+    - Pos: {x: -3, y: -10, z: -11}
+      Dim: {x: 8, y: 10, z: 11}
+      Origin: {x: 43, y: 38, z: 5.5}
+      Euler: {x: 0, y: 0, z: 10.000001}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -15, z: -21}
+      Dim: {x: 16, y: 15, z: 21}
+      Origin: {x: 33, y: 16, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: 1}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 2, z: 1}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: -1}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -1}
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 16, y: 3, z: 21}
+      Origin: {x: 33, y: 19, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 2, z: 1}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 2, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 2, z: -1}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -3}
+    - Pos: {x: 0, y: -9, z: -21}
+      Dim: {x: 16, y: 9, z: 21}
+      Origin: {x: 33, y: 28, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 2, z: 3}
+      - {x: -0, y: -3, z: -0}
+      - {x: -6, y: -3, z: 4}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 2, z: -3}
+      - {x: -0, y: -3, z: 0}
+      - {x: -6, y: -3, z: -4}
+    - Pos: {x: 0, y: -3, z: -5}
+      Dim: {x: 10, y: 3, z: 5}
+      Origin: {x: 43, y: 24, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -4, y: -0, z: -3}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 4, z: -3}
+      - {x: 0, y: 0, z: -0}
+      - {x: -4, y: -0, z: 3}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 4, z: 3}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -23, z: -11}
+      Dim: {x: 5, y: 23, z: 11}
+      Origin: {x: -25, y: 32, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -6, z: -11}
+      Dim: {x: 14, y: 6, z: 11}
+      Origin: {x: -39, y: 18, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -7, z: -7}
+      Dim: {x: 5, y: 7, z: 7}
+      Origin: {x: -24, y: 39, z: 3.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -11, z: -3}
+      Dim: {x: 19, y: 11, z: 3}
+      Origin: {x: -39, y: 23, z: -5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -11, z: -3}
+      Dim: {x: 19, y: 11, z: 3}
+      Origin: {x: -39, y: 23, z: 8.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -6, z: -3}
+      Dim: {x: 19, y: 6, z: 3}
+      Origin: {x: -65, y: 18, z: 8.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -1, z: -11}
+      Dim: {x: 14, y: 1, z: 11}
+      Origin: {x: -65, y: 13, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -6, z: -3}
+      Dim: {x: 19, y: 6, z: 3}
+      Origin: {x: -65, y: 18, z: -5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -18, z: -11}
+      Dim: {x: 10, y: 18, z: 11}
+      Origin: {x: -50, y: 27, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -3, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -3, y: 0, z: 0}
+    - Pos: {x: 0, y: -7, z: -7}
+      Dim: {x: 6, y: 7, z: 7}
+      Origin: {x: -49, y: 34, z: 3.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -3, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -3, y: 0, z: 0}
+    - Pos: {x: 0, y: -10, z: -9}
+      Dim: {x: 6, y: 10, z: 9}
+      Origin: {x: -73, y: 22, z: 4.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: 0, y: -10, z: -11}
+      Dim: {x: 2, y: 10, z: 11}
+      Origin: {x: -71, y: 23, z: 5.5}
+      Euler: {x: 0, y: 0, z: 26}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -3, z: -2}
+      Dim: {x: 4, y: 3, z: 2}
+      Origin: {x: -64, y: 16, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -2}
+      Dim: {x: 2, y: 5, z: 2}
+      Origin: {x: -63, y: 21, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0.25, y: -0, z: 0.25}
+      - {x: -0.25, y: -0, z: 0.25}
+      - {x: 0.25, y: 0, z: 0.25}
+      - {x: -0.25, y: 0, z: 0.25}
+      - {x: 0.25, y: -0, z: -0.25}
+      - {x: -0.25, y: -0, z: -0.25}
+      - {x: 0.25, y: 0, z: -0.25}
+      - {x: -0.25, y: 0, z: -0.25}
+    - Pos: {x: 0, y: -3, z: -5}
+      Dim: {x: 5, y: 3, z: 5}
+      Origin: {x: 8, y: 56, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 1, y: -0, z: 1}
+      - {x: -1, y: -0, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 1, y: -0, z: -1}
+      - {x: -1, y: -0, z: -1}
+  - PartName: tail
+    Pieces:
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 76, y: 3, z: 21}
+      Origin: {x: 49, y: 21, z: 10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: 1}
+      - {x: 0, y: -0, z: 5}
+      - {x: -0, y: 0, z: 3}
+      - {x: 0, y: 0, z: 7}
+      - {x: -0, y: -0, z: -1}
+      - {x: 0, y: -0, z: -5}
+      - {x: -0, y: 0, z: -3}
+      - {x: 0, y: 0, z: -7}
+    - Pos: {x: 0, y: -3, z: -5}
+      Dim: {x: 76, y: 3, z: 5}
+      Origin: {x: 49, y: 24, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -14, z: -19}
+      Dim: {x: 76, y: 14, z: 19}
+      Origin: {x: 49, y: 18, z: 9.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 10, z: 4}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: 4}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 10, z: -4}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: -4}
+    - Pos: {x: 0, y: -4, z: -11}
+      Dim: {x: 17, y: 4, z: 11}
+      Origin: {x: 125, y: 18, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: 3}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 3, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: -3}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 3, z: -3}
+    - Pos: {x: 0, y: -3, z: -11}
+      Dim: {x: 17, y: 3, z: 11}
+      Origin: {x: 125, y: 21, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 3, z: 3}
+      - {x: -0, y: 0, z: 2}
+      - {x: 0, y: 2, z: 3}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 3, z: -3}
+      - {x: -0, y: 0, z: -2}
+      - {x: 0, y: 2, z: -3}
+    - Pos: {x: 0, y: -4, z: -5}
+      Dim: {x: 42, y: 4, z: 5}
+      Origin: {x: 125, y: 24, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 31, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 31, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 31, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 31, z: 0}
+    - Pos: {x: 0, y: -4, z: -5}
+      Dim: {x: 11, y: 4, z: 5}
+      Origin: {x: 167, y: 55, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -2, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 0}
+    - Pos: {x: 0, y: -30, z: -5}
+      Dim: {x: 11, y: 30, z: 5}
+      Origin: {x: 167, y: 51, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -42, y: -1, z: -0}
+      - {x: -24, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -42, y: -1, z: 0}
+      - {x: -24, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -4, z: -5}
+      Dim: {x: 12, y: 4, z: 5}
+      Origin: {x: 142, y: 21, z: 2.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: -6, y: 1, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -6, y: 1, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -17}
+      Dim: {x: 15, y: 2, z: 17}
+      Origin: {x: 94, y: 18, z: 23.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: -2, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -2, y: 0, z: -0}
+      - {x: 7, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: 7, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -2, z: -17}
+      Dim: {x: 15, y: 2, z: 17}
+      Origin: {x: 94, y: 18, z: -6.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 7, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 7, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -2, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -2, y: 0, z: 0}
+    - Pos: {x: 0, y: -4, z: -5}
+      Dim: {x: 13, y: 4, z: 5}
+      Origin: {x: 157, y: 46, z: 6.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: -6, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -6, y: 0, z: 0}
+    - Pos: {x: 0, y: -9, z: -2}
+      Dim: {x: 7, y: 9, z: 2}
+      Origin: {x: 59, y: 8, z: 1}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 2, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: -1, y: 0, z: -0}
+      - {x: 2, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: -1, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -2}
+      Dim: {x: 23, y: 2, z: 2}
+      Origin: {x: 135, y: 16, z: 1}
+      Euler: {x: 0, y: 0, z: 349}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 23, y: 0, z: -2}
+      Dim: {x: 4, y: 2, z: 2}
+      Origin: {x: 135, y: 16, z: 1}
+      Euler: {x: 0, y: 0, z: 349}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 1, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: 1, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 1, z: 0}
+  - PartName: turret
+    Pieces:
+    - Pos: {x: 62, y: -10, z: -11}
+      Dim: {x: 16, y: 10, z: 11}
+      Origin: {x: -70, y: 8, z: 5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 62, y: -10, z: -3}
+      Dim: {x: 16, y: 10, z: 3}
+      Origin: {x: -70, y: 8, z: 8.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: 3, y: -0, z: 0}
+      - {x: -3, y: -0, z: 0}
+      - {x: 3, y: 0, z: 0}
+      - {x: -3, y: 0, z: 0}
+    - Pos: {x: 62, y: -10, z: -3}
+      Dim: {x: 16, y: 10, z: 3}
+      Origin: {x: -70, y: 8, z: -5.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 3, y: -0, z: -0}
+      - {x: -3, y: -0, z: -0}
+      - {x: 3, y: 0, z: -0}
+      - {x: -3, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: leftWing
+    Pieces:
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 18, y: 3, z: 21}
+      Origin: {x: -7, y: 21, z: 31.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: 5, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: 5, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -4}
+      Dim: {x: 14, y: 5, z: 4}
+      Origin: {x: -2, y: 22, z: 35.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -1, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -1, z: 0}
+    - Pos: {x: 0, y: -5, z: -4}
+      Dim: {x: 4, y: 5, z: 4}
+      Origin: {x: -6, y: 22, z: 35.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -2, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -2, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -3}
+      Dim: {x: 11, y: 5, z: 3}
+      Origin: {x: -2, y: 18, z: 22.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: rightWing
+    Pieces:
+    - Pos: {x: 0, y: -3, z: -21}
+      Dim: {x: 18, y: 3, z: 21}
+      Origin: {x: -7, y: 21, z: -10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 5, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: 5, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -4}
+      Dim: {x: 14, y: 5, z: 4}
+      Origin: {x: -2, y: 22, z: -31.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -1, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -1, z: 0}
+    - Pos: {x: 0, y: -5, z: -4}
+      Dim: {x: 4, y: 5, z: 4}
+      Origin: {x: -6, y: 22, z: -31.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -2, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -2, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -3}
+      Dim: {x: 11, y: 5, z: 3}
+      Origin: {x: -2, y: 18, z: -19.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: barrel
+    Pieces:
+    - Pos: {x: 70, y: -4, z: -2}
+      Dim: {x: 9, y: 4, z: 4}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 53, y: -1, z: -2}
+      Dim: {x: 17, y: 1, z: 1}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 53, y: -1, z: 1}
+      Dim: {x: 17, y: 1, z: 1}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 53, y: -4, z: 1}
+      Dim: {x: 17, y: 1, z: 1}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 53, y: -4, z: -2}
+      Dim: {x: 17, y: 1, z: 1}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 54, y: -4.5, z: -2.5}
+      Dim: {x: 4, y: 5, z: 5}
+      Origin: {x: -75, y: 2, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: skids
+    Pieces:
+    - Pos: {x: 0, y: -3, z: -8}
+      Dim: {x: 4, y: 3, z: 8}
+      Origin: {x: 9, y: 4, z: 18.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -3, z: 0}
+      - {x: 0, y: -3, z: 0}
+      - {x: -0, y: -3, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: 0, y: -9, z: -5}
+      Dim: {x: 4, y: 9, z: 5}
+      Origin: {x: 9, y: 1, z: 23.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 6, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -6, z: 0}
+      - {x: 0, y: -6, z: 0}
+    - Pos: {x: 0, y: -3, z: -8}
+      Dim: {x: 4, y: 3, z: 8}
+      Origin: {x: -26, y: 4, z: 18.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -3, z: 0}
+      - {x: 0, y: -3, z: 0}
+      - {x: -0, y: -3, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: 0, y: -9, z: -5}
+      Dim: {x: 4, y: 9, z: 5}
+      Origin: {x: -26, y: 1, z: 23.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 6, z: -0}
+      - {x: 0, y: 6, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: -6, z: 0}
+      - {x: 0, y: -6, z: 0}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 60, y: 5, z: 5}
+      Origin: {x: -39, y: -5, z: 25.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 5, y: 5, z: 5}
+      Origin: {x: -44, y: -5, z: 25.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: -1}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -3, z: -8}
+      Dim: {x: 4, y: 3, z: 8}
+      Origin: {x: 9, y: 4, z: -10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -3, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -3, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -9, z: -5}
+      Dim: {x: 4, y: 9, z: 5}
+      Origin: {x: 9, y: 1, z: -18.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -6, z: -0}
+      - {x: 0, y: -6, z: -0}
+      - {x: -0, y: 6, z: 0}
+      - {x: 0, y: 6, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -3, z: -8}
+      Dim: {x: 4, y: 3, z: 8}
+      Origin: {x: -26, y: 4, z: -10.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -3, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -3, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -9, z: -5}
+      Dim: {x: 4, y: 9, z: 5}
+      Origin: {x: -26, y: 1, z: -18.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: -6, z: -0}
+      - {x: 0, y: -6, z: -0}
+      - {x: -0, y: 6, z: 0}
+      - {x: 0, y: 6, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 60, y: 5, z: 5}
+      Origin: {x: -39, y: -5, z: -20.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 5, y: 5, z: 5}
+      Origin: {x: -44, y: -5, z: -20.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: -1}
+      - {x: 0, y: -0, z: -0}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 5, y: 5, z: 5}
+      Origin: {x: 21, y: -5, z: 25.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: -1}
+    - Pos: {x: 0, y: -5, z: -5}
+      Dim: {x: 5, y: 5, z: 5}
+      Origin: {x: 21, y: -5, z: -20.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: 1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: 1, z: -1}
+      - {x: 0, y: -0, z: -0}
+      - {x: 0, y: -1, z: -1}
+  - PartName: heliMainRotor_0
+    Pieces:
+    - Pos: {x: -2, y: -17, z: -2}
+      Dim: {x: 4, y: 17, z: 4}
+      Origin: {x: 0, y: 70, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -6, y: -4, z: -4}
+      Dim: {x: 12, y: 4, z: 8}
+      Origin: {x: 0, y: 68, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 6, y: -3, z: -2}
+      Dim: {x: 12, y: 2, z: 4}
+      Origin: {x: 0, y: 68, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 18, y: -3, z: -12}
+      Dim: {x: 114, y: 2, z: 14}
+      Origin: {x: 0, y: 68, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -18, y: -3, z: -2}
+      Dim: {x: 12, y: 2, z: 4}
+      Origin: {x: 0, y: 68, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -132, y: -3, z: -2}
+      Dim: {x: 114, y: 2, z: 14}
+      Origin: {x: 0, y: 68, z: -0}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  - PartName: heliTailRotor_0
+    Pieces:
+    - Pos: {x: -161, y: -45, z: -6}
+      Dim: {x: 2, y: 2, z: 6}
+      Origin: {x: 160, y: 44, z: 12.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -156, y: -48, z: -2}
+      Dim: {x: 20, y: 5, z: 2}
+      Origin: {x: 160, y: 44, z: 12.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -159, y: -48, z: -2}
+      Dim: {x: 3, y: 5, z: 2}
+      Origin: {x: 160, y: 44, z: 12.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: 3, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: 3, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: -164, y: -45, z: -2}
+      Dim: {x: 3, y: 5, z: 2}
+      Origin: {x: 160, y: 44, z: 12.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: -3, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: -3, z: 0}
+    - Pos: {x: -184, y: -45, z: -2}
+      Dim: {x: 20, y: 5, z: 2}
+      Origin: {x: 160, y: 44, z: 12.5}
+      Euler: {x: 0, y: 0, z: 0}
+      Offsets:
+      - {x: -0, y: -0, z: -0}
+      - {x: 0, y: -0, z: -0}
+      - {x: -0, y: 0, z: -0}
+      - {x: 0, y: 0, z: -0}
+      - {x: -0, y: -0, z: 0}
+      - {x: 0, y: -0, z: 0}
+      - {x: -0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters: []
+  AttachPoints:
+  - name: tail
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: turret
+    attachedTo: body
+    position: {x: -62, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: leftWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: rightWing
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: barrel
+    attachedTo: turret
+    position: {x: -8, y: 2, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: skids
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: heliMainRotor_0
+    attachedTo: body
+    position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: heliTailRotor_0
+    attachedTo: body
+    position: {x: 160, y: 44, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: pylon_0
+    attachedTo: body
+    position: {x: 2, y: 17, z: -33.5}
+    euler: {x: 0, y: 0, z: 0}
+  - name: pylon_1
+    attachedTo: body
+    position: {x: 4, y: 13, z: -21}
+    euler: {x: 0, y: 0, z: 0}
+  - name: pylon_2
+    attachedTo: body
+    position: {x: 4, y: 13, z: 21}
+    euler: {x: 0, y: 0, z: 0}
+  - name: pylon_3
+    attachedTo: body
+    position: {x: 2, y: 17, z: 33.5}
+    euler: {x: 0, y: 0, z: 0}
+  - name: seat_0
+    attachedTo: body
+    position: {x: -28, y: 18, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: seat_1
+    attachedTo: body
+    position: {x: -53, y: 14, z: 0}
+    euler: {x: 0, y: 0, z: 0}
+  - name: shoot_origin
+    attachedTo: barrel
+    position: {x: -21, y: 0, z: 0}
+    euler: {x: 0, y: 180, z: 0}
+  - name: exhaust
+    attachedTo: body
+    position: {x: 50, y: 33, z: 0}
+    euler: {x: 0, y: 0, z: 15}

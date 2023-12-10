@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661311b1f464664e877481ceff2276f, type: 3}
+  m_Name: gun_pod
+  m_EditorClassIdentifier: 
+  Textures:
+  - Key: gun_pod
+    Location:
+      Namespace: flansvendersgame
+      ID: textures/skins/gun_pod
+    Texture: {fileID: 2800000, guid: 1b3d57eebed103242bc2b14b59be5e10, type: 3}
+  Transforms: []
+  BakedUVMap:
+    UnplacedBoxes: []
+    PlacedBoxes:
+    - Origin: {x: 0, y: 0}
+      Patch:
+        Key: body/3
+        BoxDims: {x: 6, y: 2, z: 2}
+    - Origin: {x: 16, y: 0}
+      Patch:
+        Key: body/2
+        BoxDims: {x: 4, y: 6, z: 6}
+    - Origin: {x: 36, y: 0}
+      Patch:
+        Key: body/1
+        BoxDims: {x: 4, y: 6, z: 6}
+    - Origin: {x: 56, y: 0}
+      Patch:
+        Key: body/0
+        BoxDims: {x: 32, y: 6, z: 6}
+    MaxSize: {x: 256, y: 16}
+  Icons: []
+  Sections:
+  - PartName: body
+    Pieces:
+    - Pos: {x: -16, y: 0, z: -3}
+      Dim: {x: 32, y: 6, z: 6}
+      Origin: {x: 0, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -3}
+      Dim: {x: 4, y: 6, z: 6}
+      Origin: {x: 16, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: -2}
+    - Pos: {x: 0, y: 0, z: -3}
+      Dim: {x: 4, y: 6, z: 6}
+      Origin: {x: -20, y: -6, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: 2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 2, z: -2}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: -2, z: -2}
+      - {x: 0, y: 0, z: 0}
+    - Pos: {x: 0, y: 0, z: -1}
+      Dim: {x: 6, y: 2, z: 2}
+      Origin: {x: -22, y: -3, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
+      Offsets:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+  AnimationParameters: []
+  AttachPoints:
+  - name: shoot_origin
+    attachedTo: body
+    position: {x: -22, y: -2, z: 0}
+    euler: {x: 0, y: 180, z: 0}
