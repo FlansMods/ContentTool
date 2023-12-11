@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: steel_lower_receiver
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: steel_lower_receiver
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: af580b9ae0d35b348a44ce40944957a8, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Steel Lower Receiver
@@ -41,13 +22,15 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
     - flansmod:lower_receiver
   modifiers: []
+  abilities:
+  - ability: flansbasicparts:shredder
+    level: 1
   engine:
     maxAcceleration: 1
     maxDeceleration: 1

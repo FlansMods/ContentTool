@@ -122,7 +122,16 @@ public class TurboAttachPointPreview : MonoBehaviour
 
 			Gizmos.matrix = transform.localToWorldMatrix;
 
-			switch(PartName)
+			string rootPartName = PartName;
+			if (rootPartName.Contains("_"))
+			{
+				string lastPart = rootPartName.Substring(rootPartName.LastIndexOf("_") + 1);
+				if(int.TryParse(lastPart, out int partIndex))
+					rootPartName = rootPartName.Substring(0, rootPartName.LastIndexOf("_"));
+
+			}
+
+			switch (rootPartName)
 			{
 				case "eye_line":
 					Gizmos.color = Color.cyan;
@@ -136,6 +145,11 @@ public class TurboAttachPointPreview : MonoBehaviour
 					Gizmos.DrawLine(Vector3.zero, Vector3.right * 10f);
 					Gizmos.DrawCube(Vector3.zero + Vector3.right * 5f, Vector3.one * 0.7f);
 					Gizmos.DrawCube(Vector3.zero + Vector3.right * 10f, Vector3.one * 1.2f);
+					break;
+				case "laser_origin":
+					Gizmos.color = Color.red;
+					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+					Gizmos.DrawLine(Vector3.zero, Vector3.right * 100f);
 					break;
 				case "sights":
 					Gizmos.color = Color.blue;

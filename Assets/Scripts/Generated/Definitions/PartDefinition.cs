@@ -15,6 +15,8 @@ public class PartDefinition : Definition
 	[JsonField]
 	public ModifierDefinition[] modifiers = new ModifierDefinition[0];
 	[JsonField]
+	public AbilityProviderDefinition[] abilities = new AbilityProviderDefinition[0];
+	[JsonField]
 	public EngineDefinition engine = new EngineDefinition();
 	[JsonField]
 	public int materialTier = 0;

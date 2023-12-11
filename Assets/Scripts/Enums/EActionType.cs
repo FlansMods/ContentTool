@@ -36,4 +36,7 @@ public enum EActionType
 	Strip,              // Vanilla, untested
 	Shear,              // Vanilla, untested
 	Flatten,            // Vanilla, untested
+
+	AttachEffect,       // TODO:
+	Laser,
 }

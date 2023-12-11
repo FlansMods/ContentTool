@@ -11,7 +11,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	{
 		ResourceLocation resLoc = this.GetLocation();
 
-		if (LocalisedNames.Count < 1 && this is not AnimationDefinition)
+		if (LocalisedNames.Count < 1 && this is not FlanimationDefinition)
 			verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
 		if (name != Utils.ToLowerWithUnderscores(name))
 		{
@@ -244,7 +244,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 
 	public bool ExpectsModel()
 	{
-		if (this is AnimationDefinition
+		if (this is FlanimationDefinition
 		|| this is ClassDefinition
 		|| this is LoadoutPoolDefinition
 		|| this is MagazineDefinition

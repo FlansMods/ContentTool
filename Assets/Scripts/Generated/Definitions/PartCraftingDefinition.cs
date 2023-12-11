@@ -17,5 +17,7 @@ public class PartCraftingDefinition
 	[JsonField]
 	public string[] partsByName = new string[0];
 	[JsonField]
+	public string[] partsByTag = new string[0];
+	[JsonField]
 	public TieredIngredientDefinition[] partsByTier = new TieredIngredientDefinition[0];
 }

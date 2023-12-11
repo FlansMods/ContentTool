@@ -12,30 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9717990bd45d44ca23f90b0951c14c, type: 3}
   m_Name: bullet_fabricator
   m_EditorClassIdentifier: 
-  Model:
-    Type: 4
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Bullet Fabricator
   LocalisedExtras: []
-  titlestring: Bullet Fabricator
+  titleString: workbench
   bannerTextureLocation: 
   gunCrafting:
     isActive: 0
@@ -71,6 +52,8 @@ MonoBehaviour:
     - flansbasicparts:projectile_grenade_impact
     - flansbasicparts:projectile_grenade_incendiary
     - flansbasicparts:projectile_grenade_sticky
+    partsByTag:
+    - flansbasicparts:add_to_bullet_fab
     partsByTier: []
   gunModifying:
     isActive: 0

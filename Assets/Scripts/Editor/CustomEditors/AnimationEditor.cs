@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AnimationDefinition))]
+[CustomEditor(typeof(FlanimationDefinition))]
 public class AnimationEditor : Editor
 {
 	private List<bool> foldouts = new List<bool>();
@@ -62,7 +62,7 @@ public class AnimationEditor : Editor
 
     public override void OnInspectorGUI()
 	{
-		AnimationDefinition instance = (AnimationDefinition)target;
+		FlanimationDefinition instance = (FlanimationDefinition)target;
 		if(instance != null)
 		{
 			// Acquire names for dropdowns
@@ -86,7 +86,7 @@ public class AnimationEditor : Editor
 		}
 	}
 
-	private void KeyframeEditor(List<string> frameNames, AnimationDefinition instance)
+	private void KeyframeEditor(List<string> frameNames, FlanimationDefinition instance)
 	{
 		int num32Blocks = (frameNames.Count + 31) / 32;
 		List<string>[] frameNamesInBlocksOf32 = new List<string>[num32Blocks];
@@ -297,7 +297,7 @@ public class AnimationEditor : Editor
 		}
 	}
 
-	private void SequenceEditor(List<string> frameNames, AnimationDefinition instance)
+	private void SequenceEditor(List<string> frameNames, FlanimationDefinition instance)
 	{
 		FlanStyles.BigHeader("Animation Sequence Editor");
 		GUILayout.BeginHorizontal();

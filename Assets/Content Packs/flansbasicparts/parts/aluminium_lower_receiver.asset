@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: aluminium_lower_receiver
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: aluminium_lower_receiver
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: ee55d176ffabfed4da986e991fccac1d, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Aluminium Lower Receiver
@@ -46,14 +27,10 @@ MonoBehaviour:
     tags:
     - flansmod:part
     - flansmod:lower_receiver
-    recipe:
-    - part: 0
-      tieredIngredients: []
-      rawIngredients:
-      - amount: 18
-        materialName: flansbasicparts:aluminium
-      additionalIngredients: []
   modifiers: []
+  abilities:
+  - ability: flansbasicparts:configurable
+    level: 1
   engine:
     maxAcceleration: 1
     maxDeceleration: 1

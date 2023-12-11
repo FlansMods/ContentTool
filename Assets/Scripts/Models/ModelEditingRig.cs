@@ -303,7 +303,7 @@ public class ModelEditingRig : MonoBehaviour
 	// ------------------------------------------------------------------------------------------
 	[Header("Animations")]
     public bool ApplyAnimation = false;
-    public AnimationDefinition SelectedAnimation = null;
+    public FlanimationDefinition SelectedAnimation = null;
 	private DateTime LastEditorTick = DateTime.Now;
 	private float AnimProgressSeconds = 0.0f;
 	[System.Serializable]
@@ -321,7 +321,7 @@ public class ModelEditingRig : MonoBehaviour
 	{
 		SelectedAnimation = null;
 	}
-	public void OpenAnimation(AnimationDefinition anim)
+	public void OpenAnimation(FlanimationDefinition anim)
 	{
 		CloseAnimation();
 		SelectedAnimation = anim;

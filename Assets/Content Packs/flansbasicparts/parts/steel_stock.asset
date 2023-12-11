@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: steel_stock
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: steel_stock
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: 57545789d21199d41bf7b1b45d39ee5d, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Steel Stock
@@ -41,13 +22,15 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
     - flansmod:stock
   modifiers: []
+  abilities:
+  - ability: flansbasicparts:shredder
+    level: 1
   engine:
     maxAcceleration: 1
     maxDeceleration: 1

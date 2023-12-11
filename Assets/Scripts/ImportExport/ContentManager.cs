@@ -1137,6 +1137,8 @@ public class ContentManager : MonoBehaviour
 			return "block";
 		if (def is NpcDefinition)
 			return "entity";
+		if (def is AbilityDefinition)
+			return "ability";
 		return "item";
 	}
 	public void ExportLangJson(string packName, ELang lang, List<Verification> verifications = null)

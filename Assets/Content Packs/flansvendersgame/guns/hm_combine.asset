@@ -105,6 +105,36 @@ MonoBehaviour:
       attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
+  - inputType: 19
+    nodes:
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 2
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 1
   actionGroups:
   - key: primary_fire
     canActUnderwater: 1
@@ -213,17 +243,6 @@ MonoBehaviour:
       fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
-    - actionType: 2
-      duration: 0
-      sounds: []
-      itemStack: 
-      modifiers: []
-      fovFactor: 1.25
-      scopeOverlay: 
-      anim: aim_down_sights
       toolLevel: 1
       harvestSpeed: 1
       reach: 1

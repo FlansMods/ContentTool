@@ -92,7 +92,7 @@ public static class DefinitionTypes
 		if(def is TeamDefinition) return ENewDefinitionType.team;
 		if(def is RewardBoxDefinition) return ENewDefinitionType.rewardBox;
 		if(def is LoadoutPoolDefinition) return ENewDefinitionType.loadout;
-		if(def is AnimationDefinition) return ENewDefinitionType.animation;
+		if(def is FlanimationDefinition) return ENewDefinitionType.animation;
 		if(def is MagazineDefinition) return ENewDefinitionType.magazine;
 		if(def is NpcDefinition) return ENewDefinitionType.npc;
 		if(def is MaterialDefinition) return ENewDefinitionType.material;
@@ -255,7 +255,7 @@ public static class DefinitionTypes
 			case ENewDefinitionType.rewardBox: return "rewardBoxes";
 			case ENewDefinitionType.loadout: return "loadouts";
 			case ENewDefinitionType.workbench: return "workbenches";
-			case ENewDefinitionType.animation: return "animations";
+			case ENewDefinitionType.animation: return "flanimations";
 			case ENewDefinitionType.magazine: return "magazines";
 			case ENewDefinitionType.npc: return "npcs";
 			case ENewDefinitionType.material: return "materials";

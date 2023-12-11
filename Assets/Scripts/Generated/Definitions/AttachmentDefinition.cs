@@ -21,6 +21,8 @@ public class AttachmentDefinition : Definition
 	[JsonField]
 	public ReloadDefinition[] reloadOverrides = new ReloadDefinition[0];
 	[JsonField]
+	public AbilityProviderDefinition[] abilities = new AbilityProviderDefinition[0];
+	[JsonField]
 	public ERepeatMode modeOverride = ERepeatMode.FullAuto;
 	[JsonField]
 	public bool overrideFireMode = false;

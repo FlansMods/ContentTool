@@ -282,9 +282,9 @@ public class ModelEditingRigEditor : Editor
 	}
 	private void AnimationButton(ModelEditingRig rig, params GUILayoutOption[] options)
 	{
-		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(AnimationDefinition), false, options);
+		Object changedAnim = EditorGUILayout.ObjectField(rig.SelectedAnimation, typeof(FlanimationDefinition), false, options);
 		if (changedAnim != rig.SelectedAnimation)
-			rig.OpenAnimation(changedAnim as AnimationDefinition);
+			rig.OpenAnimation(changedAnim as FlanimationDefinition);
 	}
 	#endregion
 	// ------------------------------------------------------------------------

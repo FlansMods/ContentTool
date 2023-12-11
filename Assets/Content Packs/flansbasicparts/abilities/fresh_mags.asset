@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa65074b569267240839df81147fae2d, type: 3}
+  m_Name: fresh_mags
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Fresh Mags
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.fresh_mags.colour
+    Lang: 0
+    Localised: d
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.1
+    Lang: 0
+    Localised: Adds 30% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.2
+    Lang: 0
+    Localised: Adds 60% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.3
+    Lang: 0
+    Localised: Adds 90% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.4
+    Lang: 0
+    Localised: Adds 120% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.5
+    Lang: 0
+    Localised: Adds 150% damage for 5s after reloading
+  - Unlocalised: effect.flansbasicparts.fresh_mags
+    Lang: 0
+    Localised: Fresh Mags
+  maxLevel: 5
+  startTrigger: 9
+  endTrigger: 1
+  triggerConditions: []
+  targetType: 1
+  effectType: 2
+  effectParameters:
+  - flansbasicparts:fresh_mags
+  modifiers:
+  - Stat: impact_damage
+    Filter: 
+    Add: 0
+    Multiply: 1.3
+    SetValue: 
+    ApplyFilters: []
+  baseIntensity: 1
+  addIntensityPerLevel: 1
+  mulIntensityPerAttachment: 0
+  mulIntensityForFullMag: 0
+  invertMagFullness: 0
+  baseDuration: 5
+  extraDurationPerLevel: 0
+  stackAmount: 0
+  maxAmount: 1
+  stackDuration: 0
+  maxDuration: 1

@@ -12,30 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9717990bd45d44ca23f90b0951c14c, type: 3}
   m_Name: part_fabricator
   m_EditorClassIdentifier: 
-  Model:
-    Type: 4
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: 
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 0}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Part Fabricator
   LocalisedExtras: []
-  titlestring: Part Fabricator
+  titleString: workbench
   bannerTextureLocation: 
   gunCrafting:
     isActive: 0
@@ -47,7 +28,12 @@ MonoBehaviour:
     outputSlots: 16
     timePerCraft: 1
     FECostPerCraft: 0
-    partsByName: []
+    partsByName:
+    - flansbasicparts:fire_mode_auto
+    - flansbasicparts:fire_mode_single
+    - flansbasicparts:fire_mode_burst
+    partsByTag:
+    - flansbasicparts:add_to_part_fab
     partsByTier:
     - tag: flansmod:upper_receiver
       allowedTiers: 010000000200000003000000

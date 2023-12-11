@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: aluminium_combustion_engine
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: aluminium_combustion_engine
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: 05c52b721b6335943a8eafa290d41322, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Aluminium Combustion Engine
@@ -46,17 +27,10 @@ MonoBehaviour:
     tags:
     - flansmod:part
     - flansmod:engine
-    recipe:
-    - part: 0
-      tieredIngredients:
-      - tag: flansmod:circuitry
-        allowedTiers: 010000000200000003000000
-        allowedMaterials: 05000000
-      rawIngredients:
-      - amount: 216
-        materialName: flansbasicparts:aluminium
-      additionalIngredients: []
   modifiers: []
+  abilities:
+  - ability: flansbasicparts:configurable
+    level: 1
   engine:
     maxAcceleration: 1.25
     maxDeceleration: 1.25

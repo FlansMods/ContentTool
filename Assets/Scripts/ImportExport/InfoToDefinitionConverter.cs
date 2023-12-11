@@ -2157,7 +2157,9 @@ public class TeamConverter : Converter<Team, TeamDefinition>
 		output.classes = input.classes.ToArray();
 		output.flagColour = new ColourDefinition()
 		{
-			value = input.teamColour
+			red = ((input.teamColour >> 16) & 0xff) / 255f,
+			green = ((input.teamColour >> 8) & 0xff) / 255f,
+			blue = (input.teamColour & 0xff) / 255f,
 		};
 		output.textColour = input.textColour;
 		output.hat = ImportStack(input.hat);

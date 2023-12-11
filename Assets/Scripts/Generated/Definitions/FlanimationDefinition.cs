@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(menuName = "Flans Mod/AnimationDefinition")]
-public class AnimationDefinition : Definition
+[CreateAssetMenu(menuName = "Flans Mod/FlanimationDefinition")]
+public class FlanimationDefinition : Definition
 {
 	[JsonField]
 	public KeyframeDefinition[] keyframes = new KeyframeDefinition[0];
