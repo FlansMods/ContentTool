@@ -22,6 +22,9 @@ MonoBehaviour:
   - Unlocalised: paintjob.flansvendersgame.fc_56_polymer
     Lang: 0
     Localised: Flint & Cobbleson '56 Polymer
+  - Unlocalised: paintjob.flansvendersgame.fc_56_counterfeit
+    Lang: 0
+    Localised: fc 56 counterfeit
   itemSettings:
     maxStackSize: 1
     tags:
@@ -32,6 +35,9 @@ MonoBehaviour:
       paintBucketsRequired: 1
       entitlementKey: 
     - textureName: fc_56_polymer
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: fc_56_counterfeit
       paintBucketsRequired: 1
       entitlementKey: 
   inputHandlers:
@@ -99,6 +105,36 @@ MonoBehaviour:
       attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
+  - inputType: 19
+    nodes:
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 2
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 1
   actionGroups:
   - key: primary_fire
     canActUnderwater: 1

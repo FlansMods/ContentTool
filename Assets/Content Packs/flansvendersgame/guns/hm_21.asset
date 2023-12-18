@@ -60,21 +60,28 @@ MonoBehaviour:
   - inputType: 11
     nodes:
     - actionGroupToTrigger: 
-      modalCheck: 
+      modalCheck: angled_sight:0
       canTriggerWhileReloading: 0
       deferToAttachment: 1
       attachmentType: 1
       attachmentIndex: 0
       andContinueEvaluating: 0
     - actionGroupToTrigger: 
-      modalCheck: 
+      modalCheck: angled_sight:45
       canTriggerWhileReloading: 0
       deferToAttachment: 1
-      attachmentType: 3
+      attachmentType: 1
+      attachmentIndex: 1
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: ads_0
+      modalCheck: angled_sight:0
+      canTriggerWhileReloading: 1
+      deferToAttachment: 0
+      attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
-    - actionGroupToTrigger: ads
-      modalCheck: 
+    - actionGroupToTrigger: ads_45
+      modalCheck: angled_sight:45
       canTriggerWhileReloading: 1
       deferToAttachment: 0
       attachmentType: 4
@@ -105,20 +112,64 @@ MonoBehaviour:
       attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
+  - inputType: 19
+    nodes:
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 1
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 2
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: angled_sight_toggle
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 1
   actionGroups:
   - key: primary_fire
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
     twoHanded: 1
-    repeatMode: 0
-    repeatDelay: 0.1
+    repeatMode: 1
+    repeatDelay: 0.25
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
     actions:
     - actionType: 3
-      duration: 0.1
+      duration: 0.25
       sounds: []
       itemStack: 
       modifiers:
@@ -184,7 +235,7 @@ MonoBehaviour:
       harvestSpeed: 1
       reach: 1
     - actionType: 2
-      duration: 0.1
+      duration: 0.25
       sounds: []
       itemStack: 
       modifiers: []
@@ -194,7 +245,35 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
-  - key: ads
+  - key: ads_0
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 1
+    repeatMode: 4
+    repeatDelay: 0.05
+    repeatCount: 3
+    spinUpDuration: 1.5
+    loudness: 150
+    actions:
+    - actionType: 5
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers:
+      - Stat: eye_line_name
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: eye_line_0
+        ApplyFilters: []
+      fovFactor: 1.25
+      scopeOverlay: flansvendersgame:hm_acog
+      anim: 
+      toolLevel: 1
+      harvestSpeed: 1
+      reach: 1
+  - key: ads_45
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -209,7 +288,13 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
+      modifiers:
+      - Stat: eye_line_name
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: eye_line_1
+        ApplyFilters: []
       fovFactor: 1.25
       scopeOverlay: 
       anim: 
@@ -364,6 +449,34 @@ MonoBehaviour:
       toolLevel: 1
       harvestSpeed: 1
       reach: 1
+  - key: angled_sight_toggle
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 1
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    actions:
+    - actionType: 32
+      duration: 0
+      sounds: []
+      itemStack: 
+      modifiers:
+      - Stat: mode
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: angled_sight
+        ApplyFilters: []
+      fovFactor: 0
+      scopeOverlay: 
+      anim: 
+      toolLevel: 0
+      harvestSpeed: 0
+      reach: 0
   magazines:
   - key: primary
     matchByNames: []
@@ -378,6 +491,11 @@ MonoBehaviour:
     ejectActionKey: reload_primary_eject
     loadOneActionKey: reload_primary_load_one
     endActionKey: reload_primary_end
+  modes:
+  - key: angled_sight
+    values:
+    - 0
+    - 45
   loopingSounds: []
   barrelAttachments:
     matchNames: []
@@ -405,7 +523,7 @@ MonoBehaviour:
     matchTags:
     - flansmod:attach_to_rifle
     - flansmod:attach_to_any
-    numAttachmentSlots: 1
+    numAttachmentSlots: 2
     hideDefaultMesh: 1
   genericAttachments:
     matchNames: []
@@ -415,4 +533,4 @@ MonoBehaviour:
     numAttachmentSlots: 0
     hideDefaultMesh: 1
   modelParts: []
-  animationSet: 
+  animationSet: flansmod:rifle_priming_handle_magazine_fed

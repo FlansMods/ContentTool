@@ -22,6 +22,9 @@ MonoBehaviour:
   - Unlocalised: paintjob.flansvendersgame.hm_pocket_yellow
     Lang: 0
     Localised: HM Pocket Yellow
+  - Unlocalised: paintjob.flansvendersgame.hm_pocket_venom
+    Lang: 0
+    Localised: hm pocket venom
   itemSettings:
     maxStackSize: 1
     tags:
@@ -32,6 +35,9 @@ MonoBehaviour:
       paintBucketsRequired: 1
       entitlementKey: 
     - textureName: hm_pocket_yellow
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: hm_pocket_venom
       paintBucketsRequired: 1
       entitlementKey: 
   inputHandlers:
@@ -99,6 +105,36 @@ MonoBehaviour:
       attachmentType: 4
       attachmentIndex: 0
       andContinueEvaluating: 0
+  - inputType: 19
+    nodes:
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 2
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: gadget_button
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 1
   actionGroups:
   - key: primary_fire
     canActUnderwater: 1

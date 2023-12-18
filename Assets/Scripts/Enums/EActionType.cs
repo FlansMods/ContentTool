@@ -39,4 +39,5 @@ public enum EActionType
 
 	AttachEffect,       // TODO:
 	Laser,
+	SwitchMode,			
 }
