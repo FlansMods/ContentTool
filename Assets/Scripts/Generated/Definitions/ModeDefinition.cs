@@ -7,4 +7,6 @@ public class ModeDefinition
 	public string key = "mode";
 	[JsonField]
 	public string[] values = new string[] { "on", "off" };
+	[JsonField]
+	public string defaultValue = "off";
 }

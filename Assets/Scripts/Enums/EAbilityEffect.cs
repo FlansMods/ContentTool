@@ -13,4 +13,6 @@ public enum EAbilityEffect
 
 	PerformAction,
 	ApplyModifier,
+
+	TotemOfUndying,
 }

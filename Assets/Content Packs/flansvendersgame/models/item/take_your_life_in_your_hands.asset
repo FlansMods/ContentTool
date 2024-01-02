@@ -21,35 +21,35 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 1
     Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 6
     Position: {x: 0.04166835, y: 0.0000000029269835, z: 0.041668355}
-    Rotation: {x: 0.65328145, y: 0.65328145, z: 0.27059805, w: 0.27059805}
+    Rotation: {x: 0.27059805, y: 0.27059805, z: 0.65328145, w: 0.65328145}
     Scale: {x: 5.028519, y: 5.028519, z: 5.028519}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Rotation: {x: 0.49999997, y: 0.49999997, z: 0.49999997, w: -0.49999997}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 7
     Position: {x: 0, y: 0.15, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
   - Type: 8
     Position: {x: 6, y: 6, z: 6}
-    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Rotation: {x: -0.27059805, y: -0.65328145, z: 0.27059805, w: 0.65328145}
     Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
@@ -79,8 +79,6 @@ MonoBehaviour:
         Key: body/0
         BoxDims: {x: 4, y: 1, z: 2}
     MaxSize: {x: 32, y: 16}
-  TextureX: 16
-  TextureY: 16
   Icons:
   - Key: default
     Location:
@@ -89,11 +87,12 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 34cf93e22e768f14a8271fb6a7611ab1, type: 3}
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: -2, y: -1, z: -1}
       Dim: {x: 4, y: 1, z: 2}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -106,7 +105,7 @@ MonoBehaviour:
     - Pos: {x: -1, y: -6, z: -1}
       Dim: {x: 2, y: 5, z: 2}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -116,10 +115,10 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: -0.5, y: 0, z: -0}
       - {x: 0.5, y: 0, z: 0}
-    - Pos: {x: 0, y: 0, z: 0}
+    - Pos: {x: 1, y: -2, z: -1.5}
       Dim: {x: 1, y: 1, z: 3}
-      Origin: {x: 0, y: -2.5, z: -1.5}
-      Euler: {x: -0, y: 0, z: 45.000004}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 90, z: 315}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -132,7 +131,7 @@ MonoBehaviour:
     - Pos: {x: -1.75, y: -5.5, z: -0.75}
       Dim: {x: 3.5, y: 1, z: 1.5}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -142,10 +141,10 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 0, y: 0, z: 0}
+    - Pos: {x: 1.7897502, y: -1.8498093, z: -0.5}
       Dim: {x: 2, y: 1, z: 1}
-      Origin: {x: 1.25, y: -2.25, z: -0.5}
-      Euler: {x: -0, y: 0, z: 15.000001}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 15.000001}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -155,10 +154,10 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
-    - Pos: {x: 0, y: -1, z: 0}
+    - Pos: {x: 1.7897502, y: 0.84980893, z: -0.5}
       Dim: {x: 2, y: 1, z: 1}
-      Origin: {x: -1.25, y: -2.25, z: -0.5}
-      Euler: {x: -0, y: 0, z: 165}
+      Origin: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 165}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}

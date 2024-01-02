@@ -91,16 +91,20 @@ public class TurboAttachPointPreview : MonoBehaviour
 	}
 	private bool HasUnityTransformBeenChanged()
 	{
-		return !transform.localPosition.Approximately(Parent.Rig.GetAttachmentOffset(PartName));
+		return !transform.localPosition.Approximately(Parent.Rig.GetAttachmentOffset(PartName))
+			|| !transform.localEulerAngles.Approximately(Parent.Rig.GetAttachmentEuler(PartName));
 	}
 	public void CopyToUnityTransform()
 	{
 		transform.localPosition = Parent.Rig.GetAttachmentOffset(PartName);
+		transform.localEulerAngles = Parent.Rig.GetAttachmentEuler(PartName);
 	}
 	public void UpdatePreviewFromModel()
 	{
 		Vector3 localPos = Parent.Rig.GetAttachmentOffset(PartName);
+		Vector3 localEuler = Parent.Rig.GetAttachmentEuler(PartName);
 		transform.localPosition = localPos;
+		transform.localEulerAngles = localEuler;
 
 		// TODO: Reparent
 	}
@@ -136,39 +140,40 @@ public class TurboAttachPointPreview : MonoBehaviour
 				case "eye_line":
 					Gizmos.color = Color.cyan;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(-Vector3.right * 10f, Vector3.right * 100f);
-					Gizmos.DrawSphere(-Vector3.right * 10f, 0.5f);
+					Gizmos.DrawLine(-Minecraft.Forward * 10f, Minecraft.Forward * 100f);
+					Gizmos.DrawSphere(-Minecraft.Forward * 10f, 0.5f);
+					Gizmos.DrawWireCube(-Minecraft.Forward * 10f, new Vector3(5.0f, 3.0f, 0.5f));
 					break;
 				case "shoot_origin":
 					Gizmos.color = Color.red;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(Vector3.zero, Vector3.right * 10f);
-					Gizmos.DrawCube(Vector3.zero + Vector3.right * 5f, Vector3.one * 0.7f);
-					Gizmos.DrawCube(Vector3.zero + Vector3.right * 10f, Vector3.one * 1.2f);
+					Gizmos.DrawLine(Vector3.zero, Minecraft.Forward * 10f);
+					Gizmos.DrawCube(Vector3.zero + Minecraft.Forward * 5f, Vector3.one * 0.7f);
+					Gizmos.DrawCube(Vector3.zero + Minecraft.Forward * 10f, Vector3.one * 1.2f);
 					break;
 				case "laser_origin":
 					Gizmos.color = Color.red;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(Vector3.zero, Vector3.right * 100f);
+					Gizmos.DrawLine(Vector3.zero, Minecraft.Forward * 100f);
 					break;
 				case "sights":
 					Gizmos.color = Color.blue;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(Vector3.zero, Vector3.up * 5.0f);
-					Gizmos.DrawWireCube(Vector3.up * 1.5f, new Vector3(6f, 2f, 2f));
+					Gizmos.DrawLine(Vector3.zero, Minecraft.Up * 5.0f);
+					Gizmos.DrawWireCube(Minecraft.Up * 1.5f, new Vector3(2f, 2f, 6f));
 					break;
 				case "grip":
 					Gizmos.color = Color.yellow;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(Vector3.zero, Vector3.down * 5.0f);
-					Gizmos.DrawWireCube(Vector3.down * 0.5f, new Vector3(4f, 1f, 2f));
-					Gizmos.DrawWireCube(Vector3.down * 3f, new Vector3(1.5f, 4f, 1.5f));
+					Gizmos.DrawLine(Vector3.zero, Minecraft.Down * 5.0f);
+					Gizmos.DrawWireCube(Minecraft.Down * 0.5f, new Vector3(2f, 1f, 4f));
+					Gizmos.DrawWireCube(Minecraft.Down * 3f, new Vector3(1.5f, 4f, 1.5f));
 					break;
 				case "barrel":
 					Gizmos.color = Color.white;
 					Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
-					Gizmos.DrawLine(Vector3.zero, Vector3.right * 5.0f);
-					Gizmos.DrawWireCube(Vector3.right * 2f, new Vector3(4f, 1f, 1f));
+					Gizmos.DrawLine(Vector3.zero, Minecraft.Forward * 5.0f);
+					Gizmos.DrawWireCube(Minecraft.Forward * 2f, new Vector3(1f, 1f, 4f));
 					break;
 				default:
 					Gizmos.color = Color.green;

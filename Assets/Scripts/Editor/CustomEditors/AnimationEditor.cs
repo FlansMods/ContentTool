@@ -195,9 +195,9 @@ public class AnimationEditor : Editor
 					GUILayout.Label("x", GUILayout.Width(pxPerCol));
 					GUILayout.Label("y", GUILayout.Width(pxPerCol));
 					GUILayout.Label("z", GUILayout.Width(pxPerCol));
-					GUILayout.Label("roll", GUILayout.Width(pxPerCol));
-					GUILayout.Label("yaw", GUILayout.Width(pxPerCol));
 					GUILayout.Label("pitch", GUILayout.Width(pxPerCol));
+					GUILayout.Label("yaw", GUILayout.Width(pxPerCol));
+					GUILayout.Label("roll", GUILayout.Width(pxPerCol));
 					if(GUILayout.Button("Add", GUILayout.Width(64)))
 					{
 						Undo.RecordObject(instance, instance.name);

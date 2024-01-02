@@ -26,11 +26,11 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
@@ -60,31 +60,34 @@ MonoBehaviour:
     UnplacedBoxes: []
     PlacedBoxes: []
     MaxSize: {x: 4, y: 4}
-  Icon:
-    Namespace: minecraft
-    ID: null
-  TextureX: 32
-  TextureY: 2
+  Icons: []
   Sections:
   - PartName: 
+    Material: 1
     Pieces: []
   AnimationParameters: []
   AttachPoints:
   - name: barrel
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: slide
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: stock
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: sights
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: grip
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: -90, z: 0}

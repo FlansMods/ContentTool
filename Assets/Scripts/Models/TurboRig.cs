@@ -81,6 +81,35 @@ public class TurboRig : MinecraftModel
 		Sections.Add(newSection);
 		return newSection;
 	}
+	public void Operation_RotateRoot(Vector3 euler)
+	{
+		foreach(AttachPoint ap in AttachPoints)
+		{
+			if(ap.attachedTo == "body")
+			{
+				ap.euler += euler;
+				ap.position = Quaternion.Euler(euler) * ap.position;
+			}
+		}
+
+		TurboModel bodySection = GetSection("body");
+		if (bodySection != null)
+		{
+			foreach (TurboPiece piece in bodySection.Pieces)
+			{
+				// Bake any origin into the pos, so we can apply another rotation
+				piece.Pos += Quaternion.Euler(piece.Euler) * piece.Origin;
+				piece.Origin = Vector3.zero;
+				// And apply
+				piece.Euler += euler;
+			}
+		}
+
+		foreach(ItemTransform itemTransform in Transforms)
+		{
+			itemTransform.Rotation.eulerAngles -= euler;
+		}
+	}
 	public TurboModel Operation_AddSection()
 	{
 		string newPartName = Sections.Count == 0 ? "body" : $"new_{Sections.Count}";
@@ -97,6 +126,17 @@ public class TurboRig : MinecraftModel
 			if (Sections[i].PartName == oldName)
 			{
 				Sections[i].PartName = newName;
+				break;
+			}
+		}
+	}
+	public void Operation_ChangeMaterial(string partName, ETurboRenderMaterial newMaterial)
+	{
+		for (int i = 0; i < Sections.Count; i++)
+		{
+			if (Sections[i].PartName == partName)
+			{
+				Sections[i].Material = newMaterial;
 				break;
 			}
 		}
@@ -442,6 +482,7 @@ public class TurboRig : MinecraftModel
 
 		origin *= 16f;
 		builder.Current.Add("origin", JSONHelpers.ToJSON(origin));
+		builder.Current.Add("material", section.Material.ToString());
 
 		using (builder.Tabulation("turboelements"))
 		{

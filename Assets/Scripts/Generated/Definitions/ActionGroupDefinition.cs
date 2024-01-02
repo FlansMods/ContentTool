@@ -30,5 +30,8 @@ public class ActionGroupDefinition
 [Tooltip("The distance this action should be 'heard' from, in block radius. Modify this for silenced actions to not even show up in the net msgs of other players")]
 	public float loudness = 150f;
 	[JsonField]
+[Tooltip("If this is set, this action group will untrigger when NOT in this mode")]
+	public string autoCancelIfNotInMode = "";
+	[JsonField]
 	public ActionDefinition[] actions = new ActionDefinition[0];
 }

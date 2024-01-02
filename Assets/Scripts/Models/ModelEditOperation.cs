@@ -42,6 +42,47 @@ public abstract class TurboRigEditOperation : ModelEditOperation<TurboRig>
 		}
 	}
 }
+public class TurboCompleteRotateOperation : TurboRigEditOperation
+{
+	public Vector3 Euler;
+	public TurboCompleteRotateOperation(MinecraftModel model, Vector3 euler)
+		: base(model) {
+		Euler = euler;
+	}
+	public override string ID { get { return "TURBO_FULL_ROTATE"; } }
+	public override string UndoMessage { get { return $"Rotate Rig {Euler}"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		RootModel.Operation_RotateRoot(Euler);
+	}
+	public override void ApplyToPreview(MinecraftModelPreview previewer)
+	{
+		base.ApplyToPreview(previewer);
+		if (previewer is TurboRigPreview rigPreview)
+		{
+			foreach(AttachPoint ap in RootModel.AttachPoints)
+			{
+				TurboAttachPointPreview apPreview = rigPreview.GetAPPreview(ap.name);
+				if (apPreview != null)
+					apPreview.UpdatePreviewFromModel();
+			}
+			foreach(TurboModel section in RootModel.Sections)
+			{
+				TurboModelPreview sectionPreview = rigPreview.GetSectionPreview(section.PartName);
+				if (sectionPreview != null)
+				{
+					foreach (TurboPiecePreview piecePreview in sectionPreview.GetChildren())
+					{
+						piecePreview.CopyToUnityTransform();
+						piecePreview.RefreshGeometry();
+					}
+				}
+			}
+		}
+	}
+
+}
 public class TurboAddNewSectionOperation : TurboRigEditOperation
 {
 	public TurboAddNewSectionOperation(MinecraftModel model)
@@ -177,23 +218,32 @@ public class TurboAttachPointRotateOperation : TurboAttachPointEditOperation
 	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
 	public override void ApplyToModel()
 	{
-		Vector3 existingEuler = RootModel.GetAttachmentOffset(PartName);
+		Vector3 existingEuler = RootModel.GetAttachmentEuler(PartName);
 		Vector3 delta = LocalEuler - existingEuler;
-		//if (LockPartPositions)
-		//{
-		//	TurboModel section = RootModel.GetSection(PartName);
-		//	if (section != null)
-		//	{
-		//		foreach (TurboPiece piece in section.Pieces)
-		//			piece.Pos -= delta;
-		//	}
-		//}
-		//if (LockAttachPoints)
-		//{
-		//	foreach (AttachPoint ap in RootModel.AttachPoints)
-		//		if (ap.attachedTo == PartName)
-		//			ap.position -= delta;
-		//}
+		if (LockPartPositions)
+		{
+			TurboModel section = RootModel.GetSection(PartName);
+			if (section != null)
+			{
+				foreach (TurboPiece piece in section.Pieces)
+				{
+					// Bake any origin into the pos, so we can apply another rotation
+					piece.Pos += Quaternion.Euler(piece.Euler) * piece.Origin;
+					piece.Origin = Vector3.zero;
+					// And apply
+					piece.Euler -= delta;
+				}
+			}
+		}
+		if (LockAttachPoints)
+		{
+			foreach (AttachPoint ap in RootModel.AttachPoints)
+				if (ap.attachedTo == PartName)
+				{
+					ap.position = Quaternion.Euler(-delta) * ap.position;
+					ap.euler -= delta;
+				}
+		}
 		RootModel.Operation_SetAttachmentEuler(PartName, LocalEuler);
 	}
 	public override void ApplyToPreview(MinecraftModelPreview previewer)
@@ -209,6 +259,7 @@ public class TurboAttachPointRotateOperation : TurboAttachPointEditOperation
 				TurboModelPreview sectionPreview = rigPreview.GetSectionPreview(PartName);
 				foreach (TurboPiecePreview piecePreview in sectionPreview.GetChildren())
 				{
+					piecePreview.CopyToUnityTransform();
 					piecePreview.RefreshGeometry();
 				}
 			}
@@ -376,6 +427,26 @@ public class TurboRenameSectionOperation : TurboSectionEditOperation
 	{
 		sectionPreview.name = NewName;
 		sectionPreview.PartName = NewName;
+	}
+}
+public class TurboChangeMaterialOperation : TurboSectionEditOperation
+{
+	public ETurboRenderMaterial NewMaterial { get; private set; }
+	public TurboChangeMaterialOperation(MinecraftModel model, string partName, ETurboRenderMaterial newMaterial)
+		: base(model, partName)
+	{
+		NewMaterial = newMaterial;
+	}
+	public override string ID { get { return "TURBO_SECTION_CHANGE_MATERIAL"; } }
+	public override string UndoMessage { get { return "Change Material TurboSection"; } }
+	public override bool WillInvalidateUVMap(UVMap originalMap) { return false; }
+	public override void ApplyToModel()
+	{
+		RootModel.Operation_ChangeMaterial(SectionName, NewMaterial);
+	}
+	protected override void ApplyToSectionPreview(TurboModelPreview sectionPreview)
+	{
+		// TODO: Nice Unity materials
 	}
 }
 public class TurboDuplicateSectionOperation : TurboSectionEditOperation

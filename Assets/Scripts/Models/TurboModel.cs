@@ -7,6 +7,7 @@ using UnityEngine;
 public class TurboModel
 {
 	public string PartName = "";
+	public ETurboRenderMaterial Material = ETurboRenderMaterial.Cutout;
 	public List<TurboPiece> Pieces = new List<TurboPiece>();
 	public TurboPiece GetPiece(int index)
 	{

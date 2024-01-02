@@ -36,11 +36,11 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
@@ -122,13 +122,10 @@ MonoBehaviour:
         Key: ammo_0/2
         BoxDims: {x: 2, y: 6, z: 2}
     MaxSize: {x: 64, y: 32}
-  Icon:
-    Namespace: minecraft
-    ID: null
-  TextureX: 64
-  TextureY: 64
+  Icons: []
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: 0, y: 2, z: -1}
       Dim: {x: 4, y: 3, z: 2}
@@ -222,11 +219,12 @@ MonoBehaviour:
       - {x: 0.75, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   - PartName: barrel
+    Material: 1
     Pieces:
     - Pos: {x: 0, y: -0.4, z: -0.5}
       Dim: {x: 3, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: 0.1, z: 0.1}
       - {x: 0, y: 0.1, z: 0.1}
@@ -237,11 +235,12 @@ MonoBehaviour:
       - {x: 0, y: -0.1, z: -0.1}
       - {x: 0, y: -0.1, z: -0.1}
   - PartName: sights
+    Material: 1
     Pieces:
     - Pos: {x: 0, y: 5, z: -0.5}
       Dim: {x: 1, y: 2, z: 1}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0.375}
       - {x: 0, y: 0, z: 0.375}
@@ -252,11 +251,12 @@ MonoBehaviour:
       - {x: 0.5, y: -0.5, z: -0.375}
       - {x: 0, y: -0.5, z: -0.375}
   - PartName: stock
+    Material: 1
     Pieces:
     - Pos: {x: -8, y: -1, z: -1}
       Dim: {x: 7, y: 2, z: 2}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: 0, y: 90, z: 0}
       Offsets:
       - {x: 0, y: -2, z: 0}
       - {x: 0, y: -0.5, z: 0}
@@ -267,6 +267,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   - PartName: ammo_0
+    Material: 1
     Pieces:
     - Pos: {x: 4, y: -3, z: -1}
       Dim: {x: 2, y: 6, z: 2}
@@ -316,21 +317,28 @@ MonoBehaviour:
   - name: scope
     attachedTo: body
     position: {x: 3.5, y: 5, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: stock
     attachedTo: body
     position: {x: 1, y: 4, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: barrel
     attachedTo: body
     position: {x: 14, y: 4, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: grip
     attachedTo: body
     position: {x: 11, y: 3, z: 0}
+    euler: {x: 0, y: -90, z: 0}
   - name: slide
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: ammo_0
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: 0, z: 0}
   - name: sights
     attachedTo: body
     position: {x: 0, y: 0, z: 0}
+    euler: {x: 0, y: -90, z: 0}

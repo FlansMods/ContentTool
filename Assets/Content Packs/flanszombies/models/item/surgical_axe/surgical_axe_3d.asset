@@ -21,11 +21,11 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
@@ -71,13 +71,10 @@ MonoBehaviour:
         Key: body/3
         BoxDims: {x: 3, y: 2, z: 1}
     MaxSize: {x: 16, y: 16}
-  Icon:
-    Namespace: minecraft
-    ID: null
-  TextureX: 16
-  TextureY: 16
+  Icons: []
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: -1, y: -6, z: -1}
       Dim: {x: 2, y: 6, z: 2}

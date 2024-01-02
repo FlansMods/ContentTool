@@ -205,7 +205,12 @@ public class ContentManagerEditor : Editor
 
 	public void ExportTab(ContentManager instance)
 	{
-		instance.ExportRoot = FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
+		string changedLoc = FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
+		if(changedLoc != instance.ExportRoot)
+		{
+			instance.ExportRoot = changedLoc;
+			EditorUtility.SetDirty(instance);
+		}
 
 		foreach(ContentPack pack in instance.Packs)
 		{

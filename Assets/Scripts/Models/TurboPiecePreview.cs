@@ -189,18 +189,20 @@ public class TurboPiecePreview : MinecraftModelPreview
 		if (Piece == null)
 			return;
 
-		if (HasUnityTransformBeenChanged())
+		if (!ModelEditingSystem.ShouldSkipRefresh(GetModel(), Parent.PartName, PartIndex))
 		{
-			ModelEditingSystem.ApplyOperation(
-				new TurboUnityTransformOperation(
-					GetModel(),
-					Parent.PartName,
-					PartIndex,
-					transform.localPosition,
-					transform.localRotation));	
-		}
-		if(!ModelEditingSystem.ShouldSkipRefresh(GetModel(), Parent.PartName, PartIndex))
+			if (HasUnityTransformBeenChanged())
+			{
+				ModelEditingSystem.ApplyOperation(
+					new TurboUnityTransformOperation(
+						GetModel(),
+						Parent.PartName,
+						PartIndex,
+						transform.localPosition,
+						transform.localRotation));
+			}
 			CopyToUnityTransform();
+		}
 	}
 
 	private bool HasUnityTransformBeenChanged()

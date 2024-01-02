@@ -639,8 +639,8 @@ public class ModelEditingRig : MonoBehaviour
 		Vector3 a = from == null ? Vector3.zero : Resolve(from.rotation);
 		Vector3 b = to == null ? Vector3.zero : Resolve(to.rotation);
 		return Quaternion.Slerp(
-			Quaternion.Euler(a),
-			Quaternion.Euler(b),
+			Minecraft.Euler(a),
+			Minecraft.Euler(b),
 			t);
 	}
 	private Vector3 Resolve(VecWithOverride v)

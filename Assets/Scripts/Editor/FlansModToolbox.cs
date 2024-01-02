@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using static MinecraftModel;
 
 public class FlansModToolbox : EditorWindow
 {
@@ -64,24 +65,92 @@ public class FlansModToolbox : EditorWindow
 		// Temp - For Flan if I need to iterate some things in editor quickly
 		if (GUILayout.Button("Do the thing"))
 		{
-			string[] guids = AssetDatabase.FindAssets("t:GunDefinition");
+
+
+			string[] guids = AssetDatabase.FindAssets("t:FlanimationDefinition");
 			foreach (string guid in guids)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guid);
 				if (path != null)
 				{
-					GunDefinition gun = AssetDatabase.LoadAssetAtPath<GunDefinition>(path);
-					foreach (HandlerDefinition handler in gun.inputHandlers)
+					FlanimationDefinition anim = AssetDatabase.LoadAssetAtPath<FlanimationDefinition>(path);
+					foreach (KeyframeDefinition keyframe in anim.keyframes)
 					{
-						foreach (HandlerNodeDefinition node in handler.nodes)
+						foreach (PoseDefinition pose in keyframe.poses)
 						{
-							if (node.actionGroupToTrigger == "ads")
-								node.canTriggerWhileReloading = true;
+							pose.position = new VecWithOverride()
+							{
+								xValue = pose.position.zValue,
+								yValue = pose.position.yValue,
+								zValue = -pose.position.xValue,
+								xOverride = pose.position.xOverride,
+								yOverride = pose.position.yOverride,
+								zOverride = pose.position.zOverride
+							};
+							pose.rotation = new VecWithOverride()
+							{
+								xValue = -pose.rotation.zValue,
+								yValue = pose.rotation.yValue,
+								zValue = pose.rotation.xValue,
+								xOverride = pose.rotation.xOverride,
+								yOverride = pose.rotation.yOverride,
+								zOverride = pose.rotation.zOverride
+							};
 						}
 					}
-					EditorUtility.SetDirty(gun);
+					EditorUtility.SetDirty(anim);
 				}
 			}
+				
+
+			/*
+				string[] guids = AssetDatabase.FindAssets("t:TurboRig");
+				foreach (string guid in guids)
+				{
+					string path = AssetDatabase.GUIDToAssetPath(guid);
+					if (path != null)
+					{
+						TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
+						foreach (ItemTransform transform in rig.Transforms)
+						{
+							if(transform.Type == ItemTransformType.FIRST_PERSON_LEFT_HAND ||
+								transform.Type == ItemTransformType.FIRST_PERSON_RIGHT_HAND)
+							{
+								transform.Rotation = Quaternion.Euler(0f, -90f, 0f);
+							}
+						}
+						foreach(AttachPoint ap in rig.AttachPoints)
+						{
+							if(ap.name == "laser_origin" || ap.name == "shoot_origin" || ap.name == "eye_line"
+							|| ap.name.StartsWith("barrel")
+							|| ap.name.StartsWith("stock")
+							|| ap.name.StartsWith("grip")
+							|| ap.name.StartsWith("sights"))
+							{
+								if(Mathf.Approximately(ap.euler.y, 0f))
+								{
+									TurboModel section = rig.GetSection(ap.name);
+									if(section != null)
+									{
+										foreach(TurboPiece piece in section.Pieces)
+										{
+											piece.Pos += Quaternion.Euler(piece.Euler) * piece.Origin;
+											piece.Origin = Vector3.zero;
+											piece.Euler += new Vector3(0f, 90f, 0f);
+										}
+									}
+								}
+								ap.euler = new Vector3(0, -90f, 0f);
+							}
+							else if(ap.name == "barrel" || ap.name == "grip" || ap.name == "")
+							{
+								//ap.euler = new Vector3(0f, 90f, 0f);
+							}
+						}
+						EditorUtility.SetDirty(rig);
+					}
+				}
+				*/
 			/*
 			guids = AssetDatabase.FindAssets("t:MagazineDefinition");
 			foreach (string guid in guids)
@@ -206,7 +275,7 @@ public class FlansModToolbox : EditorWindow
 			{
 				ModelEditingRig rig = ActiveRigs[i];
 				rig.transform.SetParent(root.transform);
-				rig.transform.localPosition = new Vector3(0f, 0f, i * -10f);
+				rig.transform.localPosition = new Vector3(i * 10f, 0f, 0f);
 				rig.transform.localRotation = Quaternion.identity;
 				rig.transform.localScale = Vector3.one;
 				

@@ -34,10 +34,14 @@ public static class ModelEditingSystem
     public static void ApplyAllQueuedActions()
     {
         if (Operations.Count > 0)
+        {
             Debug.Log($"Applying {Operations.Count} queued modelling operations");
+        }
         while (Operations.Count > 0)
         {
             ModelEditOperation op = Operations.Dequeue();
+            Debug.Log($"Applying {op.ID}");
+
             ApplyOperation_Internal(op);
         }
     }

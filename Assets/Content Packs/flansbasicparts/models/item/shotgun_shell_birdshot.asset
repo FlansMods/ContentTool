@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: shotgun_shell_birdshot
   m_EditorClassIdentifier: 
   Textures:
-  - Key: shotgun_shell_birdshot
+  - Key: default
     Location:
       Namespace: flansbasicparts
       ID: textures/skins/shotgun_shell_birdshot
@@ -21,11 +21,11 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
@@ -87,6 +87,7 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 1be175ae164a24d49812825274503272, type: 3}
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: -0.9, y: -0.4, z: -0.4}
       Dim: {x: 0.3, y: 0.3, z: 0.3}
@@ -154,6 +155,7 @@ MonoBehaviour:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
   - PartName: casing
+    Material: 1
     Pieces:
     - Pos: {x: -1.2, y: -0.6, z: -0.6}
       Dim: {x: 2.4, y: 1.2, z: 1.2}

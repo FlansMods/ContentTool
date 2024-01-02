@@ -63,6 +63,15 @@ public class TurboModelPreview : MinecraftModelPreview
 					PartName,
 					changedName));
 		}
+		ETurboRenderMaterial changedMaterial = (ETurboRenderMaterial)EditorGUILayout.EnumPopup("Material", Section.Material);
+		if(changedMaterial != Section.Material)
+		{
+			ModelEditingSystem.ApplyOperation(
+				new TurboChangeMaterialOperation(
+				GetModel(),
+				PartName,
+				changedMaterial));
+		}
 
 		// Also embed the AP settings in this GUI
 		TurboAttachPointPreview apPreview = Parent.GetAPPreview(PartName);

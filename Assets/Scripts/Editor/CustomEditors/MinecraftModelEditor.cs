@@ -583,6 +583,17 @@ public abstract class MinecraftModelEditor : Editor
 	{
 		ModelEditingRig rig = RigSelector(model);
 
+		GUILayout.BeginHorizontal();
+		if(GUILayout.Button("Rotate -90"))
+		{
+			ModelEditingSystem.ApplyOperation(new TurboCompleteRotateOperation(model, new Vector3(0f, -90f, 0f)));
+		}
+		if (GUILayout.Button("Rotate 90"))
+		{
+			ModelEditingSystem.ApplyOperation(new TurboCompleteRotateOperation(model, new Vector3(0f, 90f, 0f)));
+		}
+		GUILayout.EndHorizontal();
+
 		int indexToDelete = -1, indexToDuplicate = -1;
 		for(int i = 0; i < model.Transforms.Count; i++)
 		{

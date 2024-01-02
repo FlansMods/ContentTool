@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: artillery_rocket
   m_EditorClassIdentifier: 
   Textures:
-  - Key: artillery_rocket
+  - Key: default
     Location:
       Namespace: flansbasicparts
       ID: textures/skins/artillery_rocket
@@ -21,11 +21,11 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
@@ -79,6 +79,7 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: e4da65c7b21a9b1489be2d061ed7be41, type: 3}
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: -6, y: -0.8, z: -0.8}
       Dim: {x: 11, y: 1.6, z: 1.6}
