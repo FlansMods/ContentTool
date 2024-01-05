@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public static class Minecraft
@@ -246,15 +247,66 @@ public static class Utils
         return (a - b).sqrMagnitude < 0.000000001f;
     }
 }
+public static class FlanCustomButtons
+{
+	public static Texture2D BoxBoundsTexture = null;
+	public static Texture2D ShapeboxCornersTexture = null;
+
+	public static GUIContent BoxBoundsToolButton { get {
+			return (BoxBoundsTexture != null ? new GUIContent(BoxBoundsTexture) : GUIContent.none.Clone())
+			.WithTooltip("Box Bounds Tool");
+		} 
+	}
+	public static GUIContent ShapeboxCornersToolButton { get {
+			return (ShapeboxCornersTexture != null ? new GUIContent(ShapeboxCornersTexture) : GUIContent.none.Clone())
+			.WithTooltip("Shapebox Corners Tool");
+		} 
+	}
+
+	public static GUIContent Clone(this GUIContent content)
+	{
+		return new GUIContent(content);
+	}
+	public static GUIContent WithTooltip(this GUIContent content, string tooltip)
+	{
+		content.tooltip = tooltip;
+		return content;
+	}
+}
+
 public static class FlanStyles
 {
-    public static int Indent = 0;
+	public static int Indent = 0;
 
 	public static readonly GUIStyle BoldLabel = GUI.skin.label.Clone()
 				.WithFontStyle(FontStyle.Bold);
     public static readonly GUIStyle GreenLabel = GUI.skin.label.Clone()
         .WithFontStyle(FontStyle.Bold)
         .WithTextColour(Color.green);
+
+	// Node Type Icons
+	public static GUIContent IconForNode(Node node)
+	{
+		if (node is RootNode) return RootNode;
+		if (node is AttachPointNode) return AttachPointNode;
+		if (node is SectionNode) return SectionNode;
+		if (node is GeometryNode) return GeometryNode;
+
+		return UnknownNode;
+	}
+	public static readonly GUIContent NoChildren =
+		EditorGUIUtility.IconContent("d_FilterByLabel").Clone().WithTooltip("No children");
+	public static readonly GUIContent UnknownNode =
+		EditorGUIUtility.IconContent("Invalid").Clone().WithTooltip("???");
+	public static readonly GUIContent RootNode =
+		EditorGUIUtility.IconContent("MoveTool").Clone().WithTooltip("TurboRig Root");
+	public static readonly GUIContent AttachPointNode =
+		EditorGUIUtility.IconContent("Grid.MoveTool").Clone().WithTooltip("Attach Point");
+	public static readonly GUIContent SectionNode =
+		EditorGUIUtility.IconContent("Grid.BoxTool").Clone().WithTooltip("Model Section");
+	public static readonly GUIContent GeometryNode =
+		EditorGUIUtility.IconContent("FilterByType").Clone().WithTooltip("Geometry");
+
 
 	// Import Buttons
 	public static readonly GUIContent RefreshImportInfo =
@@ -328,15 +380,35 @@ public static class FlanStyles
 
 
 
-	public static GUIContent Clone(this GUIContent content)
-	{
-		return new GUIContent(content);
-	}
-    public static GUIContent WithTooltip(this GUIContent content, string tooltip)
+
+
+	public class FoldoutTree
     {
-        content.tooltip = tooltip;
-        return content;
-    }
+        public List<string> FoldoutPaths = new List<string>();
+
+        public bool Foldout(GUIContent label, string path)
+        {
+			bool foldout = FoldoutPaths.Contains(path);
+            bool updatedFolout = EditorGUILayout.Foldout(foldout, label);
+			if (updatedFolout && !foldout)
+				FoldoutPaths.Add(path);
+			else if (!updatedFolout && foldout)
+				FoldoutPaths.Remove(path);
+			return updatedFolout;			
+		}
+		public void ForceExpand(string path)
+		{
+			if (!FoldoutPaths.Contains(path))
+				FoldoutPaths.Add(path);
+		}
+		public void ForceCollapse()
+		{
+			FoldoutPaths.Clear();
+		}
+
+	}
+
+
 	public static GUIStyle Clone(this GUIStyle style)
 	{
 		return new GUIStyle(style);
@@ -383,6 +455,15 @@ public static class FlanStyles
 		margin = new RectOffset(0, 0, 4, 4),
 		fixedHeight = 3,
 	};
+	public static GUIStyle thinLine = new GUIStyle()
+	{
+		normal = new GUIStyleState()
+		{
+			background = EditorGUIUtility.whiteTexture,
+		},
+		margin = new RectOffset(0, 0, 1, 1),
+		fixedHeight = 2,
+	};
 
 	public static void BigSpacer()
 	{
@@ -395,9 +476,12 @@ public static class FlanStyles
 	{
 		GUILayout.Box(GUIContent.none, horizontalLine);
 	}
+	public static void ThinLine()
+	{
+		GUILayout.Box(GUIContent.none, thinLine);
+	}
 
-
-    public static readonly GUIStyle BorderlessButton = GUI.skin.button.Clone()
+	public static readonly GUIStyle BorderlessButton = GUI.skin.button.Clone()
             .WithMargin(new RectOffset(0, 0, 0, 0));
 	public static readonly GUIStyle SelectedTextStyle = GUI.skin.label.Clone()
 			.WithFontStyle(FontStyle.Bold);
@@ -440,4 +524,22 @@ public static class FlanStyles
 		GUILayout.EndHorizontal();
         return ret;
     }
+
+	public static void RenderTextureAutoWidth(Texture texture)
+	{
+		if (MinecraftModelPreview.TextureZoomLevel == 0)
+		{
+			float scale = (float)(Screen.width - 10) / texture.width;
+			GUILayout.Label(GUIContent.none,
+							GUILayout.Width(texture.width * scale),
+							GUILayout.Height(texture.height * scale));
+		}
+		else
+		{
+			GUILayout.Label(GUIContent.none,
+							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
+							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
+		}
+		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
+	}
 }

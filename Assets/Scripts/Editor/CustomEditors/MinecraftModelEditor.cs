@@ -34,7 +34,7 @@ public abstract class MinecraftModelEditor : Editor
 				RelatedDefinitions.Add(def);
 		}
 		LinkedTextures = new Dictionary<Texture2D, string>();
-		foreach (NamedTexture namedTexture in mcModel.Textures)
+		foreach (MinecraftModel.NamedTexture namedTexture in mcModel.Textures)
 		{
 			string path = AssetDatabase.GetAssetPath(namedTexture.Texture);
 			int lastSlash = path.LastIndexOf('/');

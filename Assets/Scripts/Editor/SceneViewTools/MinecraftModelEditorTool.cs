@@ -1,24 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-public abstract class MinecraftModelEditorTool<T> : EditorTool where T : MinecraftModelPreview
+public abstract class MinecraftModelEditorTool<TNodeType> : EditorTool where TNodeType : Node
 {
 	public bool Changed(Vector3 a, Vector3 b) { return !Mathf.Approximately(a.x, b.x) || !Mathf.Approximately(a.y, b.y) || !Mathf.Approximately(a.z, b.z); }
 
 	public abstract PrimitiveBoundsHandle BoundsHandle { get; }
-	public abstract void CopyToHandle(T shape);
-	public abstract void CopyFromHandle(T shape);
+	public abstract void CopyToHandle(TNodeType shape);
+	public abstract void CopyFromHandle(TNodeType shape);
 	public override void OnToolGUI(EditorWindow window)
 	{
 		float oldSnap = EditorSnapSettings.scale;
 		EditorSnapSettings.scale = 1.0f;
 		foreach (var obj in targets)
 		{
-			if (obj is T modelPreview)
+			if (obj is TNodeType modelPreview)
 			{
 				if (Mathf.Approximately(modelPreview.transform.lossyScale.sqrMagnitude, 0f))
 					continue;

@@ -246,7 +246,7 @@ public class ModelEditingRig : MonoBehaviour
 			return ModelOpenedForEdit.BakedUVMap;
 		return null;
 	}
-	public bool TryGetNamedTexture(string skinKey, out NamedTexture namedTexture)
+	public bool TryGetNamedTexture(string skinKey, out MinecraftModel.NamedTexture namedTexture)
 	{
 		if (ModelOpenedForEdit != null)
 		{
@@ -258,7 +258,7 @@ public class ModelEditingRig : MonoBehaviour
 	}
 	public Texture2D GetTextureForSkinKey(string skinKey)
 	{
-		if (TryGetNamedTexture(skinKey, out NamedTexture namedTexture))
+		if (TryGetNamedTexture(skinKey, out MinecraftModel.NamedTexture namedTexture))
 			return namedTexture.Texture;
 
 		return DebugTexture;

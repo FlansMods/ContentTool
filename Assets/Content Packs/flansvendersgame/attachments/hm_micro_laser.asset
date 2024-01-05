@@ -46,12 +46,31 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 0
     loudness: 0
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 31
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
+      modifiers:
+      - Stat: laser_red
+        Filter: 
+        Add: 1
+        Multiply: 0
+        SetValue: 
+        ApplyFilters: []
+      - Stat: laser_green
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyFilters: []
+      - Stat: laser_blue
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: 
+        ApplyFilters: []
       fovFactor: 0
       scopeOverlay: 
       anim: 

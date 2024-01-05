@@ -14,26 +14,16 @@ public class AttachPointHandle : MinecraftBoundsHandle
 		set { center = value; } 
 	}
 	public Vector3 Direction = Vector3.forward;
+	public bool IsInfinite = false;
+	public Color Colour = Color.black;
+	protected int ControlID = -1;
 
-	public bool[] IsInfinite = new bool[0];
-	public Vector3[] Origins = new Vector3[0];
-	public Vector3[] Directions = new Vector3[0];
-	public Color[] Colours = new Color[0];
-	protected int[] ControlIDs = new int[0];
-
-	public void CopyFromAttachPoints(List<AttachPoint> points)
+	public void CopyFromAttachPoint(AttachPointNode apNode)
 	{
-		Origins = new Vector3[points.Count];
-		Directions = new Vector3[points.Count];
-		IsInfinite = new bool[points.Count];
-		Colours = new Color[points.Count];
-		for(int i = 0; i < points.Count; i++)
-		{
-			Origins[i] = points[i].position;
-			Directions[i] = points[i].GuessDirection();
-			IsInfinite[i] = points[i].name == "eye_line";
-			Colours[i] = points[i].GetDebugColour();
-		}
+		Origin = apNode.transform.localPosition;
+		Direction = apNode.transform.forward;
+		IsInfinite = apNode.name.Contains("eye_line");
+		Colour = Color.black; // apNode.GetDebugColour();
 	}
 
 	private Material OutlineMaterial;
@@ -52,46 +42,41 @@ public class AttachPointHandle : MinecraftBoundsHandle
 
 	public override void DrawMinecraftHandle()
 	{
-		if (ControlIDs.Length != Origins.Length)
+		if (ControlID == -1)
 		{
-			ControlIDs = new int[Origins.Length];
-			for (int i = 0; i < ControlIDs.Length; i++)
-				ControlIDs[i] = GUIUtility.GetControlID(GetHashCode(), FocusType.Passive);
+			ControlID = GUIUtility.GetControlID(GetHashCode(), FocusType.Passive);
 		}
 
-		for (int i = 0; i < Origins.Length; i++)
+		using (new Handles.DrawingScope(Handles.color * Colour))
 		{
-			using (new Handles.DrawingScope(Handles.color * Colours[i]))
+			if (IsInfinite)
 			{
-				if (IsInfinite[i])
-				{
-					Handles.DrawLine(Origins[i] - Directions[i] * 100f, Origins[i] + Directions[i] * 100f);
-				}
-				else
-				{
-					Handles.DrawLine(Origins[i], Origins[i] + Directions[i] * 3.0f);
-				}
-				Handles.DrawWireCube(Origins[i] + Directions[i] * (1.5f), (Vector3.one + Directions[i] * 6.0f) * HANDLE_SIZE);
+				Handles.DrawLine(Origin - Direction * 100f, Origin + Direction * 100f);
+			}
+			else
+			{
+				Handles.DrawLine(Origin, Origin + Direction * 3.0f);
+			}
+			Handles.DrawWireCube(Origin + Direction * (1.5f), (Vector3.one + Direction * 6.0f) * HANDLE_SIZE);
 
-				EditorGUI.BeginChangeCheck();
-				Vector3 modified = Slider3D(ControlIDs[i], Origins[i], Vector3.forward, Vector3.right, HANDLE_SIZE, false);
-				bool changed = EditorGUI.EndChangeCheck();
+			EditorGUI.BeginChangeCheck();
+			Vector3 modified = Slider3D(ControlID, Origin, Vector3.forward, Vector3.right, HANDLE_SIZE, false);
+			bool changed = EditorGUI.EndChangeCheck();
 
-				if (changed)
-				{
-					float snapIncrement = 1.0f;
-					if (Event.current.shift)
-						snapIncrement = 0.25f;
+			if (changed)
+			{
+				float snapIncrement = 1.0f;
+				if (Event.current.shift)
+					snapIncrement = 0.25f;
 
-					Vector3 delta = modified - Origins[i];
-					if (!Mathf.Approximately(delta.x, 0))
-						modified.x = Snap(modified.x, snapIncrement);
-					if (!Mathf.Approximately(delta.y, 0))
-						modified.y = Snap(modified.y, snapIncrement);
-					if (!Mathf.Approximately(delta.z, 0))
-						modified.z = Snap(modified.z, snapIncrement);
-					Origins[i] = modified;
-				}
+				Vector3 delta = modified - Origin;
+				if (!Mathf.Approximately(delta.x, 0))
+					modified.x = Snap(modified.x, snapIncrement);
+				if (!Mathf.Approximately(delta.y, 0))
+					modified.y = Snap(modified.y, snapIncrement);
+				if (!Mathf.Approximately(delta.z, 0))
+					modified.z = Snap(modified.z, snapIncrement);
+				Origin = modified;
 			}
 		}
 	}

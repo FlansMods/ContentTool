@@ -21,35 +21,35 @@ MonoBehaviour:
   Transforms:
   - Type: 4
     Position: {x: 8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 3
     Position: {x: -8, y: -7, z: -13}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 2
     Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 1
     Position: {x: 8, y: 8, z: 6}
-    Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 6
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 5
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+    Rotation: {x: 0.49999997, y: 0.49999997, z: 0.49999997, w: -0.49999997}
     Scale: {x: 1, y: 1, z: 1}
   - Type: 7
     Position: {x: 0, y: 0.15, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     Scale: {x: 0.0625, y: 0.0625, z: 0.0625}
   - Type: 8
     Position: {x: 6, y: 6, z: 6}
-    Rotation: {x: 0, y: 0, z: 0.38268346, w: 0.9238795}
+    Rotation: {x: -0.27059805, y: -0.65328145, z: 0.27059805, w: 0.65328145}
     Scale: {x: 1, y: 1, z: 1}
   BakedUVMap:
     UnplacedBoxes: []
@@ -79,11 +79,12 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 218e201e8d92efa49bddee31395ffc95, type: 3}
   Sections:
   - PartName: body
+    Material: 1
     Pieces:
     - Pos: {x: 0, y: -0.5, z: -0.5}
       Dim: {x: 9, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0}
       - {x: 0, y: 0, z: 0}
@@ -96,7 +97,7 @@ MonoBehaviour:
     - Pos: {x: 0.5, y: -1, z: -1.5}
       Dim: {x: 2, y: 1, z: 3}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0.75}
       - {x: -0, y: 0, z: 0.75}
@@ -109,7 +110,7 @@ MonoBehaviour:
     - Pos: {x: 4, y: -1, z: -1.5}
       Dim: {x: 2, y: 1, z: 3}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0, y: 0, z: 0.75}
       - {x: -0, y: 0, z: 0.75}
@@ -122,7 +123,7 @@ MonoBehaviour:
     - Pos: {x: 8, y: 0, z: -0.5}
       Dim: {x: 1, y: 1, z: 1}
       Origin: {x: 0, y: 0, z: 0}
-      Euler: {x: 0, y: 0, z: 0}
+      Euler: {x: -0, y: 0, z: 0}
       Offsets:
       - {x: 0.25, y: 0, z: 0.25}
       - {x: -0.25, y: 0, z: 0.25}
@@ -136,5 +137,5 @@ MonoBehaviour:
   AttachPoints:
   - name: shoot_origin
     attachedTo: body
-    position: {x: 9, y: 0, z: 0}
+    position: {x: 0.0000005364418, y: 0, z: -8.999999}
     euler: {x: 0, y: 0, z: 0}

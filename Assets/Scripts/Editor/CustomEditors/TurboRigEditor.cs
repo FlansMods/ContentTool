@@ -8,7 +8,12 @@ using UnityEngine;
 [CustomEditor(typeof(TurboRig))]
 public class TurboRigEditor : MinecraftModelEditor
 {
-	protected override void Header() { FlanStyles.BigHeader("Turbo Rig Editor"); }
+	protected override void Header() 
+	{ 
+		FlanStyles.BigHeader("Turbo Rig Editor");
+		if (GUILayout.Button("Test Upgrade"))
+			ConvertToNodes.FromTurboRig(target as TurboRig);
+	}
 
 	private List<int> ExpandedTextures = new List<int>();
 	private Vector2 TexturePreviewScroller = Vector2.zero;
@@ -116,7 +121,7 @@ public class TurboRigEditor : MinecraftModelEditor
 					}
 					if (rig.DebugTexture != null)
 					{
-						RenderTextureAutoWidth(rig.DebugTexture);
+						FlanStyles.RenderTextureAutoWidth(rig.DebugTexture);
 					}
 				}
 			}
@@ -207,7 +212,7 @@ public class TurboRigEditor : MinecraftModelEditor
 					if (texture.Texture != null)
 					{
 						TexturePreviewScroller = GUILayout.BeginScrollView(TexturePreviewScroller, GUILayout.ExpandHeight(false));
-						RenderTextureAutoWidth(texture.Texture);
+						FlanStyles.RenderTextureAutoWidth(texture.Texture);
 						GUILayout.EndScrollView();
 					}
 					GUIVerify.VerificationsBox(verifications);
@@ -321,21 +326,5 @@ public class TurboRigEditor : MinecraftModelEditor
 		}
 	}
 
-	private void RenderTextureAutoWidth(Texture texture)
-	{
-		if (MinecraftModelPreview.TextureZoomLevel == 0)
-		{
-			float scale = (float)(Screen.width - 10) / texture.width;
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * scale),
-							GUILayout.Height(texture.height * scale));
-		}
-		else
-		{
-			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
-							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
-		}
-		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
-	}
+	
 }

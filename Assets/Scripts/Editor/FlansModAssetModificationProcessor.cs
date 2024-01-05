@@ -25,7 +25,7 @@ public class FlansModAssetModificationProcessor : AssetModificationProcessor
 							if (EditorUtility.DisplayDialog("Bake Skin Modifications?", $"Saving this model ({model.name}) will change the UV map. As a result, the current {model.Textures.Count} skins assigned will be remapped from the old map to the new map. This process is not lossless and you may want to backup your textures first", "Save", "Skip"))
 							{
 								List<Texture2D> textures = new List<Texture2D>();
-								foreach (NamedTexture namedTexture in model.Textures)
+								foreach (MinecraftModel.NamedTexture namedTexture in model.Textures)
 								{
 									textures.Add(namedTexture.Texture);
 								}
