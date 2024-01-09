@@ -481,7 +481,7 @@ public class TurboRig : MinecraftModel
 		}
 
 		origin *= 16f;
-		builder.Current.Add("origin", JSONHelpers.ToJSON(origin));
+		builder.Current.Add("origin", origin.ToJson());
 		builder.Current.Add("material", section.Material.ToString());
 
 		using (builder.Tabulation("turboelements"))
@@ -497,13 +497,13 @@ public class TurboRig : MinecraftModel
 						Vector3[] verts = piece.GetVerts();
 						for (int i = 0; i < 8; i++)
 						{
-							builder.CurrentTable.Add(JSONHelpers.ToJSON(verts[i]));
+							builder.CurrentTable.Add(verts[i].ToJson());
 						}
 					}
 					float xRot = piece.Euler.x;
 					if (xRot < 180) xRot *= -1;
-					builder.Current.Add("eulerRotations", JSONHelpers.ToJSON(new Vector3(xRot, piece.Euler.y, piece.Euler.z)));
-					builder.Current.Add("rotationOrigin", JSONHelpers.ToJSON(piece.Origin - origin));
+					builder.Current.Add("eulerRotations", new Vector3(xRot, piece.Euler.y, piece.Euler.z).ToJson());
+					builder.Current.Add("rotationOrigin", (piece.Origin - origin).ToJson());
 					using (builder.Indentation("faces"))
 					{
 						System.Action<TurboPiece, String, EFace, int, int> buildUVs = (wrapper, name, face, texX, texY) =>
@@ -563,7 +563,7 @@ public class TurboRig : MinecraftModel
 				if (animParam.key != null && animParam.key.Length > 0 && !builder.Current.ContainsKey(animParam.key))
 				{
 					if (animParam.isVec3)
-						builder.Current.Add(animParam.key, JSONHelpers.ToJSON(animParam.vec3Value));
+						builder.Current.Add(animParam.key, animParam.vec3Value.ToJson());
 					else
 						builder.Current.Add(animParam.key, animParam.floatValue);
 				}
@@ -591,9 +591,9 @@ public class TurboRig : MinecraftModel
 					else
 						builder.Current.Add("name", attachPoint.name);
 					builder.Current.Add("attachTo", attachPoint.attachedTo);
-					builder.Current.Add("offset", JSONHelpers.ToJSON(attachPoint.position));
+					builder.Current.Add("offset", attachPoint.position.ToJson());
 					if(!attachPoint.euler.Approximately(Vector3.zero))
-						builder.Current.Add("euler", JSONHelpers.ToJSON(attachPoint.euler));
+						builder.Current.Add("euler", attachPoint.euler.ToJson());
 				}
 			}
 		}

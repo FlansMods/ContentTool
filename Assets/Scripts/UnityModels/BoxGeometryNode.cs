@@ -1,9 +1,9 @@
-using System.Collections;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.UI.Image;
 
 public class BoxGeometryNode : GeometryNode
 {
@@ -54,6 +54,10 @@ public class BoxGeometryNode : GeometryNode
 	}
 #endif
 
+	// -------------------------------------------------------------------
+	#region Geometry Generation
+	// -------------------------------------------------------------------
+
 	public override void GenerateGeometry(Vector2Int texSize, Vector2Int withUV)
 	{
 		Mesh.SetVertices(GenerateVertsWithUV(GenerateVertsNoUV()));
@@ -78,6 +82,48 @@ public class BoxGeometryNode : GeometryNode
 		Mesh.RecalculateBounds();
 	}
 
+	public override JObject ExportGeometryNode(Vector2Int texSize, Vector2Int withUV)
+	{
+		JArray jVerts = new JArray();
+		foreach (Vector3 v in GenerateVertsNoUV())
+			jVerts.Add(v.ToJson());
+		return new JObject()
+		{
+			["verts"] = new JArray(GenerateVertsNoUV()),
+			["eulerRotations"] = ExportEuler.ToJson(),
+			["rotationOrigin"] = ExportOrigin.ToJson(),
+			["faces"] = new JObject()
+			{
+				["north"] = ExportFaceUV(texSize, withUV, EFace.north),
+				["east"] = ExportFaceUV(texSize, withUV, EFace.east),
+				["south"] = ExportFaceUV(texSize, withUV, EFace.south),
+				["west"] = ExportFaceUV(texSize, withUV, EFace.west),
+				["up"] = ExportFaceUV(texSize, withUV, EFace.up),
+				["down"] = ExportFaceUV(texSize, withUV, EFace.down),
+
+			},
+		};
+	}
+	private JObject ExportFaceUV(Vector2Int texSize, Vector2Int withUV, EFace face)
+	{
+		Vector2[] uvs = GenerateUVsForFace(face, withUV.x, withUV.y, texSize.x, texSize.y);
+		return new JObject()
+		{
+			["uv"] = new JArray() // minX, minY, maxX, maxY ?
+			{
+				Mathf.Min(uvs[0].x, uvs[1].x, uvs[2].x, uvs[3].x),
+				Mathf.Min(uvs[0].y, uvs[1].y, uvs[2].y, uvs[3].y),
+				Mathf.Max(uvs[0].x, uvs[1].x, uvs[2].x, uvs[3].x),
+				Mathf.Max(uvs[0].y, uvs[1].y, uvs[2].y, uvs[3].y),
+			}
+			["rotation"] = (face == EFace.up ? 90 : 0),
+			["texture"] = "#default",
+		};
+	}
+	#endregion
+	// -------------------------------------------------------------------
+
+
 	// ------------------------------------------------------------------------------------------
 	#region UV-Mapped Mesh
 	// UV-Mapped mesh, with 4 vertices per (shape)box corner, so each has a unique UV mapping
@@ -95,7 +141,11 @@ public class BoxGeometryNode : GeometryNode
 	}
 	public Vector3[] GenerateNormalsWithUV() { return NORMALS_WITH_UV; }
 	public int[] GenerateTrisWithUV() { return TRIS_WITH_UV; }
-	public Vector2[] GenerateUVsForFace(EFace face, int tu, int tv)
+	public Vector2[] GenerateUVsForFace(EFace face, int tu, int tv, int tx, int ty)
+	{
+		return GenerateUVsForFace(face, tu, tv, 1f / tx, 1f / ty);
+	}
+	public Vector2[] GenerateUVsForFace(EFace face, int tu, int tv, float oneOverTx = 1.0f, float oneOverTy = 1.0f)
 	{
 		float x = Mathf.Ceil(Dim.x);
 		float y = Mathf.Ceil(Dim.y);
@@ -105,45 +155,45 @@ public class BoxGeometryNode : GeometryNode
 		{
 			case EFace.north:
 				return new Vector2[] {
-					new Vector2(tu + x * 2 + z * 2, tv + y + z),
-					new Vector2(tu + x * 2 + z * 2, tv + z),
-					new Vector2(tu + x + z * 2, tv + z),
-					new Vector2(tu + x + z * 2, tv + y + z),
+					new Vector2(oneOverTx * (tu + x * 2 + z * 2),	oneOverTy * (tv + y + z)),
+					new Vector2(oneOverTx * (tu + x * 2 + z * 2),	oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z * 2),		oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z * 2),		oneOverTy * (tv + y + z)),
 				};
 			case EFace.south:
 				return new Vector2[] {
-					new Vector2(tu + x + z, tv + y + z),
-					new Vector2(tu + x + z, tv + z),
-					new Vector2(tu + z, tv + z),
-					new Vector2(tu + z, tv + y + z),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + y + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv + y + z)),
 				};
 			case EFace.west:
 				return new Vector2[] {
-					new Vector2(tu + z, tv + y + z),
-					new Vector2(tu + z, tv + z),
-					new Vector2(tu, tv + z),
-					new Vector2(tu, tv + y + z)
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv + y + z)),
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu),					oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu),					oneOverTy * (tv + y + z)),
 				};
 			case EFace.east:
 				return new Vector2[] {
-					new Vector2(tu + x + 2 * z, tv + y + z),
-					new Vector2(tu + x + 2 * z, tv + z),
-					new Vector2(tu + x + z, tv + z),
-					new Vector2(tu + x + z, tv + y + z)
+					new Vector2(oneOverTx * (tu + x + 2 * z),		oneOverTy * (tv + y + z)),
+					new Vector2(oneOverTx * (tu + x + 2 * z),		oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + y + z)),
 				};
 			case EFace.up:
 				return new Vector2[] {
-					new Vector2(tu + x + z, tv + z),
-					new Vector2(tu + x + z, tv),
-					new Vector2(tu + z, tv),
-					new Vector2(tu + z, tv + z)
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv)),
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv)),
+					new Vector2(oneOverTx * (tu + z),				oneOverTy * (tv + z)),
 				};
 			case EFace.down:
 				return new Vector2[] {
-					new Vector2(tu + x * 2 + z, tv + z),
-					new Vector2(tu + x + z, tv + z),
-					new Vector2(tu + x + z, tv),
-					new Vector2(tu + x * 2 + z, tv)
+					new Vector2(oneOverTx * (tu + x * 2 + z),		oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv + z)),
+					new Vector2(oneOverTx * (tu + x + z),			oneOverTy * (tv)),
+					new Vector2(oneOverTx * (tu + x * 2 + z),		oneOverTy * (tv)),
 				};
 			default:
 				return new Vector2[4];

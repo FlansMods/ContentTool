@@ -36,8 +36,6 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 	private const float MODELLING_BUTTON_X = 32f;
 	private static FlanStyles.FoldoutTree Tree = new FlanStyles.FoldoutTree();
 
-
-
 	public override void OnInspectorGUI()
 	{
 		if (target is TNodeType node)
@@ -60,23 +58,56 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 					Selection.activeObject = parent;
 				GUILayout.Label($"Parent: {parent}");
 			}
-			if (node.transform.childCount > 0)
-			{
-				if (GUILayout.Button("Expand All"))
-				{
-					ForceExpand(node, node.name);
-				}
-				if (GUILayout.Button("Collapse All"))
-				{
-					Tree.ForceCollapse();
-				}
-			}
+
 			// The root of this inspector should always start expanded
 			Tree.ForceExpand(node.name);
 			GUILayout.EndHorizontal();
 
 
+
 			FlanStyles.BigHeader($"{node.name} ({typeof(TNodeType)})");
+
+			// If we are at the root, verify this asset
+			if (parent == null)
+			{
+				GUIVerify.CachedVerificationsBox(node);
+			}
+
+			// Quick toolbar
+			GUILayout.BeginHorizontal();
+			// Tools for expanding and collapsing children quickly
+			if (node.transform.childCount > 0)
+			{
+				GUILayout.Label("Node Editor");
+				if (GUILayout.Button(FlanStyles.ExpandAllNodes))
+				{
+					ForceExpand(node, node.name);
+				}
+				if (GUILayout.Button(FlanStyles.CollapseAllNodes))
+				{
+					Tree.ForceCollapse();
+				}
+			}
+			GUILayout.FlexibleSpace();
+			// And tools for export or finding the content pack
+			if (parent == null)
+			{
+				GUILayout.Label("Export");
+				bool validLocation = node.TryGetLocation(out ResourceLocation resLoc) && resLoc.IsContentPack();
+				EditorGUI.BeginDisabledGroup(!validLocation);
+				if (GUILayout.Button(validLocation ? FlanStyles.NavigateToContentPack : FlanStyles.NotInAnyContentPack))
+				{
+					
+				}
+				if (GUILayout.Button(FlanStyles.ExportSingleAsset))
+				{
+					
+				}
+				EditorGUI.EndDisabledGroup();
+			}
+			GUILayout.EndHorizontal();
+
+		
 
 			// Then iterate
 			DrawNodeGUI(node, node.name);
@@ -103,13 +134,27 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 
 		if (node.SupportsRename())
 		{
-			string changedName = EditorGUILayout.DelayedTextField(node.name);
-			if (changedName != node.name)
-				node.Rename(changedName);
+			string prefix = node.GetFixedPrefix();
+			if (prefix.Length > 0)
+			{
+				string strippedName = node.name.Substring(prefix.Length);
+				GUILayout.Label(prefix);
+				string changedName = EditorGUILayout.DelayedTextField(strippedName);
+				if (changedName != strippedName)
+					node.Rename($"{prefix}{changedName}");
+			}
+			else
+			{
+				string changedName = EditorGUILayout.DelayedTextField(node.name);
+				if (changedName != node.name)
+					node.Rename(changedName);
+			}
 		}
 		else
 			GUILayout.Label(node.name);
 		GUILayout.FlexibleSpace();
+
+		GUIVerify.CachedVerificationsIcon(node);
 
 		if (GUILayout.Button(FlanStyles.GoToEntry, GUILayout.Width(MODELLING_BUTTON_X)))
 			Selection.activeObject = node;
@@ -129,7 +174,6 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 		{
 			if (node.HasCompactEditorGUI() || node.SupportsTranslate() || node.SupportsRotate())
 			{
-				
 				GUILayout.BeginHorizontal();
 				GUILayout.Box(GUIContent.none, GUILayout.Width(EditorGUI.indentLevel * 16), GUILayout.ExpandHeight(true));
 				GUILayout.BeginVertical();
@@ -157,10 +201,21 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 				GUILayout.EndHorizontal();
 			}
 			
+
 			foreach (Node child in node.ChildNodes)
 			{
+				
+
 				EditorGUI.indentLevel++;
-				DrawNodeGUI(child, $"{path}/{child.name}");
+				if (child.HideInHeirarchy())
+				{
+					foreach (Node grandchild in child.ChildNodes)
+					{
+						DrawNodeGUI(grandchild, $"{path}/{child.name}/{grandchild.name}");
+					}
+				}
+				else
+					DrawNodeGUI(child, $"{path}/{child.name}");
 				EditorGUI.indentLevel--;
 			}
 		}

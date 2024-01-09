@@ -181,9 +181,9 @@ public abstract class MinecraftModel : ScriptableObject, IVerifiableAsset
 				{
 					using (builder.Indentation(outputKey))
 					{
-						builder.Current.Add("rotation", JSONHelpers.ToJSON(trans.Rotation.eulerAngles));
-						builder.Current.Add("translation", JSONHelpers.ToJSON(trans.Position));
-						builder.Current.Add("scale", JSONHelpers.ToJSON(trans.Scale));
+						builder.Current.Add("rotation", trans.Rotation.eulerAngles.ToJson());
+						builder.Current.Add("translation", trans.Position.ToJson());
+						builder.Current.Add("scale", trans.Scale.ToJson());
 					}
 				}
 			}

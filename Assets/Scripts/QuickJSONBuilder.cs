@@ -94,13 +94,3 @@ public class QuickJSONBuilder
         }
     }
 }
-
-public static class JSONHelpers
-{
-    public static JArray ToJSON(this Vector3 v)
-    {
-        JArray jV = new JArray();
-        jV.Add(v.x); jV.Add(v.y); jV.Add(v.z);
-        return jV;
-    }
-}

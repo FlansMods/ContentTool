@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,10 +27,31 @@ public interface ICloneable<T>
 	T Clone();
 }
 
-[System.Serializable]
-public class ModifiableList<T> : List<T> where T : IModifyable, ICloneable<T>, new()
+[Serializable]
+public class TextureList : ModifiableList<NamedTexture>
+{
+	
+}
+
+[Serializable]
+public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 {
 	private static FlanStyles.FoldoutTree Tree = new FlanStyles.FoldoutTree();
+
+	// -------------------------------------------------------------------------
+	// Unity serialization doesn't like extending the List<T>, so we wrap it >.>
+	public List<T> List = new List<T>();
+	public int Count { get { return List.Count; } }
+	public void Insert(int index, T t) { List.Insert(index, t); }
+	public void RemoveAt(int index) { List.RemoveAt(index); }
+	public IEnumerator<T> GetEnumerator() { return List.GetEnumerator(); }
+	public void Add(T t) { List.Add(t); }
+	public T this[int i] {
+		get { return List[i]; }
+		set { List[i] = value; }
+	}
+	// -------------------------------------------------------------------------
+
 	public delegate void GUIFunc(T entry);
 	public delegate T CreateFunc();
 
@@ -71,6 +94,11 @@ public class ModifiableList<T> : List<T> where T : IModifyable, ICloneable<T>, n
 				else GUILayout.Label(entry.GetName());
 				// Space so the buttons are right-aligned
 				GUILayout.FlexibleSpace();
+				// And a verifications summary box
+				if (entry is IVerifiableAsset verifiable)
+				{
+					GUIVerify.CachedVerificationsIcon(verifiable);
+				}
 				// Preview button
 				if (entry.SupportsPreview())
 					if (GUILayout.Button(FlanStyles.ApplyPose))
@@ -83,13 +111,7 @@ public class ModifiableList<T> : List<T> where T : IModifyable, ICloneable<T>, n
 				if (entry.SupportsDelete())
 					if (GUILayout.Button(FlanStyles.DeleteEntry))
 						indexToDelete = i;
-				// And a verifications summary box
-				if (entry is IVerifiableAsset verifiable)
-				{
-					List<Verification> verifications = new List<Verification>();
-					verifiable.GetVerifications(verifications);
-					GUIVerify.VerificationIcon(verifications);
-				}
+				
 				GUILayout.EndHorizontal();
 
 				if (foldout)
@@ -126,17 +148,26 @@ public class ModifiableList<T> : List<T> where T : IModifyable, ICloneable<T>, n
 }
 
 [ExecuteInEditMode]
-public abstract class Node : MonoBehaviour
+public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContainer
 {
 	public static PositionSnapSetting PosSnap = PositionSnapSetting.One;
 	public static RotationSnapSetting RotSnap = RotationSnapSetting.Deg22_5;
+
+	// TODO: If you MUST, change these. But better to fix the root cause
+	public Vector3 ExportOrigin { get { return LocalOrigin; } }
+	// TODO: Re-apply Proto's fix
+	// float xRot = piece.Euler.x;
+	// if (xRot< 180) xRot *= -1;
+	public Vector3 ExportEuler { get { return LocalEuler; } }
+	public Vector3 ExportScale { get { return LocalScale; } }
 
 
 
 	public Vector3 LocalOrigin { get { return transform.localPosition; } set { transform.localPosition = value; } }
     public Vector3 LocalEuler { get { return transform.localEulerAngles; } set { transform.localEulerAngles = value; } }
-    // Minecraft Forward is -z
-    public Vector3 Forward { get { return -transform.forward; } }
+	public Vector3 LocalScale { get { return transform.localScale; } set { transform.localScale = value; } }
+	// Minecraft Forward is -z
+	public Vector3 Forward { get { return -transform.forward; } }
     public Vector3 Right { get { return transform.right; } }
     public Vector3 Up { get { return transform.up; } }
 
@@ -158,6 +189,7 @@ public abstract class Node : MonoBehaviour
 	{
 		
 	}
+	public virtual bool HideInHeirarchy() { return false; }
 	#endif
 
 	public RootNode Root { get { return GetParentOfType<RootNode>(); } }
@@ -174,7 +206,13 @@ public abstract class Node : MonoBehaviour
 		get
 		{
 			if (transform.parent != null && transform.parent.TryGetComponent(out Node parentNode))
+			{
+				while(parentNode != null && parentNode.HideInHeirarchy())
+				{
+					parentNode = parentNode.ParentNode;
+				}
 				return parentNode;
+			}
 			return null;
 		}
 	}
@@ -247,6 +285,7 @@ public abstract class Node : MonoBehaviour
 			EditorUtility.SetDirty(gameObject);
 		}
 	}
+	public virtual string GetFixedPrefix() { return ""; }
 	public virtual bool SupportsRename() { return true; }
 	public virtual void Rename(string newName)
 	{
@@ -258,9 +297,12 @@ public abstract class Node : MonoBehaviour
 	// Default unavailable
 	public virtual bool SupportsMirror() { return false; }
 	public virtual void Mirror(bool mirrorX, bool mirrorY, bool mirrorZ) { }
+	public virtual bool SupportsPreview() { return false; }
+	public virtual void Preview() { }
 
 	#endregion
 	// ---------------------------------------------------------------------------
+
 
 
 	// ---------------------------------------------------------------------------
@@ -268,8 +310,26 @@ public abstract class Node : MonoBehaviour
 	// ---------------------------------------------------------------------------
 	public virtual bool NeedsMaterialType(ETurboRenderMaterial renderType) { return false; }
 	public virtual void ApplyMaterial(ETurboRenderMaterial renderType, Material mat) { }
+	#endregion
+	// ---------------------------------------------------------------------------
 
 
+
+
+	// ---------------------------------------------------------------------------
+	#region Verifications
+	// ---------------------------------------------------------------------------
+	public UnityEngine.Object GetUnityObject() { return this; }
+	public virtual void GetVerifications(List<Verification> verifications)
+	{
+		if (Root == null)
+			verifications.Add(Verification.Failure("Node without a RootNode"));
+	}
+	public virtual IEnumerable<IVerifiableAsset> GetAssets()
+	{
+		foreach (Node child in ChildNodes)
+			yield return child;
+	}
 	#endregion
 	// ---------------------------------------------------------------------------
 

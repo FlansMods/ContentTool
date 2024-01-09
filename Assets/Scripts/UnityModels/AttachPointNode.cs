@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class AttachPointNode : Node
 {
-    public string APName { get { return name.Substring("ap_".Length); } }
+	public override string GetFixedPrefix() { return "ap_"; }
+	public string APName { get { return name.Substring("ap_".Length); } }
 	//public EAttachmentType APType { get { } }
 	public string AttachedTo { get { return ParentNode is AttachPointNode apNode ? apNode.APName : "body"; } }
 	public Vector3 APOffset { get { return transform.localPosition; } }
 	public Vector3 APEulers { get { return transform.localEulerAngles; } }
-
-	public override bool SupportsRename() { return false; }
 
 	public void OnDrawGizmosSelected()
 	{

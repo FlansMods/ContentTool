@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -61,6 +62,12 @@ public abstract class GeometryNode : Node
 		}
 	}
 	#endregion
+	// -------------------------------------------------------------------
+
+
+
+
+	// -------------------------------------------------------------------
 #if UNITY_EDITOR
 	public override bool HasCompactEditorGUI() { return true; }
 	public override void CompactEditorGUI()
@@ -79,6 +86,7 @@ public abstract class GeometryNode : Node
 		GUILayout.EndHorizontal();
 	}
 #endif
+	// -------------------------------------------------------------------
 
 	public override bool NeedsMaterialType(ETurboRenderMaterial renderType) { return renderType == ETurboRenderMaterial.Cutout; }
 	public override void ApplyMaterial(ETurboRenderMaterial renderType, Material mat) 
@@ -92,7 +100,13 @@ public abstract class GeometryNode : Node
 		GenerateBakedGeometry(Root.UVMapSize);
 		if (MR == null)
 			Debug.Log("MeshRenderer null");
+		Mesh.RecalculateBounds();
 	}
+
+
+	// -------------------------------------------------------------------
+	#region Geometry Generation
+	// -------------------------------------------------------------------
 	public void GenerateTempGeometry(Vector2Int texSize)
 	{
 		GenerateGeometry(texSize, BoxUVBounds);
@@ -102,4 +116,7 @@ public abstract class GeometryNode : Node
 		GenerateGeometry(texSize, BakedUV.min);
 	}
 	public abstract void GenerateGeometry(Vector2Int texSize, Vector2Int withUV);
+	public abstract JObject ExportGeometryNode(Vector2Int texSize, Vector2Int withUV);
+	#endregion
+	// -------------------------------------------------------------------
 }

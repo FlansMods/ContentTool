@@ -1,13 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using UnityEditor;
 using UnityEngine;
 
 public static class JavaModelImporter
@@ -17,50 +12,6 @@ public static class JavaModelImporter
 	private static readonly string IntCapture = "(-?[0-9]*)";
 	private static readonly string AdvancedFloatCapture = "(?:\\/\\*[0-9 ]*\\*\\/)?\\s*([\\-0-9.\\/\\*Ff]*)";
 	private static readonly string WhitespaceCommaCapture = "\\s*,\\s*";
-	private static readonly Regex RegexExpanderRegex = new Regex("(.*)%(var)%(.*)%(index)%(.*)%([0-9]*(?:xFloat|xBool))%(.*)|(.*)%(var)%(.*)%([0-9]*(?:xFloat|xBool))%(.*)|(.*)%([0-9]*(?:xFloat|xBool))%(.*)");
-	private static Regex CreateRegex(string src)
-	{
-		// "%var%[%index%].addShapeBox(%32xFloat%);"
-		Match match = RegexExpanderRegex.Match(src);
-		if (match.Success)
-		{
-			StringBuilder builder = new StringBuilder();
-			for (int i = 1; i < match.Groups.Count; i++)
-			{
-				string value = match.Groups[i].Value;
-				if (value == "var")
-					builder.Append(VariableNameCapture);
-				else if (value == "index")
-					builder.Append(IntCapture);
-				else if (value.Contains("xFloat"))
-				{ 
-					int numFloats = int.Parse(value.Substring(0, value.IndexOf("xFloat")));
-					for (int j = 0; j < numFloats; j++)
-					{
-						builder.Append(AdvancedFloatCapture);
-						if (j < numFloats - 1) 
-							builder.Append(WhitespaceCommaCapture);
-					}
-				}
-				else if (value.Contains("xBool"))
-				{
-					int numBools = int.Parse(value.Substring(0, value.IndexOf("xBool")));
-					for (int j = 0; j < numBools; j++)
-					{
-						builder.Append(BoolCapture);
-						if (j < numBools - 1)
-							builder.Append(WhitespaceCommaCapture);
-					}
-				}
-				else
-					builder.Append(value);
-			}
-			return new Regex(builder.ToString());
-		}
-		Debug.LogError($"Failed to parse {src} string into regex");
-		return new Regex(src);
-
-	}
 
 	public static readonly int[] aiPermutation = { 0, 1, 4, 5, 3, 2, 7, 6 };
 
@@ -103,6 +54,29 @@ public static class JavaModelImporter
 		cube.particle = side;
 		return cube;
 	}
+
+	// TODO: After 1.20 update done
+	//public static RootNode ImportJavaModel(string modName, string javaPath)
+	//{
+	//	GameObject go = new GameObject();
+	//	RootNode rootNode = go.AddComponent<RootNode>();
+	//	// TODO: rootNode.AddDefaultTransforms();
+	//
+	//	using (StreamReader reader = new StreamReader(javaPath, Encoding.Default))
+	//	{
+	//		while(!reader.EndOfStream)
+	//		{
+	//			string line = reader.ReadLine();
+	//			// Strip initial and trailing whitespace
+	//			line = line.Trim(' ', '\t');
+	//			// Then ignore comment lines
+	//			if (line.StartsWith("//"))
+	//				continue;
+	//
+	//
+	//		}
+	//	}
+	//}
 
 	public static TurboRig ImportTurboModel(string modName, string javaPath, InfoType optionalType)
 	{

@@ -17,9 +17,9 @@ public class RepositionedModel : MinecraftModel
 		{
 			using (builder.Indentation("thirdperson"))
 			{
-				builder.Current.Add("rotation", JSONHelpers.ToJSON(Rotation.eulerAngles));
-				builder.Current.Add("translation", JSONHelpers.ToJSON(Translation));
-				builder.Current.Add("scale", JSONHelpers.ToJSON(Scale));
+				builder.Current.Add("rotation", Rotation.eulerAngles.ToJson());
+				builder.Current.Add("translation", Translation.ToJson());
+				builder.Current.Add("scale", Scale.ToJson());
 			}
 		}
 		return true;
