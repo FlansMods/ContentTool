@@ -188,12 +188,12 @@ public static class AdditionalAssetImporter
 					}
 
 					// Create the 3D model
-					CreateTurboRootNode_Internal($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
-												 $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
-												 skins,
-												 icons,
-												 allowedOutputs, 
-												 errors);
+					ImportTurboRootNode($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
+										$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
+										skins,
+										icons,
+										allowedOutputs, 
+										errors);
 
 					exportBasicItemModel = false;
 				}
@@ -239,7 +239,7 @@ public static class AdditionalAssetImporter
 		}
 	}
 
-	private static void CreateTurboRootNode_Internal(string from, string to, List<NamedTexture> skins, List<NamedTexture> icons, List<string> allowedOutputs, List<Verification> errors)
+	public static void ImportTurboRootNode(string from, string to, List<NamedTexture> skins, List<NamedTexture> icons, List<string> allowedOutputs, List<Verification> errors)
 	{
 		if (!allowedOutputs.Contains(to))
 			return;

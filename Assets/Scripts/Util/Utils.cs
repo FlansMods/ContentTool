@@ -263,6 +263,10 @@ public static class FlanStyles
 		"Import this entire pack, overwriting existing assets!");
 	public static readonly GUIContent ImportPackNewOnly = Button("Customized",
 		"Import new assets in this pack, without overwriting existing assets");
+	public static readonly GUIContent ImportSingleAssetNewOnly = Button("Customized",
+		"Import this asset, unless it already exists");
+	public static readonly GUIContent ImportSingleAssetOverwrite = Button("Download-Available",
+		"Import this asset, overwriting existing");
 
 	// -------------------------------------------------------------------------------------------
 	// Export Buttons

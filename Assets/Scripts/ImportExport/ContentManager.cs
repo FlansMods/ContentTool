@@ -238,14 +238,51 @@ public class ContentManager : MonoBehaviour
 			return true;
 		}
 	}
+	public class ModelList
+	{
+		public string FolderName;
+		public string PackName = "";
+		public List<string> Models = new List<string>();
+		private static string ConvertName(string modelName)
+		{
+			return Minecraft.SanitiseID(modelName.Substring("Model".Length, modelName.Length - "Model".Length - ".java".Length));
+		}
+		public IEnumerable<KeyValuePair<string, string>> ImportMappings 
+		{ 
+			get 
+			{
+				foreach (string modelName in Models)
+				{
+					yield return new KeyValuePair<string, string>(
+						$"{MODEL_IMPORT_ROOT}/{FolderName}/{modelName}", 
+						$"{ASSET_ROOT}/{PackName}/models/item/{ConvertName(modelName)}.prefab");
+				}
+			} 
+		}
+	}
 	[SerializeField]
 	private List<PreImportPack> PreImportPacks = null;
+	private Dictionary<string, ModelList> PreImportModels = null;
 	private void CachePreImportPacks()
 	{
 		PreImportPacks = new List<PreImportPack>();
 		foreach (DirectoryInfo subDir in new DirectoryInfo(IMPORT_ROOT).EnumerateDirectories())
 		{
 			PreImportPacks.Add(new PreImportPack() { PackName = subDir.Name });
+		}
+		if (PreImportModels == null)
+		{
+			PreImportModels = new Dictionary<string, ModelList>();
+			foreach (DirectoryInfo subDir in new DirectoryInfo(MODEL_IMPORT_ROOT).EnumerateDirectories())
+			{
+				ModelList modelList = new ModelList();
+				modelList.FolderName = subDir.Name;
+				foreach (FileInfo modelFile in subDir.EnumerateFiles())
+				{
+					modelList.Models.Add(modelFile.Name);
+				}
+				PreImportModels[subDir.Name] = modelList;
+			}
 		}
 	}
 	private bool TryGetPreImportPack(string packName, out PreImportPack result)
@@ -258,6 +295,11 @@ public class ContentManager : MonoBehaviour
 			}
 		result = null;
 		return false;
+	}
+	public Dictionary<string, ModelList> GetPreImportModelList()
+	{
+		Refresh();
+		return PreImportModels;
 	}
 	public List<string> GetPreImportPackNames()
 	{

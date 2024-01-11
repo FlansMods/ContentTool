@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,7 +38,18 @@ public class ContentManagerEditor : Editor
 		}
 	}
 
+
 	public bool ExpandImportResults = false;
+	public enum ImportSubTab 
+	{
+		ImportPacks,
+		ImportModels,
+	}
+	public static readonly GUIContent[] ImportSubTabTitles = new GUIContent[] {
+		new GUIContent("Import Packs"),
+		new GUIContent("Import Models"),
+	};
+	public ImportSubTab SelectedImportTab = ImportSubTab.ImportPacks;
 	public void ImportTab(ContentManager instance)
 	{
 		if (ContentManager.LastImportOperation != "None" && ContentManager.LastImportOperationResults.Count > 0)
@@ -51,6 +60,121 @@ public class ContentManagerEditor : Editor
 				ContentManager.LastImportOperationResults);
 		}
 
+		SelectedImportTab = (ImportSubTab)GUILayout.Toolbar((int)SelectedImportTab, ImportSubTabTitles);
+		switch(SelectedImportTab)
+		{
+			case ImportSubTab.ImportPacks:
+				ImportTab_Packs(instance);
+				break;
+			case ImportSubTab.ImportModels:
+				ImportTab_Models(instance);
+				break;
+		}
+		
+	}
+
+	public FlanStyles.FoldoutTree ModelFoldout = new FlanStyles.FoldoutTree();
+	public void ImportTab_Models(ContentManager instance)
+	{
+		foreach(var kvp in instance.GetPreImportModelList())
+		{
+			GUILayout.BeginHorizontal();
+			bool foldout = ModelFoldout.Foldout(new GUIContent(kvp.Key), kvp.Key);
+			GUILayout.Label(" maps to... ", FlanStyles.BoldLabel);
+			kvp.Value.PackName = EditorGUILayout.DelayedTextField(kvp.Value.PackName);
+			List<string> packNames = new List<string>();
+			int selectedPackIndex = -1;
+			for (int i = 0; i < instance.Packs.Count; i++)
+			{
+				packNames.Add(instance.Packs[i].name);
+				if (kvp.Value.PackName == instance.Packs[i].name)
+					selectedPackIndex = i;
+			}
+			int changedIndex = EditorGUILayout.Popup(selectedPackIndex, packNames.ToArray());
+			if (changedIndex != selectedPackIndex && changedIndex != -1)
+				kvp.Value.PackName = packNames[changedIndex];
+
+			// Import all button
+
+			GUILayout.EndHorizontal();
+
+
+			bool packNameSelected = kvp.Value.PackName.Length > 0;
+			if (foldout)
+			{
+				GUILayout.BeginHorizontal();
+
+				GUILayout.Space(15);
+
+				// Column 1 - Model Name
+				GUILayout.BeginVertical();
+				foreach (string modelName in kvp.Value.Models)
+					GUILayout.Label(modelName);
+				GUILayout.EndVertical();
+
+				GUILayout.FlexibleSpace();
+
+				
+
+				// Column 2 - buttons!
+				GUILayout.BeginVertical();
+				foreach (var modelImportMapping in kvp.Value.ImportMappings)
+				{
+					GUILayout.BeginHorizontal();
+					string from = modelImportMapping.Key;
+					string to = modelImportMapping.Value;
+					bool outputExists = File.Exists(to);
+					bool doImport = false;
+
+					EditorGUI.BeginDisabledGroup(!outputExists);
+					if (GUILayout.Button(FlanStyles.ImportSingleAssetOverwrite))
+						doImport = true;
+					EditorGUI.EndDisabledGroup();
+					EditorGUI.BeginDisabledGroup(outputExists);
+					if (GUILayout.Button(FlanStyles.ImportSingleAssetNewOnly))
+						doImport = true;
+					EditorGUI.EndDisabledGroup();
+
+					if(doImport)
+					{
+						RootNode rootNode = JavaModelImporter.ImportJavaModel(from, ContentManager.GetFreshImportLogger($"Importing {from}"));
+						rootNode.AddDefaultTransforms();
+						string folderPath = to.Substring(0, to.LastIndexOf('/'));
+						if (!Directory.Exists(folderPath))
+							Directory.CreateDirectory(folderPath);
+
+						PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, to);
+                        UnityEngine.Object.DestroyImmediate(rootNode.gameObject);			
+					}
+					GUILayout.EndHorizontal();
+				}
+				GUILayout.EndVertical();
+
+				// Column 3 - maps to...
+				GUILayout.BeginVertical();
+				foreach (var modelImportMapping in kvp.Value.ImportMappings)
+				{
+					if (packNameSelected)
+					{
+						bool fileExists = File.Exists(modelImportMapping.Value);
+						if (fileExists)
+							GUILayout.Label($"maps to {modelImportMapping.Value} (already exists)", FlanStyles.RedLabel);
+						else
+							GUILayout.Label($"maps to {modelImportMapping.Value}");
+					}
+					else
+						GUILayout.Label($"<Select an export folder>");
+				}
+				GUILayout.EndVertical();
+
+				GUILayout.EndHorizontal();
+			}
+			
+		}
+	}
+
+	public void ImportTab_Packs(ContentManager instance)
+	{
 		foreach (string sourcePack in instance.GetPreImportPackNames())
 		{
 			string packFoldoutPath = $"{sourcePack}";
@@ -139,7 +263,7 @@ public class ContentManagerEditor : Editor
 						}
 						if (GUILayout.Button(FlanStyles.ImportPackOverwrite, GUILayout.Width(32)))
 						{
-						
+
 						}
 						GUILayout.EndHorizontal();
 
