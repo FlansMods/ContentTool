@@ -15,7 +15,10 @@ public class RootNode : Node
 	public FlanimationDefinition AnimationSet = null;
 
 
-
+	public void AddDefaultTransforms()
+	{
+		
+	}
 
 	public bool HasUVMap() { return UVMapSize != Vector2Int.zero; }
 	public bool NeedsUVRemap() 

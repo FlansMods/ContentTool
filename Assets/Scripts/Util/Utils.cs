@@ -149,33 +149,17 @@ public static class Utils
 		}
 		return results;
  	}
-
+	// Use Minecraft.SanitiseID()
 	public static string ToLowerWithUnderscores(string shortName)
 	{
 		if(shortName == null ||shortName.Length == 0)
 			return "";
         return System.Text.RegularExpressions.Regex.Replace(shortName, "([a-z])([A-Z])", "$1_$2").ToLower();
 	}
+	// Use Minecraft.ConvertPartName
 	public static string ConvertPartName(string partName)
 	{
-        if (partName.EndsWith("Model"))
-            partName = partName.Substring(0, partName.Length - 5);
-		else if (partName.EndsWith("Models"))
-			partName = partName.Substring(0, partName.Length - 6);
-
-		switch (partName)
-		{
-			case "gun": return "body";
-			case "pump": return "pump";
-			case "ammo": return "ammo_0";
-			case "defaultGrip": return "grip";
-			case "defaultBarrel": return "barrel";
-			case "defaultScope": return "sights";
-			case "defaultStock": return "stock";
-			case "revolverBarrel": return "revolver";
-			case "breakAction": return "break_action";
-			default: return partName;
-		}
+		return Minecraft.ConvertPartName(partName);
 	}
 
     public static Transform FindRecursive(this Transform t, string name)
@@ -197,6 +181,14 @@ public static class Utils
     {
         return (a - b).sqrMagnitude < 0.000000001f;
     }
+
+	public static void SetParentZero(this Transform child, Transform parent)
+	{
+		child.SetParent(parent);
+		child.localPosition = Vector3.zero;
+		child.localRotation = Quaternion.identity;
+		child.localScale = Vector3.one;
+	}
 }
 public static class FlanCustomButtons
 {
@@ -234,6 +226,9 @@ public static class FlanStyles
     public static readonly GUIStyle GreenLabel = GUI.skin.label.Clone()
         .WithFontStyle(FontStyle.Bold)
         .WithTextColour(Color.green);
+	public static readonly GUIStyle RedLabel = GUI.skin.label.Clone()
+		.WithFontStyle(FontStyle.Bold)
+		.WithTextColour(Color.red);
 
 	public static GUIContent Button(string iconID, string tooltip)
 	{

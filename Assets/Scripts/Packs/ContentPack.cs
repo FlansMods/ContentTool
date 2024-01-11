@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using UnityEngine;
 
-public class ContentPack : ScriptableObject, IVerifiableAsset
+public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContainer
 {
 	private float RefreshEveryT = 10;
 	private DateTime LastContentCheck = DateTime.Now;
@@ -15,7 +15,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 	[SerializeField]
 	private List<Definition> Content = new List<Definition>();
 	[SerializeField]
-	private List<MinecraftModel> Models = new List<MinecraftModel>();
+	private List<RootNode> Models = new List<RootNode>();
 	[SerializeField]
 	private List<Texture2D> Textures = new List<Texture2D>();
 	[SerializeField]
@@ -50,12 +50,12 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 		}
 	}
 	public int ModelCount { get { Refresh(); return Models.Count; } }
-	public IEnumerable<MinecraftModel> AllModels
+	public IEnumerable<RootNode> AllModels
 	{
 		get
 		{
 			Refresh();
-			foreach (MinecraftModel model in Models)
+			foreach (RootNode model in Models)
 				yield return model;
 		}
 	}
@@ -114,7 +114,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 						Content.Add(def);
 					else
 					{
-						MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(assetPath);
+						RootNode model = AssetDatabase.LoadAssetAtPath<RootNode>(assetPath);
 						if (model != null)
 							Models.Add(model);
 						else
@@ -172,7 +172,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 			foreach (Texture2D tex in Textures)
 				if (tex.TryGetLocation(out ResourceLocation texLoc))
 					IDs.Add(texLoc.ID);
-			foreach (MinecraftModel model in Models)
+			foreach (RootNode model in Models)
 				if (model.TryGetLocation(out ResourceLocation modelLoc))
 					IDs.Add(modelLoc.ID);
 			foreach (SoundEventList list in Sounds)
@@ -238,5 +238,20 @@ public class ContentPack : ScriptableObject, IVerifiableAsset
 		}
 	}
 
+	public UnityEngine.Object GetUnityObject()
+	{
+		return this;
+	}
 
+	public IEnumerable<IVerifiableAsset> GetAssets()
+	{
+		Refresh();
+		foreach (Definition def in Content)
+			yield return def;
+		foreach (RootNode model in Models)
+			yield return model;
+		//foreach (SoundEventList soundList in Sounds)
+		//	foreach (SoundEventEntry sound in soundList.SoundEvents)
+		//		yield return sound;
+	}
 }

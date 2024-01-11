@@ -40,8 +40,17 @@ public class ContentManagerEditor : Editor
 		}
 	}
 
+	public bool ExpandImportResults = false;
 	public void ImportTab(ContentManager instance)
 	{
+		if (ContentManager.LastImportOperation != "None" && ContentManager.LastImportOperationResults.Count > 0)
+		{
+			ExpandImportResults = GUIVerify.VerificationsResultsPanel(
+				ExpandImportResults,
+				ContentManager.LastImportOperation,
+				ContentManager.LastImportOperationResults);
+		}
+
 		foreach (string sourcePack in instance.GetPreImportPackNames())
 		{
 			string packFoldoutPath = $"{sourcePack}";
@@ -82,14 +91,12 @@ public class ContentManagerEditor : Editor
 			// --- Import (New Only) Button! ---
 			if (GUILayout.Button(FlanStyles.ImportPackNewOnly, GUILayout.Width(32)))
 			{
-				List<Verification> errors = new List<Verification>();
-				instance.ImportPack(sourcePack, errors, false);
+				instance.ImportPack(sourcePack, ContentManager.GetFreshImportLogger($"Import new assets only for {sourcePack}"), false);
 			}
 			// --- Import Button! ---
 			if (GUILayout.Button(FlanStyles.ImportPackOverwrite, GUILayout.Width(32)))
 			{
-				List<Verification> errors = new List<Verification>();
-				instance.ImportPack(sourcePack, errors, true);
+				instance.ImportPack(sourcePack, ContentManager.GetFreshImportLogger($"Import ALL assets for {sourcePack}"), true);
 			}
 			GUILayout.EndHorizontal();
 
@@ -180,7 +187,12 @@ public class ContentManagerEditor : Editor
 										else
 											GUILayout.Label(targetAsset);
 										foreach (string input in inputMap)
-											GUILayout.Label(input);
+										{
+											if (File.Exists(input))
+												GUILayout.Label(input);
+											else
+												GUILayout.Label(new GUIContent(input).WithTooltip("Input file not found"), FlanStyles.RedLabel);
+										}
 										foreach (string output in outputMap)
 										{
 											if (File.Exists(output))
@@ -215,39 +227,15 @@ public class ContentManagerEditor : Editor
 		foreach(ContentPack pack in instance.Packs)
 		{
 			string packFoldoutPath = $"{pack.ModName}";
-			List<Verification> verifications = new List<Verification>();
-			pack.GetVerifications(verifications);
-			foreach (Definition def in pack.AllContent)
-				def.GetVerifications(verifications);
-			foreach (MinecraftModel model in pack.AllModels)
-				model.GetVerifications(verifications);
-			VerifyType verificationSummary = Verification.GetWorstState(verifications);
-			int failCount = Verification.CountFailures(verifications);
-			int quickFixCount = Verification.CountQuickFixes(verifications);
-
+	
 			// Foldout / summary view
 			GUILayout.BeginHorizontal();
 			bool packFoldout = NestedFoldout(packFoldoutPath, pack.ModName);
 			GUILayout.FlexibleSpace();
-			if(quickFixCount > 0)
+
+			bool passedVerification = GUIVerify.CachedVerificationHeader(pack);
+			if(passedVerification)
 			{
-				GUILayout.Label($"{quickFixCount} Quick-Fixes Available");
-				if(GUILayout.Button("Apply"))
-				{
-					Verification.ApplyAllQuickFixes(verifications);
-				}
-			}
-			if (failCount > 0)
-			{
-				GUILayout.Label($"{failCount} Errors");
-				GUIVerify.VerificationIcon(verifications);
-				EditorGUI.BeginDisabledGroup(true);
-				GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
-				EditorGUI.EndDisabledGroup();
-			}
-			else
-			{
-				GUIVerify.VerificationIcon(verifications);
 				if (GUILayout.Button(FlanStyles.ExportPackNewOnly, GUILayout.Width(32)))
 				{
 					instance.ExportPack(pack.ModName, false);
@@ -264,6 +252,12 @@ public class ContentManagerEditor : Editor
 						}
 					}
 				}
+			}
+			else
+			{
+				EditorGUI.BeginDisabledGroup(true);
+				GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
+				EditorGUI.EndDisabledGroup();
 			}
 			GUILayout.EndHorizontal();
 

@@ -55,29 +55,140 @@ public static class JavaModelImporter
 		return cube;
 	}
 
-	// TODO: After 1.20 update done
-	//public static RootNode ImportJavaModel(string modName, string javaPath)
-	//{
-	//	GameObject go = new GameObject();
-	//	RootNode rootNode = go.AddComponent<RootNode>();
-	//	// TODO: rootNode.AddDefaultTransforms();
-	//
-	//	using (StreamReader reader = new StreamReader(javaPath, Encoding.Default))
-	//	{
-	//		while(!reader.EndOfStream)
-	//		{
-	//			string line = reader.ReadLine();
-	//			// Strip initial and trailing whitespace
-	//			line = line.Trim(' ', '\t');
-	//			// Then ignore comment lines
-	//			if (line.StartsWith("//"))
-	//				continue;
-	//
-	//
-	//		}
-	//	}
-	//}
+	private static UVMap TempUVStorage = null;
+	public static RootNode ImportJavaModel(string javaPath, List<Verification> verifications)
+	{
+		GameObject go = new GameObject($"Temp: Importing {javaPath}");
+		RootNode rootNode = go.AddComponent<RootNode>();
+		// TODO: rootNode.AddDefaultTransforms();
+		TempUVStorage = new UVMap();
 
+		try
+		{
+			using (StreamReader reader = new StreamReader(javaPath, Encoding.Default))
+			{
+				while (!reader.EndOfStream)
+				{
+					string line = reader.ReadLine();
+					// Strip initial and trailing whitespace
+					line = line.Trim(' ', '\t');
+					// Then ignore comment lines and stuff we don't need
+					if (line.Length == 0
+					|| line.StartsWith("//")
+					|| line.StartsWith("import")
+					|| line.StartsWith("public")
+					|| line.StartsWith("{")
+					|| line.StartsWith("}")
+					|| line.StartsWith("package"))
+						continue;
+
+					// After this point, every line should have a ; in it so add further lines until we get it
+					while (!line.Contains(";"))
+					{
+						if(reader.EndOfStream)
+						{
+							verifications.Add(Verification.Failure($"Found a multi-line without a semicolon '{line}' in {javaPath}"));
+							break;
+						}
+						// Get a new line, strip it, skip comments
+						string nextLine = reader.ReadLine();
+						nextLine = nextLine.Trim(' ', '\t');
+						if (nextLine.StartsWith("//")) 
+							continue;
+
+						// Let's go with just a space. Seems safest for our parsers as written
+						line = $"{line} {nextLine}";
+					}
+
+					// Now process our line
+					bool matched = MatchPieceOperation(rootNode, line)
+								|| MatchTextureSize(rootNode, line)
+								|| MatchPieceSetValue(rootNode, line)
+								|| MatchSetParameter(rootNode, line)
+								|| MatchSetVec3Parameter(rootNode, line)
+								|| MatchNewMRTurbo(rootNode, line)
+								|| MatchPiece2DOperation(rootNode, line)
+								|| MatchNewMR2DTurbo(line)
+								|| MatchGlobalFunc(rootNode, line)
+								|| MatchArrayInitializerTurbo(line);
+					if(!matched)
+					{
+						verifications.Add(Verification.Neutral($"Could not match line '{line}' when importing '{javaPath}'"));
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			verifications.Add(Verification.Failure($"Failed to find Java model {javaPath} because of {e.Message}"));
+		}
+
+		// ----------------------------------------------------------------------------
+		// Post-read functions
+		// ----------------------------------------------------------------------------
+		List<GeometryNode> nodesWithTempParents = new List<GeometryNode>();
+		// #1 Move temporary UV storage into GeometryNodes
+		foreach (SectionNode sectionNode in rootNode.GetAllDescendantNodes<SectionNode>())
+			foreach (GeometryNode geomNode in sectionNode.GetAllDescendantNodes<GeometryNode>())
+			{
+				BoxUVPlacement placement = TempUVStorage.GetPlacedPatch($"{sectionNode.PartName}/{geomNode.name.Substring("part_".Length)}");
+				if (placement != null)
+					geomNode.BakedUV = placement.Bounds;
+				else
+					verifications.Add(Verification.Failure($"Failed to match a UV patch for {geomNode.name}"));
+
+				if (geomNode.transform.parent != null && geomNode.transform.parent.name == ConvertToNodes.TEMP_NODE_NAME)
+					nodesWithTempParents.Add(geomNode);
+			}
+		TempUVStorage.Clear();
+		
+		// #2 Bake in the (origin > rotate > pos) = (pos, rot)
+		foreach(GeometryNode geomNode in nodesWithTempParents)
+		{
+			// Set parent to our grandparent, while keeping world position
+			// In theory, this is equivalent to removing the TEMP object from in-between
+			Transform tempParent = geomNode.transform.parent;
+			geomNode.transform.SetParent(geomNode.transform.parent.parent, true);
+
+			// On the off chance we somehow get other stuff attached here, warn?
+			if(tempParent.childCount == 0)
+                UnityEngine.Object.DestroyImmediate(tempParent.gameObject);
+			else
+				verifications.Add(Verification.Failure($"{tempParent} temporary object has multiple children?"));
+		}
+
+		// #3 Attach our Sections to our AttachPoints
+		// List must be cached so we can start modifying the heirarchy
+		List<SectionNode> sections = new List<SectionNode>(rootNode.GetAllDescendantNodes<SectionNode>());
+		foreach(SectionNode sectionNode in sections)
+		{
+			if (sectionNode.name == "body")
+				continue;
+
+			// Here, we keep world pos, which is kinda how the old APs used to work
+			// They would un-translate, rotate, then translate
+			AttachPointNode apNode = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, sectionNode.name);
+			sectionNode.transform.SetParent(apNode.transform, true);
+		}
+
+		// ----------------------------------------------------------------------------
+
+		return rootNode;
+	}
+
+	private static void ImportAttachPoint(TurboRig rig, string javaOffsetName, string sectionName)
+	{
+		if (rig.TryGetAttachPoint(javaOffsetName, out AttachPoint ap))
+		{
+			if (rig.TryGetSection(sectionName, out TurboModel section))
+			{
+				section.Operation_TranslateAll(-ap.position.x, -ap.position.y, -ap.position.z);
+			}
+		}
+	}
+
+	// Old stuff
+	/*
 	public static TurboRig ImportTurboModel(string modName, string javaPath, InfoType optionalType)
 	{
 		TypeFile file = new TypeFile(javaPath);
@@ -148,16 +259,7 @@ public static class JavaModelImporter
 		return rig;
 	}
 
-	private static void ImportAttachPoint(TurboRig rig, string javaOffsetName, string sectionName)
-	{
-		if(rig.TryGetAttachPoint(javaOffsetName, out AttachPoint ap))
-		{
-			if(rig.TryGetSection(sectionName, out TurboModel section))
-			{
-				section.Operation_TranslateAll(-ap.position.x, -ap.position.y, -ap.position.z);
-			}
-		}
-	}
+	
 
 	private static void ReadLine(TurboRig rig, TypeFile file, string line)
 	{
@@ -222,16 +324,33 @@ public static class JavaModelImporter
 			Debug.LogError($"Could not parse '{line}' in {file.name}");
 		}
 	}
-	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
-	//private static readonly Regex NewMRTurboRegex = new Regex("([a-zA-Z0-9_]*)\\[([0-9]*)\\]\\s*=\\s*new ModelRendererTurbo\\(\\s*this\\s*,\\s*([0-9]*)\\s*,\\s*([0-9]*)\\s*,\\s*[a-zA-Z,0-9\\s]*\\);");
-	private static readonly Regex ArrayInitializerRegex = new Regex($"{VariableNameCapture}\\s*=\\s*new\\s*ModelRenderer(?:Turbo)?\\[{IntCapture}\\];");
-	public static bool MatchArrayInitializerTurbo(TurboRig rig, string line)
-	{ 
-		return ArrayInitializerRegex.Match(line).Success;
+	*/
+
+	// int textureX = 45;
+	private static readonly Regex TextureSizeRegex = new Regex($"int\\s*texture(X|Y)\\s*=\\s*{IntCapture};");
+	public static bool MatchTextureSize(RootNode rootNode, string line)
+	{
+		Match match = TextureSizeRegex.Match(line);
+		if (match.Success)
+		{
+			if (match.Groups[1].Value == "X")
+				rootNode.UVMapSize.x = int.Parse(match.Groups[2].Value);
+			else if (match.Groups[1].Value == "Y")
+				rootNode.UVMapSize.y = int.Parse(match.Groups[2].Value);
+			return true;
+		}
+		return false;
 	}
 
+	// defaultStockModel = new ModelRendererTurbo[3];
+	private static readonly Regex ArrayInitializerRegex = new Regex($"{VariableNameCapture}\\s*=\\s*new\\s*ModelRenderer(?:Turbo)?\\[{IntCapture}\\];");
+	public static bool MatchArrayInitializerTurbo(string line)
+	{
+		return ArrayInitializerRegex.Match(line).Success;
+	}
+	// defaultStockModel[0][1] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
 	private static readonly Regex NewMR2DRegex = new Regex("([a-zA-Z0-9_]*)Model(?:s)?\\[([0-9]*)\\]\\[([0-9]*)\\]\\s*=\\s*new ModelRenderer(?:Turbo)?\\s*\\(this,\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchNewMR2DTurbo(TurboRig rig, string line)
+	public static bool MatchNewMR2DTurbo(string line)
 	{
 		Match match = NewMR2DRegex.Match(line);
 		if (match.Success)
@@ -247,15 +366,15 @@ public static class JavaModelImporter
 			{
 				int u = Mathf.FloorToInt(floats[0]);
 				int v = Mathf.FloorToInt(floats[1]);
-				rig.BakedUVMap.SetUVPlacement($"{partName}_{index_0}/{index_1}", new Vector2Int(u, v));
+				TempUVStorage.SetUVPlacement($"{partName}_{index_0}/{index_1}", new Vector2Int(u, v));
 				return true;
 			}
 		}
 		return false;
 	}
-
+	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
 	private static readonly Regex NewMRRegex = new Regex("([a-zA-Z0-9_]*)Model(?:s)?\\[([0-9]*)\\]\\s*=\\s*new ModelRenderer(?:Turbo)?\\s*\\(this,\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchNewMRTurbo(TurboRig rig, string line)
+	public static bool MatchNewMRTurbo(RootNode rootNode, string line)
 	{
 		Match match = NewMRRegex.Match(line);
 		if (match.Success)
@@ -269,40 +388,39 @@ public static class JavaModelImporter
 			{
 				int u = Mathf.FloorToInt(floats[0]);
 				int v = Mathf.FloorToInt(floats[1]);
-				rig.BakedUVMap.SetUVPlacement($"{partName}/{index}", new Vector2Int(u, v));
+				TempUVStorage.SetUVPlacement($"{partName}/{index}", new Vector2Int(u, v));
 				return true;
 			}
 		}
 		return false;
 	}
-
+	// gunModels[0][1].addBox(... / addTrapezoid(... / add...
 	private static readonly Regex PieceOperation2DRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\]\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
-	public static bool MatchPiece2DOperation(TurboRig rig, string line)
+	public static bool MatchPiece2DOperation(RootNode rootNode, string line)
 	{
 		Match match = PieceOperation2DRegex.Match(line);
 		if (match.Success)
 		{
-			// Get the right section
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
+			// Get or Create the right section
+			string partName = Minecraft.ConvertPartName(match.Groups[1].Value);
 			int index_0 = int.Parse(match.Groups[2].Value);
 			int index_1 = int.Parse(match.Groups[3].Value);
-			TurboModel section = rig.GetOrCreateSection($"{partName}_{index_0}");
+			string sectionName = $"{partName}_{index_0}";
+			string pieceName = $"part_{index_1}";
+			SectionNode sectionNode = ConvertToNodes.GetOrCreateSectionNode(rootNode, sectionName);
 
-			// Get the right piece
-			TurboPiece piece = section.Import_GetIndexedPiece(index_1);
-
-			// Then run the function
+			// Then run the "addX" function
 			string function = match.Groups[4].Value;
 			string parameters = match.Groups[5].Value;
 			switch (function)
 			{
-				case "addBox": return AddBox(piece, parameters);
-				case "addTrapezoid": return AddTrapezoid(piece, parameters);
-				case "addShapeBox": return AddShapebox(piece, parameters);
-				case "addShape3D": return AddShape3D(piece, parameters);
-				case "setRotationPoint": return SetRotationPoint(piece, parameters);
-				case "setPosition": return SetPosition(piece, parameters);
-				case "doMirror": return DoMirror(piece, parameters);
+				case "addBox":				return AddBox(sectionNode, pieceName, parameters);
+				case "addTrapezoid":		return AddTrapezoid(sectionNode, pieceName, parameters);
+				case "addShapeBox":			return AddShapebox(sectionNode, pieceName, parameters);
+				case "addShape3D":			return AddShape3D(sectionNode, pieceName, parameters);
+				case "setRotationPoint":	return SetRotationPoint(sectionNode, pieceName, parameters);
+				case "setPosition":			return SetPosition(sectionNode, pieceName, parameters);
+				case "doMirror":			return DoMirror(sectionNode, pieceName, parameters);
 				// This is fine to skip
 				case "render": return true;
 				default:
@@ -317,32 +435,28 @@ public static class JavaModelImporter
 	}
 
 	private static readonly Regex PieceOperationRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
-	public static bool MatchPieceOperation(TurboRig rig, string line)
+	public static bool MatchPieceOperation(RootNode rootNode, string line)
 	{
 		Match match = PieceOperationRegex.Match(line);
 		if (match.Success)
 		{
-			// Get the right section
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
-
-			// Get the right piece
-			int index = int.Parse(match.Groups[2].Value);
-			TurboPiece piece = section.Import_GetIndexedPiece(index);
+			// Get or Create the right section
+			string sectionName = Minecraft.ConvertPartName(match.Groups[1].Value);
+			SectionNode sectionNode = ConvertToNodes.GetOrCreateSectionNode(rootNode, sectionName);
+			string pieceName = $"part_{int.Parse(match.Groups[2].Value)}";
 
 			// Then run the function
 			string function = match.Groups[3].Value;
 			string parameters = match.Groups[4].Value;
-
 			switch(function)
 			{
-				case "addBox": return AddBox(piece, parameters);
-				case "addTrapezoid": return AddTrapezoid(piece, parameters);
-				case "addShapeBox": return AddShapebox(piece, parameters);
-				case "addShape3D": return AddShape3D(piece, parameters);
-				case "setRotationPoint": return SetRotationPoint(piece, parameters);
-				case "setPosition": return SetPosition(piece, parameters);
-				case "doMirror": return DoMirror(piece, parameters);
+				case "addBox":				return AddBox(sectionNode, pieceName, parameters);
+				case "addTrapezoid":		return AddTrapezoid(sectionNode, pieceName, parameters);
+				case "addShapeBox":			return AddShapebox(sectionNode, pieceName, parameters);
+				case "addShape3D":			return AddShape3D(sectionNode, pieceName, parameters);
+				case "setRotationPoint":	return SetRotationPoint(sectionNode, pieceName, parameters);
+				case "setPosition":			return SetPosition(sectionNode, pieceName, parameters);
+				case "doMirror":			return DoMirror(sectionNode, pieceName, parameters);
 				// This is fine to skip
 				case "render": return true;
 				default:
@@ -355,222 +469,233 @@ public static class JavaModelImporter
 		return false;
 	}
 
-	public static bool AddBox(TurboPiece piece, string parameters)
+	public static bool AddBox(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
-		if(floats.Count == 6)
+		if (floats.Count >= 6)
 		{
-			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
-			piece.Dim = new Vector3(floats[3], floats[4], floats[5]);
-			return true;
-		}
-		else if(floats.Count == 7)
-		{
-			float ex = floats[6];
-			piece.Pos = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
-			piece.Dim = new Vector3(floats[3]+2*ex, floats[4]+2*ex, floats[5]+2*ex);
+			float ex = floats.Count >= 7 ? floats[6] : 0.0f;
+			Vector3 pos = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
+			Vector3 dim = new Vector3(floats[3] + 2 * ex, floats[4] + 2 * ex, floats[5] + 2 * ex);
+
+			BoxGeometryNode boxNode = ConvertToNodes.GetOrCreateGeometryNode<BoxGeometryNode>(sectionNode, pieceName);
+			boxNode.transform.localPosition = pos;
+			boxNode.Dim = dim;
 			return true;
 		}
 		return false;
 	}
 
-	public static bool AddTrapezoid(TurboPiece piece, string parameters)
+	public static bool AddTrapezoid(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters, 8);
-		if (floats.Count == 8)
+		if (floats.Count >= 8)
 		{
 			float ex = floats[6];
 			float taper = floats[7];
-			piece.Pos = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
-			piece.Dim = new Vector3(floats[3] + 2 * ex, floats[4] + 2 * ex, floats[5] + 2 * ex);
-
+			ShapeboxGeometryNode shapeboxNode = ConvertToNodes.GetOrCreateGeometryNode<ShapeboxGeometryNode>(sectionNode, pieceName);
+			shapeboxNode.LocalOrigin = new Vector3(floats[0] - ex, floats[1] - ex, floats[2] - ex);
+			shapeboxNode.Dim = new Vector3(floats[3] + 2 * ex, floats[4] + 2 * ex, floats[5] + 2 * ex);
+			
 			if (parameters.Contains("MR_LEFT"))
 			{
 				// expand +x face
-				piece.Offsets[1] = new Vector3(0f, -taper, -taper);
-				piece.Offsets[3] = new Vector3(0f, taper, -taper);
-				piece.Offsets[7] = new Vector3(0f, taper, taper);
-				piece.Offsets[5] = new Vector3(0f, -taper, taper);
+				shapeboxNode.Offsets[1] = new Vector3(0f, -taper, -taper);
+				shapeboxNode.Offsets[3] = new Vector3(0f, taper, -taper);
+				shapeboxNode.Offsets[7] = new Vector3(0f, taper, taper);
+				shapeboxNode.Offsets[5] = new Vector3(0f, -taper, taper);
 			}
 			else if (parameters.Contains("MR_RIGHT"))
 			{
 				// expand -x face
-				piece.Offsets[4] = new Vector3(0f, -taper, taper);
-				piece.Offsets[6] = new Vector3(0f, taper, taper);
-				piece.Offsets[2] = new Vector3(0f, taper, -taper);
-				piece.Offsets[0] = new Vector3(0f, -taper, -taper);
+				shapeboxNode.Offsets[4] = new Vector3(0f, -taper, taper);
+				shapeboxNode.Offsets[6] = new Vector3(0f, taper, taper);
+				shapeboxNode.Offsets[2] = new Vector3(0f, taper, -taper);
+				shapeboxNode.Offsets[0] = new Vector3(0f, -taper, -taper);
 			}
 			else if (parameters.Contains("MR_BACK"))
 			{
 				// expand +z face
-				piece.Offsets[5] = new Vector3(taper, -taper, 0f);
-				piece.Offsets[7] = new Vector3(taper, taper, 0f);
-				piece.Offsets[6] = new Vector3(-taper, taper, 0f);
-				piece.Offsets[4] = new Vector3(-taper, -taper, 0f);
+				shapeboxNode.Offsets[5] = new Vector3(taper, -taper, 0f);
+				shapeboxNode.Offsets[7] = new Vector3(taper, taper, 0f);
+				shapeboxNode.Offsets[6] = new Vector3(-taper, taper, 0f);
+				shapeboxNode.Offsets[4] = new Vector3(-taper, -taper, 0f);
 			}
 			else if (parameters.Contains("MR_FRONT"))
 			{
 				// expand - z face
-				piece.Offsets[0] = new Vector3(-taper, -taper, 0f);
-				piece.Offsets[2] = new Vector3(-taper, taper, 0f);
-				piece.Offsets[3] = new Vector3(taper, taper, 0f);
-				piece.Offsets[1] = new Vector3(taper, -taper, 0f);
+				shapeboxNode.Offsets[0] = new Vector3(-taper, -taper, 0f);
+				shapeboxNode.Offsets[2] = new Vector3(-taper, taper, 0f);
+				shapeboxNode.Offsets[3] = new Vector3(taper, taper, 0f);
+				shapeboxNode.Offsets[1] = new Vector3(taper, -taper, 0f);
 			}
 			else if (parameters.Contains("MR_BOTTOM"))
 			{
 				// expand +y face
-				piece.Offsets[7] = new Vector3(taper, 0f, taper);
-				piece.Offsets[3] = new Vector3(taper, 0f, -taper);
-				piece.Offsets[2] = new Vector3(-taper, 0f, -taper);
-				piece.Offsets[6] = new Vector3(-taper, 0f, taper);
+				shapeboxNode.Offsets[7] = new Vector3(taper, 0f, taper);
+				shapeboxNode.Offsets[3] = new Vector3(taper, 0f, -taper);
+				shapeboxNode.Offsets[2] = new Vector3(-taper, 0f, -taper);
+				shapeboxNode.Offsets[6] = new Vector3(-taper, 0f, taper);
 			}
 			else if (parameters.Contains("MR_TOP"))
 			{
 				// expand -y face
-				piece.Offsets[5] = new Vector3(taper, 0f, taper);
-				piece.Offsets[4] = new Vector3(-taper, 0f, taper);
-				piece.Offsets[0] = new Vector3(-taper, 0f, -taper);
-				piece.Offsets[1] = new Vector3(taper, 0f, -taper);
+				shapeboxNode.Offsets[5] = new Vector3(taper, 0f, taper);
+				shapeboxNode.Offsets[4] = new Vector3(-taper, 0f, taper);
+				shapeboxNode.Offsets[0] = new Vector3(-taper, 0f, -taper);
+				shapeboxNode.Offsets[1] = new Vector3(taper, 0f, -taper);
 			}
 			return true;
 		}
 		return false;
 	}
 	
-	public static bool AddShape3D(TurboPiece piece, string parameters)
+	public static bool AddShape3D(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		// TODO: Shape3D
 		return true;
 	}
 
-	public static bool AddShapebox(TurboPiece piece, string parameters)
+	public static bool AddShapebox(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
-		if (floats.Count == 31)
+		if (floats.Count >= 31)
 		{
-			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
-			piece.Dim = new Vector3(floats[3], floats[4], floats[5]);
+			ShapeboxGeometryNode shapeboxNode = ConvertToNodes.GetOrCreateGeometryNode<ShapeboxGeometryNode>(sectionNode, pieceName);
+
+			shapeboxNode.LocalOrigin = new Vector3(floats[0], floats[1], floats[2]);
+			shapeboxNode.Dim = new Vector3(floats[3], floats[4], floats[5]);
 			// ignore expand = floats[6]
 			for (int i = 0; i < 8; i++)
 			{
 				int iPermuted = aiPermutation[i];
-				piece.Offsets[i] = new Vector3(
+				shapeboxNode.Offsets[i] = new Vector3(
 					floats[7 + iPermuted * 3 + 0],
 					floats[7 + iPermuted * 3 + 1],
 					floats[7 + iPermuted * 3 + 2]);
-				if ((i & 0x1) == 0) piece.Offsets[i].x *= -1;
-				if ((i & 0x2) == 0) piece.Offsets[i].y *= -1;
-				if ((i & 0x4) == 0) piece.Offsets[i].z *= -1;
+				if ((i & 0x1) == 0) shapeboxNode.Offsets[i].x *= -1;
+				if ((i & 0x2) == 0) shapeboxNode.Offsets[i].y *= -1;
+				if ((i & 0x4) == 0) shapeboxNode.Offsets[i].z *= -1;
 			}
 			return true;
 		}
 		return false;
 	}
 
-	public static bool SetPosition(TurboPiece piece, string parameters)
+	public static bool SetPosition(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
 		if (floats.Count == 3)
 		{
-			piece.Pos = new Vector3(floats[0], floats[1], floats[2]);
-			return true;
+			if (sectionNode.TryFindChild(pieceName, out GeometryNode geomNode))
+			{
+				geomNode.LocalOrigin = new Vector3(floats[0], floats[1], floats[2]);
+				return true;
+			}
 		}
 		return false;
 	}
-	public static bool SetRotationPoint(TurboPiece piece, string parameters)
+	public static bool SetRotationPoint(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
-		if (floats.Count == 3)
+		if (floats.Count >= 3)
 		{
-			piece.Origin = new Vector3(floats[0], floats[1], floats[2]);
-			return true;
+			if (sectionNode.TryFindChild(pieceName, out GeometryNode geomNode))
+			{
+				ConvertToNodes.ApplyTemporaryRotationOrigin(geomNode,
+					new Vector3(floats[0], floats[1], floats[2]));
+				return true;
+			}
 		}
 		return false;
 	}
-	public static bool DoMirror(TurboPiece piece, string parameters)
+	public static bool DoMirror(SectionNode sectionNode, string pieceName, string parameters)
 	{
 		string[] boolParams = parameters.Split(',');
 		if(boolParams.Length == 3)
 		{
-			piece.Operation_DoMirror(bool.Parse(boolParams[0]), bool.Parse(boolParams[1]), bool.Parse(boolParams[2]));
-			return true;
-		}
-		return false;
-	}
-	
-
-
-	private static readonly Regex PieceSetValueRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)].([a-zA-Z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*);");
-	public static bool MatchPieceSetValue(TurboRig rig, string line)
-	{
-		Match match = PieceSetValueRegex.Match(line);
-		if (match.Success)
-		{
-			// Get the right section
-			string partName = Utils.ConvertPartName(match.Groups[1].Value);
-			TurboModel section = rig.GetOrCreateSection(partName);
-
-			// Get the right piece
-			int index = int.Parse(match.Groups[2].Value);
-			TurboPiece piece = section.Import_GetIndexedPiece(index);
-
-			// Then run the function
-			string field = match.Groups[3].Value;
-			string setValue = match.Groups[4].Value;
-
-			switch (field)
+			if (sectionNode.TryFindChild(pieceName, out GeometryNode geomNode))
 			{
-				case "rotateAngleX": return SetRotateAngleX(piece, setValue);
-				case "rotateAngleY": return SetRotateAngleY(piece, setValue);
-				case "rotateAngleZ": return SetRotateAngleZ(piece, setValue);
-				case "flip": return SetFlip(piece, setValue);
-				default:
+				if (geomNode.SupportsMirror())
 				{
-					Debug.LogWarning($"Unknown piece set value '{field}' in line '{line}'");
-					return false;
+					geomNode.Mirror(bool.Parse(boolParams[0]), bool.Parse(boolParams[1]), bool.Parse(boolParams[2]));
+					return true;
 				}
 			}
 		}
 		return false;
 	}
-	public static bool SetRotateAngleX(TurboPiece piece, string setValue)
+	
+	private static readonly Regex PieceSetValueRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)].([a-zA-Z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*);");
+	public static bool MatchPieceSetValue(RootNode rootNode, string line)
+	{
+		Match match = PieceSetValueRegex.Match(line);
+		if (match.Success)
+		{
+			// Get or Create the right section
+			string sectionName = Minecraft.ConvertPartName(match.Groups[1].Value);
+			SectionNode sectionNode = ConvertToNodes.GetOrCreateSectionNode(rootNode, sectionName);
+			string pieceName = $"part_{int.Parse(match.Groups[2].Value)}";
+			if (sectionNode.TryFindChild(pieceName, out GeometryNode geomNode))
+			{
+				// Then run the function
+				string field = match.Groups[3].Value;
+				string setValue = match.Groups[4].Value;
+				switch (field)
+				{
+					case "rotateAngleX":	return SetRotateAngleX(geomNode, setValue);
+					case "rotateAngleY":	return SetRotateAngleY(geomNode, setValue);
+					case "rotateAngleZ":	return SetRotateAngleZ(geomNode, setValue);
+					case "flip":			return SetFlip(geomNode, setValue);
+					default:
+					{
+						Debug.LogWarning($"Unknown piece set value '{field}' in line '{line}'");
+						return false;
+					}
+				}
+			}
+			else Debug.LogWarning($"Encountered line '{line}' before piece '{sectionName}/{pieceName}' was created");
+		}
+		return false;
+	}
+	public static bool SetRotateAngleX(GeometryNode piece, string setValue)
 	{
 		List<float> floats = ResolveParameters(setValue, 1);
 		if (floats.Count == 1)
 		{
-			piece.Euler.x = floats[0] * Mathf.Rad2Deg;
+			ConvertToNodes.ApplyTemporaryRotationAngleX(piece, floats[0] * Mathf.Rad2Deg);
 			return true;
 		}
 		return false;
 	}
-	public static bool SetRotateAngleY(TurboPiece piece, string setValue)
+	public static bool SetRotateAngleY(GeometryNode piece, string setValue)
 	{
 		List<float> floats = ResolveParameters(setValue, 1);
 		if (floats.Count == 1)
 		{
-			piece.Euler.y = floats[0] * Mathf.Rad2Deg;
+			ConvertToNodes.ApplyTemporaryRotationAngleY(piece, floats[0] * Mathf.Rad2Deg);
 			return true;
 		}
 		return false;
 	}
-	public static bool SetRotateAngleZ(TurboPiece piece, string setValue)
+	public static bool SetRotateAngleZ(GeometryNode piece, string setValue)
 	{
 		List<float> floats = ResolveParameters(setValue, 1);
 		if (floats.Count == 1)
 		{
-			piece.Euler.z = floats[0] * Mathf.Rad2Deg;
+			ConvertToNodes.ApplyTemporaryRotationAngleZ(piece, floats[0] * Mathf.Rad2Deg);
 			return true;
 		}
 		return false;
 	}
-	public static bool SetFlip(TurboPiece piece, string setValue)
+	public static bool SetFlip(GeometryNode piece, string setValue)
 	{
 		bool flip = bool.Parse(setValue);
 		// TODO: Hmm, what should this do?		
 		return true;
 	}
 	private static readonly Regex GlobalFuncRegex = new Regex("([A-Za-z]*)\\s*\\(([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchGlobalFunc(TurboRig rig, string line)
+	public static bool MatchGlobalFunc(RootNode rootNode, string line)
 	{
 		Match match = GlobalFuncRegex.Match(line);
 		if (match.Success)
@@ -581,8 +706,8 @@ public static class JavaModelImporter
 
 			switch (function)
 			{
-				case "translateAll": return TranslateAll(rig, parameters);
-				case "flipAll": return FlipAll(rig);
+				case "translateAll": return TranslateAll(rootNode, parameters);
+				case "flipAll": return FlipAll(rootNode);
 				// This is fine to skip
 				case "render": return true;
 				case "scale": return true;
@@ -600,20 +725,27 @@ public static class JavaModelImporter
 		}
 		return false;
 	}
-	public static bool TranslateAll(TurboRig rig, string parameters)
+	public static bool TranslateAll(RootNode rootNode, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
 		if (floats.Count == 3)
 		{
-			rig.TranslateAll(floats[0], floats[1], floats[2]);
-			return true;
+			if (rootNode.SupportsTranslate())
+			{
+				rootNode.Translate(new Vector3(floats[0], floats[1], floats[2]));
+				return true;
+			}
 		}
 		return false;
 	}
-	public static bool FlipAll(TurboRig rig)
+	public static bool FlipAll(RootNode rootNode)
 	{
-		rig.FlipAll();
-		return true;
+		if (rootNode.SupportsMirror())
+		{
+			rootNode.Mirror(false, true, true);
+			return true;
+		}
+		return false;
 	}
 
 	private static readonly Regex SetParameterRegex = new Regex("([A-Za-z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s_]*);");
@@ -639,7 +771,7 @@ public static class JavaModelImporter
 		value = 0.0f;
 		return false;
 	}
-	public static bool MatchSetParameter(TurboRig rig, string line)
+	public static bool MatchSetParameter(RootNode rootNode, string line)
 	{
 		Match match = SetParameterRegex.Match(line);
 		if (match.Success)
@@ -662,18 +794,28 @@ public static class JavaModelImporter
 				case "loadClipTime":
 					return true; // Consumed in ContentManager:ImportType_Internal
 				case "gripIsOnPump":
-					rig.Operation_SetAttachment("grip", "pump");
+					AttachPointNode gripAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "grip");
+					AttachPointNode pumpAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "pump");
+					gripAP.transform.SetParent(pumpAP.transform);
 					return true;
 				case "scopeIsOnSlide":
-					rig.Operation_SetAttachment("sights", "slide");
-					return true;
+					{
+						AttachPointNode sightsAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "sights");
+						AttachPointNode slideAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "slide");
+						sightsAP.transform.SetParent(slideAP.transform);
+						return true;
+					}
 				case "scopeIsOnBreakAction":
-					rig.Operation_SetAttachment("sights", "break_action");
-					return true;
+					{ 
+						AttachPointNode sightsAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "sights");
+						AttachPointNode breakAP = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "break_action");
+						sightsAP.transform.SetParent(breakAP.transform);
+						return true;
+					}
 				default:
 					if (floats.Count == 1)
 					{
-						rig.AnimationParameters.Add(new AnimationParameter()
+						rootNode.AnimationParameters.Add(new AnimationParameter()
 						{
 							key = Utils.ToLowerWithUnderscores(parameter),
 							isVec3 = false,
@@ -707,7 +849,7 @@ public static class JavaModelImporter
 		vec = Vector3.zero;
 		return false;
 	}
-	public static bool MatchSetVec3Parameter(TurboRig rig, string line)
+	public static bool MatchSetVec3Parameter(RootNode rootNode, string line)
 	{
 		Match match = SetVec3ParameterRegex.Match(line);
 		if (MatchSetVec3Parameter(line, out string parameter, out Vector3 pos))
@@ -715,35 +857,35 @@ public static class JavaModelImporter
 			switch(parameter)
 			{
 				case "itemFrameOffset":
-					rig.SetTransformPos(MinecraftModel.ItemTransformType.FIXED, pos);
+					ConvertToNodes.GetOrCreateItemPoseNode(rootNode, ItemDisplayContext.FIXED).LocalOrigin = pos;
 					break;
 				case "thirdPersonOffset":
-					rig.SetTransformPos(MinecraftModel.ItemTransformType.THIRD_PERSON_RIGHT_HAND, pos);
-					rig.SetTransformPos(MinecraftModel.ItemTransformType.THIRD_PERSON_LEFT_HAND, pos);
+					ConvertToNodes.GetOrCreateItemPoseNode(rootNode, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).LocalOrigin = pos;
+					ConvertToNodes.GetOrCreateItemPoseNode(rootNode, ItemDisplayContext.THIRD_PERSON_LEFT_HAND).LocalOrigin = pos;
 					break;
 				case "barrelBreakPoint":
-					rig.Operation_SetAttachmentOffset("break_action", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "break_action").LocalOrigin = pos;
 					break;
 				case "revolverFlipPoint":
-					rig.Operation_SetAttachmentOffset("revolver_barrel", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "revolver_barrel").LocalOrigin = pos;
 					break;
 				case "minigunBarrelOrigin":
-					rig.Operation_SetAttachmentOffset("minigun_rotator", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "minigun_rotator").LocalOrigin = pos;
 					break;
 				case "stockAttachPoint":
-					rig.Operation_SetAttachmentOffset("stock", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "stock").LocalOrigin = pos;
 					break;
 				case "barrelAttachPoint":
-					rig.Operation_SetAttachmentOffset("barrel", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "barrel").LocalOrigin = pos;
 					break;
 				case "scopeAttachPoint":
-					rig.Operation_SetAttachmentOffset("sights", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "sights").LocalOrigin = pos;
 					break;
 				case "gripAttachPoint":
-					rig.Operation_SetAttachmentOffset("grip", pos);
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "grip").LocalOrigin = pos;
 					break;
 				default:
-					rig.AnimationParameters.Add(new AnimationParameter()
+					rootNode.AnimationParameters.Add(new AnimationParameter()
 					{
 						key = Utils.ToLowerWithUnderscores(parameter),
 						isVec3 = true,

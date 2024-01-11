@@ -29,7 +29,7 @@ public class ContentPackEditor : Editor
 					verifications.Add(Verification.Success($"{def.name} has no outstanding issues."));
 				multiVerify.Add(def, verifications);
 			}
-			foreach(MinecraftModel model in pack.AllModels)
+			foreach(RootNode model in pack.AllModels)
 			{
 				List<Verification> verifications = new List<Verification>();
 				model.GetVerifications(verifications);

@@ -81,22 +81,22 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		if(ExpectsModel())
 		{
 			
-			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.asset";
-			MinecraftModel mcModel = AssetDatabase.LoadAssetAtPath<MinecraftModel>(modelPath);
-			if (mcModel == null)
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
+			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
+			if (rootNode == null)
 				verifications.Add(Verification.Failure(
 					$"Definition {name} does not have a matching model at {modelPath}",
 					() => {
-						TurboRig turboRig = CreateInstance<TurboRig>();
-						turboRig.name = $"{resLoc.IDWithoutPrefixes()}";
-						turboRig.AddDefaultTransforms();
-						AssetDatabase.CreateAsset(turboRig, modelPath);
+						rootNode = ConvertToNodes.CreateEmpty(name);
+						rootNode.AddDefaultTransforms();
+						PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, modelPath);
+						DestroyImmediate(rootNode.gameObject);
 					}));
 			else
 			{
-				if(this is GunDefinition gun && mcModel is TurboRig rig)
+				if(this is GunDefinition gun)
 				{
-					foreach(MinecraftModel.NamedTexture iconTexture in rig.Icons)
+					foreach(NamedTexture iconTexture in rootNode.Icons)
 					{
 						if (iconTexture.Key != "default")
 						{
@@ -128,12 +128,12 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 					{
 						PaintjobDefinition paintjob = gun.paints.paintjobs[i];
 						bool existsInModel = false;
-						foreach (MinecraftModel.NamedTexture skinTexture in rig.Textures)
+						foreach (NamedTexture skinTexture in rootNode.Textures)
 						{
 							if (paintjob.textureName == skinTexture.Key)
 								existsInModel = true;
 						}
-						foreach (MinecraftModel.NamedTexture iconTexture in rig.Icons)
+						foreach (NamedTexture iconTexture in rootNode.Icons)
 						{
 							if (paintjob.textureName == iconTexture.Key)
 								existsInModel = true;
@@ -142,7 +142,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 						{
 							int index = i;
 							verifications.Add(Verification.Neutral(
-									$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rig.name}",
+									$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rootNode.name}",
 									() => {
 										List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
 										paintjobs.RemoveAt(index);
@@ -250,7 +250,8 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		|| this is MagazineDefinition
 		|| this is MaterialDefinition
 		|| this is NpcDefinition
-		|| this is TeamDefinition)
+		|| this is TeamDefinition
+		|| this is AbilityDefinition)
 			return false;
 
 		return true;

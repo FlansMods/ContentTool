@@ -29,14 +29,10 @@ public static class AdditionalAssetImporter
 					{
 						outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{Utils.ToLowerWithUnderscores(paintjob.iconName)}.png");
 						outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png");
-						outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{Utils.ToLowerWithUnderscores(paintjob.iconName)}_icon.asset");
 					}
 					outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/skins/{dstShortName}.png");
 					outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{dstShortName}.png");
-					outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_3d.asset");
-					outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_icon.asset");
-					outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_default_icon.asset");
-					outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.asset");
+					outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab");
 				}
 				break;
 			case EDefinitionType.aa:
@@ -47,9 +43,9 @@ public static class AdditionalAssetImporter
 			case EDefinitionType.grenade:
 				// Single entity model, skinned
 				outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{dstShortName}.png");
-				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.asset");
+				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab");
 				outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/skins/{dstShortName}.png");
-				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/entity/{dstShortName}.asset");
+				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/entity/{dstShortName}.prefab");
 				break;
 			case EDefinitionType.part:
 			case EDefinitionType.tool:
@@ -57,7 +53,7 @@ public static class AdditionalAssetImporter
 			case EDefinitionType.mechaItem:
 				// Single item model with icon
 				outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/item/{dstShortName}.png");
-				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.asset");
+				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab");
 				break;
 			case EDefinitionType.armour:
 				// Armour skin/model
@@ -75,8 +71,8 @@ public static class AdditionalAssetImporter
 				}
 				else
 					outputs.Add($"{ASSET_ROOT}/{dstPackName}/textures/block/{Utils.ToLowerWithUnderscores(inputType.texture)}.png");
-				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/block/{dstShortName}.asset");
-				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.asset");
+				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/block/{dstShortName}.prefab");
+				outputs.Add($"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab");
 				outputs.Add($"{ASSET_ROOT}/{dstPackName}/blockstates/{dstShortName}.json");
 				break;
 			case EDefinitionType.team:
@@ -172,36 +168,33 @@ public static class AdditionalAssetImporter
 				// Complicated stuff
 				if (inputType is PaintableType paintable)
 				{
-					// Create the array of icon models and the skin switcher that points to them
-					List<ResourceLocation> iconModelLocations = new List<ResourceLocation>();
-					List<ResourceLocation> skinTextureLocations = new List<ResourceLocation>();
+					List<NamedTexture> icons = new List<NamedTexture>();
+					List<NamedTexture> skins = new List<NamedTexture>();
 
-					// Default skin + icon
-					ResourceLocation defaultIconLocation = new ResourceLocation(dstPackName, dstShortName);					
-					CreateIconModel_Internal(defaultIconLocation, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_default_icon.asset", allowedOutputs, errors);
-					skinTextureLocations.Add(new ResourceLocation(dstPackName, dstShortName));
-					iconModelLocations.Add(new ResourceLocation(dstPackName, $"/models/item/{dstShortName}/{dstShortName}_default_icon"));
+					// Default skin + icon			
+					ResourceLocation defaultSkinLocation = new ResourceLocation(dstPackName, dstShortName);
+					ResourceLocation defaultIconLocation = new ResourceLocation(dstPackName, dstShortName);
+					skins.Add(new NamedTexture("default",defaultSkinLocation, "textures/skins"));
+					icons.Add(new NamedTexture("default", defaultIconLocation, "textures/item"));
 
 					// And then paintjobs
 					foreach (Paintjob paintjob in paintable.paintjobs)
 					{
-						ResourceLocation iconTextureLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.iconName));
-						CreateIconModel_Internal(iconTextureLoc, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{iconTextureLoc.ID}_icon.asset", allowedOutputs, errors);
-						skinTextureLocations.Add(new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.textureName)));
-						iconModelLocations.Add(new ResourceLocation(dstPackName, $"/models/item/{dstShortName}/{iconTextureLoc.ID}_icon"));
+						string key = Utils.ToLowerWithUnderscores(paintjob.textureName);
+						ResourceLocation skinLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.textureName));
+						ResourceLocation iconLoc = new ResourceLocation(dstPackName, Utils.ToLowerWithUnderscores(paintjob.iconName));
+						skins.Add(new NamedTexture(key, skinLoc, "textures/skins"));
+						icons.Add(new NamedTexture(key, iconLoc, "textures/item"));
 					}
-					
-					CreateSkinSwitcher_Internal(iconModelLocations, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_icon.asset", allowedOutputs, errors);
 
 					// Create the 3D model
-					ImportRig_Internal($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
-										$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}/{dstShortName}_3d.asset",
-										skinTextureLocations, allowedOutputs, errors);
+					CreateTurboRootNode_Internal($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
+												 $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
+												 skins,
+												 icons,
+												 allowedOutputs, 
+												 errors);
 
-					// And link them all together with a MultiModel
-					ResourceLocation loc3d = new ResourceLocation(dstPackName, $"models/item/{dstShortName}/{dstShortName}_3d");
-					ResourceLocation locSwitcher = new ResourceLocation(dstPackName, $"models/item/{dstShortName}/{dstShortName}_icon");
-					CreateMultiModel_Internal(loc3d, loc3d, locSwitcher, loc3d, loc3d, loc3d, $"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.asset", allowedOutputs, errors);
 					exportBasicItemModel = false;
 				}
 				break;
@@ -246,23 +239,51 @@ public static class AdditionalAssetImporter
 		}
 	}
 
-	private static void CreateSkinSwitcher_Internal(List<ResourceLocation> iconModelLocations, string location, List<string> allowedOutputs, List<Verification> errors)
+	private static void CreateTurboRootNode_Internal(string from, string to, List<NamedTexture> skins, List<NamedTexture> icons, List<string> allowedOutputs, List<Verification> errors)
 	{
-		if (!allowedOutputs.Contains(location))
+		if (!allowedOutputs.Contains(to))
 			return;
 
-		SkinSwitcherModel switcher = ScriptableObject.CreateInstance<SkinSwitcherModel>();
-		switcher.AddDefaultTransforms();
-		switcher.DefaultModel = iconModelLocations.Count > 0 ? iconModelLocations[0].Load<MinecraftModel>("models/item") : null;
-		switcher.Models = new List<MinecraftModel>(iconModelLocations.Count);
-		for(int i = 0; i < iconModelLocations.Count; i++)
+		// Step 1: Import the Java as a RootNode
+		List<Verification> importVerification = new List<Verification>();
+		RootNode rootNode = JavaModelImporter.ImportJavaModel(from, importVerification);
+		VerifyType result = Verification.GetWorstState(importVerification);
+
+		if (result == VerifyType.Fail)
 		{
-			switcher.Models.Add(iconModelLocations[i].Load<MinecraftModel>("models/item"));
+			errors.Add(Verification.Failure($"Failed to import {from} as a RootNode model"));
+			errors.AddRange(importVerification);
+			return;
 		}
-		ContentManager.CreateUnityAsset(switcher, location);
-		errors.Add(Verification.Success($"Created SkinSwitcher model at '{location}'"));
+
+		// Step 2: Add additional data from outside the .java
+		rootNode.Icons.AddRange(icons);
+		rootNode.Textures.AddRange(skins);
+		rootNode.AddDefaultTransforms();
+
+		// Step 3: Save that as a prefab
+		try
+		{
+			string folderPath = to.Substring(0, to.LastIndexOf('/'));
+			if (!Directory.Exists(folderPath))
+				Directory.CreateDirectory(folderPath);
+
+			PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, to);
+			UnityEngine.Object.DestroyImmediate(rootNode.gameObject);
+		}
+		catch(Exception e)
+		{
+			errors.Add(Verification.Failure(e));
+			return;
+		}
+
+		if (result == VerifyType.Neutral)
+			errors.Add(Verification.Neutral($"Imported {from} as RootNode model with some warnings"));
+		else
+			errors.Add(Verification.Success($"Imported {from} as RootNode successfully"));
 	}
 
+	// TODO: Ressurect IconModel
 	private static void CreateIconModel_Internal(ResourceLocation iconLocation, string location, List<string> allowedOutputs, List<Verification> errors)
 	{
 		if (!allowedOutputs.Contains(location))
@@ -274,52 +295,6 @@ public static class AdditionalAssetImporter
 		item.Icon = iconLocation.Load<Texture2D>("textures/item");
 		ContentManager.CreateUnityAsset(item, location);
 		errors.Add(Verification.Success($"Created ItemModel at '{location}'"));
-	}
-
-	private static void CreateMultiModel_Internal(ResourceLocation firstPersonModel, ResourceLocation thirdPersonModel,
-													ResourceLocation guiModel, ResourceLocation fixedModel,
-													ResourceLocation groundModel, ResourceLocation headModel,
-													string location, List<string> allowedOutputs, List<Verification> errors)
-	{
-		if (!allowedOutputs.Contains(location))
-			return;
-
-		MultiModel multi = ScriptableObject.CreateInstance<MultiModel>();
-		multi.AddDefaultTransforms();
-		multi.FirstPersonModel = firstPersonModel.Load<MinecraftModel>();
-		multi.ThirdPersonModel = thirdPersonModel.Load<MinecraftModel>();
-		multi.GUIModel = guiModel.Load<MinecraftModel>();
-		multi.FixedModel = fixedModel.Load<MinecraftModel>();
-		multi.GroundModel = groundModel.Load<MinecraftModel>();
-		multi.HeadModel = headModel.Load<MinecraftModel>();
-		ContentManager.CreateUnityAsset(multi, location);
-		errors.Add(Verification.Success($"Created MultiModel at '{location}'"));
-	}
-
-	private static void ImportRig_Internal(string from, string to, List<ResourceLocation> textureLocations, List<string> allowedOutputs, List<Verification> errors)
-	{
-		if (!allowedOutputs.Contains(to))
-			return;
-
-		TurboRig rig = JavaModelImporter.ImportTurboModel("", from, null);
-		if(rig == null)
-		{
-			errors.Add(Verification.Failure($"TurboRig import from '{from}' failed"));
-			return;
-		}
-
-		for(int i = 0; i < textureLocations.Count; i++)
-		{
-			rig.Textures.Add(new MinecraftModel.NamedTexture()
-			{
-				Key = textureLocations[i].IDWithoutPrefixes(),
-				Location = textureLocations[i],
-				Texture = textureLocations[i].Load<Texture2D>("textures/skins")
-			});
-		}
-
-		ContentManager.CreateUnityAsset(rig, to);
-		errors.Add(Verification.Success($"Imported TurboRig to '{rig}'"));
 	}
 
 	private static void CopyTexture_Internal(string from, string to, List<string> allowedOutputs, List<Verification> errors)
@@ -339,7 +314,7 @@ public static class AdditionalAssetImporter
 			if (!Directory.Exists(folderPath))
 				Directory.CreateDirectory(folderPath);
 
-			File.Copy(from, to);
+			File.Copy(from, to, true);
 			errors.Add(Verification.Success($"Copied file from '{from}' to '{to}'"));
 		}
 		catch(Exception e)
@@ -347,7 +322,4 @@ public static class AdditionalAssetImporter
 			errors.Add(Verification.Failure(e));
 		}
 	}
-
-	
-
 }

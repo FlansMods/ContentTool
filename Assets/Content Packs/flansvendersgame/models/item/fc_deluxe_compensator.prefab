@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 297840505070629591}
   - component: {fileID: 3279919206221813741}
   - component: {fileID: 9169555544037042330}
+  - component: {fileID: 6672580814180317179}
   m_Layer: 0
   m_Name: part_0
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865864415518204263}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: -1}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -1, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +52,7 @@ MonoBehaviour:
     width: 6
     height: 4
   _MR: {fileID: 9169555544037042330}
-  _MF: {fileID: 0}
+  _MF: {fileID: 6672580814180317179}
   _Mesh: {fileID: 0}
   Dim: {x: 1, y: 2, z: 2}
 --- !u!23 &9169555544037042330
@@ -96,6 +97,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &6672580814180317179
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865864415518204263}
+  m_Mesh: {fileID: 0}
 --- !u!1 &1997552290764168031
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +619,7 @@ GameObject:
   - component: {fileID: 7245958250716424912}
   - component: {fileID: 5393058317802852971}
   - component: {fileID: 8611759567298817145}
+  - component: {fileID: 3588165247401185020}
   m_Layer: 0
   m_Name: part_1
   m_TagString: Untagged
@@ -624,8 +634,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6912544860327531650}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -1.5, z: -1.5}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -1.5000004, y: -1.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -650,7 +660,7 @@ MonoBehaviour:
     width: 12
     height: 6
   _MR: {fileID: 8611759567298817145}
-  _MF: {fileID: 0}
+  _MF: {fileID: 3588165247401185020}
   _Mesh: {fileID: 0}
   Dim: {x: 3, y: 3, z: 3}
   Offsets:
@@ -704,6 +714,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &3588165247401185020
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912544860327531650}
+  m_Mesh: {fileID: 0}
 --- !u!1 &7525652750218723457
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,21 @@ public class NamedTexture : IVerifiableAsset, IModifyable, ICloneable<NamedTextu
 	public ResourceLocation Location = new ResourceLocation();
 	public Texture2D Texture = null;
 
+	public NamedTexture() { }
+	public NamedTexture(string key) { Key = key; }
+	public NamedTexture(string key, ResourceLocation resLoc, string subfolder = "")
+	{
+		Key = key;
+		Location = resLoc;
+		resLoc.TryLoad(out Texture, subfolder);
+	}
+	public NamedTexture(string key, Texture2D tex)
+	{
+		Key = key;
+		Texture = tex;
+		Location = tex.GetLocation();
+	}
+
 	public NamedTexture Clone()
 	{
 		return new NamedTexture()

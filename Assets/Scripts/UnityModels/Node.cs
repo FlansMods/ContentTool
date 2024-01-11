@@ -46,6 +46,7 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 	public void RemoveAt(int index) { List.RemoveAt(index); }
 	public IEnumerator<T> GetEnumerator() { return List.GetEnumerator(); }
 	public void Add(T t) { List.Add(t); }
+	public void AddRange(IEnumerable<T> range) { List.AddRange(range); }
 	public T this[int i] {
 		get { return List[i]; }
 		set { List[i] = value; }
@@ -245,6 +246,42 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	public IEnumerable<TNodeType> GetAllDescendantNodes<TNodeType>() where TNodeType : Node
 	{
 		return GetComponentsInChildren<TNodeType>();
+	}
+	public bool TryFindChild<TNodeType>(string nodeName, out TNodeType resultNode) where TNodeType : Node
+	{
+		foreach (TNodeType node in GetChildNodes<TNodeType>())
+			if (node.name == nodeName)
+			{
+				resultNode = node;
+				return true;
+			}
+		resultNode = null;
+		return false;
+	}
+	public TNodeType FindChild<TNodeType>(string nodeName) where TNodeType : Node
+	{
+		foreach (TNodeType node in GetChildNodes<TNodeType>())
+			if (node.name == nodeName)
+				return node;
+		return null;
+	}
+	public bool TryFindDescendant<TNodeType>(string nodeName, out TNodeType resultNode) where TNodeType : Node
+	{
+		foreach (TNodeType node in GetAllDescendantNodes<TNodeType>())
+			if (node.name == nodeName)
+			{
+				resultNode = node;
+				return true;
+			}
+		resultNode = null;
+		return false;
+	}
+	public TNodeType FindDescendant<TNodeType>(string nodeName) where TNodeType : Node
+	{
+		foreach(TNodeType node in GetAllDescendantNodes<TNodeType>())
+			if (node.name == nodeName)
+				return node;
+		return null;
 	}
 
 	// ---------------------------------------------------------------------------

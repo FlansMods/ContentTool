@@ -1,14 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using static MinecraftModel;
 
 public class FlansModAssetModificationProcessor : AssetModificationProcessor
 {
+
 	public static string[] OnWillSaveAssets(string[] paths)
 	{
+		GUIVerify.InvalidateCaches();
+
 		for(int i = paths.Length - 1; i >= 0; i--)
 		{
 			string path = paths[i];

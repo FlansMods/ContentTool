@@ -80,7 +80,7 @@ public class ContentManager : MonoBehaviour
 							if (splits[0] == "Icon")
 							{
 								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/textures/items/{splits[1]}.png");
-								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/items/{Utils.ToLowerWithUnderscores(splits[1])}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/item/{Utils.ToLowerWithUnderscores(splits[1])}.png");
 							}
 							if (splits[0] == "Texture")
 							{
@@ -92,19 +92,16 @@ public class ContentManager : MonoBehaviour
 								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/textures/items/{splits[1]}.png");
 								additionalInfo.Inputs.Add($"{IMPORT_ROOT}/{packName}/assets/flansmod/skins/{splits[2]}.png");
 
-								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/items/{Utils.ToLowerWithUnderscores(splits[1])}.png");
+								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/item/{Utils.ToLowerWithUnderscores(splits[1])}.png");
 								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/textures/skins/{Utils.ToLowerWithUnderscores(splits[2])}.png");
-								additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{Utils.ToLowerWithUnderscores(splits[2])}_icon.asset");
 							}
 							if (splits[0] == "Model" || splits[0] == "DeployedModel")
 							{
 								string[] modelSteps = splits[1].Split('.');
 								if (modelSteps.Length == 2)
 								{
-									additionalInfo.Inputs.Add($"{MODEL_IMPORT_ROOT}/{modelSteps[0]}/{modelSteps[1]}.java");
-									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}.asset");
-									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{shortName}_3d.asset");
-									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/{shortName}/{shortName}_icon.asset");
+									additionalInfo.Inputs.Add($"{MODEL_IMPORT_ROOT}/{modelSteps[0]}/Model{modelSteps[1]}.java");
+									additionalInfo.Outputs.Add($"{ASSET_ROOT}/{packName}/models/item/{shortName}.prefab");
 								}
 							}
 						}
@@ -444,6 +441,14 @@ public class ContentManager : MonoBehaviour
 	// TODO: Can we not use the TYPE_LOOKUP? Do InfoTypes need to reference each other during import?
 	//
 	public static Dictionary<string, InfoType>[] TYPE_LOOKUP;
+	public static List<Verification> LastImportOperationResults = new List<Verification>();
+	public static string LastImportOperation = "None";
+	public static List<Verification> GetFreshImportLogger(string opName) 
+	{
+		LastImportOperation = opName;
+		LastImportOperationResults.Clear(); 
+		return LastImportOperationResults; 
+	}
 	public static bool TryGetType<T>(EDefinitionType type, string key, out T infoType) where T : InfoType
 	{
 		if (TYPE_LOOKUP[(int)type].TryGetValue(key, out InfoType temp))
@@ -590,6 +595,7 @@ public class ContentManager : MonoBehaviour
 			}
 		}
 		AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, outputPaths, errors);
+
 	}
 
 	private InfoType ImportType_Internal(ContentPack pack, EDefinitionType type, string fileName)
@@ -1027,6 +1033,14 @@ public class ContentManager : MonoBehaviour
 	#region The Export Process
 	// ---------------------------------------------------------------------------------------
 	public string ExportRoot = "Export";
+	public static string LastExportOperation = "None";
+	public static List<Verification> LastExportOperationResults = new List<Verification>();
+	public static List<Verification> GetFreshExportLogger(string opName)
+	{
+		LastExportOperation = opName;
+		LastExportOperationResults.Clear();
+		return LastExportOperationResults;
+	}
 	private static readonly char[] SLASHES = new char[] { '/', '\\' };
 	public string[] GetExportPaths(string packName, UnityEngine.Object asset)
 	{
@@ -1077,20 +1091,24 @@ public class ContentManager : MonoBehaviour
 						verifications.Add(Verification.Failure(e));
 				}
 			}
-			else if (asset is MinecraftModel model)
+			else if(asset is RootNode rootNode)
 			{
-				try
-				{
-					List<string> outputFiles = new List<string>();
-					ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
-					model.ExportToModelJsonFiles(exportDir, outputFiles);
-				}
-				catch (Exception e)
-				{
-					if (verifications != null)
-						verifications.Add(Verification.Failure(e));
-				}
+				JObject jObject = ExportNodeModel.ExportRoot(rootNode);
 			}
+			//else if (asset is MinecraftModel model)
+			//{
+			//	try
+			//	{
+			//		List<string> outputFiles = new List<string>();
+			//		ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
+			//		model.ExportToModelJsonFiles(exportDir, outputFiles);
+			//	}
+			//	catch (Exception e)
+			//	{
+			//		if (verifications != null)
+			//			verifications.Add(Verification.Failure(e));
+			//	}
+			//}
 			else if (asset is Texture2D texture)
 			{
 				try
@@ -1475,9 +1493,9 @@ public class ContentManager : MonoBehaviour
 			// Export Models
 			int modelCount = pack.ModelCount;
 			processedCount = 0;
-			foreach (MinecraftModel model in pack.AllModels)
+			foreach (RootNode model in pack.AllModels)
 			{
-				EditorUtility.DisplayProgressBar("Exporting Textures", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
+				EditorUtility.DisplayProgressBar("Exporting Models", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
 				ExportAsset(pack.ModName, model, verifications);
 				processedCount++;
 			}

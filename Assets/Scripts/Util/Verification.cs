@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public enum VerifyType
@@ -168,6 +169,9 @@ public static class GUIVerify
 	private static Dictionary<IVerifiableContainer, List<IVerifiableAsset>> CachedContainers = new Dictionary<IVerifiableContainer, List<IVerifiableAsset>>();
 	private static List<Verification> GetCachedVerifications(IVerifiableAsset asset, bool forceRefresh)
 	{
+		if (asset == null)
+			return new List<Verification>();
+
 		if (forceRefresh || !CachedVerifications.TryGetValue(asset, out List<Verification> verifications))
 		{
 			verifications = new List<Verification>();
@@ -178,6 +182,9 @@ public static class GUIVerify
 	}
 	private static List<IVerifiableAsset> GetCachedAssetList(IVerifiableContainer container, bool forceRefresh)
 	{
+		if (container == null)
+			return new List<IVerifiableAsset>();
+
 		if (forceRefresh || !CachedContainers.TryGetValue(container, out List<IVerifiableAsset> assets))
 		{
 			assets = new List<IVerifiableAsset>();
@@ -187,12 +194,96 @@ public static class GUIVerify
 		}
 		return assets;
 	}
+	public static void InvalidateCaches()
+	{
+		CachedVerifications.Clear();
+		CachedContainers.Clear();
+	}
 
-
+	// ----------------------------------------------------------------------------------------------
+	#region Cached Verification Boxes - Much faster
+	// ----------------------------------------------------------------------------------------------
+	public static bool CachedVerificationHeader(IVerifiableContainer container, bool forceRefresh = false)
+	{
+		List<Verification> verifications = new List<Verification>();
+		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
+			verifications.AddRange(GetCachedVerifications(asset, forceRefresh));
+		if (container is IVerifiableAsset containerAsset)
+			containerAsset.GetVerifications(verifications);
+		return VerificationHeader(verifications);		
+	}
 	public static bool CachedVerificationsBoxAsset(IVerifiableAsset asset, bool forceRefresh = false)
 	{
 		return VerificationsBox(GetCachedVerifications(asset, forceRefresh));
 	}
+	public static bool CachedVerificationsBox(IVerifiableContainer container, bool forceRefresh = false)
+	{
+		Dictionary<UnityEngine.Object, List<Verification>> multiVerify = new Dictionary<UnityEngine.Object, List<Verification>>();
+		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
+		{
+			if (asset is UnityEngine.Object childUnityObject)
+				multiVerify[childUnityObject] = GetCachedVerifications(asset, forceRefresh);
+			else
+				multiVerify[container.GetUnityObject()] = GetCachedVerifications(asset, forceRefresh);
+		}
+
+		return VerificationsBox(multiVerify);
+	}
+	public static void CachedVerificationsIcon(IVerifiableAsset asset, bool forceRefresh = false)
+	{
+		VerificationIcon(GetCachedVerifications(asset, forceRefresh));
+	}
+	#endregion
+	// ----------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------
+	#region Directly draw a verification box with a list of verifications
+	// ----------------------------------------------------------------------------------------------
+	// An in-line header, best for using on the same line as a foldout
+	public static bool VerificationHeader(List<Verification> verifications)
+	{
+		VerifyType verificationSummary = Verification.GetWorstState(verifications);
+		int failCount = Verification.CountFailures(verifications);
+		int quickFixCount = Verification.CountQuickFixes(verifications);
+
+		if (quickFixCount > 0)
+		{
+			GUILayout.Label($"{quickFixCount} Quick-Fixes Available");
+			if (GUILayout.Button("Apply"))
+			{
+				Verification.ApplyAllQuickFixes(verifications);
+			}
+		}
+
+		if (failCount > 0)
+		{
+			GUILayout.Label($"{failCount} Errors");
+			VerificationIcon(verifications);
+			return false;
+		}
+		else
+		{
+			VerificationIcon(verifications);
+			return true;
+		}
+	}
+	public static bool VerificationsResultsPanel(bool expanded, string label,List<Verification> verifications)
+	{
+		FlanStyles.ThinLine();
+		FlanStyles.BigHeader($"Results ({label})");
+		GUILayout.BeginHorizontal();
+		expanded = EditorGUILayout.Foldout(expanded, $"{Verification.GetWorstState(verifications)}");
+		GUILayout.FlexibleSpace();
+		VerificationHeader(verifications);
+		GUILayout.EndHorizontal();
+		if (expanded)
+		{
+			VerificationsBox(verifications);
+		}
+		FlanStyles.ThinLine();
+		return expanded;
+	}
+
 	// Deprecated
 	public static bool VerificationsBox(IVerifiableAsset asset, List<Verification> verifications)
 	{
@@ -208,21 +299,6 @@ public static class GUIVerify
 		Internal_VerificationsSummary(noFails);
 		return pressedAnyQuickFix;
 	}
-
-	public static bool CachedVerificationsBox(IVerifiableContainer container, bool forceRefresh = false)
-	{
-		Dictionary<UnityEngine.Object, List<Verification>> multiVerify = new Dictionary<UnityEngine.Object, List<Verification>>();
-		foreach(IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
-		{
-			if (asset is UnityEngine.Object childUnityObject)
-				multiVerify[childUnityObject] = GetCachedVerifications(asset, forceRefresh);
-			else
-				multiVerify[container.GetUnityObject()] = GetCachedVerifications(asset, forceRefresh);
-		}
-
-		return VerificationsBox(multiVerify);
-	}
-
 	public static bool VerificationsBox(Dictionary<UnityEngine.Object, List<Verification>> multiVerifications)
 	{
 		bool allSucceeded = true;
@@ -243,12 +319,6 @@ public static class GUIVerify
 		Internal_VerificationsSummary(allSucceeded);
 		return pressedAnyQuickFix;
 	}
-
-	public static void CachedVerificationsIcon(IVerifiableAsset asset, bool forceRefresh = false)
-	{
-		VerificationIcon(GetCachedVerifications(asset, forceRefresh));
-	}
-
 	public static void VerificationIcon(VerifyType type)
 	{
 		switch (type)
@@ -258,7 +328,6 @@ public static class GUIVerify
 			case VerifyType.Fail: GUILayout.Label(CrossTexture, STATUS_ICON_OPTIONS); break;
 		}
 	}
-
 	public static void VerificationIcon(List<Verification> verifications)
 	{
 		VerifyType type = Verification.GetWorstState(verifications);
@@ -271,7 +340,7 @@ public static class GUIVerify
 			case VerifyType.Fail: tex = CrossTexture; break;
 		}
 		StringBuilder sb = new StringBuilder();
-		foreach(Verification v in verifications)
+		foreach (Verification v in verifications)
 		{
 			sb.AppendLine(v.Message);
 		}
@@ -285,7 +354,6 @@ public static class GUIVerify
 			GUILayout.Label(new GUIContent(tex).WithTooltip(sb.ToString()), STATUS_ICON_OPTIONS);
 		}
 	}
-
 	public static void VerificationIcon(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
 	{
 		VerifyType type = Verification.GetWorstState(multiVerify);
@@ -307,6 +375,15 @@ public static class GUIVerify
 			GUILayout.Label(tex, STATUS_ICON_OPTIONS);
 		}
 	}
+	#endregion
+	// ----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 	private static void Internal_VerificationsHeader()
 	{
 		FlanStyles.ThinLine();

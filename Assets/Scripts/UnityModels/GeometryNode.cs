@@ -97,10 +97,13 @@ public abstract class GeometryNode : Node
 	protected override void EditorUpdate()
 	{
 		base.EditorUpdate();
-		GenerateBakedGeometry(Root.UVMapSize);
-		if (MR == null)
-			Debug.Log("MeshRenderer null");
-		Mesh.RecalculateBounds();
+		if (Root != null)
+		{
+			GenerateBakedGeometry(Root.UVMapSize);
+			if (MR == null)
+				Debug.Log("MeshRenderer null");
+			Mesh.RecalculateBounds();
+		}
 	}
 
 
