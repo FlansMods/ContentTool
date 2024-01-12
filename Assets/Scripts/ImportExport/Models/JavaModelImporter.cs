@@ -158,17 +158,21 @@ public static class JavaModelImporter
 		}
 
 		// #3 Attach our Sections to our AttachPoints
+		// Also, section nodes should be at 0,0,0 local space. Bake this in
 		// List must be cached so we can start modifying the heirarchy
 		List<SectionNode> sections = new List<SectionNode>(rootNode.GetAllDescendantNodes<SectionNode>());
 		foreach(SectionNode sectionNode in sections)
 		{
-			if (sectionNode.name == "body")
-				continue;
+			if (sectionNode.name != "body")
+			{
+				// Here, we keep world pos, which is kinda how the old APs used to work
+				// They would un-translate, rotate, then translate
+				AttachPointNode apNode = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, sectionNode.name);
+				sectionNode.transform.SetParent(apNode.transform, true);
+			}
 
-			// Here, we keep world pos, which is kinda how the old APs used to work
-			// They would un-translate, rotate, then translate
-			AttachPointNode apNode = ConvertToNodes.GetOrCreateAttachPointNode(rootNode, sectionNode.name);
-			sectionNode.transform.SetParent(apNode.transform, true);
+			if (!sectionNode.LocalOrigin.Approximately(Vector3.zero))
+				sectionNode.transform.TranslateButNotChildren(-sectionNode.LocalOrigin);
 		}
 
 		// ----------------------------------------------------------------------------
@@ -742,7 +746,9 @@ public static class JavaModelImporter
 	{
 		if (rootNode.SupportsMirror())
 		{
+			GameObject.Instantiate(rootNode).name = "Pre-FlipAll";
 			rootNode.Mirror(false, true, true);
+			GameObject.Instantiate(rootNode).name = "Post-FlipAll";
 			return true;
 		}
 		return false;

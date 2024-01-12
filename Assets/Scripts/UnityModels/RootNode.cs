@@ -15,10 +15,6 @@ public class RootNode : Node
 	public FlanimationDefinition AnimationSet = null;
 
 
-	public void AddDefaultTransforms()
-	{
-		
-	}
 
 	public bool HasUVMap() { return UVMapSize != Vector2Int.zero; }
 	public bool NeedsUVRemap() 
@@ -100,13 +96,13 @@ public class RootNode : Node
 		return Texture2D.whiteTexture;
 	}
 
-	// TODO: This could have some fancy code that detects if we are in a PrefabStage
-	public override bool SupportsTranslate() { return false; }
-	public override bool SupportsRotate() { return false; }
-	public override bool SupportsRename() { return false; }
-	public override bool SupportsDelete() { return false; }
-	public override bool SupportsDuplicate() { return false; }
+	// -----------------------------------------------------------------------------------
+	#region ItemTransforms
+	// -----------------------------------------------------------------------------------
+	public void AddDefaultTransforms()
+	{
 
+	}
 	public bool TryGetItemTransform(ItemDisplayContext transformType, out ItemPoseNode node)
 	{
 		foreach (ItemPoseNode itemPoseNode in GetChildNodes<ItemPoseNode>())
@@ -118,6 +114,41 @@ public class RootNode : Node
 		node = null;
 		return false;
 	}
+	#endregion
+	// -----------------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------------
+	#region Operations
+	// -----------------------------------------------------------------------------------
+	public override bool SupportsTranslate() { return true; }
+	public override void Translate(Vector3 deltaPos)
+	{
+		foreach (Node node in ChildNodes)
+			if (node.SupportsTranslate())
+				node.Translate(deltaPos);
+	}
+	public override bool SupportsRotate() { return true; }
+	public override void Rotate(Vector3 deltaEuler)
+	{
+		foreach (Node node in ChildNodes)
+			if (node.SupportsRotate())
+				node.Rotate(deltaEuler);
+	}
+	public override bool SupportsMirror() { return true; }
+	public override void Mirror(bool flipX, bool flipY, bool flipZ)
+	{
+		foreach (Node node in ChildNodes)
+			if (node.SupportsMirror())
+				node.Mirror(flipX, flipY, flipZ);
+	}
+	public override bool SupportsRename() { return false; }
+	public override bool SupportsDelete() { return false; }
+	public override bool SupportsDuplicate() { return false; }
+	#endregion
+	// -----------------------------------------------------------------------------------
+
+
+	
 
 	// -----------------------------------------------------------------------------------
 	#region Material caching

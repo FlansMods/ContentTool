@@ -7,6 +7,15 @@ public class SectionNode : Node
 	public string PartName { get { return name; } }
 	public ETurboRenderMaterial Material = ETurboRenderMaterial.Cutout;
 
+
+	public override bool SupportsMirror() { return true; }
+	public override void Mirror(bool mirrorX, bool mirrorY, bool mirrorZ) 
+	{
+		foreach (Node node in ChildNodes)
+			if (node.SupportsMirror())
+				node.Mirror(mirrorX, mirrorY, mirrorZ);
+	}
+
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);

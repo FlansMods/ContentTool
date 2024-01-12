@@ -99,39 +99,39 @@ public static class ConvertToNodes
 		return rootNode;
 	}
 
-	public static readonly string TEMP_NODE_NAME = "TEMP_NODE";
-	private static Transform GetTempParent(Node node)
+	public static EmptyNode GetOrCreateEmptyParent(Node node)
 	{
-		if (node.transform.parent == null || node.transform.parent.name != TEMP_NODE_NAME)
+		if (!(node.ParentNode is EmptyNode emptyNode))
 		{
 			// Insert "TEMP_NODE" in the heirarchy to hold this rotation
-			GameObject tempNode = new GameObject(TEMP_NODE_NAME);
-			tempNode.transform.SetParentZero(node.transform.parent);
-			node.transform.SetParentZero(tempNode.transform);
+			GameObject emptyGO = new GameObject("temp");
+			emptyGO.transform.SetParentZero(node.transform.parent);
+			node.transform.SetParentZero(emptyGO.transform);
+			emptyNode = emptyGO.AddComponent<EmptyNode>();
 		}
-		return node.transform.parent;
+		return emptyNode;
 	}
 	public static void ApplyTemporaryRotationOrigin(Node node, Vector3 rotOrigin)
 	{
-		GetTempParent(node).localPosition = rotOrigin;
+		GetOrCreateEmptyParent(node).LocalOrigin = rotOrigin;
 	}
 	public static void ApplyTemporaryRotationAngleX(Node node, float angleX)
 	{
-		Vector3 eulers = GetTempParent(node).localEulerAngles;
+		Vector3 eulers = GetOrCreateEmptyParent(node).LocalEuler;
 		eulers.x = angleX;
-		GetTempParent(node).localEulerAngles = eulers;
+		GetOrCreateEmptyParent(node).LocalEuler = eulers;
 	}
 	public static void ApplyTemporaryRotationAngleY(Node node, float angleY)
 	{
-		Vector3 eulers = GetTempParent(node).localEulerAngles;
+		Vector3 eulers = GetOrCreateEmptyParent(node).LocalEuler;
 		eulers.y = angleY;
-		GetTempParent(node).localEulerAngles = eulers;
+		GetOrCreateEmptyParent(node).LocalEuler = eulers;
 	}
 	public static void ApplyTemporaryRotationAngleZ(Node node, float angleZ)
 	{
-		Vector3 eulers = GetTempParent(node).localEulerAngles;
+		Vector3 eulers = GetOrCreateEmptyParent(node).LocalEuler;
 		eulers.z = angleZ;
-		GetTempParent(node).localEulerAngles = eulers;
+		GetOrCreateEmptyParent(node).LocalEuler = eulers;
 	}
 
 	public static AttachPointNode GetOrCreateAttachPointNode(Node parent, string apName)

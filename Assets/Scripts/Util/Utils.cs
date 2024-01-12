@@ -189,6 +189,21 @@ public static class Utils
 		child.localRotation = Quaternion.identity;
 		child.localScale = Vector3.one;
 	}
+
+	public static void TranslateButNotChildren(this Transform parent, Vector3 deltaPos)
+	{
+		List<Transform> children = new List<Transform>();		
+		foreach(Transform child in parent)
+			children.Add(child);
+
+		foreach (Transform child in children)
+			child.SetParent(null, true);
+
+		parent.localPosition += deltaPos;
+
+		foreach (Transform child in children)
+			child.SetParent(parent, true);
+	}
 }
 public static class FlanCustomButtons
 {
