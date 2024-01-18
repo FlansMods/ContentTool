@@ -7,17 +7,17 @@ using static MinecraftModel;
 
 public static class ConvertToNodes
 {
-	public static RootNode CreateEmpty(string name)
+	public static TurboRootNode CreateEmpty(string name)
 	{
 		GameObject go = new GameObject(name);
-		RootNode rootNode = go.AddComponent<RootNode>();
+		TurboRootNode rootNode = go.AddComponent<TurboRootNode>();
 		return rootNode;
 	}
 
-	public static RootNode FromTurboRig(TurboRig root)
+	public static TurboRootNode FromTurboRig(TurboRig root)
 	{
 		GameObject go = new GameObject(root.name);
-		RootNode rootNode = go.AddComponent<RootNode>();
+		TurboRootNode rootNode = go.AddComponent<TurboRootNode>();
 
 		foreach (MinecraftModel.NamedTexture iconTex in root.Icons)
 			rootNode.Icons.Add(new NamedTexture()
@@ -161,7 +161,7 @@ public static class ConvertToNodes
 	}
 
 	// When in this "build" mode, don't set up the AP/section heirarchy yet
-	public static SectionNode GetOrCreateSectionNode(RootNode rootNode, string sectionName)
+	public static SectionNode GetOrCreateSectionNode(TurboRootNode rootNode, string sectionName)
 	{
 		SectionNode sectionNode = rootNode.FindDescendant<SectionNode>(sectionName);
 		if(sectionNode == null)
@@ -171,7 +171,7 @@ public static class ConvertToNodes
 		}
 		return sectionNode;
 	}
-	public static ItemPoseNode GetOrCreateItemPoseNode(RootNode rootNode, ItemDisplayContext transformType)
+	public static ItemPoseNode GetOrCreateItemPoseNode(TurboRootNode rootNode, ItemDisplayContext transformType)
 	{
 		string key = $"pose_{transformType}";
 		ItemPoseNode poseNode = rootNode.FindChild<ItemPoseNode>(key);

@@ -246,7 +246,7 @@ public static class AdditionalAssetImporter
 
 		// Step 1: Import the Java as a RootNode
 		List<Verification> importVerification = new List<Verification>();
-		RootNode rootNode = JavaModelImporter.ImportJavaModel(from, importVerification);
+		TurboRootNode rootNode = JavaModelImporter.ImportJavaModel(from, importVerification);
 		VerifyType result = Verification.GetWorstState(importVerification);
 
 		if (result == VerifyType.Fail)
@@ -273,7 +273,7 @@ public static class AdditionalAssetImporter
 		}
 		catch(Exception e)
 		{
-			errors.Add(Verification.Failure(e));
+			errors.Add(Verification.Exception(e));
 			return;
 		}
 
@@ -319,7 +319,7 @@ public static class AdditionalAssetImporter
 		}
 		catch(Exception e)
 		{
-			errors.Add(Verification.Failure(e));
+			errors.Add(Verification.Exception(e));
 		}
 	}
 }

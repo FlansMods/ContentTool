@@ -30,7 +30,32 @@ public interface ICloneable<T>
 [Serializable]
 public class TextureList : ModifiableList<NamedTexture>
 {
-	
+	private static Vector2 TexturePreviewScroller = Vector2.zero;
+	public void TextureListField(string label, Node parentNode, CreateFunc createFunc, string folderHint = "")
+	{
+		ListField(label, parentNode, (entry) =>
+		{
+			// Add a texture field
+			ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(entry.Location, entry.Texture, folderHint);
+			if (changedTextureLocation != entry.Location)
+			{
+				entry.Location = changedTextureLocation;
+				entry.Texture = changedTextureLocation.Load<Texture2D>();
+			}
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Key: ");
+			entry.Key = EditorGUILayout.DelayedTextField(entry.Key);
+			GUILayout.EndHorizontal();
+
+			if (entry.Texture != null)
+			{
+				TexturePreviewScroller = GUILayout.BeginScrollView(TexturePreviewScroller, GUILayout.ExpandHeight(false));
+				FlanStyles.RenderTextureAutoWidth(entry.Texture);
+				GUILayout.EndScrollView();
+			}
+		},
+		createFunc);
+	}
 }
 
 [Serializable]
@@ -162,6 +187,13 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	public Vector3 ExportEuler { get { return LocalEuler; } }
 	public Vector3 ExportScale { get { return LocalScale; } }
 
+	public bool IsIdentity { get {
+			return transform.localPosition.Approximately(Vector3.zero)
+			&& transform.localEulerAngles.Approximately(Vector3.zero)
+			&& transform.localScale.Approximately(Vector3.one);
+		} 
+	}
+
 
 
 	public Vector3 LocalOrigin { get { return transform.localPosition; } set { transform.localPosition = value; } }
@@ -193,7 +225,7 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	public virtual bool HideInHeirarchy() { return false; }
 	#endif
 
-	public RootNode Root { get { return GetParentOfType<RootNode>(); } }
+	public TurboRootNode Root { get { return GetParentOfType<TurboRootNode>(); } }
 	public TNodeType GetParentOfType<TNodeType>() where TNodeType : Node
 	{
 		if (this is TNodeType tNode)

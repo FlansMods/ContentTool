@@ -48,7 +48,7 @@ public class Verification
 			Message = msg
 		};
 	}
-	public static Verification Failure(Exception exception, QuickFixFunc func = null)
+	public static Verification Exception(Exception exception, QuickFixFunc func = null)
 	{
 		return new Verification()
 		{

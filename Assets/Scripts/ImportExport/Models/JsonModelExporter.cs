@@ -24,7 +24,7 @@ public static class JsonModelExporter
 				QuickJSONBuilder builder = new QuickJSONBuilder();
 				if (model.ExportToJson(builder))
 				{
-					builder.Root.ExportToFile(exportDir.File($"{model.name}.json"));
+					JsonExporter.Export(builder.Root, exportDir.File($"{model.name}.json"));
 				}
 				else
 				{

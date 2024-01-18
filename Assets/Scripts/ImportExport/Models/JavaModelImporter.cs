@@ -56,10 +56,10 @@ public static class JavaModelImporter
 	}
 
 	private static UVMap TempUVStorage = null;
-	public static RootNode ImportJavaModel(string javaPath, List<Verification> verifications)
+	public static TurboRootNode ImportJavaModel(string javaPath, List<Verification> verifications)
 	{
 		GameObject go = new GameObject($"Temp: Importing {javaPath}");
-		RootNode rootNode = go.AddComponent<RootNode>();
+		TurboRootNode rootNode = go.AddComponent<TurboRootNode>();
 		// TODO: rootNode.AddDefaultTransforms();
 		TempUVStorage = new UVMap();
 
@@ -137,7 +137,7 @@ public static class JavaModelImporter
 				else
 					verifications.Add(Verification.Failure($"Failed to match a UV patch for {geomNode.name}"));
 
-				if (geomNode.transform.parent != null && geomNode.transform.parent.name == ConvertToNodes.TEMP_NODE_NAME)
+				if (geomNode.transform.parent != null && geomNode.ParentNode is EmptyNode emptyNode)
 					nodesWithTempParents.Add(geomNode);
 			}
 		TempUVStorage.Clear();
@@ -332,7 +332,7 @@ public static class JavaModelImporter
 
 	// int textureX = 45;
 	private static readonly Regex TextureSizeRegex = new Regex($"int\\s*texture(X|Y)\\s*=\\s*{IntCapture};");
-	public static bool MatchTextureSize(RootNode rootNode, string line)
+	public static bool MatchTextureSize(TurboRootNode rootNode, string line)
 	{
 		Match match = TextureSizeRegex.Match(line);
 		if (match.Success)
@@ -378,7 +378,7 @@ public static class JavaModelImporter
 	}
 	// defaultStockModel[0] = new ModelRendererTurbo(this, 27, 10, textureX, textureY);
 	private static readonly Regex NewMRRegex = new Regex("([a-zA-Z0-9_]*)Model(?:s)?\\[([0-9]*)\\]\\s*=\\s*new ModelRenderer(?:Turbo)?\\s*\\(this,\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchNewMRTurbo(RootNode rootNode, string line)
+	public static bool MatchNewMRTurbo(TurboRootNode rootNode, string line)
 	{
 		Match match = NewMRRegex.Match(line);
 		if (match.Success)
@@ -400,7 +400,7 @@ public static class JavaModelImporter
 	}
 	// gunModels[0][1].addBox(... / addTrapezoid(... / add...
 	private static readonly Regex PieceOperation2DRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\]\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
-	public static bool MatchPiece2DOperation(RootNode rootNode, string line)
+	public static bool MatchPiece2DOperation(TurboRootNode rootNode, string line)
 	{
 		Match match = PieceOperation2DRegex.Match(line);
 		if (match.Success)
@@ -439,7 +439,7 @@ public static class JavaModelImporter
 	}
 
 	private static readonly Regex PieceOperationRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)\\].([a-zA-Z]*)\\(([-0-9A-Za-z\\/\\*\\,\\.\\s_]*)\\);");
-	public static bool MatchPieceOperation(RootNode rootNode, string line)
+	public static bool MatchPieceOperation(TurboRootNode rootNode, string line)
 	{
 		Match match = PieceOperationRegex.Match(line);
 		if (match.Success)
@@ -631,7 +631,7 @@ public static class JavaModelImporter
 	}
 	
 	private static readonly Regex PieceSetValueRegex = new Regex("([A-Za-z]*)Model(?:s)?\\[([0-9]*)].([a-zA-Z]*)\\s*=\\s*([-0-9A-Za-z\\/\\*\\,\\.\\s]*);");
-	public static bool MatchPieceSetValue(RootNode rootNode, string line)
+	public static bool MatchPieceSetValue(TurboRootNode rootNode, string line)
 	{
 		Match match = PieceSetValueRegex.Match(line);
 		if (match.Success)
@@ -699,7 +699,7 @@ public static class JavaModelImporter
 		return true;
 	}
 	private static readonly Regex GlobalFuncRegex = new Regex("([A-Za-z]*)\\s*\\(([-0-9A-Za-z\\/\\*\\,\\.\\s]*)\\);");
-	public static bool MatchGlobalFunc(RootNode rootNode, string line)
+	public static bool MatchGlobalFunc(TurboRootNode rootNode, string line)
 	{
 		Match match = GlobalFuncRegex.Match(line);
 		if (match.Success)
@@ -729,7 +729,7 @@ public static class JavaModelImporter
 		}
 		return false;
 	}
-	public static bool TranslateAll(RootNode rootNode, string parameters)
+	public static bool TranslateAll(TurboRootNode rootNode, string parameters)
 	{
 		List<float> floats = ResolveParameters(parameters);
 		if (floats.Count == 3)
@@ -742,7 +742,7 @@ public static class JavaModelImporter
 		}
 		return false;
 	}
-	public static bool FlipAll(RootNode rootNode)
+	public static bool FlipAll(TurboRootNode rootNode)
 	{
 		if (rootNode.SupportsMirror())
 		{
@@ -777,7 +777,7 @@ public static class JavaModelImporter
 		value = 0.0f;
 		return false;
 	}
-	public static bool MatchSetParameter(RootNode rootNode, string line)
+	public static bool MatchSetParameter(TurboRootNode rootNode, string line)
 	{
 		Match match = SetParameterRegex.Match(line);
 		if (match.Success)
@@ -855,7 +855,7 @@ public static class JavaModelImporter
 		vec = Vector3.zero;
 		return false;
 	}
-	public static bool MatchSetVec3Parameter(RootNode rootNode, string line)
+	public static bool MatchSetVec3Parameter(TurboRootNode rootNode, string line)
 	{
 		Match match = SetVec3ParameterRegex.Match(line);
 		if (MatchSetVec3Parameter(line, out string parameter, out Vector3 pos))

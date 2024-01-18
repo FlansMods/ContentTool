@@ -25,8 +25,8 @@ public class SectionNodeEditor : NodeEditor<SectionNode>
 {
 
 }
-[CustomEditor(typeof(RootNode))]
-public class RootNodeEditor : NodeEditor<RootNode>
+[CustomEditor(typeof(TurboRootNode))]
+public class RootNodeEditor : NodeEditor<TurboRootNode>
 {
 
 }

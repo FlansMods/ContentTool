@@ -17,7 +17,7 @@ public class AssetRightClickActions
 			if (model != null)
 			{
 				// Convert our model to a RootNode
-				RootNode newRoot = ConvertToNodes.FromTurboRig(model);
+				TurboRootNode newRoot = ConvertToNodes.FromTurboRig(model);
 				newRoot.SelectTexture("default");
 
 				GameObject prefab = PrefabUtility.SaveAsPrefabAsset(newRoot.gameObject, assetPath.Replace(".asset", ".prefab"), out bool success);

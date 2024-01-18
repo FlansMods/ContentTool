@@ -82,7 +82,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		{
 			
 			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
-			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
+			TurboRootNode rootNode = AssetDatabase.LoadAssetAtPath<TurboRootNode>(modelPath);
 			if (rootNode == null)
 				verifications.Add(Verification.Failure(
 					$"Definition {name} does not have a matching model at {modelPath}",

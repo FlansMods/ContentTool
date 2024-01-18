@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 892854506550015442}
   - component: {fileID: 1682492047799644911}
   - component: {fileID: 4809825470223673576}
+  - component: {fileID: 1292690}
   m_Layer: 0
   m_Name: part_0
   m_TagString: Untagged
@@ -141,7 +142,7 @@ MonoBehaviour:
     width: 10
     height: 7
   _MR: {fileID: 4809825470223673576}
-  _MF: {fileID: 0}
+  _MF: {fileID: 1292690}
   _Mesh: {fileID: 0}
   Dim: {x: 4, y: 6, z: 1}
 --- !u!23 &4809825470223673576
@@ -164,7 +165,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9c4ec8fccf34aaf42b63c7255cb0bbf1, type: 2}
+  - {fileID: 2100000, guid: 76b22dea2b9c30f4a888b0e556d3d242, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,6 +187,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1292690
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4029167240867587363}
+  m_Mesh: {fileID: 0}
 --- !u!1 &4628826946337910150
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +344,7 @@ GameObject:
   - component: {fileID: 3795743844063745855}
   - component: {fileID: 2705663730567574571}
   - component: {fileID: 4275079766624774239}
+  - component: {fileID: 1292689}
   m_Layer: 0
   m_Name: part_1
   m_TagString: Untagged
@@ -375,7 +385,7 @@ MonoBehaviour:
     width: 10
     height: 5
   _MR: {fileID: 4275079766624774239}
-  _MF: {fileID: 0}
+  _MF: {fileID: 1292689}
   _Mesh: {fileID: 0}
   Dim: {x: 3.6, y: 3.6, z: 0.2}
 --- !u!23 &4275079766624774239
@@ -398,7 +408,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9c4ec8fccf34aaf42b63c7255cb0bbf1, type: 2}
+  - {fileID: 2100000, guid: 76b22dea2b9c30f4a888b0e556d3d242, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -420,6 +430,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1292689
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937994417296983735}
+  m_Mesh: {fileID: 0}
 --- !u!1 &6027917640688885980
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +690,7 @@ MonoBehaviour:
   AnimationSet: {fileID: 0}
   UnityMaterialCache:
   - {fileID: 2100000, guid: 9c4ec8fccf34aaf42b63c7255cb0bbf1, type: 2}
+  - {fileID: 2100000, guid: 76b22dea2b9c30f4a888b0e556d3d242, type: 2}
 --- !u!1 &8862468213578034874
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +702,7 @@ GameObject:
   - component: {fileID: 2152495381584909073}
   - component: {fileID: 4332404761366926762}
   - component: {fileID: 5503061860979265050}
+  - component: {fileID: 1292688}
   m_Layer: 0
   m_Name: part_2
   m_TagString: Untagged
@@ -723,7 +743,7 @@ MonoBehaviour:
     width: 4
     height: 4
   _MR: {fileID: 5503061860979265050}
-  _MF: {fileID: 0}
+  _MF: {fileID: 1292688}
   _Mesh: {fileID: 0}
   Dim: {x: 0.5, y: 3, z: 0.5}
 --- !u!23 &5503061860979265050
@@ -746,7 +766,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9c4ec8fccf34aaf42b63c7255cb0bbf1, type: 2}
+  - {fileID: 2100000, guid: 76b22dea2b9c30f4a888b0e556d3d242, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -768,3 +788,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1292688
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862468213578034874}
+  m_Mesh: {fileID: 0}

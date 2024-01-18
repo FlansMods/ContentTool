@@ -15,11 +15,13 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 	[SerializeField]
 	private List<Definition> Content = new List<Definition>();
 	[SerializeField]
-	private List<RootNode> Models = new List<RootNode>();
+	private List<TurboRootNode> Models = new List<TurboRootNode>();
 	[SerializeField]
 	private List<Texture2D> Textures = new List<Texture2D>();
 	[SerializeField]
 	private List<string> IDs = new List<string>();
+	[SerializeField]
+	private List<ScriptableObject> OutdatedContent = new List<ScriptableObject>();
 	[SerializeField]
 	private List<SoundEventList> Sounds = new List<SoundEventList>();
 	public List<Definition.LocalisedExtra> ExtraLocalisation = new List<Definition.LocalisedExtra>();
@@ -50,12 +52,12 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		}
 	}
 	public int ModelCount { get { Refresh(); return Models.Count; } }
-	public IEnumerable<RootNode> AllModels
+	public IEnumerable<TurboRootNode> AllModels
 	{
 		get
 		{
 			Refresh();
-			foreach (RootNode model in Models)
+			foreach (TurboRootNode model in Models)
 				yield return model;
 		}
 	}
@@ -114,19 +116,22 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 						Content.Add(def);
 					else
 					{
-						RootNode model = AssetDatabase.LoadAssetAtPath<RootNode>(assetPath);
-						if (model != null)
-							Models.Add(model);
+						SoundEventList soundList = AssetDatabase.LoadAssetAtPath<SoundEventList>(assetPath);
+						if (soundList != null)
+						{
+							Sounds.Add(soundList);
+						}
 						else
 						{
-							SoundEventList soundList = AssetDatabase.LoadAssetAtPath<SoundEventList>(assetPath);
-							if (soundList != null)
+							ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+							if (asset != null)
 							{
-								Sounds.Add(soundList);
+								OutdatedContent.Add(asset);
+								Debug.LogWarning($"Outdated asset type ({asset.GetType()}) at '{assetPath}' in pack '{name}'");
 							}
 							else
 							{
-								Debug.LogError($"Unknown asset type at {assetPath} in pack {name}");
+								Debug.LogError($"Unknown asset type at '{assetPath}' in pack '{name}'");
 							}
 						}
 					}
@@ -141,24 +146,35 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 						Debug.LogError($"Unable to load .png at {assetPath} in pack {name}");
 					}
 				}
+				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.prefab", SearchOption.AllDirectories))
+				{
+					TurboRootNode model = AssetDatabase.LoadAssetAtPath<TurboRootNode>(assetPath);
+					if (model != null)
+						Models.Add(model);
+					else
+					{
+						Debug.LogError($"Unknown prefab type at {assetPath} in pack {name}");
+					}
 
-				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
-				//{
-				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-				//	if (clip != null)
-				//		Sounds.Add(clip);
-				//	else
-				//		Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
-				//}
-				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
-				//{
-				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-				//	if (clip != null)
-				//		Sounds.Add(clip);
-				//	else
-				//		Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
-				//}
-			}
+				}
+
+					//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
+					//{
+					//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+					//	if (clip != null)
+					//		Sounds.Add(clip);
+					//	else
+					//		Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
+					//}
+					//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
+					//{
+					//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+					//	if (clip != null)
+					//		Sounds.Add(clip);
+					//	else
+					//		Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+					//}
+				}
 
 			if (count != Content.Count + Models.Count + Textures.Count)
 			{
@@ -172,7 +188,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 			foreach (Texture2D tex in Textures)
 				if (tex.TryGetLocation(out ResourceLocation texLoc))
 					IDs.Add(texLoc.ID);
-			foreach (RootNode model in Models)
+			foreach (TurboRootNode model in Models)
 				if (model.TryGetLocation(out ResourceLocation modelLoc))
 					IDs.Add(modelLoc.ID);
 			foreach (SoundEventList list in Sounds)
@@ -248,7 +264,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		Refresh();
 		foreach (Definition def in Content)
 			yield return def;
-		foreach (RootNode model in Models)
+		foreach (TurboRootNode model in Models)
 			yield return model;
 		//foreach (SoundEventList soundList in Sounds)
 		//	foreach (SoundEventEntry sound in soundList.SoundEvents)

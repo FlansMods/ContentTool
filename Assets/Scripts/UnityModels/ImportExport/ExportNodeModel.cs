@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class ExportNodeModel
 {
-    public static JObject ExportRoot(RootNode root)
+    public static JObject ExportRoot(TurboRootNode root)
     {
         return new JObject
         {
@@ -34,7 +34,7 @@ public static class ExportNodeModel
 
     public static JObject ExportAttachPoint(AttachPointNode apNode)
     {
-        AttachPointNode parent = apNode.GetParentOfType<AttachPointNode>();
+        AttachPointNode parent = apNode.ParentNode?.GetParentOfType<AttachPointNode>();
 
         return new JObject()
         {
@@ -47,7 +47,7 @@ public static class ExportNodeModel
 
     // -----
     // Internals
-    private static JArray ExportAttachPoints(RootNode root)
+    private static JArray ExportAttachPoints(TurboRootNode root)
     {
         JArray jAttachPoints = new JArray();
         foreach(AttachPointNode apNode in root.GetAllDescendantNodes<AttachPointNode>())
@@ -56,7 +56,7 @@ public static class ExportNodeModel
         }
         return jAttachPoints;
     }
-	private static JObject ExportSections(RootNode root)
+	private static JObject ExportSections(TurboRootNode root)
     {
 		JObject jSections = new JObject();
         foreach (SectionNode section in root.GetAllDescendantNodes<SectionNode>())
@@ -72,7 +72,7 @@ public static class ExportNodeModel
         }
         return jParts;
     }
-	private static JObject ExportAnimations(RootNode root)
+	private static JObject ExportAnimations(TurboRootNode root)
 	{
 		JObject jAnimations = new JObject();
 		foreach (AnimationParameter animParam in root.AnimationParameters)
@@ -81,7 +81,7 @@ public static class ExportNodeModel
 		return jAnimations;
 	}
 
-	private static JObject ExportTextures(RootNode root)
+	private static JObject ExportTextures(TurboRootNode root)
     {
 		JObject jTextures = new JObject();
         foreach (NamedTexture texture in root.Textures)
@@ -89,7 +89,7 @@ public static class ExportNodeModel
         return jTextures;
 	}
 
-	private static JObject ExportIcons(RootNode root)
+	private static JObject ExportIcons(TurboRootNode root)
 	{
 		JObject jTextures = new JObject();
 		foreach (NamedTexture icon in root.Icons)
@@ -97,7 +97,7 @@ public static class ExportNodeModel
 		return jTextures;
 	}
 
-	private static JObject ExportTransforms(RootNode root)
+	private static JObject ExportTransforms(TurboRootNode root)
     {
         JObject jDisplay = new JObject();
         foreach (ItemPoseNode itemPoseNode in root.GetChildNodes<ItemPoseNode>())

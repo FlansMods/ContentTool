@@ -798,7 +798,7 @@ public class ContentManager : MonoBehaviour
 		catch(Exception e)
 		{
 			if (verifications != null)
-				verifications.Add(Verification.Failure(e));
+				verifications.Add(Verification.Exception(e));
 		}
 	}
 
@@ -1123,63 +1123,43 @@ public class ContentManager : MonoBehaviour
 				Directory.CreateDirectory(exportFolder);
 			if (asset is Definition def)
 			{
-				try
-				{
-					def.CheckAndExportToFile(exportPath);
-				}
-				catch (Exception e)
-				{
-					if (verifications != null)
-						verifications.Add(Verification.Failure(e));
-				}
+				JsonExporter.Export(def, exportPath, verifications);
 			}
-			else if(asset is RootNode rootNode)
+			else if(asset is TurboRootNode rootNode)
 			{
 				JObject jObject = ExportNodeModel.ExportRoot(rootNode);
+				JsonExporter.Export(jObject, exportPath, verifications);
 			}
-			//else if (asset is MinecraftModel model)
-			//{
-			//	try
-			//	{
-			//		List<string> outputFiles = new List<string>();
-			//		ExportDirectory exportDir = new ExportDirectory($"{ExportRoot}/assets/{packName}");
-			//		model.ExportToModelJsonFiles(exportDir, outputFiles);
-			//	}
-			//	catch (Exception e)
-			//	{
-			//		if (verifications != null)
-			//			verifications.Add(Verification.Failure(e));
-			//	}
-			//}
 			else if (asset is Texture2D texture)
 			{
-				try
-				{
-					texture.CheckAndExportToFile(exportPath);
-				}
-				catch (Exception e)
-				{
-					if (verifications != null)
-						verifications.Add(Verification.Failure(e));
-				}
+				CopyAsset(texture, exportPath);
 			}
 			else if (asset is AudioClip audio)
 			{
-				try
-				{
-					audio.ExportToFile(exportPath);
-				}
-				catch (Exception e)
-				{
-					if (verifications != null)
-						verifications.Add(Verification.Failure(e));
-				}
+				CopyAsset(audio, exportPath);
 			}
 			else
 			{
 				if (verifications != null)
 					verifications.Add(Verification.Failure($"Unknown asset type {asset.GetType()} for {asset}"));
 			}
+		}
+	}
+	public void CopyAsset(UnityEngine.Object asset, string outputPath, List<Verification> verifications = null)
+	{
+		try
+		{
+			string assetPath = AssetDatabase.GetAssetPath(asset);
+			File.Copy(assetPath, outputPath, true);
+			string successMsg = $"Copied asset '{asset.name}' to {outputPath}";
+			Debug.Log(successMsg);
+			if (verifications != null)
+				verifications.Add(Verification.Success(successMsg));
+		}
+		catch(Exception e)
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Exception(e));
 		}
 	}
 
@@ -1247,7 +1227,7 @@ public class ContentManager : MonoBehaviour
 		catch(Exception e)
 		{
 			if (verifications != null)
-				verifications.Add(Verification.Failure(e));
+				verifications.Add(Verification.Exception(e));
 		}
 	}
 	public string GetTagJsonExportPath(string tag)
@@ -1535,7 +1515,7 @@ public class ContentManager : MonoBehaviour
 			// Export Models
 			int modelCount = pack.ModelCount;
 			processedCount = 0;
-			foreach (RootNode model in pack.AllModels)
+			foreach (TurboRootNode model in pack.AllModels)
 			{
 				EditorUtility.DisplayProgressBar("Exporting Models", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
 				ExportAsset(pack.ModName, model, verifications);

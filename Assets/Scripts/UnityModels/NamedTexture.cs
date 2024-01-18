@@ -63,7 +63,7 @@ public class NamedTexture : IVerifiableAsset, IModifyable, ICloneable<NamedTextu
 	}
 	void IModifyable.Preview(Node parentNode)
 	{
-		if (parentNode is RootNode root)
+		if (parentNode is TurboRootNode root)
 			root.SelectTexture(Key);
 	}
 

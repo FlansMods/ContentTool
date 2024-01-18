@@ -25,7 +25,7 @@ public class SectionNode : Node
 				verifications.Add(Verification.Failure($"Section {name} is attached to AP {apParent.name}, which does not match",
 					() => name = apParent.APName));
 		}
-		else if(ParentNode is RootNode rootParent)
+		else if(ParentNode is TurboRootNode rootParent)
 		{
 			if (name != "body")
 				verifications.Add(Verification.Neutral($"Section {name} is attached to the RootNode, but is not called 'body'"));

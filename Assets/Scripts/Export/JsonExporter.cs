@@ -1,32 +1,63 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public static class JsonExporter
 {
-	public static JToken Export(object input)
+	public static void Export(JObject jObject, string exportPath, List<Verification> verifications = null)
 	{
-		if (input == null)
-			return new JObject();
-		return GetOrCreateWriter(input.GetType()).Write(input);
+		try
+		{
+			string jsonText = WriteFormattedJson(jObject);
+			File.WriteAllText(exportPath, jsonText);
+
+			string successMsg = $"Exported Json to '{exportPath}'";
+			if (verifications != null)
+				verifications.Add(Verification.Success(successMsg));
+			Debug.Log(successMsg);
+		}
+		catch (Exception e)
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Exception(e));
+			Debug.LogError($"Failed to export Json to {exportPath} due to {e.Message}");
+		}
 	}
 
-	public static JObject ExportToJson(this ScriptableObject def)
+	public static void Export(Definition def, string exportPath, List<Verification> verifications = null)
 	{
-		return Export(def) as JObject;
+		try
+		{
+			JToken rootToken = ExportInternal(def);
+			if (rootToken is JObject jRootObject)
+			{
+				string jsonText = WriteFormattedJson(jRootObject);
+				File.WriteAllText(exportPath, jsonText);
+
+				string successMsg = $"Exported Definition '{def.name}' to '{exportPath}'";
+				if (verifications != null)
+					verifications.Add(Verification.Success(successMsg));
+				Debug.Log(successMsg);
+			}
+			else if (verifications != null)
+				verifications.Add(Verification.Failure("JsonExport wrote a non-JObject token at the root?"));
+		}
+		catch (Exception e)
+		{
+			if (verifications != null)
+				verifications.Add(Verification.Exception(e));
+			Debug.LogError($"Failed to export {def.name} to {exportPath} due to {e.Message}");
+		}
 	}
 
-	public static string WriteToString(this ScriptableObject def)
-	{
-		return WriteToString(ExportToJson(def));
-	}
 
-	public static string WriteToString(this JObject jObject)
+
+	private static string WriteFormattedJson(JObject jObject)
 	{
 		using (System.IO.StringWriter stringWriter = new System.IO.StringWriter())
 		using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
@@ -38,83 +69,14 @@ public static class JsonExporter
 		}
 	}
 
-	public static bool CheckAndExportToFile(this ScriptableObject def, string file)
+	private static JToken ExportInternal(object input)
 	{
-		if (def is IVerifiableAsset verifiable)
-		{
-			List<Verification> verifications = new List<Verification>();
-			verifiable.GetVerifications(verifications);
-			if (Verification.GetWorstState(verifications) == VerifyType.Fail)
-			{
-				Debug.LogError($"Not exporting {def.name} due to verification errors");
-				foreach (Verification v in verifications)
-					Debug.Log(v);
-				return false;
-			}
-		}
-		return ExportToFile(def, file);
+		if (input == null)
+			return new JObject();
+		return GetOrCreateWriter(input.GetType()).Write(input);
 	}
 
-	public static bool ExportToFile(this ScriptableObject def, string file)
-	{
-		try
-		{
-			string json = WriteToString(ExportToJson(def));
-			System.IO.File.WriteAllText(file, json);
-			Debug.Log($"Exported {def.name} to {file}");
-			return true;
-		}
-		catch(Exception e)
-		{
-			Debug.LogError($"Failed to export {def.name} to {file} due to {e.Message}");
-			return false;
-		}
-	}
-
-	public static void ExportToFile(this JObject jObject, string file)
-	{
-		string json = WriteToString(jObject);
-		System.IO.File.WriteAllText(file, json);
-	}
-
-	public static bool CheckAndExportToFile(this Texture2D texture, string file)
-	{
-		return ExportToFile(texture, file);
-	}
-
-	public static bool ExportToFile(this Texture2D texture, string file)
-	{
-		try
-		{
-			string texturePath = AssetDatabase.GetAssetPath(texture);
-			System.IO.File.Copy(texturePath, file, true);
-			Debug.Log($"Exported {texture} to {file}");
-			return true;
-		}
-		catch(Exception e)
-		{
-			Debug.LogError($"Failed to export {texture} to {file} due to {e.Message}");
-			return false;
-		}
-	}
-
-	public static bool ExportToFile(this AudioClip audioClip, string file)
-	{
-		try
-		{
-			string clipPath = AssetDatabase.GetAssetPath(audioClip);
-			System.IO.File.Copy(clipPath, file, true);
-			Debug.Log($"Exported {audioClip} to {file}");
-			return true;
-		}
-		catch (Exception e)
-		{
-			Debug.LogError($"Failed to export {audioClip} to {file} due to {e.Message}");
-			return false;
-		}
-	}
-
-	public static Dictionary<Type, Writer> Writers = null;
+	private static Dictionary<Type, Writer> Writers = null;
 	public static bool CheckInit()
 	{
 		if (Writers == null)
@@ -147,7 +109,7 @@ public static class JsonExporter
 		return true;
 	}
 
-	public static Writer GetOrCreateWriter(Type type)
+	private static Writer GetOrCreateWriter(Type type)
 	{
 		CheckInit();
 
@@ -251,7 +213,7 @@ public static class JsonExporter
 			JObject jObj = new JObject();
 			foreach(var kvp in fields)
 			{
-				JToken token = JsonExporter.Export(kvp.Value.GetValue(input));
+				JToken token = ExportInternal(kvp.Value.GetValue(input));
 				if(token != null)
 					jObj.Add(kvp.Key, token);
 			}

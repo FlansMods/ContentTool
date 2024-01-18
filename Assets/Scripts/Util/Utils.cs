@@ -190,6 +190,23 @@ public static class Utils
 		child.localScale = Vector3.one;
 	}
 
+	public static void ZeroTransformButNotChildren(this Transform parent)
+	{
+		List<Transform> children = new List<Transform>();
+		foreach (Transform child in parent)
+			children.Add(child);
+
+		foreach (Transform child in children)
+			child.SetParent(null, true);
+
+		parent.localPosition = Vector3.zero;
+		parent.localRotation = Quaternion.identity;
+		parent.localScale = Vector3.one;
+
+		foreach (Transform child in children)
+			child.SetParent(parent, true);
+	}
+
 	public static void TranslateButNotChildren(this Transform parent, Vector3 deltaPos)
 	{
 		List<Transform> children = new List<Transform>();		
@@ -254,7 +271,7 @@ public static class FlanStyles
 	// Node Editor Icons
 	public static GUIContent IconForNode(Node node)
 	{
-		if (node is RootNode) return RootNode;
+		if (node is TurboRootNode) return RootNode;
 		if (node is AttachPointNode) return AttachPointNode;
 		if (node is SectionNode) return SectionNode;
 		if (node is GeometryNode) return GeometryNode;

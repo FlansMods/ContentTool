@@ -137,7 +137,7 @@ public class ContentManagerEditor : Editor
 
 					if(doImport)
 					{
-						RootNode rootNode = JavaModelImporter.ImportJavaModel(from, ContentManager.GetFreshImportLogger($"Importing {from}"));
+						TurboRootNode rootNode = JavaModelImporter.ImportJavaModel(from, ContentManager.GetFreshImportLogger($"Importing {from}"));
 						rootNode.AddDefaultTransforms();
 						string folderPath = to.Substring(0, to.LastIndexOf('/'));
 						if (!Directory.Exists(folderPath))
