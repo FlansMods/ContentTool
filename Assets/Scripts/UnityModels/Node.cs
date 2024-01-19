@@ -31,20 +31,28 @@ public interface ICloneable<T>
 public class TextureList : ModifiableList<NamedTexture>
 {
 	private static Vector2 TexturePreviewScroller = Vector2.zero;
-	public void TextureListField(string label, Node parentNode, CreateFunc createFunc, string folderHint = "")
+	public bool TextureListField(string label, Node parentNode, CreateFunc createFunc, string folderHint = "")
 	{
-		ListField(label, parentNode, (entry) =>
+		return ListField(label, parentNode, (entry) =>
 		{
+			bool anyChange = false;
+
 			// Add a texture field
 			ResourceLocation changedTextureLocation = ResourceLocation.EditorObjectField(entry.Location, entry.Texture, folderHint);
 			if (changedTextureLocation != entry.Location)
 			{
 				entry.Location = changedTextureLocation;
 				entry.Texture = changedTextureLocation.Load<Texture2D>();
+				anyChange = true;
 			}
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Key: ");
-			entry.Key = EditorGUILayout.DelayedTextField(entry.Key);
+			string changedEntry = EditorGUILayout.DelayedTextField(entry.Key);
+			if(changedEntry != entry.Key)
+			{
+				entry.Key = changedEntry;
+				anyChange = true;
+			}
 			GUILayout.EndHorizontal();
 
 			if (entry.Texture != null)
@@ -53,6 +61,8 @@ public class TextureList : ModifiableList<NamedTexture>
 				FlanStyles.RenderTextureAutoWidth(entry.Texture);
 				GUILayout.EndScrollView();
 			}
+
+			return anyChange;
 		},
 		createFunc);
 	}
@@ -78,12 +88,14 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 	}
 	// -------------------------------------------------------------------------
 
-	public delegate void GUIFunc(T entry);
+	public delegate bool GUIFunc(T entry);
 	public delegate T CreateFunc();
 
 	#if UNITY_EDITOR
-	public void ListField(string label, Node parentNode, GUIFunc entryFunc, CreateFunc createFunc = null)
+	public bool ListField(string label, Node parentNode, GUIFunc entryFunc, CreateFunc createFunc = null)
 	{
+		bool anyChange = false;
+
 		// Header
 		GUILayout.BeginHorizontal();
 		bool listFoldout = Tree.Foldout(new GUIContent(label), label);
@@ -93,7 +105,7 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 			if (GUILayout.Button(FlanStyles.AddEntry))
 			{
 				Add(createFunc.Invoke());
-				EditorUtility.SetDirty(parentNode);
+				anyChange = true;
 			}
 		GUILayout.EndHorizontal();
 
@@ -115,7 +127,11 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 				{
 					string newName = EditorGUILayout.DelayedTextField(entry.GetName());
 					if (newName != entry.GetName())
+					{
+						Tree.ForceExpand($"{label}/{newName}");
 						entry.Rename(parentNode, newName);
+						anyChange = true;
+					}
 				}
 				else GUILayout.Label(entry.GetName());
 				// Space so the buttons are right-aligned
@@ -148,7 +164,8 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 					GUILayout.BeginVertical();
 					// -------------------
 					FlanStyles.ThinLine();
-					entryFunc.Invoke(entry);
+					if(entryFunc.Invoke(entry))
+						anyChange = true;
 					FlanStyles.ThinLine();
 					// -------------------
 					GUILayout.EndVertical();
@@ -162,13 +179,17 @@ public class ModifiableList<T> where T : IModifyable, ICloneable<T>, new()
 				T newEntry = this[indexToDuplicate].Clone();
 				Insert(indexToDuplicate + 1, newEntry);
 				newEntry.PostDuplicate(parentNode);
+				anyChange = true;
 			}
 			if (indexToDelete != -1)
 			{
 				this[indexToDelete].PreDelete(parentNode);
 				RemoveAt(indexToDelete);
+				anyChange = true;
 			}
 		}
+
+		return anyChange;
 	}
 	#endif
 }

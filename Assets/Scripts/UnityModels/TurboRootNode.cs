@@ -124,17 +124,25 @@ public class TurboRootNode : RootNode
 			EditorUtility.SetDirty(this);
 		}
 
-		Textures.TextureListField(
-			"Skins", 
-			this, 
-			() => { return CreateNewDefaultSkin(); },
-			"textures/skins");
+		bool anyChange = false;
 
-		Icons.TextureListField(
-			"Icons", 
-			this, 
+		if (Textures.TextureListField(
+			"Skins",
+			this,
+			() => { return CreateNewDefaultSkin(); },
+			"textures/skins"))
+			anyChange = true;
+		if (Icons.TextureListField(
+			"Icons",
+			this,
 			() => { return CreateNewDefaultIcon(); },
-			"textures/item");
+			"textures/item"))
+			anyChange = true;
+
+		if(anyChange)
+		{
+			EditorUtility.SetDirty(this);
+		}
 
 	}
 #endif

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [System.Serializable]
@@ -359,6 +360,13 @@ public static class ResourceLocationUtils
 			return ResourceLocation.TryGetFromAssetPath(
                 PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(component), 
                 out location);
+        }
+
+        PrefabStage prefabStage = PrefabStageUtility.GetPrefabStage(component.gameObject);
+        if(prefabStage != null)
+        {
+            return ResourceLocation.TryGetFromAssetPath(
+                prefabStage.assetPath, out location);
         }
 #endif
         location = new ResourceLocation();

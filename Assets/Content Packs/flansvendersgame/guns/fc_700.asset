@@ -22,6 +22,9 @@ MonoBehaviour:
   - Unlocalised: paintjob.flansvendersgame.fc_700_polymer
     Lang: 0
     Localised: Flint & Cobbleson 700 Polymer
+  - Unlocalised: paintjob.flansvendersgame.fc_700_counterfeit
+    Lang: 0
+    Localised: fc 700 counterfeit
   itemSettings:
     maxStackSize: 1
     tags:
@@ -32,6 +35,9 @@ MonoBehaviour:
       paintBucketsRequired: 1
       entitlementKey: 
     - textureName: fc_700_polymer
+      paintBucketsRequired: 1
+      entitlementKey: 
+    - textureName: fc_700_counterfeit
       paintBucketsRequired: 1
       entitlementKey: 
   inputHandlers:
@@ -140,6 +146,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 3
       duration: 1
@@ -228,6 +235,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 5
       duration: 0
@@ -250,6 +258,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 2.5
@@ -272,6 +281,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 1.116
@@ -313,6 +323,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 1.116
@@ -354,6 +365,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.558
@@ -395,6 +407,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.65200007
@@ -440,6 +453,7 @@ MonoBehaviour:
     ejectActionKey: reload_primary_eject
     loadOneActionKey: reload_primary_load_one
     endActionKey: reload_primary_end
+  modes: []
   loopingSounds: []
   barrelAttachments:
     matchNames: []

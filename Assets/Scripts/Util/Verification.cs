@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -194,6 +195,15 @@ public static class GUIVerify
 		}
 		return assets;
 	}
+	private static List<Verification> GetCachedVerifications(IVerifiableContainer container, bool forceRefresh)
+	{
+		List<Verification> verifications = new List<Verification>();
+		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
+			verifications.AddRange(GetCachedVerifications(asset, forceRefresh));
+		if (container is IVerifiableAsset containerAsset)
+			containerAsset.GetVerifications(verifications);
+		return verifications;
+	}
 	public static void InvalidateCaches()
 	{
 		CachedVerifications.Clear();
@@ -203,18 +213,10 @@ public static class GUIVerify
 	// ----------------------------------------------------------------------------------------------
 	#region Cached Verification Boxes - Much faster
 	// ----------------------------------------------------------------------------------------------
+	// For IVerifiableContainers
 	public static bool CachedVerificationHeader(IVerifiableContainer container, bool forceRefresh = false)
 	{
-		List<Verification> verifications = new List<Verification>();
-		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
-			verifications.AddRange(GetCachedVerifications(asset, forceRefresh));
-		if (container is IVerifiableAsset containerAsset)
-			containerAsset.GetVerifications(verifications);
-		return VerificationHeader(verifications);		
-	}
-	public static bool CachedVerificationsBoxAsset(IVerifiableAsset asset, bool forceRefresh = false)
-	{
-		return VerificationsBox(GetCachedVerifications(asset, forceRefresh));
+		return VerificationHeader(GetCachedVerifications(container, forceRefresh));		
 	}
 	public static bool CachedVerificationsBox(IVerifiableContainer container, bool forceRefresh = false)
 	{
@@ -229,9 +231,31 @@ public static class GUIVerify
 
 		return VerificationsBox(multiVerify);
 	}
+	public static void CachedApplyQuickFixes(IVerifiableContainer container, bool forceRefresh = false)
+	{
+		Verification.ApplyAllQuickFixes(GetCachedVerifications(container, forceRefresh));
+	}
+	public static int CachedCountQuickFixes(IVerifiableContainer container, bool forceRefresh = false)
+	{
+		return Verification.CountQuickFixes(GetCachedVerifications(container, forceRefresh));
+	}
+
+	// For a single IVerifiableAsset
+	public static bool CachedVerificationsBoxAsset(IVerifiableAsset asset, bool forceRefresh = false)
+	{
+		return VerificationsBox(GetCachedVerifications(asset, forceRefresh));
+	}
 	public static void CachedVerificationsIcon(IVerifiableAsset asset, bool forceRefresh = false)
 	{
 		VerificationIcon(GetCachedVerifications(asset, forceRefresh));
+	}
+	public static void CachedApplyQuickFixes(IVerifiableAsset asset, bool forceRefresh = false)
+	{
+		Verification.ApplyAllQuickFixes(GetCachedVerifications(asset, forceRefresh));
+	}
+	public static int CachedCountQuickFixes(IVerifiableAsset asset, bool forceRefresh = false)
+	{
+		return Verification.CountQuickFixes(GetCachedVerifications(asset, forceRefresh));
 	}
 	#endregion
 	// ----------------------------------------------------------------------------------------------

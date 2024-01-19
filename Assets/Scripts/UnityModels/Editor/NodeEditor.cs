@@ -38,6 +38,8 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 
 	public override void OnInspectorGUI()
 	{
+		EditorGUI.BeginChangeCheck();
+
 		if (target is TNodeType node)
 		{
 			// Draw top level stuff
@@ -113,6 +115,11 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 			DrawNodeGUI(node, node.name);
 
 			
+		}
+
+		if(EditorGUI.EndChangeCheck() && !EditorUtility.IsDirty(target))
+		{
+			EditorUtility.SetDirty(target);
 		}
 	}
 
