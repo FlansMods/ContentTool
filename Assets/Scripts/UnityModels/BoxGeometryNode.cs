@@ -109,13 +109,13 @@ public class BoxGeometryNode : GeometryNode
 		Vector2[] uvs = GenerateUVsForFace(face, withUV.x, withUV.y, texSize.x, texSize.y);
 		return new JObject()
 		{
-			["uv"] = new JArray( // minX, minY, maxX, maxY ?
+			["uv"] = new JArray( // minX, minY, maxX, maxY
 				Mathf.Min(uvs[0].x, uvs[1].x, uvs[2].x, uvs[3].x),
 				Mathf.Min(uvs[0].y, uvs[1].y, uvs[2].y, uvs[3].y),
 				Mathf.Max(uvs[0].x, uvs[1].x, uvs[2].x, uvs[3].x),
 				Mathf.Max(uvs[0].y, uvs[1].y, uvs[2].y, uvs[3].y)
 			),
-			["rotation"] = (face == EFace.up ? 90 : 0),
+			["rotation"] = (face == EFace.down ? 270 : 180),
 			["texture"] = "#default",
 		};
 	}
