@@ -97,9 +97,9 @@ public abstract class GeometryNode : Node
 	protected override void EditorUpdate()
 	{
 		base.EditorUpdate();
-		if (Root != null)
+		if (Root != null && Root is TurboRootNode turboRoot)
 		{
-			GenerateBakedGeometry(Root.UVMapSize);
+			GenerateBakedGeometry(turboRoot.UVMapSize);
 			if (MR == null)
 				Debug.Log("MeshRenderer null");
 			Mesh.RecalculateBounds();

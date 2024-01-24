@@ -15,7 +15,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 	[SerializeField]
 	private List<Definition> Content = new List<Definition>();
 	[SerializeField]
-	private List<TurboRootNode> Models = new List<TurboRootNode>();
+	private List<RootNode> Models = new List<RootNode>();
 	[SerializeField]
 	private List<Texture2D> Textures = new List<Texture2D>();
 	[SerializeField]
@@ -52,12 +52,12 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		}
 	}
 	public int ModelCount { get { Refresh(); return Models.Count; } }
-	public IEnumerable<TurboRootNode> AllModels
+	public IEnumerable<RootNode> AllModels
 	{
 		get
 		{
 			Refresh();
-			foreach (TurboRootNode model in Models)
+			foreach (RootNode model in Models)
 				yield return model;
 		}
 	}
@@ -148,7 +148,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 				}
 				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.prefab", SearchOption.AllDirectories))
 				{
-					TurboRootNode model = AssetDatabase.LoadAssetAtPath<TurboRootNode>(assetPath);
+					RootNode model = AssetDatabase.LoadAssetAtPath<RootNode>(assetPath);
 					if (model != null)
 						Models.Add(model);
 					else
@@ -188,7 +188,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 			foreach (Texture2D tex in Textures)
 				if (tex.TryGetLocation(out ResourceLocation texLoc))
 					IDs.Add(texLoc.ID);
-			foreach (TurboRootNode model in Models)
+			foreach (RootNode model in Models)
 				if (model.TryGetLocation(out ResourceLocation modelLoc))
 					IDs.Add(modelLoc.ID);
 			foreach (SoundEventList list in Sounds)
@@ -264,7 +264,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		Refresh();
 		foreach (Definition def in Content)
 			yield return def;
-		foreach (TurboRootNode model in Models)
+		foreach (RootNode model in Models)
 			yield return model;
 		//foreach (SoundEventList soundList in Sounds)
 		//	foreach (SoundEventEntry sound in soundList.SoundEvents)

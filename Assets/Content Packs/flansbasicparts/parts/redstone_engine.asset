@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: redstone_engine
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: redstone_engine
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: 5895b26c37cbc854d9d71a7c272c8650, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Rudimentary Redstone Motor
@@ -41,13 +22,13 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
     - flansmod:engine
   modifiers: []
+  abilities: []
   engine:
     maxAcceleration: 0.8
     maxDeceleration: 0.8
@@ -58,5 +39,6 @@ MonoBehaviour:
     liquidFuelCapacity: 0
     batterySlots: 1
     FECapacity: 10000
-  materialTier: 1
-  materialType: 5
+  material:
+    Namespace: flansbasicparts
+    ID: redstone

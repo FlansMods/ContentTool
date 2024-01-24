@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ResourceLocation;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "Flans Mod/WorkbenchDefinition")]

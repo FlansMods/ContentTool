@@ -114,4 +114,32 @@ public abstract class RootNode : Node
 	}
 	#endregion
 	// -----------------------------------------------------------------------------------
+
+
+
+	protected delegate void QuickFixFunction<T>(T _this);
+	protected void ApplyQuickFix<T>(QuickFixFunction<T> quickFix)
+	{
+		if (this is T t)
+		{
+			string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
+			using (var editingScope = new PrefabUtility.EditPrefabContentsScope(prefabPath))
+			{
+				GameObject root = editingScope.prefabContentsRoot;
+				T thisInsidePrefab = root.GetComponent<T>();
+				if(thisInsidePrefab != null)
+				{
+					quickFix(thisInsidePrefab);
+				}
+				else
+				{
+					Debug.LogError($"Failed to apply quick-fix inside prefab scope on {name}");
+				}
+			}
+		}
+		else
+		{
+			Debug.LogError($"Quick-fix function has incorrect template type in {typeof(T)}");
+		}
+	}
 }

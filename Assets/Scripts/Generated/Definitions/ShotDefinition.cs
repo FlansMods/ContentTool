@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ResourceLocation;
 
 [System.Serializable]
 public class ShotDefinition
@@ -20,7 +21,7 @@ public class ShotDefinition
 [Tooltip("If using minigun fire mode, this is the max rotational speed (in degrees/second) of the barrels")]
 	public float spinSpeed = 360.0f;
 	[JsonField]
-	public string[] breaksMaterials = new string[0];
+	public string[] breaksBlockTags = new string[0];
 	[JsonField]
 	public float penetrationPower = 1.0f;
 	[JsonField]

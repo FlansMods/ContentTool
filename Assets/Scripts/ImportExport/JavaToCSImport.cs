@@ -45,11 +45,13 @@ public class JavaToCSImport : MonoBehaviour
 	private void Import(string javaPath, string csPath, string className, bool isElement)
 	{
 		string[] input = File.ReadAllLines(javaPath);
-		List<string> output = new List<string>();
-
-		output.Add("using UnityEngine;");
-		output.Add("");
-		output.Add("[System.Serializable]");
+		List<string> output = new List<string>
+		{
+			"using UnityEngine;",
+			"using static ResourceLocation;",
+			"",
+			"[System.Serializable]"
+		};
 		if(!isElement)
 			output.Add($"[CreateAssetMenu(menuName = \"Flans Mod/{className}\")]");
 		if(isElement)

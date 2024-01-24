@@ -486,7 +486,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				speed = type.bulletSpeed,
 				bulletCount = type.numBullets,
 				spinSpeed = 360f,
-				breaksMaterials = new string[0],
+				//breaksMaterials = new string[0],
 				penetrationPower = 1.0f,
 				trailParticles = "",
 				impact = new ImpactDefinition()
@@ -2089,20 +2089,21 @@ public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
 	{
 		output.gunCrafting.FECostPerCraft = 0;
 		output.gunCrafting.isActive = true;
-		output.gunCrafting.pages = new GunCraftingPageDefinition[input.pages.Count];
-		for(int p = 0; p < input.pages.Count; p++)
-		{
-			GunBoxPage page = input.pages[p];
-			output.gunCrafting.pages[p] = new GunCraftingPageDefinition();
-
-			List<GunCraftingEntryDefinition> outputEntries = new List<GunCraftingEntryDefinition>();
-			for(int i = 0; i < page.entries.Count; i++)
-			{
-				GunBoxEntry entry = page.entries[i];
-				CreateGunCraftingEntry(outputEntries, entry);
-			}
-			output.gunCrafting.pages[p].entries = outputEntries.ToArray();
-		}
+		//output.gunCrafting.pages = new GunCraftingPageDefinition[input.pages.Count];
+		//for(int p = 0; p < input.pages.Count; p++)
+		//{
+		//	GunBoxPage page = input.pages[p];
+		//	output.gunCrafting.pages[p] = new GunCraftingPageDefinition();
+		//
+		//	List<GunCraftingEntryDefinition> outputEntries = new List<GunCraftingEntryDefinition>();
+		//	for(int i = 0; i < page.entries.Count; i++)
+		//	{
+		//		GunBoxEntry entry = page.entries[i];
+		//		CreateGunCraftingEntry(outputEntries, entry);
+		//	}
+		//	output.gunCrafting.pages[p].entries = outputEntries.ToArray();
+		//}
+		// TODO: Export to .json recipes
 	}
 
 	private void CreateGunCraftingEntry(List<GunCraftingEntryDefinition> entries, GunBoxEntry entry)

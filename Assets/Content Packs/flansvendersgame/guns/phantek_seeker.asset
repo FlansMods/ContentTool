@@ -24,7 +24,8 @@ MonoBehaviour:
     Localised: PhanTek Seeker Bubblegun
   itemSettings:
     maxStackSize: 1
-    tags: []
+    tags:
+    - flansmod:gun
   paints:
     paintjobs:
     - textureName: phantek_seeker_forest
@@ -139,6 +140,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 3
       duration: 0.05
@@ -227,6 +229,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 4
       duration: 0
@@ -249,6 +252,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 2.5
@@ -271,6 +275,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 1
@@ -293,6 +298,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 1
@@ -334,6 +340,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 1
@@ -360,6 +367,7 @@ MonoBehaviour:
     ejectActionKey: reload_primary_eject
     loadOneActionKey: reload_primary_load_one
     endActionKey: reload_primary_end
+  modes: []
   loopingSounds: []
   barrelAttachments:
     matchNames: []

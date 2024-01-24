@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: phantex_sheet
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: phantex_sheet
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: d8e9d2a26d86b7e4b9e9e669bd6e293f, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Phantex Sheet
@@ -41,12 +22,12 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
   modifiers: []
+  abilities: []
   engine:
     maxAcceleration: 1
     maxDeceleration: 1
@@ -57,5 +38,6 @@ MonoBehaviour:
     liquidFuelCapacity: 0
     batterySlots: 0
     FECapacity: 0
-  materialTier: 2
-  materialType: 4
+  material:
+    Namespace: flansbasicparts
+    ID: phantex

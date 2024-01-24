@@ -55,7 +55,28 @@ public static class JsonExporter
 		}
 	}
 
-
+	public static void CreateVanillaItemIcon(ResourceLocation itemID, string exportPath, List<Verification> verifications = null)
+	{
+		JObject itemRoot = new JObject {
+			["parent"] = "item/generated",
+			["textures"] = new JObject {
+				["layer0"] = itemID.ExportAsModelPath(),
+			},
+			["display"] = new JObject {
+				["thirdperson_righthand"] = new JObject {
+					["rotation"] = new JArray(270f, 0f, 0f),
+					["translation"] = new JArray(0f, 1f, -3f),
+					["scale"] = new JArray(0.55f, 0.55f, 0.55f),
+				},
+				["firstperson_righthand"] = new JObject {
+					["rotation"] = new JArray(0f, 225f, 25f),
+					["translation"] = new JArray(0f, 4f, 2f),
+					["scale"] = new JArray(1.7f, 1.7f, 1.7f),
+				}
+			}
+		};
+		Export(itemRoot, exportPath, verifications);
+	}
 
 	private static string WriteFormattedJson(JObject jObject)
 	{
@@ -93,6 +114,7 @@ public static class JsonExporter
 			Writers.Add(typeof(Vector3), new Vec3Writer());
 			Writers.Add(typeof(bool), new BoolWriter());
 			Writers.Add(typeof(VecWithOverride), new VecWithOverrideWriter());
+			Writers.Add(typeof(ResourceLocation), new ResourceLocationWriter());
 
 			Writers.Add(typeof(int[]), new ArrayWriter() { ElementWriter = Writers[typeof(int)] });
 			Writers.Add(typeof(float[]), new ArrayWriter() { ElementWriter = Writers[typeof(float)] });
@@ -104,6 +126,7 @@ public static class JsonExporter
 			Writers.Add(typeof(Vector3[]), new ArrayWriter() { ElementWriter = Writers[typeof(Vector3)] });
 			Writers.Add(typeof(bool[]), new ArrayWriter() { ElementWriter = Writers[typeof(bool)] });
 			Writers.Add(typeof(VecWithOverride[]), new ArrayWriter() { ElementWriter = Writers[typeof(VecWithOverride)] });
+			Writers.Add(typeof(ResourceLocation[]), new ArrayWriter() { ElementWriter = Writers[typeof(ResourceLocation)] });
 		}
 
 		return true;
@@ -164,6 +187,12 @@ public static class JsonExporter
 								obj.yOverride.Length > 0 ? obj.yOverride : obj.yValue.ToString(),
 								obj.zOverride.Length > 0 ? obj.zOverride : obj.zValue.ToString()
 			);
+		}
+	}
+	public class ResourceLocationWriter : Writer<ResourceLocation> {
+		public override JToken Write(ResourceLocation obj)
+		{
+			return obj.ToString();
 		}
 	}
 

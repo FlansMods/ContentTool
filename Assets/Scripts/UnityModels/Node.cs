@@ -212,20 +212,20 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 			return transform.localPosition.Approximately(Vector3.zero)
 			&& transform.localEulerAngles.Approximately(Vector3.zero)
 			&& transform.localScale.Approximately(Vector3.one);
-		} 
+		}
 	}
 
 
 
 	public Vector3 LocalOrigin { get { return transform.localPosition; } set { transform.localPosition = value; } }
-    public Vector3 LocalEuler { get { return transform.localEulerAngles; } set { transform.localEulerAngles = value; } }
+	public Vector3 LocalEuler { get { return transform.localEulerAngles; } set { transform.localEulerAngles = value; } }
 	public Vector3 LocalScale { get { return transform.localScale; } set { transform.localScale = value; } }
 	// Minecraft Forward is -z
 	public Vector3 Forward { get { return -transform.forward; } }
-    public Vector3 Right { get { return transform.right; } }
-    public Vector3 Up { get { return transform.up; } }
+	public Vector3 Right { get { return transform.right; } }
+	public Vector3 Up { get { return transform.up; } }
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	protected void OnEnable()
 	{
 		EditorApplication.update += EditorUpdate;
@@ -236,17 +236,17 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	}
 	protected virtual void EditorUpdate()
 	{
-		
+
 	}
 	public virtual bool HasCompactEditorGUI() { return false; }
 	public virtual void CompactEditorGUI()
 	{
-		
+
 	}
 	public virtual bool HideInHeirarchy() { return false; }
-	#endif
+#endif
 
-	public TurboRootNode Root { get { return GetParentOfType<TurboRootNode>(); } }
+	public RootNode Root { get { return GetParentOfType<RootNode>(); } }
 	public TNodeType GetParentOfType<TNodeType>() where TNodeType : Node
 	{
 		if (this is TNodeType tNode)
@@ -261,7 +261,7 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 		{
 			if (transform.parent != null && transform.parent.TryGetComponent(out Node parentNode))
 			{
-				while(parentNode != null && parentNode.HideInHeirarchy())
+				while (parentNode != null && parentNode.HideInHeirarchy())
 				{
 					parentNode = parentNode.ParentNode;
 				}
@@ -331,7 +331,7 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	}
 	public TNodeType FindDescendant<TNodeType>(string nodeName) where TNodeType : Node
 	{
-		foreach(TNodeType node in GetAllDescendantNodes<TNodeType>())
+		foreach (TNodeType node in GetAllDescendantNodes<TNodeType>())
 			if (node.name == nodeName)
 				return node;
 		return null;
@@ -342,14 +342,14 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	// ---------------------------------------------------------------------------
 	// Default available
 	public virtual bool SupportsDuplicate() { return ParentNode != null; }
-	public virtual void Duplicate() 
+	public virtual void Duplicate()
 	{
 		Transform copy = Instantiate(transform, transform.parent);
 		Undo.RegisterCreatedObjectUndo(copy.gameObject, $"Duplicated {name} and created {copy.name}");
 		EditorUtility.SetDirty(copy.gameObject);
 	}
 	public virtual bool SupportsDelete() { return ParentNode != null; }
-	public virtual void Delete() 
+	public virtual void Delete()
 	{
 		Undo.DestroyObjectImmediate(gameObject);
 	}
@@ -365,7 +365,7 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 		}
 	}
 	public virtual bool SupportsRotate() { return true; }
-	public virtual void Rotate(Vector3 deltaEuler) 
+	public virtual void Rotate(Vector3 deltaEuler)
 	{
 		deltaEuler = RotSnap.SnapEulers(deltaEuler);
 		if (!deltaEuler.Approximately(Vector3.zero))

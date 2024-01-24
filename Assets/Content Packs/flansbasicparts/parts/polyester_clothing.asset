@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: polyester_clothing
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: polyester_clothing
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: c4dd3526a4da2c945aa0f1d5c5fd9033, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Polyester Clothing
@@ -41,13 +22,13 @@ MonoBehaviour:
   - mecha
   - groundVehicle
   - plane
-  recipeIngredients: []
   itemSettings:
     maxStackSize: 64
     tags:
     - flansmod:part
     - flansmod:clothing
   modifiers: []
+  abilities: []
   engine:
     maxAcceleration: 1
     maxDeceleration: 1
@@ -58,5 +39,6 @@ MonoBehaviour:
     liquidFuelCapacity: 0
     batterySlots: 0
     FECapacity: 0
-  materialTier: 2
-  materialType: 6
+  material:
+    Namespace: flansbasicparts
+    ID: polyester

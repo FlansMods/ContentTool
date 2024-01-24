@@ -7,6 +7,20 @@ using static MinecraftModel;
 
 public static class ConvertToNodes
 {
+	public static VanillaIconRootNode FromItemModel(ItemModel item)
+	{
+		GameObject go = new GameObject(item.name);
+		VanillaIconRootNode iconNode = go.AddComponent<VanillaIconRootNode>();
+		iconNode.Icons = new TextureList();
+		iconNode.Icons.Add(new NamedTexture()
+		{
+			Key = "default",
+			Location = item.IconLocation,
+			Texture = item.Icon
+		});
+		return iconNode;
+	}
+
 	public static TurboRootNode CreateEmpty(string name)
 	{
 		GameObject go = new GameObject(name);

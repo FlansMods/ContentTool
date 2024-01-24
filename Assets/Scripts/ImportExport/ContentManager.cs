@@ -1130,6 +1130,10 @@ public class ContentManager : MonoBehaviour
 				JObject jObject = ExportNodeModel.ExportRoot(rootNode);
 				JsonExporter.Export(jObject, exportPath, verifications);
 			}
+			else if(asset is VanillaIconRootNode iconRootNode)
+			{
+				JsonExporter.CreateVanillaItemIcon(iconRootNode.GetLocation(), exportPath, verifications);
+			}
 			else if (asset is Texture2D texture)
 			{
 				CopyAsset(texture, exportPath);
@@ -1515,7 +1519,7 @@ public class ContentManager : MonoBehaviour
 			// Export Models
 			int modelCount = pack.ModelCount;
 			processedCount = 0;
-			foreach (TurboRootNode model in pack.AllModels)
+			foreach (RootNode model in pack.AllModels)
 			{
 				EditorUtility.DisplayProgressBar("Exporting Models", $"Exporting {processedCount + 1}/{modelCount} - {model.name}", (float)processedCount / modelCount);
 				ExportAsset(pack.ModName, model, verifications);

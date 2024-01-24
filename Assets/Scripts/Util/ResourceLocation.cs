@@ -5,10 +5,12 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [System.Serializable]
-public class ResourceLocation
+public struct ResourceLocation
 {
-    public string Namespace = "";
-    public string ID = "";
+    public static readonly ResourceLocation InvalidLocation = new ResourceLocation() { Namespace = "minecraft", ID = "null" };
+
+	public string Namespace;
+    public string ID;
 
     public string ResolveWithSubdir(string subdir)
     {
@@ -16,11 +18,6 @@ public class ResourceLocation
             return $"{Namespace}:{ID}";
         else
             return $"{Namespace}:{subdir}/{ID}";
-    }
-    public ResourceLocation()
-    {
-        Namespace = "minecraft";
-        ID = "null";
     }
 	public ResourceLocation(string input)
     {
@@ -56,7 +53,7 @@ public class ResourceLocation
 			location = new ResourceLocation(modName, assetName);
 			return true;
 		}
-        location = null;
+        location = InvalidLocation;
         return false;
 	}
     #endif
@@ -147,9 +144,9 @@ public class ResourceLocation
         if (typeof(T) == typeof(AudioClip))
             extension = "ogg";
            
-		string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{ID}.{extension}";
-		if (ID.Contains(subfolder))
-			path = $"Assets/Content Packs/{Namespace}/{ID}.{extension}";
+		string path = $"Assets/Content Packs/{Namespace}/{subfolder}/{IDWithoutPrefixes()}.{extension}";
+		//if (ID.Contains(subfolder))
+		//	path = $"Assets/Content Packs/{Namespace}/{ID}.{extension}";
 
 		result = AssetDatabase.LoadAssetAtPath<T>(path);
         return result != null;

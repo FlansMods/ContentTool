@@ -13,17 +13,28 @@ public class AssetRightClickActions
 		{
 			string assetPath = AssetDatabase.GUIDToAssetPath(selectedGUID);
 			string assetFolder = assetPath.Substring(0, assetPath.LastIndexOfAny(Utils.SLASHES));
-			TurboRig model = AssetDatabase.LoadAssetAtPath<TurboRig>(assetPath);
+			MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(assetPath);
 			if (model != null)
 			{
-				// Convert our model to a RootNode
-				TurboRootNode newRoot = ConvertToNodes.FromTurboRig(model);
-				newRoot.SelectTexture("default");
+				RootNode newRootNode = null;
+				if (model is TurboRig turboRig)
+				{
+					// Convert our model to a RootNode
+					newRootNode = ConvertToNodes.FromTurboRig(turboRig);
+					newRootNode.SelectTexture("default");
+				}
+				else if(model is ItemModel itemModel)
+				{
+					newRootNode = ConvertToNodes.FromItemModel(itemModel);
+				}
 
-				GameObject prefab = PrefabUtility.SaveAsPrefabAsset(newRoot.gameObject, assetPath.Replace(".asset", ".prefab"), out bool success);
-				if (!success)
-					Debug.LogError($"Failed to convert to nodes {model}");
-				Object.DestroyImmediate(newRoot.gameObject);
+				if(newRootNode != null)
+				{
+					GameObject prefab = PrefabUtility.SaveAsPrefabAsset(newRootNode.gameObject, assetPath.Replace(".asset", ".prefab"), out bool success);
+					if (!success)
+						Debug.LogError($"Failed to convert to nodes {model}");
+					Object.DestroyImmediate(newRootNode.gameObject);
+				}
 			}
 		}
 	}
@@ -33,7 +44,8 @@ public class AssetRightClickActions
 		foreach (string selectedGUID in Selection.assetGUIDs)
 		{
 			string assetPath = AssetDatabase.GUIDToAssetPath(selectedGUID);
-			if (!typeof(TurboRig).IsAssignableFrom(AssetDatabase.GetMainAssetTypeAtPath(assetPath)))
+			System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+			if (!typeof(MinecraftModel).IsAssignableFrom(assetType))
 			{
 				return false;
 			}

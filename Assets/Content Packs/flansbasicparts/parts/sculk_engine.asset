@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3db05742d6e65340b6c7906a313c75e, type: 3}
   m_Name: sculk_engine
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: skulk_engine
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: bfc08870bbd790647b706cb30743524a, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Hyperspeed Sculk Motor
@@ -46,8 +27,8 @@ MonoBehaviour:
     tags:
     - flansmod:part
     - flansmod:engine
-    recipe: []
   modifiers: []
+  abilities: []
   engine:
     maxAcceleration: 3
     maxDeceleration: 3
@@ -58,5 +39,6 @@ MonoBehaviour:
     liquidFuelCapacity: 0
     batterySlots: 3
     FECapacity: 1000000
-  materialTier: 3
-  materialType: 5
+  material:
+    Namespace: flansbasicparts
+    ID: sculk

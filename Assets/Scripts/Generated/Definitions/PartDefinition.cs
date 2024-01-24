@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ResourceLocation;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "Flans Mod/PartDefinition")]
@@ -19,7 +20,5 @@ public class PartDefinition : Definition
 	[JsonField]
 	public EngineDefinition engine = new EngineDefinition();
 	[JsonField]
-	public int materialTier = 0;
-	[JsonField]
-	public EMaterialType materialType = EMaterialType.Misc;
+	public ResourceLocation material = InvalidLocation;
 }
