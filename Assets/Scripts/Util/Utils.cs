@@ -190,7 +190,7 @@ public static class Utils
 		child.localScale = Vector3.one;
 	}
 
-	public static void ZeroTransformButNotChildren(this Transform parent)
+	public static void ZeroTransformButNotChildren(this Transform parent, bool position = true, bool rotation = true, bool scale = true)
 	{
 		List<Transform> children = new List<Transform>();
 		foreach (Transform child in parent)
@@ -199,9 +199,12 @@ public static class Utils
 		foreach (Transform child in children)
 			child.SetParent(null, true);
 
-		parent.localPosition = Vector3.zero;
-		parent.localRotation = Quaternion.identity;
-		parent.localScale = Vector3.one;
+		if(position)
+			parent.localPosition = Vector3.zero;
+		if(rotation)
+			parent.localRotation = Quaternion.identity;
+		if(scale)
+			parent.localScale = Vector3.one;
 
 		foreach (Transform child in children)
 			child.SetParent(parent, true);
@@ -217,6 +220,21 @@ public static class Utils
 			child.SetParent(null, true);
 
 		parent.localPosition += deltaPos;
+
+		foreach (Transform child in children)
+			child.SetParent(parent, true);
+	}
+
+	public static void RotateButNotChildren(this Transform parent, Vector3 deltaEuler)
+	{
+		List<Transform> children = new List<Transform>();
+		foreach (Transform child in parent)
+			children.Add(child);
+
+		foreach (Transform child in children)
+			child.SetParent(null, true);
+
+		parent.localEulerAngles += deltaEuler;
 
 		foreach (Transform child in children)
 			child.SetParent(parent, true);

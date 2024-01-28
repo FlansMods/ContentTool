@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class AttachPointNode : Node
@@ -10,6 +11,52 @@ public class AttachPointNode : Node
 	public string AttachedTo { get { return ParentNode is AttachPointNode apNode ? apNode.APName : "body"; } }
 	public Vector3 APOffset { get { return transform.localPosition; } }
 	public Vector3 APEulers { get { return transform.localEulerAngles; } }
+
+
+
+	// -------------------------------------------------------------------
+#if UNITY_EDITOR
+	public static bool LockPositionOfChildren = false;
+
+	public override void Translate(Vector3 deltaPos)
+	{
+		if (LockPositionOfChildren)
+		{
+			deltaPos = PosSnap.Snap(deltaPos);
+			if (!deltaPos.Approximately(Vector3.zero))
+			{
+				Undo.RegisterCompleteObjectUndo(gameObject, $"Offset {name} by {deltaPos} (keeping children fixed)");
+				transform.TranslateButNotChildren(deltaPos);
+				EditorUtility.SetDirty(gameObject);
+			}
+		}
+		else base.Translate(deltaPos);
+	}
+
+	public override void Rotate(Vector3 deltaEuler)
+	{
+		if (LockPositionOfChildren)
+		{
+			deltaEuler = RotSnap.SnapEulers(deltaEuler);
+			if (!deltaEuler.Approximately(Vector3.zero))
+			{
+				Undo.RegisterCompleteObjectUndo(gameObject, $"Added euler[{deltaEuler}] to {name} (keeping children fixed)");
+				transform.RotateButNotChildren(deltaEuler);
+				EditorUtility.SetDirty(gameObject);
+			}
+		}
+		else base.Translate(deltaEuler);
+	}
+
+	public override bool HasCompactEditorGUI() { return true; }
+	public override void CompactEditorGUI()
+	{
+		base.CompactEditorGUI();
+
+		LockPositionOfChildren = GUILayout.Toggle(LockPositionOfChildren, "Lock Children (APs and Models) when Transforming");	
+	}
+#endif
+	// -------------------------------------------------------------------
 
 	public void OnDrawGizmosSelected()
 	{
