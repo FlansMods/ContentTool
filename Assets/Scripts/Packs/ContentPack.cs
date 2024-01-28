@@ -38,7 +38,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		{
 			Refresh();
 			foreach (Definition def in Content)
-				yield return def;
+				if(def != null)
+					yield return def;
 		}
 	}
 	public int TextureCount { get { Refresh(); return Textures.Count; } }
@@ -48,7 +49,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		{
 			Refresh();
 			foreach (Texture2D tex in Textures)
-				yield return tex;
+				if(tex != null)
+					yield return tex;
 		}
 	}
 	public int ModelCount { get { Refresh(); return Models.Count; } }
@@ -58,7 +60,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		{
 			Refresh();
 			foreach (RootNode model in Models)
-				yield return model;
+				if(model != null)
+					yield return model;
 		}
 	}
 	public int SoundCount { get { Refresh(); return Sounds.Count; } }
@@ -69,7 +72,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 			Refresh();
 			foreach (SoundEventList list in Sounds)
 				foreach(SoundEventEntry entry in list.SoundEvents)
-					yield return entry;
+					if(entry != null)
+						yield return entry;
 		}
 	}
 	public IEnumerable<string> AllIDs
@@ -97,6 +101,16 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 
 	private void Refresh(bool force = false)
 	{
+		if (Content == null || Models == null || Textures == null || Sounds == null)
+		{
+			Content = new List<Definition>();
+			Models = new List<RootNode>();
+			Textures = new List<Texture2D>();
+			Sounds = new List<SoundEventList>();
+			force = true;
+		}
+			
+
 		if (force || (DateTime.Now - LastContentCheck).TotalSeconds >= RefreshEveryT)
 		{
 			int count = Content.Count + Models.Count + Textures.Count;

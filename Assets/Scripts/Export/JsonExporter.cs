@@ -11,10 +11,15 @@ public static class JsonExporter
 {
 	public static void Export(JObject jObject, string exportPath, List<Verification> verifications = null)
 	{
+		string jsonText = WriteFormattedJson(jObject);
+		Export(jsonText, exportPath, verifications);
+	}
+
+	public static void Export(string jsonString, string exportPath, List<Verification> verifications = null)
+	{
 		try
 		{
-			string jsonText = WriteFormattedJson(jObject);
-			File.WriteAllText(exportPath, jsonText);
+			File.WriteAllText(exportPath, jsonString);
 
 			string successMsg = $"Exported Json to '{exportPath}'";
 			if (verifications != null)
@@ -55,6 +60,11 @@ public static class JsonExporter
 		}
 	}
 
+	public static void CreateVanillaJson(string json, string exportPath, List<Verification> verifications = null)
+	{
+		Export(json, exportPath, verifications);
+	}
+
 	public static void CreateVanillaItemIcon(ResourceLocation itemID, string exportPath, List<Verification> verifications = null)
 	{
 		JObject itemRoot = new JObject {
@@ -78,7 +88,7 @@ public static class JsonExporter
 		Export(itemRoot, exportPath, verifications);
 	}
 
-	private static string WriteFormattedJson(JObject jObject)
+	public static string WriteFormattedJson(JObject jObject)
 	{
 		using (System.IO.StringWriter stringWriter = new System.IO.StringWriter())
 		using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))

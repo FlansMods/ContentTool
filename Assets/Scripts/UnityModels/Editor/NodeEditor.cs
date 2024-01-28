@@ -31,6 +31,12 @@ public class TurboRootNodeEditor : NodeEditor<TurboRootNode>
 
 }
 
+[CustomEditor(typeof(VanillaJsonRootNode))]
+public class VanillaJsonRootNodeEditor : NodeEditor<VanillaJsonRootNode>
+{
+
+}
+
 [CustomEditor(typeof(VanillaIconRootNode))]
 public class IconRootNodeEditor : NodeEditor<VanillaIconRootNode>
 {

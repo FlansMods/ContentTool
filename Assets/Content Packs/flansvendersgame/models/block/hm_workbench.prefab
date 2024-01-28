@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3184942471711456309
+--- !u!1 &4955194114589076435
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2230195651642282031}
-  - component: {fileID: 4523505470919340155}
+  - component: {fileID: 46423113017029612}
+  - component: {fileID: 807701650216316301}
   m_Layer: 0
   m_Name: hm_workbench
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2230195651642282031
+--- !u!4 &46423113017029612
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184942471711456309}
+  m_GameObject: {fileID: 4955194114589076435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,16 +32,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4523505470919340155
+--- !u!114 &807701650216316301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184942471711456309}
+  m_GameObject: {fileID: 4955194114589076435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2f0decd77fec44bad85d7530db40a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1306478d6e08ce84795b624b2f6df77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Textures:
@@ -49,6 +49,384 @@ MonoBehaviour:
   Icons:
     List: []
   UnityMaterialCache: []
-  UVMapSize: {x: 0, y: 0}
-  AnimationParameters: []
-  AnimationSet: {fileID: 0}
+  Json: "{\r\n    \"credit\": \"Made with Blockbench\",\r\n    \"textures\": {\r\n       
+    \"0\": \"flansvendersgame:block/hm_workbench_base\",\r\n        \"1\": \"flansvendersgame:block/hm_workbench_detail\",\r\n       
+    \"particle\": \"flansvendersgame:block/hm_workbench_base\"\r\n    },\r\n    \"elements\":
+    [\r\n        {\r\n            \"from\": [\r\n                1,\r\n               
+    10,\r\n                1\r\n            ],\r\n            \"to\": [\r\n               
+    15,\r\n                12,\r\n                15\r\n            ],\r\n           
+    \"rotation\": {\r\n                \"angle\": 0,\r\n                \"axis\":
+    \"y\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    -2,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        15,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        15,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        15,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        15,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    15,\r\n                        2,\r\n                        1,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        2,\r\n                        15,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    1,\r\n                2,\r\n                1\r\n            ],\r\n           
+    \"to\": [\r\n                15,\r\n                3,\r\n                5\r\n           
+    ],\r\n            \"faces\": {\r\n                \"north\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        4,\r\n                       
+    15,\r\n                        5\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"east\": {\r\n                   
+    \"uv\": [\r\n                        0,\r\n                        2,\r\n                       
+    4,\r\n                        3\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"south\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        5,\r\n                       
+    15,\r\n                        6\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"west\": {\r\n                   
+    \"uv\": [\r\n                        12,\r\n                        2,\r\n                       
+    16,\r\n                        3\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"up\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        6,\r\n                       
+    15,\r\n                        10\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        10,\r\n                       
+    15,\r\n                        14\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                }\r\n            }\r\n        },\r\n       
+    {\r\n            \"from\": [\r\n                2,\r\n                4.5,\r\n               
+    4\r\n            ],\r\n            \"to\": [\r\n                14,\r\n               
+    5.5,\r\n                8\r\n            ],\r\n            \"rotation\": {\r\n               
+    \"angle\": 0,\r\n                \"axis\": \"y\",\r\n                \"origin\":
+    [\r\n                    0,\r\n                    -0.5,\r\n                   
+    -4\r\n                ]\r\n            },\r\n            \"faces\": {\r\n               
+    \"north\": {\r\n                    \"uv\": [\r\n                        2,\r\n                       
+    9,\r\n                        14,\r\n                        10\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                },\r\n               
+    \"east\": {\r\n                    \"uv\": [\r\n                        8,\r\n                       
+    8,\r\n                        12,\r\n                        9\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                },\r\n               
+    \"south\": {\r\n                    \"uv\": [\r\n                        2,\r\n                       
+    7,\r\n                        14,\r\n                        8\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                },\r\n               
+    \"west\": {\r\n                    \"uv\": [\r\n                        2,\r\n                       
+    8,\r\n                        6,\r\n                        9\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                },\r\n               
+    \"up\": {\r\n                    \"uv\": [\r\n                        2,\r\n                       
+    3,\r\n                        14,\r\n                        7\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                },\r\n               
+    \"down\": {\r\n                    \"uv\": [\r\n                        2,\r\n                       
+    10,\r\n                        14,\r\n                        14\r\n                   
+    ],\r\n                    \"texture\": \"#0\"\r\n                }\r\n           
+    }\r\n        },\r\n        {\r\n            \"from\": [\r\n                0,\r\n               
+    1,\r\n                0\r\n            ],\r\n            \"to\": [\r\n               
+    1,\r\n                15,\r\n                1\r\n            ],\r\n           
+    \"rotation\": {\r\n                \"angle\": 45,\r\n                \"axis\":
+    \"x\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    0,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        9,\r\n                        1,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        2,\r\n                        1,\r\n                       
+    9\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        2,\r\n                        2,\r\n                       
+    9\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        9,\r\n                        2,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    14,\r\n                        4,\r\n                        15,\r\n                       
+    5\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    14,\r\n                        3,\r\n                        15,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    1,\r\n                -1.6,\r\n                4\r\n            ],\r\n           
+    \"to\": [\r\n                2,\r\n                -0.6,\r\n                16\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 22.5,\r\n               
+    \"axis\": \"x\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    -1.6,\r\n                    20\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        2,\r\n                        1,\r\n                       
+    3\r\n                    ],\r\n                    \"rotation\": 180,\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"east\": {\r\n                   
+    \"uv\": [\r\n                        0,\r\n                        5,\r\n                       
+    1,\r\n                        11\r\n                    ],\r\n                   
+    \"rotation\": 90,\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        3,\r\n                        1,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    14,\r\n                        5,\r\n                        15,\r\n                       
+    11\r\n                    ],\r\n                    \"rotation\": 270,\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"up\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        5,\r\n                       
+    2,\r\n                        11\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        15,\r\n                        5,\r\n                       
+    16,\r\n                        11\r\n                    ],\r\n                   
+    \"rotation\": 180,\r\n                    \"texture\": \"#0\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    14,\r\n                -1.6,\r\n                4\r\n            ],\r\n           
+    \"to\": [\r\n                15,\r\n                -0.6,\r\n               
+    16\r\n            ],\r\n            \"rotation\": {\r\n                \"angle\":
+    22.5,\r\n                \"axis\": \"x\",\r\n                \"origin\": [\r\n                   
+    0,\r\n                    -1.6,\r\n                    20\r\n               
+    ]\r\n            },\r\n            \"faces\": {\r\n                \"north\":
+    {\r\n                    \"uv\": [\r\n                        1,\r\n                       
+    3,\r\n                        2,\r\n                        4\r\n                   
+    ],\r\n                    \"rotation\": 180,\r\n                    \"texture\":
+    \"#0\"\r\n                },\r\n                \"east\": {\r\n                   
+    \"uv\": [\r\n                        0,\r\n                        4,\r\n                       
+    1,\r\n                        10\r\n                    ],\r\n                   
+    \"rotation\": 90,\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        3,\r\n                        1,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        10,\r\n                        2,\r\n                       
+    16\r\n                    ],\r\n                    \"rotation\": 270,\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"up\": {\r\n                   
+    \"uv\": [\r\n                        1,\r\n                        4,\r\n                       
+    2,\r\n                        10\r\n                    ],\r\n                   
+    \"texture\": \"#0\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        0,\r\n                        10,\r\n                       
+    1,\r\n                        16\r\n                    ],\r\n                   
+    \"rotation\": 180,\r\n                    \"texture\": \"#0\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    15,\r\n                1,\r\n                0\r\n            ],\r\n           
+    \"to\": [\r\n                16,\r\n                15,\r\n                1\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 45,\r\n               
+    \"axis\": \"x\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    0,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        2,\r\n                        1,\r\n                       
+    9\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        2,\r\n                        2,\r\n                       
+    9\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        9,\r\n                        2,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        9,\r\n                        1,\r\n                       
+    16\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    14,\r\n                        4,\r\n                        15,\r\n                       
+    5\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    14,\r\n                        3,\r\n                        15,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#0\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    3,\r\n                12,\r\n                5.5\r\n            ],\r\n           
+    \"to\": [\r\n                5,\r\n                13,\r\n                6.5\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 0,\r\n               
+    \"axis\": \"y\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    -2,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        0,\r\n                        5,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        1,\r\n                        4,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        3,\r\n                        3,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        1,\r\n                        1,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        1,\r\n                        6,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        2,\r\n                        6,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    3,\r\n                12,\r\n                3.5\r\n            ],\r\n           
+    \"to\": [\r\n                5,\r\n                13,\r\n                4.5\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 0,\r\n               
+    \"axis\": \"y\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    -2,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        1,\r\n                        4,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        3,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    6,\r\n                        1,\r\n                        7,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        3,\r\n                        3,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        1,\r\n                        6,\r\n                       
+    2\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        2,\r\n                        6,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    2.5,\r\n                12,\r\n                4\r\n            ],\r\n           
+    \"to\": [\r\n                3.5,\r\n                13,\r\n                6\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 0,\r\n               
+    \"axis\": \"y\",\r\n                \"origin\": [\r\n                    2,\r\n                   
+    12,\r\n                    4\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        3,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        0,\r\n                        5,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        3,\r\n                        3,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        3,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        1,\r\n                        5,\r\n                       
+    3\r\n                    ],\r\n                    \"rotation\": 270,\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        5,\r\n                        1,\r\n                       
+    6,\r\n                        3\r\n                    ],\r\n                   
+    \"rotation\": 90,\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    4.5,\r\n                12,\r\n                4\r\n            ],\r\n           
+    \"to\": [\r\n                5.5,\r\n                13,\r\n                6\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 0,\r\n               
+    \"axis\": \"y\",\r\n                \"origin\": [\r\n                    2,\r\n                   
+    12,\r\n                    4\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        0,\r\n                        3,\r\n                       
+    1\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        1,\r\n                        1,\r\n                       
+    3\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    1,\r\n                        3,\r\n                        3,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        3,\r\n                        6,\r\n                       
+    4\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    4,\r\n                        1,\r\n                        6,\r\n                       
+    2\r\n                    ],\r\n                    \"rotation\": 270,\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        4,\r\n                        2,\r\n                       
+    6,\r\n                        3\r\n                    ],\r\n                   
+    \"rotation\": 90,\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    2.5,\r\n                11.5,\r\n                11.5\r\n            ],\r\n           
+    \"to\": [\r\n                4.5,\r\n                15.5,\r\n               
+    13.5\r\n            ],\r\n            \"rotation\": {\r\n                \"angle\":
+    0,\r\n                \"axis\": \"y\",\r\n                \"origin\": [\r\n                   
+    0,\r\n                    -2,\r\n                    0\r\n                ]\r\n           
+    },\r\n            \"faces\": {\r\n                \"north\": {\r\n                   
+    \"uv\": [\r\n                        7,\r\n                        1,\r\n                       
+    8,\r\n                        4\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"east\": {\r\n                   
+    \"uv\": [\r\n                        8,\r\n                        1,\r\n                       
+    9,\r\n                        4\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"south\": {\r\n                   
+    \"uv\": [\r\n                        9,\r\n                        1,\r\n                       
+    10,\r\n                        4\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"west\": {\r\n                   
+    \"uv\": [\r\n                        10,\r\n                        1,\r\n                       
+    11,\r\n                        4\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"up\": {\r\n                   
+    \"uv\": [\r\n                        9,\r\n                        4,\r\n                       
+    10,\r\n                        5\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                },\r\n                \"down\": {\r\n                   
+    \"uv\": [\r\n                        8,\r\n                        4,\r\n                       
+    9,\r\n                        5\r\n                    ],\r\n                   
+    \"texture\": \"#1\"\r\n                }\r\n            }\r\n        },\r\n       
+    {\r\n            \"from\": [\r\n                10,\r\n                12,\r\n               
+    12\r\n            ],\r\n            \"to\": [\r\n                12,\r\n               
+    13,\r\n                13\r\n            ],\r\n            \"rotation\": {\r\n               
+    \"angle\": 22.5,\r\n                \"axis\": \"y\",\r\n                \"origin\":
+    [\r\n                    10,\r\n                    12,\r\n                   
+    12\r\n                ]\r\n            },\r\n            \"faces\": {\r\n               
+    \"north\": {\r\n                    \"uv\": [\r\n                        1,\r\n                       
+    7,\r\n                        3,\r\n                        8\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                },\r\n               
+    \"east\": {\r\n                    \"uv\": [\r\n                        3,\r\n                       
+    7,\r\n                        4,\r\n                        8\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                },\r\n               
+    \"south\": {\r\n                    \"uv\": [\r\n                        1,\r\n                       
+    9,\r\n                        3,\r\n                        10\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                },\r\n               
+    \"west\": {\r\n                    \"uv\": [\r\n                        0,\r\n                       
+    7,\r\n                        1,\r\n                        8\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                },\r\n               
+    \"up\": {\r\n                    \"uv\": [\r\n                        1,\r\n                       
+    6,\r\n                        3,\r\n                        7\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                },\r\n               
+    \"down\": {\r\n                    \"uv\": [\r\n                        1,\r\n                       
+    8,\r\n                        3,\r\n                        9\r\n                   
+    ],\r\n                    \"texture\": \"#1\"\r\n                }\r\n           
+    }\r\n        },\r\n        {\r\n            \"from\": [\r\n                11.25,\r\n               
+    12.25,\r\n                12.25\r\n            ],\r\n            \"to\": [\r\n               
+    13.75,\r\n                12.75,\r\n                12.75\r\n            ],\r\n           
+    \"rotation\": {\r\n                \"angle\": 22.5,\r\n                \"axis\":
+    \"y\",\r\n                \"origin\": [\r\n                    10,\r\n                   
+    12,\r\n                    12\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        11,\r\n                        3,\r\n                       
+    12\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        12,\r\n                        4,\r\n                       
+    13\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        12,\r\n                        3,\r\n                       
+    13\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    3,\r\n                        11,\r\n                        4,\r\n                       
+    12\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        11,\r\n                        3,\r\n                       
+    12\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    0,\r\n                        12,\r\n                        3,\r\n                       
+    13\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        },\r\n        {\r\n            \"from\": [\r\n               
+    3,\r\n                15,\r\n                12\r\n            ],\r\n           
+    \"to\": [\r\n                4,\r\n                16,\r\n                13\r\n           
+    ],\r\n            \"rotation\": {\r\n                \"angle\": 0,\r\n               
+    \"axis\": \"y\",\r\n                \"origin\": [\r\n                    0,\r\n                   
+    -2,\r\n                    0\r\n                ]\r\n            },\r\n           
+    \"faces\": {\r\n                \"north\": {\r\n                    \"uv\": [\r\n                       
+    7,\r\n                        5,\r\n                        8,\r\n                       
+    6\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"east\": {\r\n                    \"uv\": [\r\n                       
+    8,\r\n                        5,\r\n                        9,\r\n                       
+    6\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"south\": {\r\n                    \"uv\": [\r\n                       
+    9,\r\n                        5,\r\n                        10,\r\n                       
+    6\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"west\": {\r\n                    \"uv\": [\r\n                       
+    10,\r\n                        5,\r\n                        11,\r\n                       
+    6\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"up\": {\r\n                    \"uv\": [\r\n                       
+    10,\r\n                        6,\r\n                        11,\r\n                       
+    7\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    },\r\n                \"down\": {\r\n                    \"uv\": [\r\n                       
+    9,\r\n                        6,\r\n                        10,\r\n                       
+    7\r\n                    ],\r\n                    \"texture\": \"#1\"\r\n               
+    }\r\n            }\r\n        }\r\n    ],\r\n    \"display\": {\r\n        \"firstperson_righthand\":
+    {\r\n            \"rotation\": [\r\n                0,\r\n                -36,\r\n               
+    0\r\n            ],\r\n            \"translation\": [\r\n                2,\r\n               
+    1.5,\r\n                -4.75\r\n            ]\r\n        },\r\n        \"firstperson_lefthand\":
+    {\r\n            \"rotation\": [\r\n                0,\r\n                -33,\r\n               
+    0\r\n            ],\r\n            \"translation\": [\r\n                6.25,\r\n               
+    -0.75,\r\n                -8.5\r\n            ]\r\n        },\r\n        \"gui\":
+    {\r\n            \"rotation\": [\r\n                33,\r\n                45,\r\n               
+    0\r\n            ],\r\n            \"translation\": [\r\n                0,\r\n               
+    -0.75,\r\n                0\r\n            ],\r\n            \"scale\": [\r\n               
+    0.6,\r\n                0.6,\r\n                0.6\r\n            ]\r\n       
+    }\r\n    }\r\n}"

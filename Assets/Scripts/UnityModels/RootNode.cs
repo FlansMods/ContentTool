@@ -12,6 +12,8 @@ public abstract class RootNode : Node
 	public TextureList Textures = new TextureList();
 	public TextureList Icons = new TextureList();
 
+	protected virtual bool NeedsIcon() { return true; }
+
 	public Texture2D GetTextureOrDefault(string key)
 	{
 		foreach (NamedTexture tex in Textures)
@@ -116,8 +118,43 @@ public abstract class RootNode : Node
 	// -----------------------------------------------------------------------------------
 
 
+	public override void GetVerifications(List<Verification> verifications)
+	{
+		base.GetVerifications(verifications);
 
-	protected delegate void QuickFixFunction<T>(T _this);
+		// Textures
+		if (Textures == null || Textures.Count == 0)
+			verifications.Add(Verification.Neutral($"No skins present"));
+		else if (Textures[0].Key != "default")
+			verifications.Add(Verification.Failure($"Default texture is named incorrectly as {Textures[0].Key}",
+			() =>
+			{
+				ApplyQuickFix((TurboRootNode _this) =>
+				{
+					_this.Textures[0].Key = "default";
+				});
+			}));
+
+		// Icons
+		if (NeedsIcon())
+		{
+			if (Icons == null || Icons.Count == 0)
+				verifications.Add(Verification.Failure($"No icons present"));
+			else if (Icons[0].Key != "default")
+				verifications.Add(Verification.Failure($"Default icon is named incorrectly as {Icons[0].Key}",
+				() =>
+				{
+					ApplyQuickFix((TurboRootNode _this) =>
+					{
+						_this.Icons[0].Key = "default";
+					});
+				}));
+		}
+
+	}
+
+
+protected delegate void QuickFixFunction<T>(T _this);
 	protected void ApplyQuickFix<T>(QuickFixFunction<T> quickFix)
 	{
 		if (this is T t)

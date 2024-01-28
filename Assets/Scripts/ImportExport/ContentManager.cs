@@ -1134,6 +1134,10 @@ public class ContentManager : MonoBehaviour
 			{
 				JsonExporter.CreateVanillaItemIcon(iconRootNode.GetLocation(), exportPath, verifications);
 			}
+			else if(asset is VanillaJsonRootNode jsonRootNode)
+			{
+				JsonExporter.CreateVanillaJson(jsonRootNode.Json, exportPath, verifications);
+			}
 			else if (asset is Texture2D texture)
 			{
 				CopyAsset(texture, exportPath);
