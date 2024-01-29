@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4955194114589076435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 46423113017029612}
+  - component: {fileID: 807701650216316301}
+  m_Layer: 0
+  m_Name: distillation_tower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &46423113017029612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4955194114589076435}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &807701650216316301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4955194114589076435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1306478d6e08ce84795b624b2f6df77a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Textures:
+    List: []
+  Icons:
+    List: []
+  UnityMaterialCache: []
+  Json: "{\n\t\"credit\": \"Made with Blockbench\",\n\t\"textures\": {\n\t\t\"0\":
+    \"flansbasicparts:block/distillation_tower_base\",\n\t\t\"1\": \"flansbasicparts:block/distillation_tower_detail\",\n\t\t\"particle\":
+    \"flansbasicparts:block/distillation_tower_base\"\n\t},\n\t\"elements\": [\n\t\t{\n\t\t\t\"from\":
+    [1, 1, 1],\n\t\t\t\"to\": [15, 7, 15],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [1, 8, 15, 14], \"texture\": \"#0\"},\n\t\t\t\t\"east\": {\"uv\": [1,
+    8, 15, 14], \"texture\": \"#0\"},\n\t\t\t\t\"south\": {\"uv\": [1, 8, 15, 14],
+    \"texture\": \"#0\"},\n\t\t\t\t\"west\": {\"uv\": [1, 8, 15, 14], \"texture\":
+    \"#0\"},\n\t\t\t\t\"up\": {\"uv\": [0, 0, 14, 14], \"texture\": \"#0\"},\n\t\t\t\t\"down\":
+    {\"uv\": [0, 0, 14, 14], \"texture\": \"#0\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [1, 9, 1],\n\t\t\t\"to\": [15, 15, 15],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [1, 0, 15, 6], \"texture\": \"#0\"},\n\t\t\t\t\"east\": {\"uv\": [1,
+    0, 15, 6], \"texture\": \"#0\"},\n\t\t\t\t\"south\": {\"uv\": [1, 0, 15, 6],
+    \"texture\": \"#0\"},\n\t\t\t\t\"west\": {\"uv\": [1, 0, 15, 6], \"texture\":
+    \"#0\"},\n\t\t\t\t\"up\": {\"uv\": [0, 0, 14, 14], \"texture\": \"#0\"},\n\t\t\t\t\"down\":
+    {\"uv\": [0, 0, 14, 14], \"texture\": \"#0\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [6, 5, 12.75],\n\t\t\t\"to\": [10, 10, 15.75],\n\t\t\t\"rotation\": {\"angle\":
+    0, \"axis\": \"x\", \"origin\": [6, 10, 3]},\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [0, 0, 4, 5], \"texture\": \"#1\"},\n\t\t\t\t\"east\": {\"uv\": [0,
+    0, 3, 5], \"texture\": \"#1\"},\n\t\t\t\t\"south\": {\"uv\": [0, 0, 4, 5], \"texture\":
+    \"#1\"},\n\t\t\t\t\"west\": {\"uv\": [1, 0, 4, 5], \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [0, 3, 4, 6], \"texture\": \"#1\"},\n\t\t\t\t\"down\": {\"uv\": [0,
+    3, 4, 6], \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\": [7.5,
+    9.5, 14],\n\t\t\t\"to\": [8.5, 10.5, 19],\n\t\t\t\"rotation\": {\"angle\": 22.5,
+    \"axis\": \"x\", \"origin\": [6, 10, 3]},\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [0, 0, 1, 1], \"texture\": \"#1\"},\n\t\t\t\t\"east\": {\"uv\": [0,
+    9, 5, 10], \"texture\": \"#1\"},\n\t\t\t\t\"south\": {\"uv\": [0, 3, 1, 4], \"texture\":
+    \"#1\"},\n\t\t\t\t\"west\": {\"uv\": [0, 9, 5, 10], \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [0, 5, 1, 10], \"texture\": \"#1\"},\n\t\t\t\t\"down\": {\"uv\": [0,
+    5, 1, 10], \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\": [2,
+    7, 12],\n\t\t\t\"to\": [4, 9, 14],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\": {\"uv\":
+    [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\": {\"uv\":
+    [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\": {\"uv\":
+    [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\": {\"uv\":
+    [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\": {\"uv\":
+    [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\": {\"uv\":
+    [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [2, 7, 2],\n\t\t\t\"to\": [4, 9, 4],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [12, 7, 2],\n\t\t\t\"to\": [14, 9, 4],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [12, 7, 12],\n\t\t\t\"to\": [14, 9, 14],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [10, 14, 4],\n\t\t\t\"to\": [12, 16, 6],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [10, 14, 10],\n\t\t\t\"to\": [12, 16, 12],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [4, 14, 10],\n\t\t\t\"to\": [6, 16, 12],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [8, 0, 10, 2], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [8, 0, 10, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [4, 14, 4],\n\t\t\t\"to\": [6, 16, 6],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [4, 0, 10],\n\t\t\t\"to\": [6, 2, 12],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [4, 0, 4],\n\t\t\t\"to\": [6, 2, 6],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [10, 0, 10],\n\t\t\t\"to\": [12, 2, 12],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [10, 0, 4],\n\t\t\t\"to\": [12, 2, 6],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [4, 2, 6, 4], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [6, 0, 8, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [6, 2, 8, 4], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [4, 0, 6, 2], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [7, 1, 9, 3], \"rotation\": 270, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [5, 1, 7, 3], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"from\":
+    [5.75, 2.25, 14.75],\n\t\t\t\"to\": [10.25, 2.75, 19.25],\n\t\t\t\"faces\": {\n\t\t\t\t\"north\":
+    {\"uv\": [5, 9, 10, 10], \"rotation\": 180, \"texture\": \"#1\"},\n\t\t\t\t\"east\":
+    {\"uv\": [5, 9, 10, 10], \"rotation\": 180, \"texture\": \"#1\"},\n\t\t\t\t\"south\":
+    {\"uv\": [5, 9, 10, 10], \"rotation\": 180, \"texture\": \"#1\"},\n\t\t\t\t\"west\":
+    {\"uv\": [5, 9, 10, 10], \"rotation\": 180, \"texture\": \"#1\"},\n\t\t\t\t\"up\":
+    {\"uv\": [10, 4, 5, 9], \"rotation\": 90, \"texture\": \"#1\"},\n\t\t\t\t\"down\":
+    {\"uv\": [10, 9, 5, 4], \"rotation\": 270, \"texture\": \"#1\"}\n\t\t\t}\n\t\t}\n\t],\n\t\"display\":
+    {\n\t\t\"firstperson_righthand\": {\n\t\t\t\"rotation\": [0, -36, 0],\n\t\t\t\"translation\":
+    [2, 1.5, -4.75]\n\t\t},\n\t\t\"firstperson_lefthand\": {\n\t\t\t\"rotation\":
+    [0, -33, 0],\n\t\t\t\"translation\": [6.25, -0.75, -8.5]\n\t\t},\n\t\t\"gui\":
+    {\n\t\t\t\"rotation\": [33, 45, 0],\n\t\t\t\"translation\": [0, -0.75, 0],\n\t\t\t\"scale\":
+    [0.6, 0.6, 0.6]\n\t\t}\n\t}\n}"
