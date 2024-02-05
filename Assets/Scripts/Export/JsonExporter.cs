@@ -20,17 +20,11 @@ public static class JsonExporter
 		try
 		{
 			File.WriteAllText(exportPath, jsonString);
-
-			string successMsg = $"Exported Json to '{exportPath}'";
-			if (verifications != null)
-				verifications.Add(Verification.Success(successMsg));
-			Debug.Log(successMsg);
+			verifications?.Add(Verification.Success($"Exported Json to '{exportPath}'"));
 		}
 		catch (Exception e)
 		{
-			if (verifications != null)
-				verifications.Add(Verification.Exception(e));
-			Debug.LogError($"Failed to export Json to {exportPath} due to {e.Message}");
+			verifications?.Add(Verification.Exception(e, $"Failed to export Json to {exportPath}"));
 		}
 	}
 
@@ -44,19 +38,13 @@ public static class JsonExporter
 				string jsonText = WriteFormattedJson(jRootObject);
 				File.WriteAllText(exportPath, jsonText);
 
-				string successMsg = $"Exported Definition '{def.name}' to '{exportPath}'";
-				if (verifications != null)
-					verifications.Add(Verification.Success(successMsg));
-				Debug.Log(successMsg);
+				verifications?.Add(Verification.Success($"Exported Definition '{def.name}' to '{exportPath}'"));
 			}
-			else if (verifications != null)
-				verifications.Add(Verification.Failure("JsonExport wrote a non-JObject token at the root?"));
+			else verifications?.Add(Verification.Failure("JsonExport wrote a non-JObject token at the root?"));
 		}
 		catch (Exception e)
 		{
-			if (verifications != null)
-				verifications.Add(Verification.Exception(e));
-			Debug.LogError($"Failed to export {def.name} to {exportPath} due to {e.Message}");
+			verifications?.Add(Verification.Exception(e, $"Failed to export '{def.name}' to '{exportPath}'"));
 		}
 	}
 

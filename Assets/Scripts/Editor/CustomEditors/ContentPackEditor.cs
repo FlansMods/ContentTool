@@ -70,7 +70,7 @@ public class ContentPackEditor : Editor
 				ContentManager importExport = FindObjectOfType<ContentManager>();
 				if(importExport != null)
 				{
-					importExport.ExportPack(pack.name, false);
+					importExport.ExportPack(pack.name, false, ContentManager.GetFreshExportLogger($"Export {pack.name}"));
 				}
 			}
 		}

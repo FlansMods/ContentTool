@@ -38,4 +38,6 @@ public class GunDefinition : Definition
 	public string[] modelParts = new string[0];
 	[JsonField]
 	public string animationSet = "";
+	[JsonField]
+	public int particleCount = 1;
 }

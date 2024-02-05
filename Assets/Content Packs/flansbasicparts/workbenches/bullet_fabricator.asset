@@ -20,7 +20,9 @@ MonoBehaviour:
   bannerTextureLocation: 
   gunCrafting:
     isActive: 0
-    pages: []
+    craftsByName: []
+    craftsByTag: []
+    maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
     isActive: 1
@@ -80,4 +82,8 @@ MonoBehaviour:
     slots: []
     allow: 
     maxStackSize: 64
+  itemSettings:
+    maxStackSize: 64
+    tags:
+    - minecraft:mineable/pickaxe
   sides: []

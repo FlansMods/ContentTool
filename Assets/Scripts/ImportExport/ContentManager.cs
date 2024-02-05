@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -1196,12 +1198,6 @@ public class ContentManager : MonoBehaviour
 		if (!Directory.Exists(exportFolder))
 			Directory.CreateDirectory(exportFolder);
 		ContentPack pack = FindContentPack(packName);
-		if (pack == null)
-		{
-			Debug.LogError($"Failed to find pack {packName}");
-			return;
-		}
-
 		try
 		{
 			JObject jRoot = new JObject();
@@ -1238,10 +1234,13 @@ public class ContentManager : MonoBehaviour
 				verifications.Add(Verification.Exception(e));
 		}
 	}
-	public string GetTagJsonExportPath(string tag)
+	public string GetPartialTagJsonExportPath(ResourceLocation tagLoc, string modID, string tagFolder = "items")
 	{
-		ResourceLocation tagLoc = new ResourceLocation(tag);
-		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/items/{tagLoc.ID}.json";
+		return $"{ExportRoot}/data/{tagLoc.Namespace}/partial_tags/{modID}/{tagFolder}/{tagLoc.ID}.json";
+	}
+	public string GetDevTagJsonExportPath(ResourceLocation tagLoc, string tagFolder = "items")
+	{
+		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/{tagFolder}/{tagLoc.ID}.json";
 	}
 	public string GetSoundJsonExportPath(string packName)
 	{
@@ -1250,12 +1249,6 @@ public class ContentManager : MonoBehaviour
 	public void ExportSoundsJson(string packName, List<Verification> verifications = null)
 	{
 		ContentPack pack = FindContentPack(packName);
-		if (pack == null)
-		{
-			Debug.LogError($"Failed to find pack {packName}");
-			return;
-		}
-
 		QuickJSONBuilder builder = new QuickJSONBuilder();
 		foreach(SoundEventEntry entry in pack.AllSounds)
 		{
@@ -1281,108 +1274,172 @@ public class ContentManager : MonoBehaviour
 		{
 			jsonWriter.Formatting = Formatting.Indented;
 			builder.Root.WriteTo(jsonWriter);
-			File.WriteAllText(GetSoundJsonExportPath(packName), stringWriter.ToString());
+			string dst = GetSoundJsonExportPath(packName);
+			File.WriteAllText(dst, stringWriter.ToString());
+			verifications?.Add(Verification.Success($"Exported sound json to '{dst}'"));
 		}
 	}
 
-	public void ExportItemTags(ContentPack pack)
+	public void ExportItemTags(ContentPack pack, List<Verification> verifications = null)
 	{
 		Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
 		foreach(Definition def in pack.AllContent)
 		{
+			string prefix = def.IsBlock() ? "blocks" : "items";
 			ItemDefinition itemSettings = def.GetItemSettings();
 			if(itemSettings != null)
 			{
 				foreach(string tag in itemSettings.tags)
 				{
-					if (!tags.ContainsKey(tag))
-						tags.Add(tag, new List<string>());
-					tags[tag].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
+					string tagInFolder = $"{prefix}/{tag}";
+					if (!tags.ContainsKey(tagInFolder))
+						tags.Add(tagInFolder, new List<string>());
+					tags[tagInFolder].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
 				}
 			}
 		}
 
 		foreach(var kvp in tags)
 		{
-			using (StringWriter stringWriter = new StringWriter())
-			using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+			try
 			{
-				jsonWriter.Formatting = Formatting.Indented;
-				QuickJSONBuilder builder = new QuickJSONBuilder();
-				builder.Current.Add("replace", "false");
-				using (builder.Tabulation("values"))
+				using (StringWriter stringWriter = new StringWriter())
+				using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
 				{
-					foreach(string itemLoc in kvp.Value)
-						builder.CurrentTable.Add(itemLoc);
-				}
-				builder.Root.WriteTo(jsonWriter);
-				string tagJsonPath = GetTagJsonExportPath(kvp.Key);
-				string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
-				if (!Directory.Exists(tagJsonFolder))
-					Directory.CreateDirectory(tagJsonFolder);
+					// Write out the tags to a json array
+					jsonWriter.Formatting = Formatting.Indented;
+					QuickJSONBuilder builder = new QuickJSONBuilder();
+					builder.Current.Add("replace", "false");
+					using (builder.Tabulation("values"))
+					{
+						foreach (string itemLoc in kvp.Value)
+							builder.CurrentTable.Add(itemLoc);
+					}
+					builder.Root.WriteTo(jsonWriter);
 
-				tagJsonPath = tagJsonPath.Insert(tagJsonPath.LastIndexOf('.'), $"_{pack.ModName}");
+					// Bit weird, but Minecraft's tag system is not great for developing multiple addons/whatever in the same
+					// workspace. So we export partial tags to a temp location. These won't do anything to your dev env,
+					// but will be picked up by gradle pack publishing, if you use that.
+					string tagFolder = kvp.Key.Substring(0, kvp.Key.IndexOf("/"));
+					string tagName = kvp.Key.Substring(kvp.Key.IndexOf("/") + 1);
+					string partialTagJsonPath = GetPartialTagJsonExportPath(new ResourceLocation(tagName), pack.ModName, tagFolder);
+					string tagJsonFolder = partialTagJsonPath.Substring(0, partialTagJsonPath.LastIndexOfAny(SLASHES));
+					if (!Directory.Exists(tagJsonFolder))
+						Directory.CreateDirectory(tagJsonFolder);
 
-				Debug.Log($"Exporting partial tag file {tagJsonPath}");
 					
-				File.WriteAllText(tagJsonPath, stringWriter.ToString());
+					File.WriteAllText(partialTagJsonPath, stringWriter.ToString());
+					verifications?.Add(Verification.Success($"Exporting partial tag file {partialTagJsonPath}"));
+				}
+			}
+			catch(Exception e)
+			{
+				verifications?.Add(Verification.Exception(e));
 			}
 		}
 	}
 
-	public void CompileAllItemTags()
+	public void CompileAllItemTags(List<Verification> verifications = null)
 	{
-		foreach(string modDir in Directory.EnumerateDirectories($"{ExportRoot}/data/"))
+		// Here, we compile our partial tag files e.g.
+		//	resources/data/flansmod/partial_tags/flansvendersgame/item/gun.json
+		//  resources/data/flansmod/partial_tags/flansbasicparts/item/gun.json
+		//  ...
+		// into
+		//  resources/data/flansmod/tags/item/gun.json
+		// 
+		// The former are needed for pack export
+		// The latter are needed for running in dev environment
+		foreach (string modDir in Directory.EnumerateDirectories($"{ExportRoot}/data/"))
 		{
-			Dictionary<string, List<string>> allTags = new Dictionary<string, List<string>>();
 			string modID = modDir.Substring(modDir.LastIndexOfAny(SLASHES) + 1);
-			if (Directory.Exists($"{modDir}/tags/"))
+
+			try
 			{
-				foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/tags/", "*.json", SearchOption.AllDirectories))
+				Dictionary<string, List<string>> allTags = new Dictionary<string, List<string>>();
+				if (Directory.Exists($"{modDir}/partial_tags/"))
 				{
-					string tagFileName = tagFilePath.Substring(tagFilePath.LastIndexOfAny(SLASHES) + 1);
-					tagFileName = tagFileName.Substring(0, tagFileName.LastIndexOf('.'));
-					if (tagFileName.Contains("_"))
+					// Dig arbitrarily deep for tags
+					foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/partial_tags/", "*.json", SearchOption.AllDirectories))
 					{
-						string tagModID = tagFileName.Substring(tagFileName.LastIndexOf('_') + 1);
-						if (FindContentPack(tagModID))
+						//string tagID = tagFilePath.Substring(tagFilePath.LastIndexOfAny(SLASHES) + 1);
+						//tagID = tagID.Substring(0, tagID.LastIndexOf('.'));
+
+						string tagAndFolders = tagFilePath.Substring(tagFilePath.IndexOf("partial_tags") + "partial_tags/".Length);
+						// Remove the /{modID}/
+						tagAndFolders = tagAndFolders.Substring(tagAndFolders.IndexOfAny(SLASHES) + 1);
+						// Remove the .json
+						tagAndFolders = tagAndFolders.Substring(0, tagAndFolders.LastIndexOf('.'));
+
+						verifications?.Add(Verification.Success($"Found partial tag file {tagAndFolders}"));
+						try
 						{
-							Debug.Log($"Found partial tag file {tagFileName}");
-							string rootTagID = tagFileName.Substring(0, tagFileName.LastIndexOf('_'));
 							JObject jTagRoot = JObject.Parse(File.ReadAllText(tagFilePath));
 							if (jTagRoot.TryGetValue("values", out JToken jToken) && jToken is JArray jArray)
 							{
-								if (!allTags.ContainsKey(rootTagID))
-									allTags.Add(rootTagID, new List<string>());
+								if (!allTags.ContainsKey(tagAndFolders))
+									allTags.Add(tagAndFolders, new List<string>());
 
 								foreach (JToken entry in jArray)
-									allTags[rootTagID].Add(entry.ToString());
+									allTags[tagAndFolders].Add(entry.ToString());
+							}
+						}
+						catch (Exception e)
+						{
+							verifications?.Add(Verification.Exception(e, $"Failed to parse json for partial tag file at '{tagFilePath}'"));
+						}
+					}
+
+					if (allTags.Count > 0)
+					{
+						if (!Directory.Exists($"{modDir}/tags/"))
+						{
+							Directory.CreateDirectory($"{modDir}/tags/");
+						}
+
+						// Now repackage the tags into a final .json with all in it
+						foreach (var kvp in allTags)
+						{
+							using (StringWriter stringWriter = new StringWriter())
+							using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+							{
+								jsonWriter.Formatting = Formatting.Indented;
+								QuickJSONBuilder builder = new QuickJSONBuilder();
+								builder.Current.Add("replace", "false");
+								using (builder.Tabulation("values"))
+								{
+									foreach (string itemLoc in kvp.Value)
+										builder.CurrentTable.Add(itemLoc);
+								}
+								builder.Root.WriteTo(jsonWriter);
+
+
+								string tagFolder = "";
+								string tagName = kvp.Key;
+								int lastSlash = tagName.LastIndexOfAny(SLASHES);
+								if(lastSlash != -1)
+								{
+									tagFolder = tagName.Substring(0, lastSlash);
+									tagName = tagName.Substring(lastSlash + 1);
+								}
+								
+								
+
+								string tagJsonPath = GetDevTagJsonExportPath(new ResourceLocation(modID, tagName), tagFolder);
+								string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
+								if (!Directory.Exists(tagJsonFolder))
+									Directory.CreateDirectory(tagJsonFolder);
+
+								verifications?.Add(Verification.Success($"Exporting compiled tag file '{tagJsonPath}' for dev-environment"));
+								File.WriteAllText(tagJsonPath, stringWriter.ToString());
 							}
 						}
 					}
 				}
-
-				// Now repackage the tags into a final .json with all in it
-				foreach (var kvp in allTags)
-				{
-					using (StringWriter stringWriter = new StringWriter())
-					using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
-					{
-						jsonWriter.Formatting = Formatting.Indented;
-						QuickJSONBuilder builder = new QuickJSONBuilder();
-						builder.Current.Add("replace", "false");
-						using (builder.Tabulation("values"))
-						{
-							foreach (string itemLoc in kvp.Value)
-								builder.CurrentTable.Add(itemLoc);
-						}
-						builder.Root.WriteTo(jsonWriter);
-						string tagJsonPath = GetTagJsonExportPath($"{modID}:{kvp.Key}");
-
-						Debug.Log($"Exporting compiled tag file {tagJsonPath}");
-						File.WriteAllText(tagJsonPath, stringWriter.ToString());
-					}
-				}
+			}
+			catch (Exception e)
+			{
+				verifications?.Add(Verification.Exception(e));
 			}
 		}
 	}
@@ -1487,7 +1544,7 @@ public class ContentManager : MonoBehaviour
 		ContentPack pack = FindContentPack(packName);
 		if(pack == null)
 		{
-			Debug.LogError($"Failed to find pack {packName}");
+			verifications?.Add(Verification.Failure($"Failed to find pack {packName}"));
 			return;
 		}
 
@@ -1564,8 +1621,8 @@ public class ContentManager : MonoBehaviour
 			}
 			EditorUtility.ClearProgressBar();
 
-			ExportItemTags(pack);
-			CompileAllItemTags();
+			ExportItemTags(pack, verifications);
+			CompileAllItemTags(verifications);
 		}
 		finally
 		{

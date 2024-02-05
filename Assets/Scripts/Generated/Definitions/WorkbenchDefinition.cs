@@ -22,5 +22,7 @@ public class WorkbenchDefinition : Definition
 	[JsonField]
 	public ItemHoldingDefinition itemHolding = new ItemHoldingDefinition();
 	[JsonField]
+	public ItemDefinition itemSettings = new ItemDefinition();
+	[JsonField]
 	public WorkbenchSideDefinition[] sides = new WorkbenchSideDefinition[0];
 }

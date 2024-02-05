@@ -339,8 +339,17 @@ public class ContentManagerEditor : Editor
 		}
 	}
 
+	public bool ExpandExportResults = false;
 	public void ExportTab(ContentManager instance)
 	{
+		if (ContentManager.LastExportOperation != "None" && ContentManager.LastExportOperationResults.Count > 0)
+		{
+			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
+				ExpandExportResults,
+				ContentManager.LastExportOperation,
+				ContentManager.LastExportOperationResults);
+		}
+
 		string changedLoc = FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
 		if(changedLoc != instance.ExportRoot)
 		{
@@ -362,19 +371,11 @@ public class ContentManagerEditor : Editor
 			{
 				if (GUILayout.Button(FlanStyles.ExportPackNewOnly, GUILayout.Width(32)))
 				{
-					instance.ExportPack(pack.ModName, false);
+					instance.ExportPack(pack.ModName, false, ContentManager.GetFreshExportLogger($"Export {pack.ModName} (Skipping conflicts)"));
 				}
 				if (GUILayout.Button(FlanStyles.ExportPackOverwrite, GUILayout.Width(32)))
 				{
-					List<Verification> exportVerifications = new List<Verification>();
-					instance.ExportPack(pack.ModName, true, exportVerifications);
-					foreach (Verification verification in exportVerifications)
-					{
-						if (verification.Type == VerifyType.Fail)
-						{
-							Debug.LogError($"Verification Failure: {verification.Message}");
-						}
-					}
+					instance.ExportPack(pack.ModName, true, ContentManager.GetFreshExportLogger($"Export {pack.ModName} (Overrwriting conflicts)"));
 				}
 			}
 			else

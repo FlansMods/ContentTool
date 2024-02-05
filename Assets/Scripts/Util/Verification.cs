@@ -49,13 +49,22 @@ public class Verification
 			Message = msg
 		};
 	}
+	public static Verification Exception(Exception exception, string msg, QuickFixFunc func = null)
+	{
+		return new Verification()
+		{
+			Type = VerifyType.Fail,
+			Func = func,
+			Message = $"'{msg}' due to Exception[{exception.Message} @ {exception.StackTrace}]",
+		};
+	}
 	public static Verification Exception(Exception exception, QuickFixFunc func = null)
 	{
 		return new Verification()
 		{
 			Type = VerifyType.Fail,
 			Func = func,
-			Message = exception.Message
+			Message = $"'{exception.Message}' @ {exception.StackTrace}"
 		};
 	}
 

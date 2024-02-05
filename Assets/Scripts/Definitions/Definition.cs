@@ -173,7 +173,14 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			return vehicleDef.itemSettings;
 		else if (this is PartDefinition partDef)
 			return partDef.itemSettings;
+		else if (this is WorkbenchDefinition workbenchDef)
+			return workbenchDef.itemSettings;
 		return null;
+	}
+
+	public bool IsBlock()
+	{
+		return this is WorkbenchDefinition;
 	}
 
 	public void VerifyModifiers(List<Verification> verifications)
