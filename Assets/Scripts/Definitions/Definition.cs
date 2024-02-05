@@ -153,6 +153,47 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 				}
 			}
 		}
+
+		ItemDefinition itemSettings = GetItemSettings();
+		if(itemSettings != null)
+		{
+			VerifyItemSettings(itemSettings, verifications);
+		}
+	}
+
+	private void VerifyItemSettings(ItemDefinition itemSettings, List<Verification> verifications)
+	{
+		for (int i = 0; i < itemSettings.tags.Length; i++)
+		{
+			ResourceLocation tagLoc = new ResourceLocation(itemSettings.tags[i]);
+			string prefixes = tagLoc.GetPrefixes();
+			if(prefixes.Length == 0)
+			{
+				int index = i;
+				verifications.Add(Verification.Failure($"Tag {tagLoc} is in the root tag folder?",
+				() =>
+				{
+					ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
+					string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
+					itemSettings.tags[index] = newLoc;
+				}));
+			}
+			else if(prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
+			{
+				
+			}
+			else
+			{
+				int index = i;
+				verifications.Add(Verification.Failure($"Tag {tagLoc} is in an unknown tag folder",
+				() =>
+				{
+					ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
+					string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
+					itemSettings.tags[index] = newLoc;
+				}));
+			}
+		}
 	}
 
 	public ItemDefinition GetItemSettings()

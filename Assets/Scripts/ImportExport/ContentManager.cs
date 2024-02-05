@@ -1234,13 +1234,13 @@ public class ContentManager : MonoBehaviour
 				verifications.Add(Verification.Exception(e));
 		}
 	}
-	public string GetPartialTagJsonExportPath(ResourceLocation tagLoc, string modID, string tagFolder = "items")
+	public string GetPartialTagJsonExportPath(string tagModID, string providerModID, string tagName)
 	{
-		return $"{ExportRoot}/data/{tagLoc.Namespace}/partial_tags/{modID}/{tagFolder}/{tagLoc.ID}.json";
+		return $"{ExportRoot}/data/{providerModID}/partial_data/{tagModID}/tags/{tagName}.json";
 	}
-	public string GetDevTagJsonExportPath(ResourceLocation tagLoc, string tagFolder = "items")
+	public string GetDevTagJsonExportPath(ResourceLocation tagLoc)
 	{
-		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/{tagFolder}/{tagLoc.ID}.json";
+		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/{tagLoc.ID}.json";
 	}
 	public string GetSoundJsonExportPath(string packName)
 	{
@@ -1285,16 +1285,14 @@ public class ContentManager : MonoBehaviour
 		Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
 		foreach(Definition def in pack.AllContent)
 		{
-			string prefix = def.IsBlock() ? "blocks" : "items";
 			ItemDefinition itemSettings = def.GetItemSettings();
 			if(itemSettings != null)
 			{
 				foreach(string tag in itemSettings.tags)
 				{
-					string tagInFolder = $"{prefix}/{tag}";
-					if (!tags.ContainsKey(tagInFolder))
-						tags.Add(tagInFolder, new List<string>());
-					tags[tagInFolder].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
+					if (!tags.ContainsKey(tag))
+						tags.Add(tag, new List<string>());
+					tags[tag].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
 				}
 			}
 		}
@@ -1320,9 +1318,8 @@ public class ContentManager : MonoBehaviour
 					// Bit weird, but Minecraft's tag system is not great for developing multiple addons/whatever in the same
 					// workspace. So we export partial tags to a temp location. These won't do anything to your dev env,
 					// but will be picked up by gradle pack publishing, if you use that.
-					string tagFolder = kvp.Key.Substring(0, kvp.Key.IndexOf("/"));
-					string tagName = kvp.Key.Substring(kvp.Key.IndexOf("/") + 1);
-					string partialTagJsonPath = GetPartialTagJsonExportPath(new ResourceLocation(tagName), pack.ModName, tagFolder);
+					ResourceLocation tagLoc = new ResourceLocation(kvp.Key);
+					string partialTagJsonPath = GetPartialTagJsonExportPath(tagLoc.Namespace, pack.ModName, tagLoc.ID);
 					string tagJsonFolder = partialTagJsonPath.Substring(0, partialTagJsonPath.LastIndexOfAny(SLASHES));
 					if (!Directory.Exists(tagJsonFolder))
 						Directory.CreateDirectory(tagJsonFolder);
@@ -1357,15 +1354,15 @@ public class ContentManager : MonoBehaviour
 			try
 			{
 				Dictionary<string, List<string>> allTags = new Dictionary<string, List<string>>();
-				if (Directory.Exists($"{modDir}/partial_tags/"))
+				if (Directory.Exists($"{modDir}/partial_data/"))
 				{
 					// Dig arbitrarily deep for tags
-					foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/partial_tags/", "*.json", SearchOption.AllDirectories))
+					foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/partial_data/", "*.json", SearchOption.AllDirectories))
 					{
 						//string tagID = tagFilePath.Substring(tagFilePath.LastIndexOfAny(SLASHES) + 1);
 						//tagID = tagID.Substring(0, tagID.LastIndexOf('.'));
 
-						string tagAndFolders = tagFilePath.Substring(tagFilePath.IndexOf("partial_tags") + "partial_tags/".Length);
+						string tagAndFolders = tagFilePath.Substring(tagFilePath.IndexOf("partial_data") + "partial_data/".Length);
 						// Remove the /{modID}/
 						tagAndFolders = tagAndFolders.Substring(tagAndFolders.IndexOfAny(SLASHES) + 1);
 						// Remove the .json
@@ -1425,7 +1422,7 @@ public class ContentManager : MonoBehaviour
 								
 								
 
-								string tagJsonPath = GetDevTagJsonExportPath(new ResourceLocation(modID, tagName), tagFolder);
+								string tagJsonPath = GetDevTagJsonExportPath(new ResourceLocation(modID, tagName));
 								string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
 								if (!Directory.Exists(tagJsonFolder))
 									Directory.CreateDirectory(tagJsonFolder);
