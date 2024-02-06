@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: 50 Round Extended Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:pistol_bullet
   tags:
   - flansvendersgame:hm_pocket
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 1
   numRounds: 50
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:pistol_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: pistol_bullet
+    materialFilters: []

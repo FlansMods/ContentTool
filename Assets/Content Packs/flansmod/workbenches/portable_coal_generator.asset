@@ -16,21 +16,35 @@ MonoBehaviour:
   - Lang: 0
     Name: Portable Coal Generator
   LocalisedExtras: []
-  titlestring: portable_coal_generator
-  bannerTextureLocation: 
+  titleString: workbench
+  bannerTextureLocation:
+    Namespace: minecraft
+    ID: null
   gunCrafting:
+    _idArray: []
+    _tagArray: []
     isActive: 0
-    pages: []
+    craftableGuns:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
+    maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
+    _idArray: []
+    _tagArray: []
     isActive: 0
     inputSlots: 8
     outputSlots: 8
     timePerCraft: 1
     FECostPerCraft: 0
-    partsByName: []
-    partsByTier: []
+    craftableParts:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
   gunModifying:
+    _tempArray: []
+    _tempArray2: []
     isActive: 0
     disallowedMods: []
     allowedMods: []
@@ -49,10 +63,17 @@ MonoBehaviour:
     solidFEPerFuelTime: 10
   armourCrafting:
     isActive: 0
-    pages: []
+    craftableArmour:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
     FECostPerCraft: 0
   itemHolding:
     slots: []
     allow: 
     maxStackSize: 64
+  itemSettings:
+    _tempArray: []
+    maxStackSize: 64
+    tags: []
   sides: []

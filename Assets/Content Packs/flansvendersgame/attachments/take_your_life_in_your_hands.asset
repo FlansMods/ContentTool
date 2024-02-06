@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: '"Take Your Life In Your Hands" Undying Foregrip'
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:grip
     - flansmod:attach_to_any
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: grip
+    - Namespace: flansmod
+      ID: attach_to_any
   attachmentType: 3
   modifiers: []
   mechaEffects: 
@@ -29,7 +34,10 @@ MonoBehaviour:
   actionOverrides: []
   reloadOverrides: []
   abilities:
-  - ability: flansvendersgame:undying
+  - _ability: flansvendersgame:undying
+    ability:
+      Namespace: flansvendersgame
+      ID: undying
     level: 1
   modeOverride: 0
   overrideFireMode: 0

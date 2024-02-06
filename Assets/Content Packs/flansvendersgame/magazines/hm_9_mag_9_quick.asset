@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: 9 Round Quick-Swap Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:pistol_bullet
   tags:
   - flansvendersgame:hm_9
   modifiers:
@@ -31,7 +34,11 @@ MonoBehaviour:
   upgradeCost: 2
   numRounds: 9
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:pistol_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: pistol_bullet
+    materialFilters: []

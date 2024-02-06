@@ -8,7 +8,7 @@ public class WorkbenchDefinition : Definition
 	[JsonField]
 	public string titleString = "workbench";
 	[JsonField]
-	public string bannerTextureLocation = "";
+	public ResourceLocation bannerTextureLocation = InvalidLocation;
 	[JsonField]
 	public GunCraftingDefinition gunCrafting = new GunCraftingDefinition();
 	[JsonField]

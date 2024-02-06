@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: Flint & Cobblesons Sword bayonet
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:attach_to_rifle
     - flansmod:barrel_attach
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_rifle
+    - Namespace: flansmod
+      ID: barrel_attach
   attachmentType: 0
   modifiers:
   - Stat: melee_damage
@@ -52,6 +57,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 0
     loudness: 0
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 20
       duration: 1
@@ -76,5 +82,6 @@ MonoBehaviour:
       harvestSpeed: 0
       reach: 0
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using static ResourceLocation;
 
 [System.Serializable]
@@ -19,6 +20,18 @@ public class PartDefinition : Definition
 	public AbilityProviderDefinition[] abilities = new AbilityProviderDefinition[0];
 	[JsonField]
 	public EngineDefinition engine = new EngineDefinition();
+
+	/* TEMP: To update old versions add " : ISerializationCallbackReceiver" and uncomment this
+	
+	[FormerlySerializedAs("material")]
+	public string _temp;
+	public void OnBeforeSerialize() { }
+	public void OnAfterDeserialize()
+	{
+		material = new ResourceLocation(_temp);
+	}
+	*/
+
 	[JsonField]
 	public ResourceLocation material = InvalidLocation;
 }

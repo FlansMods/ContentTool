@@ -9,155 +9,167 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 {
 	public virtual void GetVerifications(List<Verification> verifications)
 	{
-		ResourceLocation resLoc = this.GetLocation();
-
-		if (LocalisedNames.Count < 1 && this is not FlanimationDefinition)
-			verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
-		if (name != Utils.ToLowerWithUnderscores(name))
+		try
 		{
-			verifications.Add(Verification.Failure(
-				$"Definition {name} does not have a Minecraft-compliant name",
-				() =>
-				{
-					name = Utils.ToLowerWithUnderscores(name);
-				})
-			);
-		}
 
-		VerifyModifiers(verifications);
+			ResourceLocation resLoc = this.GetLocation();
 
-		if (this is GunDefinition gunDef)
-		{
-			foreach (ActionGroupDefinition group in gunDef.actionGroups)
+			if (LocalisedNames.Count < 1 && this is not FlanimationDefinition)
+				verifications.Add(Verification.Failure($"{name} has no localised name in any language"));
+			if (name != Utils.ToLowerWithUnderscores(name))
 			{
-				bool hasADSAction = false;
-				foreach (ActionDefinition actionDef in group.actions)
-				{
-					if (actionDef.actionType == EActionType.AimDownSights || actionDef.actionType == EActionType.Scope)
+				verifications.Add(Verification.Failure(
+					$"Definition {name} does not have a Minecraft-compliant name",
+					() =>
 					{
-						hasADSAction = true;
+						name = Utils.ToLowerWithUnderscores(name);
+					})
+				);
+			}
+
+			VerifyModifiers(verifications);
+
+			if (this is GunDefinition gunDef)
+			{
+				foreach (ActionGroupDefinition group in gunDef.actionGroups)
+				{
+					bool hasADSAction = false;
+					foreach (ActionDefinition actionDef in group.actions)
+					{
+						if (actionDef.actionType == EActionType.AimDownSights || actionDef.actionType == EActionType.Scope)
+						{
+							hasADSAction = true;
+						}
+					}
+					if (hasADSAction && group.repeatMode != ERepeatMode.Toggle)
+					{
+						verifications.Add(Verification.Neutral(
+							$"Aim down sights action is not a toggle",
+							() =>
+							{
+								group.repeatMode = ERepeatMode.Toggle;
+							})
+						);
 					}
 				}
-				if (hasADSAction && group.repeatMode != ERepeatMode.Toggle)
+
+				for (int i = 0; i < gunDef.paints.paintjobs.Length; i++)
 				{
-					verifications.Add(Verification.Neutral(
-						$"Aim down sights action is not a toggle",
+					PaintjobDefinition paintjob = gunDef.paints.paintjobs[i];
+					bool hasLoc = false;
+					foreach (LocalisedExtra loc in gunDef.LocalisedExtras)
+					{
+						if (loc.Unlocalised == $"paintjob.{resLoc.Namespace}.{paintjob.textureName}")
+						{
+							hasLoc = true;
+							break;
+						}
+					}
+					if (!hasLoc)
+					{
+						verifications.Add(Verification.Neutral(
+							$"Paintjob with key {paintjob.textureName} in paintable def {gunDef.name}, has no localised name",
+							() =>
+							{
+								gunDef.LocalisedExtras.Add(new LocalisedExtra()
+								{
+									Unlocalised = $"paintjob.{resLoc.Namespace}.{paintjob.textureName}",
+									Localised = paintjob.textureName.Replace("_", " "),
+									Lang = ELang.en_us,
+								});
+							}));
+					}
+				}
+			}
+
+			if (ExpectsModel())
+			{
+
+				string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
+				RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
+				if (rootNode == null)
+					verifications.Add(Verification.Failure(
+						$"Definition {name} does not have a matching model at {modelPath}",
 						() =>
 						{
-							group.repeatMode = ERepeatMode.Toggle;
-						})
-					);
-				}
-			}
-
-			for (int i = 0; i < gunDef.paints.paintjobs.Length; i++)
-			{
-				PaintjobDefinition paintjob = gunDef.paints.paintjobs[i];
-				bool hasLoc = false;
-				foreach (LocalisedExtra loc in gunDef.LocalisedExtras)
-				{
-					if (loc.Unlocalised == $"paintjob.{resLoc.Namespace}.{paintjob.textureName}")
-					{
-						hasLoc = true;
-						break;
-					}
-				}
-				if (!hasLoc)
-				{
-					verifications.Add(Verification.Neutral(
-						$"Paintjob with key {paintjob.textureName} in paintable def {gunDef.name}, has no localised name",
-						() => {
-							gunDef.LocalisedExtras.Add(new LocalisedExtra()
-							{
-								Unlocalised = $"paintjob.{resLoc.Namespace}.{paintjob.textureName}",
-								Localised = paintjob.textureName.Replace("_", " "),
-								Lang = ELang.en_us,
-							});
+							rootNode = ConvertToNodes.CreateEmpty(name);
+							rootNode.AddDefaultTransforms();
+							PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, modelPath);
+							DestroyImmediate(rootNode.gameObject);
 						}));
-				}
-			}
-		}
-
-		if(ExpectsModel())
-		{
-			
-			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
-			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
-			if (rootNode == null)
-				verifications.Add(Verification.Failure(
-					$"Definition {name} does not have a matching model at {modelPath}",
-					() => {
-						rootNode = ConvertToNodes.CreateEmpty(name);
-						rootNode.AddDefaultTransforms();
-						PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, modelPath);
-						DestroyImmediate(rootNode.gameObject);
-					}));
-			else
-			{
-				if(this is GunDefinition gun)
+				else
 				{
-					foreach(NamedTexture iconTexture in rootNode.Icons)
+					if (this is GunDefinition gun)
 					{
-						if (iconTexture.Key != "default")
-						{
-							bool existsInDef = false;
-							foreach (PaintjobDefinition paint in gun.paints.paintjobs)
-							{
-								if (paint.textureName == iconTexture.Key)
-									existsInDef = true;
-							}
-
-							if (!existsInDef)
-							{
-								verifications.Add(Verification.Neutral(
-									$"Found icon {iconTexture.Key} in model {modelPath}, not referenced in paintable def {gun.name}",
-									() => {
-										List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
-										paintjobs.Add(new PaintjobDefinition()
-										{
-											textureName = iconTexture.Key,
-											paintBucketsRequired = 1,
-										});
-										gun.paints.paintjobs = paintjobs.ToArray();
-									}));
-							}
-						}
-					}
-
-					for(int i = 0; i < gun.paints.paintjobs.Length; i++)
-					{
-						PaintjobDefinition paintjob = gun.paints.paintjobs[i];
-						bool existsInModel = false;
-						foreach (NamedTexture skinTexture in rootNode.Textures)
-						{
-							if (paintjob.textureName == skinTexture.Key)
-								existsInModel = true;
-						}
 						foreach (NamedTexture iconTexture in rootNode.Icons)
 						{
-							if (paintjob.textureName == iconTexture.Key)
-								existsInModel = true;
+							if (iconTexture.Key != "default")
+							{
+								bool existsInDef = false;
+								foreach (PaintjobDefinition paint in gun.paints.paintjobs)
+								{
+									if (paint.textureName == iconTexture.Key)
+										existsInDef = true;
+								}
+
+								if (!existsInDef)
+								{
+									verifications.Add(Verification.Neutral(
+										$"Found icon {iconTexture.Key} in model {modelPath}, not referenced in paintable def {gun.name}",
+										() =>
+										{
+											List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
+											paintjobs.Add(new PaintjobDefinition()
+											{
+												textureName = iconTexture.Key,
+												paintBucketsRequired = 1,
+											});
+											gun.paints.paintjobs = paintjobs.ToArray();
+										}));
+								}
+							}
 						}
-						if (!existsInModel)
+
+						for (int i = 0; i < gun.paints.paintjobs.Length; i++)
 						{
-							int index = i;
-							verifications.Add(Verification.Neutral(
-									$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rootNode.name}",
-									() => {
-										List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
-										paintjobs.RemoveAt(index);
-										gun.paints.paintjobs = paintjobs.ToArray();
-									}));
+							PaintjobDefinition paintjob = gun.paints.paintjobs[i];
+							bool existsInModel = false;
+							foreach (NamedTexture skinTexture in rootNode.Textures)
+							{
+								if (paintjob.textureName == skinTexture.Key)
+									existsInModel = true;
+							}
+							foreach (NamedTexture iconTexture in rootNode.Icons)
+							{
+								if (paintjob.textureName == iconTexture.Key)
+									existsInModel = true;
+							}
+							if (!existsInModel)
+							{
+								int index = i;
+								verifications.Add(Verification.Neutral(
+										$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rootNode.name}",
+										() =>
+										{
+											List<PaintjobDefinition> paintjobs = new List<PaintjobDefinition>(gun.paints.paintjobs);
+											paintjobs.RemoveAt(index);
+											gun.paints.paintjobs = paintjobs.ToArray();
+										}));
+							}
 						}
 					}
 				}
 			}
-		}
 
-		ItemDefinition itemSettings = GetItemSettings();
-		if(itemSettings != null)
+			ItemDefinition itemSettings = GetItemSettings();
+			if (itemSettings != null)
+			{
+				VerifyItemSettings(itemSettings, verifications);
+			}
+		}
+		catch(Exception e)
 		{
-			VerifyItemSettings(itemSettings, verifications);
+			verifications?.Add(Verification.Exception(e, () => { Selection.activeObject = this; }));
 		}
 	}
 
@@ -165,33 +177,36 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	{
 		for (int i = 0; i < itemSettings.tags.Length; i++)
 		{
-			ResourceLocation tagLoc = new ResourceLocation(itemSettings.tags[i]);
-			string prefixes = tagLoc.GetPrefixes();
-			if(prefixes.Length == 0)
+			ResourceLocation tagLoc = itemSettings.tags[i];
+			if (tagLoc.Namespace.Length == 0)
 			{
-				//int index = i;
-				//verifications.Add(Verification.Failure($"Tag {tagLoc} is in the root tag folder?",
-				//() =>
-				//{
-				//	ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
-				//	string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
-				//	itemSettings.tags[index] = newLoc;
-				//}));
+				verifications.Add(Verification.Failure($"Tag {tagLoc} has no namespace set"));
 			}
-			else if(prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
+			else if (tagLoc.ID.Length == 0)
 			{
-				int index = i;
-				verifications.Add(Verification.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
-				() =>
-				{
-					ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
-					string newLoc = $"{innerTagLoc.Namespace}:{innerTagLoc.IDWithSpecificPrefixesStripped("blocks", "items")}";
-					itemSettings.tags[index] = newLoc;
-				}));
+				verifications.Add(Verification.Failure($"Tag {tagLoc} has no ID set"));
 			}
 			else
 			{
-				
+				string prefixes = tagLoc.GetPrefixes();
+				if (prefixes.Length == 0)
+				{
+
+				}
+				else if (prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
+				{
+					int index = i;
+					verifications.Add(Verification.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
+					() =>
+					{
+						ResourceLocation innerTagLoc = itemSettings.tags[index];
+						itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.IDWithSpecificPrefixesStripped("blocks", "items")}");
+					}));
+				}
+				else
+				{
+
+				}
 			}
 		}
 	}

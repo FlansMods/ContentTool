@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: Internal Launcher Tube
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:artillery_shell
   tags:
   - flansvendersgame:fc_blowpipe
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 1
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:artillery_shell
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: artillery_shell
+    materialFilters: []

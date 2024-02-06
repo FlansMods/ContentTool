@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:barrel
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: barrel
   modifiers: []
   abilities:
-  - ability: flansbasicparts:precise
+  - ability:
+      Namespace: flansbasicparts
+      ID: precise
     level: 1
   engine:
     maxAcceleration: 1

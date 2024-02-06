@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: PTS Internal Rocket Tube
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rocket
   tags:
   - flansvendersgame:phantek_seeker
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 1
   allRoundsMustBeIdentical: 1
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rocket
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rocket
+    materialFilters: []

@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:stock
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: stock
   modifiers: []
   abilities:
-  - ability: flansbasicparts:lightweight
+  - ability:
+      Namespace: flansbasicparts
+      ID: lightweight
     level: 1
   engine:
     maxAcceleration: 1

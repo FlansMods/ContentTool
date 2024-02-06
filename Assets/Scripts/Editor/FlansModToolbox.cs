@@ -66,38 +66,39 @@ public class FlansModToolbox : EditorWindow
 		{
 
 
-			string[] guids = AssetDatabase.FindAssets("t:FlanimationDefinition");
+			string[] guids = AssetDatabase.FindAssets("t:Definition");
 			foreach (string guid in guids)
 			{
 				string path = AssetDatabase.GUIDToAssetPath(guid);
 				if (path != null)
 				{
-					FlanimationDefinition anim = AssetDatabase.LoadAssetAtPath<FlanimationDefinition>(path);
-					foreach (KeyframeDefinition keyframe in anim.keyframes)
-					{
-						foreach (PoseDefinition pose in keyframe.poses)
-						{
-							pose.position = new VecWithOverride()
-							{
-								xValue = pose.position.zValue,
-								yValue = pose.position.yValue,
-								zValue = -pose.position.xValue,
-								xOverride = pose.position.xOverride,
-								yOverride = pose.position.yOverride,
-								zOverride = pose.position.zOverride
-							};
-							pose.rotation = new VecWithOverride()
-							{
-								xValue = -pose.rotation.zValue,
-								yValue = pose.rotation.yValue,
-								zValue = pose.rotation.xValue,
-								xOverride = pose.rotation.xOverride,
-								yOverride = pose.rotation.yOverride,
-								zOverride = pose.rotation.zOverride
-							};
-						}
-					}
-					EditorUtility.SetDirty(anim);
+					Definition def = AssetDatabase.LoadAssetAtPath<Definition>(path);
+					//FlanimationDefinition anim = AssetDatabase.LoadAssetAtPath<FlanimationDefinition>(path);
+					//foreach (KeyframeDefinition keyframe in anim.keyframes)
+					//{
+					//	foreach (PoseDefinition pose in keyframe.poses)
+					//	{
+					//		pose.position = new VecWithOverride()
+					//		{
+					//			xValue = pose.position.zValue,
+					//			yValue = pose.position.yValue,
+					//			zValue = -pose.position.xValue,
+					//			xOverride = pose.position.xOverride,
+					//			yOverride = pose.position.yOverride,
+					//			zOverride = pose.position.zOverride
+					//		};
+					//		pose.rotation = new VecWithOverride()
+					//		{
+					//			xValue = -pose.rotation.zValue,
+					//			yValue = pose.rotation.yValue,
+					//			zValue = pose.rotation.xValue,
+					//			xOverride = pose.rotation.xOverride,
+					//			yOverride = pose.rotation.yOverride,
+					//			zOverride = pose.rotation.zOverride
+					//		};
+					//	}
+					//}
+					EditorUtility.SetDirty(def);
 				}
 			}
 				

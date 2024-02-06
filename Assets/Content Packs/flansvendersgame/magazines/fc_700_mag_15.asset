@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: 15 Round Extended Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:fc_700
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 2
   numRounds: 15
   allRoundsMustBeIdentical: 1
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

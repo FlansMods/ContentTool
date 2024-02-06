@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:grip
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: grip
   modifiers: []
   abilities:
-  - ability: flansbasicparts:configurable
+  - ability:
+      Namespace: flansbasicparts
+      ID: configurable
     level: 1
   engine:
     maxAcceleration: 1

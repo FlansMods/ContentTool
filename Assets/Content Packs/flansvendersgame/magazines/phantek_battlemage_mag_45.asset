@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: Battlemage 45 (15x3) Mag
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:phantek_battlemage
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 45
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

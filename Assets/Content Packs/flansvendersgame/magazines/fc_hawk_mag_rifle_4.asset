@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: 4 Round Magazine with Rifle-Caliber-Adapater
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:fc_hawk
   modifiers:
@@ -30,7 +33,11 @@ MonoBehaviour:
   upgradeCost: 3
   numRounds: 4
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

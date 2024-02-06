@@ -17,11 +17,18 @@ MonoBehaviour:
     Name: Dragon's Breath Infuser
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:attach_to_rifle
     - flansmod:attach_to_shotgun
     - flansmod:barrel_attach
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_rifle
+    - Namespace: flansmod
+      ID: attach_to_shotgun
+    - Namespace: flansmod
+      ID: barrel_attach
   attachmentType: 0
   modifiers:
   - Stat: set_fire_to_target
@@ -35,5 +42,6 @@ MonoBehaviour:
   handlerOverrides: []
   actionOverrides: []
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

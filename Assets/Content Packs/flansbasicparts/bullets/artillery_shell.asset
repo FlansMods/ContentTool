@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: Artillery Shell
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:bullet
     - flansmod:artillery_shell
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: bullet
+    - Namespace: flansmod
+      ID: artillery_shell
   roundsPerItem: 1
   shootStats:
     verticalRecoil: 1
@@ -30,11 +35,12 @@ MonoBehaviour:
     speed: 10
     bulletCount: 1
     spinSpeed: 360
-    breaksMaterials:
-    - minecraft:glass
+    breaksBlockTags: []
     penetrationPower: 4
     impact:
-      decal: 
+      decal:
+        Namespace: minecraft
+        ID: null
       damageToTarget: 1
       multiplierVsPlayers: 1
       multiplierVsVehicles: 100

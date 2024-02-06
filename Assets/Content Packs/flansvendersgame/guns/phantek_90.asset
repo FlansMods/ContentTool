@@ -29,10 +29,15 @@ MonoBehaviour:
     Lang: 0
     Localised: PhanTek 90 Gravel
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:phantek_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: phantek_craftable
   paints:
     paintjobs:
     - textureName: phantek_90_aqua
@@ -461,3 +466,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:p90
+  particleCount: 1

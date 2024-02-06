@@ -26,10 +26,15 @@ MonoBehaviour:
     Lang: 0
     Localised: fc 700 counterfeit
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:fc_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: fc_craftable
   paints:
     paintjobs:
     - textureName: fc_700_aged
@@ -493,3 +498,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:bolt_action_magazine_fed
+  particleCount: 1

@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: Single-Fire Fire Mode
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:generic
     - flansmod:attach_to_any
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: generic
+    - Namespace: flansmod
+      ID: attach_to_any
   attachmentType: 4
   modifiers: []
   mechaEffects: 
@@ -28,5 +33,6 @@ MonoBehaviour:
   handlerOverrides: []
   actionOverrides: []
   reloadOverrides: []
+  abilities: []
   modeOverride: 1
   overrideFireMode: 1

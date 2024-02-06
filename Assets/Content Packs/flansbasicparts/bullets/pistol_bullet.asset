@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: Pistol Bullet
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:bullet
     - flansmod:pistol_bullet
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: bullet
+    - Namespace: flansmod
+      ID: pistol_bullet
   roundsPerItem: 1
   shootStats:
     verticalRecoil: 1
@@ -33,7 +38,9 @@ MonoBehaviour:
     breaksBlockTags: []
     penetrationPower: 1
     impact:
-      decal: flansmod:effects/bullet_decal
+      decal:
+        Namespace: minecraft
+        ID: null
       damageToTarget: 1
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1

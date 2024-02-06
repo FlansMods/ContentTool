@@ -17,9 +17,12 @@ MonoBehaviour:
     Name: Vender's Customs Viper
   LocalisedExtras: []
   itemSettings:
+    _tempArray:
+    - flansmod:gun
     maxStackSize: 1
     tags:
-    - flansmod:gun
+    - Namespace: flansmod
+      ID: gun
   paints:
     paintjobs: []
   inputHandlers:
@@ -128,6 +131,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 3
       duration: 0.05
@@ -216,6 +220,7 @@ MonoBehaviour:
     repeatCount: 3
     spinUpDuration: 1.5
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 4
       duration: 0
@@ -238,6 +243,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 2.5
@@ -260,6 +266,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.375
@@ -282,6 +289,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.375
@@ -323,6 +331,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.375
@@ -364,6 +373,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 1
     loudness: 150
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 2
       duration: 0.375
@@ -390,6 +400,7 @@ MonoBehaviour:
     ejectActionKey: reload_primary_eject
     loadOneActionKey: reload_primary_load_one
     endActionKey: reload_primary_end
+  modes: []
   loopingSounds: []
   barrelAttachments:
     matchNames: []
@@ -428,3 +439,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:pistol_slide_magazine_fed
+  particleCount: 1

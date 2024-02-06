@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: HitMarket 4x ACOG
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:attach_to_any
     - flansmod:sights_attach
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_any
+    - Namespace: flansmod
+      ID: sights_attach
   attachmentType: 1
   modifiers:
   - Stat: spread
@@ -64,6 +69,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 0
     loudness: 0
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 5
       duration: 0
@@ -77,5 +83,6 @@ MonoBehaviour:
       harvestSpeed: 0
       reach: 0
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

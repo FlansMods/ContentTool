@@ -35,10 +35,15 @@ MonoBehaviour:
     Lang: 0
     Localised: Flint & Cobbleson Hawk Venom
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:fc_craftable
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: fc_craftable
   paints:
     paintjobs:
     - textureName: fc_hawk_coral_snake
@@ -473,3 +478,4 @@ MonoBehaviour:
     hideDefaultMesh: 0
   modelParts: []
   animationSet: flansmod:pistol_slide_magazine_fed
+  particleCount: 1

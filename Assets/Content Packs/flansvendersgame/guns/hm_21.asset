@@ -26,10 +26,15 @@ MonoBehaviour:
     Lang: 0
     Localised: HM21 Polymer
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:hm_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: hm_craftable
   paints:
     paintjobs:
     - textureName: hm_21_olive
@@ -545,3 +550,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:rifle_priming_handle_magazine_fed
+  particleCount: 1

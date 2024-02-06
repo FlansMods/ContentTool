@@ -5,7 +5,7 @@ using static ResourceLocation;
 public class ImpactDefinition
 {
 	[JsonField]
-	public string decal = "";
+	public ResourceLocation decal = InvalidLocation;
 	[JsonField]
 	public float damageToTarget = 1.0f;
 	[JsonField]

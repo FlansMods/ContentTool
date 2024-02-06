@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:upper_receiver
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: upper_receiver
   modifiers: []
   abilities:
-  - ability: flansbasicparts:furious
+  - ability:
+      Namespace: flansbasicparts
+      ID: furious
     level: 1
   engine:
     maxAcceleration: 1

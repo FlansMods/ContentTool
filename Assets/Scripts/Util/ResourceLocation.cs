@@ -21,7 +21,12 @@ public struct ResourceLocation
     }
 	public ResourceLocation(string input)
     {
-        if (input.Contains(":"))
+        if(input == null)
+        {
+            Namespace = InvalidLocation.Namespace;
+            ID = InvalidLocation.ID;
+        }
+        else if (input.Contains(":"))
         {
             Namespace = input.Split(":")[0];
 			ID = input.Split(":")[1];

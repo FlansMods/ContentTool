@@ -350,6 +350,11 @@ public class ContentManagerEditor : Editor
 				ContentManager.LastExportOperationResults);
 		}
 
+		if(GUILayout.Button("Force refresh verifications"))
+		{
+			GUIVerify.InvalidateCaches();
+		}
+
 		string changedLoc = FolderSelector("Export Location", instance.ExportRoot, "Assets/Export");
 		if(changedLoc != instance.ExportRoot)
 		{

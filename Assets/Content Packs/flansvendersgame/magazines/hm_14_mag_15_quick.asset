@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: 15 Round Quick-Eject Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:hm_14
   modifiers:
@@ -31,7 +34,11 @@ MonoBehaviour:
   upgradeCost: 2
   numRounds: 15
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

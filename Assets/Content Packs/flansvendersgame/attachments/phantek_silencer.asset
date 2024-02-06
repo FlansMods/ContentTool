@@ -17,12 +17,21 @@ MonoBehaviour:
     Name: PhanTek Whisper Silencer
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:attach_to_pistol
     - flansmod:attach_to_rifle
     - flansmod:barrel_attach
     - flansbasicparts:add_to_part_fab
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_pistol
+    - Namespace: flansmod
+      ID: attach_to_rifle
+    - Namespace: flansmod
+      ID: barrel_attach
+    - Namespace: flansbasicparts
+      ID: add_to_part_fab
   attachmentType: 0
   modifiers:
   - Stat: loudness
@@ -48,5 +57,6 @@ MonoBehaviour:
   handlerOverrides: []
   actionOverrides: []
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

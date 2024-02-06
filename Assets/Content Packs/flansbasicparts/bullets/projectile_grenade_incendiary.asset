@@ -12,34 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
   m_Name: projectile_grenade_incendiary
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: artillery_shell_incendiary
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: eac17564ee1e0874eb67cee35f7b7d55, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: Incendiary Impact Grenade Projectile
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:bullet
     - flansmod:launchable_grenade
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: bullet
+    - Namespace: flansmod
+      ID: launchable_grenade
   roundsPerItem: 1
   shootStats:
     verticalRecoil: 1
@@ -49,10 +35,12 @@ MonoBehaviour:
     speed: 3
     bulletCount: 1
     spinSpeed: 360
-    breaksMaterials: []
+    breaksBlockTags: []
     penetrationPower: 0
     impact:
-      decal: 
+      decal:
+        Namespace: minecraft
+        ID: null
       damageToTarget: 1
       multiplierVsPlayers: 1
       multiplierVsVehicles: 10

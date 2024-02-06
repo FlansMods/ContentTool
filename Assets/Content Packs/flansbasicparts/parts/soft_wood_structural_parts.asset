@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:structural_parts
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: structural_parts
   modifiers: []
   abilities:
-  - ability: flansbasicparts:supple
+  - ability:
+      Namespace: flansbasicparts
+      ID: supple
     level: 1
   engine:
     maxAcceleration: 1

@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: PTA12 Drum Magazine (12 Rounds)
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:shotgun_shell
   tags:
   - flansvendersgame:phantek_auto_12
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 12
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:shotgun_shell
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: shotgun_shell
+    materialFilters: []

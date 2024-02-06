@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: PTE Shock-Absorbent 3 Round Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:phantek_eye
   modifiers:
@@ -36,7 +39,11 @@ MonoBehaviour:
   upgradeCost: 2
   numRounds: 3
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

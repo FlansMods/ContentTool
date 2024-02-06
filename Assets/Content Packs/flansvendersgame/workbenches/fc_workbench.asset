@@ -17,24 +17,39 @@ MonoBehaviour:
     Name: Flint & Cobbleson's Handcrafting Station
   LocalisedExtras: []
   titleString: workbench
-  bannerTextureLocation: 
+  bannerTextureLocation:
+    Namespace: minecraft
+    ID: null
   gunCrafting:
-    isActive: 1
-    craftsByName: []
-    craftsByTag:
+    _idArray: []
+    _tagArray:
     - flansvendersgame:fc_craftable
+    isActive: 1
+    craftableGuns:
+      itemIDFilters: []
+      itemTagFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansvendersgame
+          ID: fc_craftable
+      materialFilters: []
     maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
+    _idArray: []
+    _tagArray: []
     isActive: 0
     inputSlots: 8
     outputSlots: 8
     timePerCraft: 1
     FECostPerCraft: 0
-    partsByName: []
-    partsByTag: []
-    partsByTier: []
+    craftableParts:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
   gunModifying:
+    _tempArray: []
+    _tempArray2: []
     isActive: 1
     disallowedMods: []
     allowedMods: []
@@ -53,14 +68,20 @@ MonoBehaviour:
     solidFEPerFuelTime: 0
   armourCrafting:
     isActive: 0
-    pages: []
+    craftableArmour:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
     FECostPerCraft: 0
   itemHolding:
     slots: []
     allow: 
     maxStackSize: 64
   itemSettings:
+    _tempArray:
+    - minecraft:mineable/pickaxe
     maxStackSize: 64
     tags:
-    - minecraft:mineable/pickaxe
+    - Namespace: minecraft
+      ID: mineable/pickaxe
   sides: []

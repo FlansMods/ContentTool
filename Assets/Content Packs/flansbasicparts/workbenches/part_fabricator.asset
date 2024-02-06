@@ -17,11 +17,15 @@ MonoBehaviour:
     Name: Part Fabricator
   LocalisedExtras: []
   titleString: workbench
-  bannerTextureLocation: 
+  bannerTextureLocation:
+    Namespace: minecraft
+    ID: null
   gunCrafting:
     isActive: 0
-    craftsByName: []
-    craftsByTag: []
+    craftableGuns:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
     maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
@@ -30,73 +34,26 @@ MonoBehaviour:
     outputSlots: 16
     timePerCraft: 1
     FECostPerCraft: 0
-    partsByName:
-    - flansbasicparts:fire_mode_auto
-    - flansbasicparts:fire_mode_single
-    - flansbasicparts:fire_mode_burst
-    partsByTag:
-    - flansbasicparts:add_to_part_fab
-    partsByTier:
-    - tag: flansmod:upper_receiver
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:lower_receiver
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:barrel
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:stock
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:grip
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:circuitry
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:engine
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:structural_parts
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:mechanical_parts
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:propeller
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:armour
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:seat
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:wheel
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:canvas
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
-    - tag: flansmod:clothing
-      minMaterialTier: 1
-      maxMaterialTier: 5
-      allowedMaterials: 00000000010000000200000003000000040000000500000006000000
+    craftableParts:
+      itemIDFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: fire_mode_auto
+        - Namespace: flansbasicparts
+          ID: fire_mode_single
+        - Namespace: flansbasicparts
+          ID: fire_mode_burst
+      itemTagFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: add_to_part_fab
+      materialFilters:
+      - filterType: 0
+        materialTypes: 010000000200000003000000040000000500000006000000
+        minTier: 1
+        maxTier: 5
   gunModifying:
     isActive: 0
     disallowedMods: []
@@ -116,7 +73,10 @@ MonoBehaviour:
     solidFEPerFuelTime: 0
   armourCrafting:
     isActive: 0
-    pages: []
+    craftableArmour:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
     FECostPerCraft: 0
   itemHolding:
     slots: []
@@ -125,5 +85,6 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - minecraft:mineable/pickaxe
+    - Namespace: minecraft
+      ID: mineable/pickaxe
   sides: []

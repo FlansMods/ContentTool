@@ -12,34 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
   m_Name: artillery_shell_ex
   m_EditorClassIdentifier: 
-  Model:
-    Type: 3
-    top: 
-    north: 
-    east: 
-    south: 
-    west: 
-    bottom: 
-    icon: artillery_shell_explosive
-    textureX: 0
-    textureY: 0
-    sections: []
-    name: 
-    animations: []
-    attachPoints: []
-    customModelLocation: 
-  Skin: {fileID: 0}
-  Icon: {fileID: 2800000, guid: 5acff47e5e847f7458aee8336c2b220e, type: 3}
-  AdditionalTextures: []
   LocalisedNames:
   - Lang: 0
     Name: High-Explosive Artillery Shell
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:bullet
     - flansmod:artillery_shell
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: bullet
+    - Namespace: flansmod
+      ID: artillery_shell
   roundsPerItem: 1
   shootStats:
     verticalRecoil: 1
@@ -49,10 +35,12 @@ MonoBehaviour:
     speed: 0
     bulletCount: 1
     spinSpeed: 360
-    breaksMaterials: []
+    breaksBlockTags: []
     penetrationPower: 0
     impact:
-      decal: 
+      decal:
+        Namespace: minecraft
+        ID: null
       damageToTarget: 1
       multiplierVsPlayers: 1
       multiplierVsVehicles: 200

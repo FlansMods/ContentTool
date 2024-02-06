@@ -17,10 +17,15 @@ MonoBehaviour:
     Name: Flint & Cobblesons Classical Rifle Scope
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 64
-    tags:
+    _tempArray:
     - flansmod:attach_to_any
     - flansmod:sights_attach
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_any
+    - Namespace: flansmod
+      ID: sights_attach
   attachmentType: 4
   modifiers:
   - Stat: spread
@@ -64,6 +69,7 @@ MonoBehaviour:
     repeatCount: 0
     spinUpDuration: 0
     loudness: 0
+    autoCancelIfNotInMode: 
     actions:
     - actionType: 5
       duration: 0
@@ -77,5 +83,6 @@ MonoBehaviour:
       harvestSpeed: 0
       reach: 0
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

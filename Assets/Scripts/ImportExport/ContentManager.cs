@@ -945,10 +945,6 @@ public class ContentManager : MonoBehaviour
 			{
 				itemStackDef.item = ValidateItemId(itemStackDef.item, itemStackDef.damage, pack);
 			}
-			else if(obj is IngredientDefinition ingredientDef)
-			{
-				ingredientDef.itemName = ValidateItemId(ingredientDef.itemName, ingredientDef.maxAllowedDamage, pack);
-			}
 
 			foreach(FieldInfo field in obj.GetType().GetFields())
 			{
@@ -1289,10 +1285,9 @@ public class ContentManager : MonoBehaviour
 			ItemDefinition itemSettings = def.GetItemSettings();
 			if(itemSettings != null)
 			{
-				foreach(string tag in itemSettings.tags)
+				foreach(ResourceLocation tag in itemSettings.tags)
 				{
-					ResourceLocation tagLoc = new ResourceLocation(tag);
-					string tagExportName = tagLoc.ResolveWithSubdir(def.GetTagExportFolder()); ;
+					string tagExportName = tag.ResolveWithSubdir(def.GetTagExportFolder()); ;
 					if (!tags.ContainsKey(tagExportName))
 						tags.Add(tagExportName, new List<string>());
 					tags[tagExportName].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");

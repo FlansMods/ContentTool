@@ -17,14 +17,27 @@ MonoBehaviour:
     Name: PhanTek Impact Stock
   LocalisedExtras: []
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:attach_to_pistol
     - flansmod:attach_to_rifle
     - flansmod:attach_to_shotgun
     - flansmod:attach_to_grenade_launcher
     - flansmod:stock_attach
     - flansbasicparts:add_to_part_fab
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: attach_to_pistol
+    - Namespace: flansmod
+      ID: attach_to_rifle
+    - Namespace: flansmod
+      ID: attach_to_shotgun
+    - Namespace: flansmod
+      ID: attach_to_grenade_launcher
+    - Namespace: flansmod
+      ID: stock_attach
+    - Namespace: flansbasicparts
+      ID: add_to_part_fab
   attachmentType: 2
   modifiers:
   - Stat: vertical_recoil
@@ -44,5 +57,6 @@ MonoBehaviour:
   handlerOverrides: []
   actionOverrides: []
   reloadOverrides: []
+  abilities: []
   modeOverride: 0
   overrideFireMode: 0

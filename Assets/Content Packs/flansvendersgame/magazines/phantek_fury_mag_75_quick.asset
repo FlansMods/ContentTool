@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: PTF Mag-Attach 75 Round Magazine
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:rifle_bullet
   tags:
   - flansvendersgame:phantek_fury
   modifiers:
@@ -31,7 +34,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 75
   allRoundsMustBeIdentical: 1
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:rifle_bullet
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: rifle_bullet
+    materialFilters: []

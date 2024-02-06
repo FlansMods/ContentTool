@@ -17,11 +17,67 @@ MonoBehaviour:
     Name: Bullet Fabricator
   LocalisedExtras: []
   titleString: workbench
-  bannerTextureLocation: 
+  bannerTextureLocation:
+    Namespace: minecraft
+    ID: null
   gunCrafting:
     isActive: 0
-    craftsByName: []
-    craftsByTag: []
+    craftableGuns:
+      itemIDFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: pistol_bullet
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_ap
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_ex
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_incendiary
+        - Namespace: flansbasicparts
+          ID: rifle_bullet
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_ap
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_ex
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_incendiary
+        - Namespace: flansbasicparts
+          ID: artillery_shell
+        - Namespace: flansbasicparts
+          ID: artillery_shell_ap
+        - Namespace: flansbasicparts
+          ID: artillery_shell_ex
+        - Namespace: flansbasicparts
+          ID: artillery_shell_incendiary
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_birdshot
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_buckshot
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_ap
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_ex
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_flechette
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_flechette_poisoned
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_incendiary
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_ex
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_impact
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_incendiary
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_sticky
+      itemTagFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: add_to_bullet_fab
+      materialFilters: []
     maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
@@ -30,33 +86,62 @@ MonoBehaviour:
     outputSlots: 8
     timePerCraft: 1
     FECostPerCraft: 0
-    partsByName:
-    - flansbasicparts:rifle_bullet
-    - flansbasicparts:rifle_bullet_ap
-    - flansbasicparts:rifle_bullet_ex
-    - flansbasicparts:rifle_bullet_incendiary
-    - flansbasicparts:pistol_bullet
-    - flansbasicparts:pistol_bullet_ap
-    - flansbasicparts:pistol_bullet_ex
-    - flansbasicparts:pistol_bullet_incendiary
-    - flansbasicparts:artillery_shell
-    - flansbasicparts:artillery_shell_ap
-    - flansbasicparts:artillery_shell_ex
-    - flansbasicparts:artillery_shell_incendiary
-    - flansbasicparts:shotgun_shell_ap
-    - flansbasicparts:shotgun_shell_birdshot
-    - flansbasicparts:shotgun_shell_buckshot
-    - flansbasicparts:shotgun_shell_ex
-    - flansbasicparts:shotgun_shell_flechette
-    - flansbasicparts:shotgun_shell_flechette_poisoned
-    - flansbasicparts:shotgun_shell_incendiary
-    - flansbasicparts:projectile_grenade_ex
-    - flansbasicparts:projectile_grenade_impact
-    - flansbasicparts:projectile_grenade_incendiary
-    - flansbasicparts:projectile_grenade_sticky
-    partsByTag:
-    - flansbasicparts:add_to_bullet_fab
-    partsByTier: []
+    craftableParts:
+      itemIDFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: rifle_bullet
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_ap
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_ex
+        - Namespace: flansbasicparts
+          ID: rifle_bullet_incendiary
+        - Namespace: flansbasicparts
+          ID: pistol_bullet
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_ap
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_ex
+        - Namespace: flansbasicparts
+          ID: pistol_bullet_incendiary
+        - Namespace: flansbasicparts
+          ID: artillery_shell
+        - Namespace: flansbasicparts
+          ID: artillery_shell_ap
+        - Namespace: flansbasicparts
+          ID: artillery_shell_ex
+        - Namespace: flansbasicparts
+          ID: artillery_shell_incendiary
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_ap
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_birdshot
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_buckshot
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_ex
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_flechette
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_flechette_poisoned
+        - Namespace: flansbasicparts
+          ID: shotgun_shell_incendiary
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_ex
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_impact
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_incendiary
+        - Namespace: flansbasicparts
+          ID: projectile_grenade_sticky
+      itemTagFilters:
+      - filterType: 0
+        matchResourceLocations:
+        - Namespace: flansbasicparts
+          ID: add_to_bullet_fab
+      materialFilters: []
   gunModifying:
     isActive: 0
     disallowedMods: []
@@ -76,7 +161,10 @@ MonoBehaviour:
     solidFEPerFuelTime: 0
   armourCrafting:
     isActive: 0
-    pages: []
+    craftableArmour:
+      itemIDFilters: []
+      itemTagFilters: []
+      materialFilters: []
     FECostPerCraft: 0
   itemHolding:
     slots: []
@@ -85,5 +173,6 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - minecraft:mineable/pickaxe
+    - Namespace: minecraft
+      ID: mineable/pickaxe
   sides: []

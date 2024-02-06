@@ -29,10 +29,15 @@ MonoBehaviour:
     Lang: 0
     Localised: Flint & Cobbleson 870 Darkwood
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:fc_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: fc_craftable
   paints:
     paintjobs:
     - textureName: fc_870_birch
@@ -457,3 +462,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:shotgun_pump_individually_fed
+  particleCount: 1

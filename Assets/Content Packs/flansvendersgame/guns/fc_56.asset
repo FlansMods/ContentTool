@@ -26,10 +26,15 @@ MonoBehaviour:
     Lang: 0
     Localised: fc 56 counterfeit
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:fc_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: fc_craftable
   paints:
     paintjobs:
     - textureName: fc_56_aged
@@ -455,3 +460,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:rifle_priming_handle_magazine_fed
+  particleCount: 1

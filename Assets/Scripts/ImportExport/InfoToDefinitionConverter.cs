@@ -51,23 +51,6 @@ public abstract class Converter<TInfo, TDefinition>
 	{
 		DoConversion(input, output);
 	}
-	public IngredientDefinition ImportIngredient(string txt)
-	{
-		ItemStackDefinition stackDef = ImportStack(txt);
-		IngredientDefinition ingredient = new IngredientDefinition()
-		{
-			itemName = stackDef.item,
-			count = stackDef.count,
-		};
-		if(txt.Contains("."))
-		{
-			ingredient.compareDamage = true;
-			ingredient.minAllowedDamage = stackDef.damage;
-			ingredient.maxAllowedDamage = stackDef.damage;
-		}
-
-		return ingredient;
-	}
 	public ItemStackDefinition ImportStack(string txt)
 	{
 		string amount = "1";
@@ -227,10 +210,10 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return mags.ToArray();
 	}
 
-	private string[] GetTags(GunType input)
+	private ResourceLocation[] GetTags(GunType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:gun");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:gun"));
 		return tags.ToArray();
 	}
 
@@ -491,7 +474,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				trailParticles = "",
 				impact = new ImpactDefinition()
 				{
-					decal = "flansmod:effects/bullet_decal.png",
+					decal = new ResourceLocation("flansmod", "effects/bullet_decal.png"),
 					damageToTarget = type.damage,
 					multiplierVsPlayers = 1.0f,
 					multiplierVsVehicles = 1.0f,
@@ -590,13 +573,13 @@ public class PartConverter : Converter<PartType, PartDefinition>
 		};
 	}
 
-	private string[] GetTags(PartType input)
+	private ResourceLocation[] GetTags(PartType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:part");
-		tags.Add($"flansmod:{input.category.ToString().ToLower()}");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:part"));
+		tags.Add(new ResourceLocation($"flansmod:{input.category.ToString().ToLower()}"));
 		if(input.isAIChip)
-			tags.Add("flansmod:apocalypse_trigger");
+			tags.Add(new ResourceLocation("flansmod:apocalypse_trigger"));
 		return tags.ToArray();
 	}
 }
@@ -699,14 +682,14 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 		//};
 	}
 
-	private string[] GetTags(BulletType input)
+	private ResourceLocation[] GetTags(BulletType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:bullet");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod", "bullet"));
 		if(input.fireRadius > 0)
-			tags.Add($"flansmod:flammable");
+			tags.Add(new ResourceLocation("flansmod", "flammable"));
 		if(input.explosionRadius > 0)
-			tags.Add("flansmod:explosive");
+			tags.Add(new ResourceLocation("flansmod", "explosive"));
 		return tags.ToArray();
 	}
 }
@@ -863,11 +846,11 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 		output.modifiers = mods.ToArray();
 	}
 
-	private string[] GetTags(AttachmentType input)
+	private ResourceLocation[] GetTags(AttachmentType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:bullet");
-		tags.Add($"flansmod:{input.type.ToString().ToLower()}");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:bullet"));
+		tags.Add(new ResourceLocation($"flansmod:{input.type.ToString().ToLower()}"));
 		return tags.ToArray();
 	}
 }
@@ -903,7 +886,7 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 			multiplierVsVehicles =  input.explosionDamageVsLiving <= 0.01f ? 0.0f : input.explosionDamageVsDriveable / input.explosionDamageVsLiving,
 			hitSounds = new SoundDefinition[0],
 			knockback = 0f,
-			decal = "",
+			decal = new ResourceLocation("flansmod", "effects/bullet_decal"),
 		};
 		output.lifetimeAfterDetonation = input.smokeTime;
 		output.effectsToApplyInSmoke = input.smokeEffects.ToArray();
@@ -956,10 +939,10 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 		return secondaryActions.ToArray();
 	}
 
-	private string[] GetTags(GrenadeType input)
+	private ResourceLocation[] GetTags(GrenadeType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:grenade");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:grenade"));
 		return tags.ToArray();
 	}
 }
@@ -1056,10 +1039,10 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 	
 	}
 
-	private string[] GetTags(DriveableType input)
+	private ResourceLocation[] GetTags(DriveableType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:vehicle");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:vehicle"));
 		return tags.ToArray();
 	}
 
@@ -1973,10 +1956,10 @@ public class ToolConverter : Converter<ToolType, ToolDefinition>
 		output.foodValue = input.foodness;
 	}
 
-	private string[] GetTags(ToolType input)
+	private ResourceLocation[] GetTags(ToolType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:tool");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:tool"));
 		return tags.ToArray();
 	}
 
@@ -2042,10 +2025,10 @@ public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
 		output.immunities = immunities.ToArray();
 	}
 
-	private string[] GetTags(ArmourType input)
+	private ResourceLocation[] GetTags(ArmourType input)
 	{
-		List<string> tags = new List<string>();
-		tags.Add("flansmod:armour");
+		List<ResourceLocation> tags = new List<ResourceLocation>();
+		tags.Add(new ResourceLocation("flansmod:armour"));
 		return tags.ToArray();
 	}
 }
@@ -2057,28 +2040,26 @@ public class ArmourBoxConverter : Converter<ArmourBoxType, WorkbenchDefinition>
 	{
 		output.armourCrafting.FECostPerCraft = 0;
 		output.armourCrafting.isActive = true;
-		output.armourCrafting.pages = new ArmourCraftingPageDefinition[input.pages.Count];
-		for(int p = 0; p < input.pages.Count; p++)
+		List<ResourceLocation> itemIDs = new List<ResourceLocation>();
+		for (int p = 0; p < input.pages.Count; p++)
 		{
 			ArmourBoxEntry page = input.pages[p];
-			output.armourCrafting.pages[p] = new ArmourCraftingPageDefinition();
-			output.armourCrafting.pages[p].name = page.name;
-			output.armourCrafting.pages[p].entries = new ArmourCraftingEntryDefinition[4];
-			for(int n = 0; n < 4; n++)
-				output.armourCrafting.pages[p].entries[n] = ConvertEntry(page, n);
+			for (int n = 0; n < page.armours.Length; n++)
+				itemIDs.Add(new ResourceLocation(page.armours[n]));
 		}
-	}
 
-	private ArmourCraftingEntryDefinition ConvertEntry(ArmourBoxEntry page, int slot)
-	{
-		ArmourCraftingEntryDefinition def = new ArmourCraftingEntryDefinition();
-		def.ingredients = new IngredientDefinition[page.requiredStacks[slot].Count];
-		for(int i = 0; i < page.requiredStacks[slot].Count; i++)
+		output.armourCrafting.craftableArmour = new ItemCollectionDefinition()
 		{
-			def.ingredients[i] = ImportIngredient(page.requiredStacks[slot][i]);
-		}
-		def.output = ImportStackFromTypeName(page.armours[slot]);
-		return def;
+			itemIDFilters = new LocationFilterDefinition[1] {
+				new LocationFilterDefinition()
+				{
+					filterType = EFilterType.Allow,
+					matchResourceLocations = itemIDs.ToArray()
+				}
+			}
+		};
+
+		// TODO: Also output the recipes
 	}
 }
 
@@ -2089,45 +2070,24 @@ public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
 	{
 		output.gunCrafting.FECostPerCraft = 0;
 		output.gunCrafting.isActive = true;
-		//output.gunCrafting.pages = new GunCraftingPageDefinition[input.pages.Count];
-		//for(int p = 0; p < input.pages.Count; p++)
-		//{
-		//	GunBoxPage page = input.pages[p];
-		//	output.gunCrafting.pages[p] = new GunCraftingPageDefinition();
-		//
-		//	List<GunCraftingEntryDefinition> outputEntries = new List<GunCraftingEntryDefinition>();
-		//	for(int i = 0; i < page.entries.Count; i++)
-		//	{
-		//		GunBoxEntry entry = page.entries[i];
-		//		CreateGunCraftingEntry(outputEntries, entry);
-		//	}
-		//	output.gunCrafting.pages[p].entries = outputEntries.ToArray();
-		//}
-		// TODO: Export to .json recipes
-	}
 
-	private void CreateGunCraftingEntry(List<GunCraftingEntryDefinition> entries, GunBoxEntry entry)
-	{
-		GunCraftingEntryDefinition output = new GunCraftingEntryDefinition();
-		output.outputs = new ItemStackDefinition[] {
-			ImportStackFromTypeName(entry.type)
-		};
-		output.parts = new RecipePartDefinition[1];
-		output.parts[0] = new RecipePartDefinition();
-		output.parts[0].additionalIngredients = new IngredientDefinition[entry.requiredParts.Count];
-		for(int n = 0; n < entry.requiredParts.Count; n++)
-		{
-			output.parts[0].additionalIngredients[n] = ImportIngredient(entry.requiredParts[n]);
-		}
+		List<ResourceLocation> itemIDs = new List<ResourceLocation>();
+		foreach(GunBoxPage page in input.pages)
+			foreach(GunBoxEntryTopLevel topLevel in page.entries)
+				foreach(GunBoxEntry entry in topLevel.childEntries)
+					itemIDs.Add(new ResourceLocation(entry.type));
 
-		if(entry is GunBoxEntryTopLevel withChildren)
+		output.gunCrafting.craftableGuns = new ItemCollectionDefinition()
 		{
-			for(int i = 0; i < withChildren.childEntries.Count; i++)
-			{	
-				CreateGunCraftingEntry(entries, withChildren.childEntries[i]);
+			itemIDFilters = new LocationFilterDefinition[1] {
+				new LocationFilterDefinition() {
+					filterType = EFilterType.Allow,
+					matchResourceLocations = itemIDs.ToArray(),
+				}
 			}
-		}
-		entries.Add(output);
+		};
+
+		// TODO: Export to .json recipes
 	}
 }
 

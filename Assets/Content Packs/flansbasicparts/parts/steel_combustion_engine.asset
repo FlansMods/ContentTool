@@ -25,11 +25,15 @@ MonoBehaviour:
   itemSettings:
     maxStackSize: 64
     tags:
-    - flansmod:part
-    - flansmod:engine
+    - Namespace: flansmod
+      ID: part
+    - Namespace: flansmod
+      ID: engine
   modifiers: []
   abilities:
-  - ability: flansbasicparts:shredder
+  - ability:
+      Namespace: flansbasicparts
+      ID: shredder
     level: 1
   engine:
     maxAcceleration: 1.5

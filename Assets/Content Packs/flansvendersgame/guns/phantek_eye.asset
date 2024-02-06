@@ -32,10 +32,15 @@ MonoBehaviour:
     Lang: 0
     Localised: PhanTek Eye Whiteline
   itemSettings:
-    maxStackSize: 1
-    tags:
+    _tempArray:
     - flansmod:gun
     - flansvendersgame:phantek_craftable
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    - Namespace: flansvendersgame
+      ID: phantek_craftable
   paints:
     paintjobs:
     - textureName: phantek_eye_hazard
@@ -464,3 +469,4 @@ MonoBehaviour:
     hideDefaultMesh: 1
   modelParts: []
   animationSet: flansmod:rifle_priming_handle_magazine_fed
+  particleCount: 1

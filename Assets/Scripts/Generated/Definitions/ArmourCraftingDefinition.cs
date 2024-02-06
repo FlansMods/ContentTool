@@ -7,7 +7,7 @@ public class ArmourCraftingDefinition
 	[JsonField]
 	public bool isActive = false;
 	[JsonField]
-	public ArmourCraftingPageDefinition[] pages = new ArmourCraftingPageDefinition[0];
+	public ItemCollectionDefinition craftableArmour = new ItemCollectionDefinition();
 	[JsonField]
 	public int FECostPerCraft = 0;
 }

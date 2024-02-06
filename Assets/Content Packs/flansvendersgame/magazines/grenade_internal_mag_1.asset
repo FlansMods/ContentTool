@@ -16,6 +16,9 @@ MonoBehaviour:
   - Lang: 0
     Name: Internal Grenade Tube
   LocalisedExtras: []
+  _idArray: []
+  _tagArray:
+  - flansmod:launchable_grenade
   tags:
   - flansvendersgame:fc_puncher
   modifiers: []
@@ -24,7 +27,11 @@ MonoBehaviour:
   upgradeCost: 0
   numRounds: 1
   allRoundsMustBeIdentical: 0
-  matchBulletNames: []
-  requiredBulletTags:
-  - flansmod:launchable_grenade
-  disallowedBulletTags: []
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: launchable_grenade
+    materialFilters: []
