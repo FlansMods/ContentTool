@@ -49,20 +49,7 @@ public abstract class MinecraftModelPaintingTool : EditorTool
 	{
 		if (window is SceneView sceneView && target != null)
 		{
-			MinecraftModelPreview modelTarget = null;
-			if (target is MinecraftModelPreview)
-				modelTarget = target as MinecraftModelPreview;
-			else if (target is GameObject go)
-				modelTarget = go.GetComponent<MinecraftModelPreview>();
-
-			if (modelTarget != null)
-			{
-				
-
-
-
-			}
-			else Debug.LogError($"Couldn't find a MinecraftModelPreview component on {target}");
+			Debug.LogError($"Couldn't find a MinecraftModelPreview component on {target}");
 
 
 			Event e = Event.current;
@@ -83,8 +70,8 @@ public abstract class MinecraftModelPaintingTool : EditorTool
 					HandleUtility.AddDefaultControl(controlID);
 					break;
 				case EventType.MouseMove:
-					if(modelTarget != null)
-						HandleUtility.Repaint();
+					//if(modelTarget != null)
+					//	HandleUtility.Repaint();
 					break;
 				case EventType.MouseDown: // Start using this tool
 					if(GUIUtility.hotControl == controlID

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
@@ -47,7 +48,7 @@ public class ContentManager : MonoBehaviour
 
 	private void EditorUpdate()
 	{
-		ModelEditingSystem.ApplyAllQueuedActions();
+		
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -1089,7 +1090,7 @@ public class ContentManager : MonoBehaviour
 	public string[] GetExportPaths(string packName, UnityEngine.Object asset)
 	{
 		ResourceLocation loc = asset.GetLocation();
-		if(asset is MinecraftModel)
+		if(asset is RootNode)
 			return new string[] { $"{ExportRoot}/assets/{packName}/{loc.ID}.json" };
 		if (asset is Texture2D)
 			return new string[] { $"{ExportRoot}/assets/{packName}/{loc.ID}.png" };
@@ -1238,9 +1239,9 @@ public class ContentManager : MonoBehaviour
 	{
 		return $"{ExportRoot}/data/{providerModID}/partial_data/{tagModID}/tags/{tagName}.json";
 	}
-	public string GetDevTagJsonExportPath(ResourceLocation tagLoc)
+	public string GetDevTagJsonExportPath(string tagModID, string tagPath)
 	{
-		return $"{ExportRoot}/data/{tagLoc.Namespace}/tags/{tagLoc.ID}.json";
+		return $"{ExportRoot}/data/{tagModID}/tags/{tagPath}.json";
 	}
 	public string GetSoundJsonExportPath(string packName)
 	{
@@ -1290,9 +1291,11 @@ public class ContentManager : MonoBehaviour
 			{
 				foreach(string tag in itemSettings.tags)
 				{
-					if (!tags.ContainsKey(tag))
-						tags.Add(tag, new List<string>());
-					tags[tag].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
+					ResourceLocation tagLoc = new ResourceLocation(tag);
+					string tagExportName = tagLoc.ResolveWithSubdir(def.GetTagExportFolder()); ;
+					if (!tags.ContainsKey(tagExportName))
+						tags.Add(tagExportName, new List<string>());
+					tags[tagExportName].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
 				}
 			}
 		}
@@ -1336,20 +1339,125 @@ public class ContentManager : MonoBehaviour
 		}
 	}
 
+	private class TagCollection
+	{
+		public string TagModID;
+		public List<string> SupplierModIDs = new List<string>();
+
+		public class TagValues
+		{
+			public List<string> ElementIDs = new List<string>();
+		}
+		public Dictionary<string, TagValues> Tags = new Dictionary<string, TagValues>();
+	}
+	private static readonly Regex TagMatcher = new Regex("data[\\/\\\\]([a-z-_]*)[\\\\\\/]partial_data[\\\\\\/]([a-z-_]*)[\\\\\\/]tags[\\\\\\/]([a-z-_\\\\\\/]*).json");
 	public void CompileAllItemTags(List<Verification> verifications = null)
 	{
 		// Here, we compile our partial tag files e.g.
-		//	resources/data/flansmod/partial_tags/flansvendersgame/item/gun.json
-		//  resources/data/flansmod/partial_tags/flansbasicparts/item/gun.json
+		//	resources/data/flansvendersgame/partial_tags/flansmod/item/gun.json
+		//  resources/data/flansbasicparts/partial_tags/flansmod/item/gun.json
 		//  ...
 		// into
 		//  resources/data/flansmod/tags/item/gun.json
 		// 
 		// The former are needed for pack export
 		// The latter are needed for running in dev environment
+
+		Dictionary<string, TagCollection> tagCollections = new Dictionary<string, TagCollection>();
+
 		foreach (string modDir in Directory.EnumerateDirectories($"{ExportRoot}/data/"))
 		{
 			string modID = modDir.Substring(modDir.LastIndexOfAny(SLASHES) + 1);
+			if (Directory.Exists($"{modDir}/partial_data/"))
+			{
+				// Dig arbitrarily deep for tags
+				foreach (string tagFilePath in Directory.EnumerateFiles($"{modDir}/partial_data/", "*.json", SearchOption.AllDirectories))
+				{
+					Match match = TagMatcher.Match(tagFilePath);
+					if (match.Success)
+					{
+						// modID = match.Groups[1]
+						string tagModID = match.Groups[2].Value;
+						string tagPath = match.Groups[3].Value;
+						if (!tagCollections.ContainsKey(tagModID))
+							tagCollections.Add(tagModID, new TagCollection());
+
+						// Note (for debug) that we supplied tags from this mod
+						if (!tagCollections[tagModID].SupplierModIDs.Contains(modID))
+							tagCollections[tagModID].SupplierModIDs.Add(modID);
+						verifications?.Add(Verification.Success($"Found partial tag file {tagFilePath}"));
+
+						if (!tagCollections[tagModID].Tags.ContainsKey(tagPath))
+							tagCollections[tagModID].Tags.Add(tagPath, new TagCollection.TagValues());
+
+						// Now add all the tags from inside this json to our storage
+						try
+						{
+							JObject jTagRoot = JObject.Parse(File.ReadAllText(tagFilePath));
+							if (jTagRoot.TryGetValue("values", out JToken jToken) && jToken is JArray jArray)
+							{
+								foreach (JToken entry in jArray)
+									tagCollections[tagModID].Tags[tagPath].ElementIDs.Add(entry.ToString());
+							}
+						}
+						catch (Exception e)
+						{
+							verifications?.Add(Verification.Exception(e, $"Failed to parse json for partial tag file at '{tagFilePath}'"));
+						}
+					}
+				}
+			}
+		}
+
+		foreach(var kvp in tagCollections)
+		{
+			string tagModID = kvp.Key;
+			if (!Directory.Exists($"{tagModID}/tags/"))
+				Directory.CreateDirectory($"{tagModID}/tags/");
+
+			TagCollection tagCollection = kvp.Value;
+
+			foreach(var kvp2 in tagCollection.Tags)
+			{
+				string tagPath = kvp2.Key;
+				TagCollection.TagValues values = kvp2.Value;
+
+				try
+				{
+					using (StringWriter stringWriter = new StringWriter())
+					using (JsonTextWriter jsonWriter = new JsonTextWriter(stringWriter))
+					{
+						jsonWriter.Formatting = Formatting.Indented;
+						QuickJSONBuilder builder = new QuickJSONBuilder();
+						builder.Current.Add("replace", "false");
+						using (builder.Tabulation("values"))
+						{
+							foreach (string itemLoc in values.ElementIDs)
+								builder.CurrentTable.Add(itemLoc);
+						}
+						builder.Root.WriteTo(jsonWriter);
+
+						string tagJsonPath = GetDevTagJsonExportPath(tagModID, tagPath);
+						string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
+						if (!Directory.Exists(tagJsonFolder))
+							Directory.CreateDirectory(tagJsonFolder);
+
+						verifications?.Add(Verification.Success($"Exporting compiled tag file '{tagJsonPath}' for dev-environment"));
+						File.WriteAllText(tagJsonPath, stringWriter.ToString());
+					}
+				}
+				catch (Exception e)
+				{
+					verifications?.Add(Verification.Exception(e));
+				}
+			}
+		}
+
+		/*
+		{ 
+
+
+
 
 			try
 			{
@@ -1363,9 +1471,11 @@ public class ContentManager : MonoBehaviour
 						//tagID = tagID.Substring(0, tagID.LastIndexOf('.'));
 
 						string tagAndFolders = tagFilePath.Substring(tagFilePath.IndexOf("partial_data") + "partial_data/".Length);
-						// Remove the /{modID}/
+						// Remove the '/{modID}/'
 						tagAndFolders = tagAndFolders.Substring(tagAndFolders.IndexOfAny(SLASHES) + 1);
-						// Remove the .json
+						// Remove the '/tags/'
+						tagAndFolders = tagAndFolders.Substring(tagAndFolders.IndexOfAny(SLASHES) + 1);
+						// Remove the '.json'
 						tagAndFolders = tagAndFolders.Substring(0, tagAndFolders.LastIndexOf('.'));
 
 						verifications?.Add(Verification.Success($"Found partial tag file {tagAndFolders}"));
@@ -1420,9 +1530,7 @@ public class ContentManager : MonoBehaviour
 									tagName = tagName.Substring(lastSlash + 1);
 								}
 								
-								
-
-								string tagJsonPath = GetDevTagJsonExportPath(new ResourceLocation(modID, tagName));
+								string tagJsonPath = GetDevTagJsonExportPath(new ResourceLocation(new ResourceLocation(modID, tagName).ResolveWithSubdir(tagFolder)));
 								string tagJsonFolder = tagJsonPath.Substring(0, tagJsonPath.LastIndexOfAny(SLASHES));
 								if (!Directory.Exists(tagJsonFolder))
 									Directory.CreateDirectory(tagJsonFolder);
@@ -1439,6 +1547,7 @@ public class ContentManager : MonoBehaviour
 				verifications?.Add(Verification.Exception(e));
 			}
 		}
+		*/
 	}
 
 	public void ExportBalancingCSV(string packName)

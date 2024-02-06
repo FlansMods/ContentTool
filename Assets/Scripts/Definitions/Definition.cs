@@ -169,29 +169,29 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			string prefixes = tagLoc.GetPrefixes();
 			if(prefixes.Length == 0)
 			{
-				int index = i;
-				verifications.Add(Verification.Failure($"Tag {tagLoc} is in the root tag folder?",
-				() =>
-				{
-					ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
-					string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
-					itemSettings.tags[index] = newLoc;
-				}));
+				//int index = i;
+				//verifications.Add(Verification.Failure($"Tag {tagLoc} is in the root tag folder?",
+				//() =>
+				//{
+				//	ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
+				//	string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
+				//	itemSettings.tags[index] = newLoc;
+				//}));
 			}
 			else if(prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
 			{
-				
-			}
-			else
-			{
 				int index = i;
-				verifications.Add(Verification.Failure($"Tag {tagLoc} is in an unknown tag folder",
+				verifications.Add(Verification.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
 				() =>
 				{
 					ResourceLocation innerTagLoc = new ResourceLocation(itemSettings.tags[index]);
-					string newLoc = innerTagLoc.ResolveWithSubdir(this.IsBlock() ? "blocks" : "items");
+					string newLoc = $"{innerTagLoc.Namespace}:{innerTagLoc.IDWithSpecificPrefixesStripped("blocks", "items")}";
 					itemSettings.tags[index] = newLoc;
 				}));
+			}
+			else
+			{
+				
 			}
 		}
 	}
@@ -217,6 +217,13 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		else if (this is WorkbenchDefinition workbenchDef)
 			return workbenchDef.itemSettings;
 		return null;
+	}
+
+	public string GetTagExportFolder()
+	{
+		if (this is WorkbenchDefinition)
+			return "blocks";
+		return "items";
 	}
 
 	public bool IsBlock()

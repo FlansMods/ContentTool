@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using static MinecraftModel;
 
 public class FlansModToolbox : EditorWindow
 {
@@ -240,31 +239,26 @@ public class FlansModToolbox : EditorWindow
 	// -------------------------------------------------------------------------------------------------------
 	#region Rigs Tab
 	// -------------------------------------------------------------------------------------------------------
-	private List<ModelEditingRig> ActiveRigs = new List<ModelEditingRig>();
-	private ModelEditingRig SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
+	private List<RootNode> ActiveRigs = new List<RootNode>();
+	private RootNode SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
 	private Editor SelectedRigEditor = null;
 	private void RigsTab()
 	{
 		List<string> modelNames = new List<string>();
 		ActiveRigs.Clear();
-		foreach (ModelEditingRig rig in FindObjectsOfType<ModelEditingRig>())
+		foreach (RootNode rig in FindObjectsOfType<RootNode>())
 		{
 			ActiveRigs.Add(rig);
-			modelNames.Add(rig.ModelOpenedForEdit != null ? rig.ModelOpenedForEdit.name : "No model opened");
+			modelNames.Add(rig.name);
 		}
-		ActiveRigs.Sort((ModelEditingRig a, ModelEditingRig b) =>
+		ActiveRigs.Sort((RootNode a, RootNode b) =>
 		{
 			return string.Compare(a.name, b.name);
 		});
 
 		FlanStyles.BigHeader("Rig Editor");
 
-		if (GUILayout.Button("Create New Rig"))
-		{
-			GameObject newGO = new GameObject("ModelRig");
-			newGO.AddComponent<ModelEditingRig>();
-		}
 		if(GUILayout.Button("Fan out all Rigs"))
 		{
 			GameObject root = GameObject.Find("Rig Gallery");
@@ -273,12 +267,11 @@ public class FlansModToolbox : EditorWindow
 
 			for(int i = 0; i < ActiveRigs.Count; i++)
 			{
-				ModelEditingRig rig = ActiveRigs[i];
+				RootNode rig = ActiveRigs[i];
 				rig.transform.SetParent(root.transform);
 				rig.transform.localPosition = new Vector3(i * 10f, 0f, 0f);
 				rig.transform.localRotation = Quaternion.identity;
 				rig.transform.localScale = Vector3.one;
-				
 			}
 		}
 
@@ -289,7 +282,6 @@ public class FlansModToolbox : EditorWindow
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Rig", RIG_COL_X);
-		GUILayout.Label("Model", MODEL_COL_X);
 		GUILayout.Label("Attachment", ATTACH_COL_X);
 		GUILayout.Label("AP", AP_COL_X);
 		GUILayout.Label("Select");
@@ -297,16 +289,14 @@ public class FlansModToolbox : EditorWindow
 
 		for (int i = 0; i < ActiveRigs.Count; i++)
 		{
-			ModelEditingRig rig = ActiveRigs[i];
+			RootNode rig = ActiveRigs[i];
 			GUILayout.BeginHorizontal();
 			//if(GUILayout.Button("Inspect", GUILayout.Width(32)))
 			//{
 			//	SelectedRigIndex = i;
 			//	Selection.SetActiveObjectWithContext(rig, this);
 			//}
-			EditorGUILayout.ObjectField(rig, typeof(ModelEditingRig), false, RIG_COL_X);
-			ModelButton(rig, MODEL_COL_X);
-
+			EditorGUILayout.ObjectField(rig, typeof(RootNode), false, RIG_COL_X);
 			AttachPoseDropdown(rig, ATTACH_COL_X);
 			AttachPointDropdown(rig, AP_COL_X);
 
@@ -324,7 +314,7 @@ public class FlansModToolbox : EditorWindow
 		
 		EditorGUI.BeginDisabledGroup(SelectedRig == null);
 		if(SelectedRig != null)
-			FlanStyles.BigHeader($"{SelectedRig.name} [{SelectedRig.ModelName}]");
+			FlanStyles.BigHeader($"{SelectedRig.name}");
 		if(SelectedRigEditor == null || SelectedRigEditor.target != SelectedRig)
 		{
 			SelectedRigEditor = Editor.CreateEditor(SelectedRig);
@@ -334,13 +324,6 @@ public class FlansModToolbox : EditorWindow
 			SelectedRigEditor.OnInspectorGUI();
 		}		
 		EditorGUI.EndDisabledGroup();
-	}
-
-	private void ModelButton(ModelEditingRig rig, params GUILayoutOption[] options)
-	{
-		Object changedModel = EditorGUILayout.ObjectField(rig.ModelOpenedForEdit, typeof(MinecraftModel), false, options);
-		if (changedModel != rig.ModelOpenedForEdit)
-			rig.OpenModel(changedModel as MinecraftModel);
 	}
 
 	private static readonly string[] APDefaults = new string[] {
@@ -356,7 +339,7 @@ public class FlansModToolbox : EditorWindow
 		"GreenScreenPose",
 	};
 
-	private void AttachPoseDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
+	private void AttachPoseDropdown(RootNode rig, params GUILayoutOption[] options)
 	{
 		List<string> APs = new List<string>(APDefaults);
 
@@ -373,11 +356,11 @@ public class FlansModToolbox : EditorWindow
 		int myRigIndex = 0;
 		for (int index = 0; index < ActiveRigs.Count; index++)
 		{
-			ModelEditingRig attachToRig = ActiveRigs[index];
+			RootNode attachToRig = ActiveRigs[index];
 			if (attachToRig != rig)
 			{
 				APs.Add($"{attachToRig.name}_{index}");
-				if (rig.transform.parent != null && rig.transform.parent.GetComponentInParent<ModelEditingRig>() == attachToRig)
+				if (rig.transform.parent != null && rig.transform.parent.GetComponentInParent<RootNode>() == attachToRig)
 					selectedIndex = APs.Count - 1;
 			}
 			else
@@ -404,18 +387,19 @@ public class FlansModToolbox : EditorWindow
 		}
 	}
 
-	private void AttachPointDropdown(ModelEditingRig rig, params GUILayoutOption[] options)
+	private void AttachPointDropdown(RootNode rig, params GUILayoutOption[] options)
 	{
 		Transform parent = rig.transform.parent;
-		ModelEditingRig parentRig = parent?.GetComponentInParent<ModelEditingRig>();
-		if (parentRig != null && parentRig.ModelOpenedForEdit is TurboRig turbo)
+		RootNode parentRig = parent?.GetComponentInParent<RootNode>();
+		if (parentRig != null)
 		{
 			List<string> apNames = new List<string>();
+			List<AttachPointNode> apNodes = new List<AttachPointNode>(parentRig.GetAllDescendantNodes<AttachPointNode>());
 			int attachedTo = 0;
 			apNames.Add("none");
-			for (int i = 0; i < turbo.AttachPoints.Count; i++)
+			for (int i = 0; i < apNodes.Count; i++)
 			{
-				AttachPoint ap = turbo.AttachPoints[i];
+				AttachPointNode ap = apNodes[i];
 				apNames.Add(ap.name);
 				if (ap.name == parent.name)
 					attachedTo = i + 1;
@@ -426,12 +410,7 @@ public class FlansModToolbox : EditorWindow
 				Transform newParent = parentRig.transform;
 				if (changedAttachedTo != 0)
 				{
-					string apTransformName = $"AP_{turbo.AttachPoints[changedAttachedTo - 1].name}";
-					newParent = parentRig.transform.FindRecursive(apTransformName);
-					if(newParent == null)
-					{
-						Debug.LogError($"Could not find AP '{apTransformName}' on {parentRig}");
-					}
+					newParent = apNodes[changedAttachedTo - 1].transform;
 				}
 				rig.transform.SetParent(newParent);
 				rig.transform.localPosition = Vector3.zero;

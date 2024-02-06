@@ -161,22 +161,6 @@ public static class Utils
 	{
 		return Minecraft.ConvertPartName(partName);
 	}
-
-    public static Transform FindRecursive(this Transform t, string name)
-    {        
-		if (t.name == name)
-			return t;
-		foreach (Transform child in t)
-        {
-            // Don't dig into sub-rigs
-            if (child.GetComponent<ModelEditingRig>() != null)
-                continue;
-			Transform childSearch = child.FindRecursive(name);
-            if (childSearch != null)
-                return childSearch;
-        }
-        return null;
-    }
     public static bool Approximately(this Vector3 a, Vector3 b)
     {
         return (a - b).sqrMagnitude < 0.000000001f;
@@ -497,9 +481,10 @@ public static class FlanStyles
         return ret;
     }
 
+	private static int TextureZoomLevel = 16;
 	public static void RenderTextureAutoWidth(Texture texture)
 	{
-		if (MinecraftModelPreview.TextureZoomLevel == 0)
+		if (TextureZoomLevel == 0)
 		{
 			float scale = (float)(Screen.width - 10) / texture.width;
 			GUILayout.Label(GUIContent.none,
@@ -509,8 +494,8 @@ public static class FlanStyles
 		else
 		{
 			GUILayout.Label(GUIContent.none,
-							GUILayout.Width(texture.width * MinecraftModelPreview.TextureZoomLevel),
-							GUILayout.Height(texture.height * MinecraftModelPreview.TextureZoomLevel));
+							GUILayout.Width(texture.width * TextureZoomLevel),
+							GUILayout.Height(texture.height * TextureZoomLevel));
 		}
 		GUI.DrawTexture(GUILayoutUtility.GetLastRect(), texture);
 	}

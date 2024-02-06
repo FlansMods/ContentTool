@@ -139,7 +139,7 @@ public abstract class RootNode : Node
 		if (NeedsIcon())
 		{
 			if (Icons == null || Icons.Count == 0)
-				verifications.Add(Verification.Failure($"No icons present"));
+				verifications.Add(Verification.Neutral($"No icons present"));
 			else if (Icons[0].Key != "default")
 				verifications.Add(Verification.Failure($"Default icon is named incorrectly as {Icons[0].Key}",
 				() =>

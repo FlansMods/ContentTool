@@ -91,7 +91,14 @@ public struct ResourceLocation
             return ID.Substring(prefix.Length + 1);
         return ID;
     }
-    public string IDWithoutPrefixes()
+	public string IDWithSpecificPrefixesStripped(params string[] prefixes)
+	{
+        foreach(string prefix in prefixes)
+		    if (ID.StartsWith(prefix))
+			    return ID.Substring(prefix.Length + 1);
+		return ID;
+	}
+	public string IDWithoutPrefixes()
     {
         int lastSlash = ID.LastIndexOf('/');
         if (lastSlash == -1)

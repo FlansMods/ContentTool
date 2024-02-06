@@ -14,38 +14,45 @@ public class FlansModAssetModificationProcessor : AssetModificationProcessor
 		{
 			string path = paths[i];
 			System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(path);
-			if(typeof(MinecraftModel).IsAssignableFrom(assetType))
+			if(typeof(TurboRootNode).IsAssignableFrom(assetType))
 			{
-				MinecraftModel model = AssetDatabase.LoadAssetAtPath<MinecraftModel>(path);
-				if(ModelEditingSystem.AppliedToAnyRig(model))
+				TurboRootNode model = AssetDatabase.LoadAssetAtPath<TurboRootNode>(path);
+				if (model.NeedsUVRemap())
 				{
-					foreach(ModelEditingRig rig in ModelEditingSystem.GetRigsPreviewing(model))
+					if (EditorUtility.DisplayDialog("Bake Skin Modifications?", $"Saving this model ({model.name}) will change the UV map. As a result, the current {model.Textures.Count} skins assigned will be remapped from the old map to the new map. This process is not lossless and you may want to backup your textures first", "Save", "Skip"))
 					{
-						if(rig.TemporaryUVMap != null)
+						List<Texture2D> textures = new List<Texture2D>();
+						foreach (NamedTexture namedTexture in model.Textures)
 						{
-							if (EditorUtility.DisplayDialog("Bake Skin Modifications?", $"Saving this model ({model.name}) will change the UV map. As a result, the current {model.Textures.Count} skins assigned will be remapped from the old map to the new map. This process is not lossless and you may want to backup your textures first", "Save", "Skip"))
-							{
-								List<Texture2D> textures = new List<Texture2D>();
-								foreach (MinecraftModel.NamedTexture namedTexture in model.Textures)
-								{
-									textures.Add(namedTexture.Texture);
-								}
-								SkinGenerator.RemapSkins(model.BakedUVMap, rig.TemporaryUVMap, textures);
-								foreach (Texture2D texture in textures)
-								{
-									string texturePath = AssetDatabase.GetAssetPath(texture);
-									EditorUtility.SetDirty(texture);
-									File.WriteAllBytes(texturePath, texture.EncodeToPNG());
-									Debug.Log($"Wrote .png image to {texturePath}");
-									AssetDatabase.ImportAsset(texturePath);
-								}
-								model.BakedUVMap = rig.TemporaryUVMap;
-								EditorUtility.SetDirty(model);
-								rig.TemporaryUVMap = null;
-							}
-							else Debug.Log($"Did not save {model.name} Model asset due to user prompt");
+							textures.Add(namedTexture.Texture);
 						}
+
+						//UVMap existingMap = new UVMap();
+						//foreach (GeometryNode geomNode in model.GetAllDescendantNodes<GeometryNode>())
+						//{
+						//	BoxUVPatch patch = new BoxUVPatch(geomNode.BoxUVBounds);
+						//	if (geomNode.IsUVMapCurrent())
+						//		existingMap.AddExistingPatchPlacement(new BoxUVPlacement()
+						//		{
+						//			Key = $"{geomNode.GetInstanceID()}",
+						//		});
+						//}
+
+						SkinGenerator.RemapSkins(model, textures);
+
+						foreach (Texture2D texture in textures)
+						{
+							string texturePath = AssetDatabase.GetAssetPath(texture);
+							EditorUtility.SetDirty(texture);
+							File.WriteAllBytes(texturePath, texture.EncodeToPNG());
+							Debug.Log($"Wrote .png image to {texturePath}");
+							AssetDatabase.ImportAsset(texturePath);
+						}
+						//model.BakedUVMap = rig.TemporaryUVMap;
+						EditorUtility.SetDirty(model);
+						//rig.TemporaryUVMap = null;
 					}
+					else Debug.Log($"Did not save {model.name} Model asset due to user prompt");
 				}
 			}
 		}

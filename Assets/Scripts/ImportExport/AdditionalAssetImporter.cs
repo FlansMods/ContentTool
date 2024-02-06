@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.FilePathAttribute;
@@ -283,18 +284,36 @@ public static class AdditionalAssetImporter
 			errors.Add(Verification.Success($"Imported {from} as RootNode successfully"));
 	}
 
-	// TODO: Ressurect IconModel
 	private static void CreateIconModel_Internal(ResourceLocation iconLocation, string location, List<string> allowedOutputs, List<Verification> errors)
 	{
 		if (!allowedOutputs.Contains(location))
 			return;
 
-		ItemModel item = ScriptableObject.CreateInstance<ItemModel>();
-		item.AddDefaultTransforms();
-		item.IconLocation = iconLocation;
-		item.Icon = iconLocation.Load<Texture2D>("textures/item");
-		ContentManager.CreateUnityAsset(item, location);
+		GameObject go = new GameObject(location);
+		VanillaIconRootNode iconNode = go.AddComponent<VanillaIconRootNode>();
+		iconNode.AddDefaultTransforms();
+		iconNode.Icons.Add(new NamedTexture("default", iconLocation));
+		SaveAsPrefab(go, location, true, errors);
 		errors.Add(Verification.Success($"Created ItemModel at '{location}'"));
+	}
+
+	private static void SaveAsPrefab(GameObject go, string path, bool destroyInstance = true, List<Verification> verifications = null)
+	{
+		try
+		{
+			string folderPath = path.Substring(0, path.LastIndexOf('/'));
+			if (!Directory.Exists(folderPath))
+				Directory.CreateDirectory(folderPath);
+
+			PrefabUtility.SaveAsPrefabAsset(go, path);
+			if(destroyInstance)
+				UnityEngine.Object.DestroyImmediate(go);
+		}
+		catch (Exception e)
+		{
+			verifications?.Add(Verification.Exception(e));
+			return;
+		}
 	}
 
 	private static void CopyTexture_Internal(string from, string to, List<string> allowedOutputs, List<Verification> errors)
