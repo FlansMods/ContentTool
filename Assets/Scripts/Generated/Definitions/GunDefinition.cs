@@ -19,6 +19,9 @@ public class GunDefinition : Definition
 [Tooltip("Defines which magazine options there are")]
 	public MagazineSlotSettingsDefinition[] magazines = new MagazineSlotSettingsDefinition[0];
 	[JsonField]
+[Tooltip("These are triggered actions that fire when certain conditions are met")]
+	public AbilityDefinition[] staticAbilities = new AbilityDefinition[0];
+	[JsonField]
 	public ReloadDefinition[] reloads = new ReloadDefinition[0];
 	[JsonField]
 	public ModeDefinition[] modes = new ModeDefinition[0];

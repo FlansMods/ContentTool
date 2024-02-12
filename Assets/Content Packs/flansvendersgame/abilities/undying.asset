@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa65074b569267240839df81147fae2d, type: 3}
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
   m_Name: undying
   m_EditorClassIdentifier: 
   LocalisedNames:
@@ -23,13 +23,34 @@ MonoBehaviour:
     Lang: 0
     Localised: Prevents death (once)
   maxLevel: 1
-  startTrigger: 0
-  endTrigger: 0
-  triggerConditions: []
-  targetType: 1
-  effectType: 7
-  effectParameters: []
-  modifiers: []
+  abilities:
+  - startTriggers:
+    - triggerType: 0
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 7
+      modifiers: []
+    stacking:
+      stackingKey: 
+      maxStacks: 0
+      decayTime: 0
+      decayAllAtOnce: 0
+      stackIntensity: 0
+      baseIntensity: 0
+      addIntensityPerStack: 0
+      stackDuration: 0
+      baseDuration: 0
+      addDurationPerStack: 0
+      addIntensityPerLevel: 0
+      extraDurationPerLevel: 0
+      mulIntensityPerAttachment: 0
+      mulIntensityForFullMag: 0
+      invertMagFullness: 0
   baseIntensity: 1
   addIntensityPerLevel: 1
   mulIntensityPerAttachment: 0

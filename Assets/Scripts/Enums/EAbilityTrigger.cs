@@ -21,10 +21,16 @@ public enum EAbilityTrigger
 	EndActionGroup,
 	SwitchMode,
 
-	AddToInventory,
-	RemoveFromInventory,
+	AddToInventory,     // Not in yet
+	RemoveFromInventory,// Not in yet
 	Equip,
 	Unequip,
+
+	BulletConsumed,
+	FirstBulletConsumed,
+	LastBulletConsumed,
+
+	RaycastAction,
 
 
 }

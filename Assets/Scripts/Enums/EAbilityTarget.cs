@@ -9,5 +9,6 @@ public enum EAbilityTarget
 	Owner,
 	ShotEntity,
 	SplashedEntities,
-
+	ShotBlock,
+	ShotPosition,
 }

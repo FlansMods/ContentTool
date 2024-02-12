@@ -12,9 +12,8 @@ public class BulletDefinition : Definition
 	[JsonField]
 	public ShotDefinition shootStats = new ShotDefinition();
 	[JsonField]
-	public ActionDefinition[] onShootActions = new ActionDefinition[0];
+	public AbilityDefinition[] triggers = new AbilityDefinition[0];
 	[JsonField]
-	public ActionDefinition[] onClipEmptyActions = new ActionDefinition[0];
-	[JsonField]
-	public ActionDefinition[] onReloadActions = new ActionDefinition[0];
+[Tooltip("These action groups can be triggered at the point of impact")]
+	public ActionGroupDefinition[] actionGroups = new ActionGroupDefinition[0];
 }

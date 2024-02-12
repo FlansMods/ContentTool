@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa65074b569267240839df81147fae2d, type: 3}
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
   m_Name: boom_headshot
   m_EditorClassIdentifier: 
   LocalisedNames:
@@ -38,29 +38,39 @@ MonoBehaviour:
     Lang: 0
     Localised: Reduces reload time by 75% for 10s after you get a headshot
   maxLevel: 5
-  startTrigger: 2
-  endTrigger: 1
-  triggerConditions: []
-  targetType: 1
-  effectType: 2
-  effectParameters:
-  - flansbasicparts:boom_headshot
-  modifiers:
-  - Stat: duration
-    Filter: 
-    Add: 0
-    Multiply: 0.25
-    SetValue: 
-    ApplyFilters:
-    - reload_primary
-  baseIntensity: 1
-  addIntensityPerLevel: 0
-  mulIntensityPerAttachment: 0
-  mulIntensityForFullMag: 0
-  invertMagFullness: 0
-  baseDuration: 2
-  extraDurationPerLevel: 2
-  stackAmount: 0
-  maxAmount: 1
-  stackDuration: 0
-  maxDuration: 1
+  abilities:
+  - startTriggers:
+    - triggerType: 5
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 2
+      modifiers:
+      - Stat: mob_effect_id
+        Filter: 
+        Add: 0
+        Multiply: 0
+        SetValue: flansbasicparts:boom_headshot
+        ApplyFilters: []
+      - Stat: duration
+        Filter: 
+        Add: 0
+        Multiply: 0.25
+        SetValue: 
+        ApplyFilters:
+        - reload_primary
+    stacking:
+      stackingKey: boom_headshot
+      maxStacks: 1
+      decayAllAtOnce: 1
+      sources:
+      - type: 0
+        decayTime: 2
+        intensity: 1
+      - type: 2
+        decayTime: 2
+        intensity: 0

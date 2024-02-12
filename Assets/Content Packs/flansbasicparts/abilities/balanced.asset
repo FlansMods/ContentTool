@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa65074b569267240839df81147fae2d, type: 3}
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
   m_Name: balanced
   m_EditorClassIdentifier: 
   LocalisedNames:
@@ -23,21 +23,29 @@ MonoBehaviour:
     Lang: 0
     Localised: Reduces the dual wielding recoil and spread penalty by 50%
   maxLevel: 1
-  startTrigger: 0
-  endTrigger: 0
-  triggerConditions: []
-  targetType: 1
-  effectType: 6
-  effectParameters: []
-  modifiers: []
-  baseIntensity: 1
-  addIntensityPerLevel: 0
-  mulIntensityPerAttachment: 0
-  mulIntensityForFullMag: 0
-  invertMagFullness: 0
-  baseDuration: 1
-  extraDurationPerLevel: 1
-  stackAmount: 0
-  maxAmount: 1
-  stackDuration: 0
-  maxDuration: 1
+  abilities:
+  - startTriggers: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 6
+      modifiers: []
+    stacking:
+      stackingKey: 
+      maxStacks: 0
+      decayTime: 0
+      decayAllAtOnce: 0
+      stackIntensity: 0
+      baseIntensity: 0
+      addIntensityPerStack: 0
+      stackDuration: 0
+      baseDuration: 0
+      addDurationPerStack: 0
+      addIntensityPerLevel: 0
+      extraDurationPerLevel: 0
+      mulIntensityPerAttachment: 0
+      mulIntensityForFullMag: 0
+      invertMagFullness: 0

@@ -605,28 +605,70 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 		output.itemSettings.tags = GetTags(input);
 		output.roundsPerItem = input.roundsPerItem;
 
-		List<ActionDefinition> onShoot = new List<ActionDefinition>();
-		if(input.dropItemOnShoot != null && input.dropItemOnShoot.Length > 0)
+		List<AbilityDefinition> abilityDefinitions = new List<AbilityDefinition>();
+		if (input.dropItemOnShoot != null && input.dropItemOnShoot.Length > 0)
 		{
-			onShoot.Add(new ActionDefinition()
-			{
-				actionType = EActionType.Drop,
-				itemStack = input.dropItemOnShoot,
+			abilityDefinitions.Add(new AbilityDefinition() {
+				startTriggers = new AbilityTriggerDefinition[] {
+					new AbilityTriggerDefinition() {
+						triggerType = EAbilityTrigger.BulletConsumed,
+					}
+				},
+				targets = new AbilityTargetDefinition[] {
+					new AbilityTargetDefinition() {
+						targetType = EAbilityTarget.Shooter,
+					}
+				},
+				effects = new AbilityEffectDefinition[] {
+					new AbilityEffectDefinition() {
+						effectType = EAbilityEffect.SpawnEntity,
+						modifiers = new ModifierDefinition[] {
+							new ModifierDefinition() {
+								Stat = Constants.KEY_ENTITY_ID,
+								SetValue = "minecraft:item",
+							},
+							new ModifierDefinition() {
+								Stat = Constants.KEY_ENTITY_TAG,
+								SetValue = "{Item:{id:\""+input.dropItemOnShoot+"\",Count:1b}}"
+							}
+						}
+					}
+				}
 			});
 		}
-		output.onShootActions = onShoot.ToArray();
-
-		List<ActionDefinition> onReload = new List<ActionDefinition>();
 		if(input.dropItemOnReload != null && input.dropItemOnReload.Length > 0)
 		{
-			onReload.Add(new ActionDefinition()
+			abilityDefinitions.Add(new AbilityDefinition()
 			{
-				actionType = EActionType.Drop,
-				itemStack = input.dropItemOnReload,
+				startTriggers = new AbilityTriggerDefinition[] {
+					new AbilityTriggerDefinition() {
+						triggerType = EAbilityTrigger.ReloadEject,
+					}
+				},
+				targets = new AbilityTargetDefinition[] {
+					new AbilityTargetDefinition() {
+						targetType = EAbilityTarget.Shooter,
+					}
+				},
+				effects = new AbilityEffectDefinition[] {
+					new AbilityEffectDefinition() {
+						effectType = EAbilityEffect.SpawnEntity,
+						modifiers = new ModifierDefinition[] {
+							new ModifierDefinition() {
+								Stat = Constants.KEY_ENTITY_ID,
+								SetValue = "minecraft:item",
+							},
+							new ModifierDefinition() {
+								Stat = Constants.KEY_ENTITY_TAG,
+								SetValue = "{Item:{id:\""+input.dropItemOnReload+"\",Count:1b}}"
+							}
+						}
+					}
+				}
 			});
 		}
-		output.onReloadActions = onReload.ToArray();
-		
+		output.triggers = abilityDefinitions.ToArray();
+
 		List<ModifierDefinition> modifiers = new List<ModifierDefinition>();
 		if(input.damageVsLiving != 1.0f)
 			modifiers.Add(new ModifierDefinition()
@@ -637,9 +679,10 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 		if(input.damageVsDriveable != 1.0f)
 			modifiers.Add(new ModifierDefinition()
 			{
-				Stat = "multiplier_vs_vehicle",
+				Stat = Constants.STAT_IMPACT_MULTIPLIER_VS_VEHICLES,
 				Multiply = input.damageVsDriveable,
 			});
+		
 		//if(input.)
 
 		// TODO:

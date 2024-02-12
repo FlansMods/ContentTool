@@ -1,32 +1,9 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using static ResourceLocation;
 
 [System.Serializable]
 public class GunModifyingDefinition
 {
-/* TEMP: To update old versions add " : ISerializationCallbackReceiver" and uncomment this
-	
-	[FormerlySerializedAs("disallowedMods")]
-	public string[] _tempArray;
-	[FormerlySerializedAs("allowedMods")]
-	public string[] _tempArray2;
-	public void OnBeforeSerialize() { }
-	public void OnAfterDeserialize()
-	{
-		disallowedMods = new ResourceLocation[_tempArray.Length];
-		for(int i = 0; i < _tempArray.Length; i++)
-		{
-			disallowedMods[i] = new ResourceLocation(_tempArray[i]);
-		}
-		allowedMods = new ResourceLocation[_tempArray2.Length];
-		for (int i = 0; i < _tempArray2.Length; i++)
-		{
-			allowedMods[i] = new ResourceLocation(_tempArray2[i]);
-		}
-	}
-	*/
-
 	[JsonField]
 	public bool isActive = false;
 	[JsonField]
