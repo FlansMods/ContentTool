@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class AttachmentSettingsDefinition
+public class AttachmentSettingsDefinition : Element
 {
 	[JsonField]
 	public string[] matchNames = new string[0];

@@ -178,7 +178,7 @@ public struct ResourceLocation
 
     // Namespace caching
 	private static List<string> _Namespaces = null;
-    private const string NEW_NAMESPACE = "new ...";
+    public const string NEW_NAMESPACE = "new ...";
     public static List<string> Namespaces 
     { 
         get 

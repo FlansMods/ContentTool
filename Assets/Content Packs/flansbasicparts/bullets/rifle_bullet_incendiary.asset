@@ -17,9 +17,6 @@ MonoBehaviour:
     Name: Incendiary Rifle Bullet
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:bullet
-    - flansmod:rifle_bullet
     maxStackSize: 64
     tags:
     - Namespace: flansmod
@@ -39,7 +36,7 @@ MonoBehaviour:
     penetrationPower: 0
     impact:
       decal:
-        Namespace: minecraft
+        Namespace: flansmod
         ID: null
       damageToTarget: 0.75
       multiplierVsPlayers: 1
@@ -66,6 +63,5 @@ MonoBehaviour:
     secondsBetweenTrailParticles: 0.25
     dragInWater: 0.2
     waterParticles: 
-  onShootActions: []
-  onClipEmptyActions: []
-  onReloadActions: []
+  triggers: []
+  actionGroups: []

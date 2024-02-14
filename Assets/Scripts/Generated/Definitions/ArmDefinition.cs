@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ArmDefinition
+public class ArmDefinition : Element
 {
 	[JsonField]
 	public string name = "default";
@@ -25,6 +25,6 @@ public class ArmDefinition
 	[JsonField]
 	public float heldItemScale = 1.0f; // Should be in the model?
 	[JsonField]
-[Tooltip("How far this hand can reach when using tools")]
+	[Tooltip("How far this hand can reach when using tools")]
 	public float reach = 10.0f;
 }

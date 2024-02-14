@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class AbilityTriggerDefinition
+public class AbilityTriggerDefinition : Element
 {
 	[JsonField]
 	public EAbilityTrigger triggerType = EAbilityTrigger.Instant;

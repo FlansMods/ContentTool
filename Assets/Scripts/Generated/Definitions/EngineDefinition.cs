@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class EngineDefinition
+public class EngineDefinition : Element
 {
 	[JsonField]
 	public float maxAcceleration = 1.0f;
@@ -17,7 +17,7 @@ public class EngineDefinition
 	[JsonField]
 	public int solidFuelSlots = 0;
 	[JsonField]
-[Tooltip("In millibuckets")]
+	[Tooltip("In millibuckets")]
 	public int liquidFuelCapacity = 1000;
 	[JsonField]
 	public int batterySlots = 0;

@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class TriggerConditionDefinition
+public class TriggerConditionDefinition : Element
 {
 	[JsonField]
 	public ETriggerConditionType conditionType = ETriggerConditionType.AlwaysAllowed;

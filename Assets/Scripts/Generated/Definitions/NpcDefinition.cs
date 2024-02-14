@@ -30,7 +30,7 @@ public class NpcDefinition : Definition
 	[JsonField]
 	public EDamageSourceType[] invulnerabilities = new EDamageSourceType[0];
 	[JsonField]
-[Tooltip("If set to 0, this NPC will not be considered a merchant")]
+	[Tooltip("If set to 0, this NPC will not be considered a merchant")]
 	public int maxMerchantLevel = 0;
 	[JsonField]
 	public int[] xpPerMerchantLevel = new int[0];

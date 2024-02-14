@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class PoseDefinition
+public class PoseDefinition : Element
 {
 	[JsonField]
 	public string applyTo = "";

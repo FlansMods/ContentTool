@@ -2,16 +2,16 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ReloadDefinition
+public class ReloadDefinition : Element
 {
 	[JsonField]
-[Tooltip("This should match the action group key")]
+	[Tooltip("This should match the action group key")]
 	public string key = "primary";
 	[JsonField]
-[Tooltip("If true, the player can press [R] to reload manually")]
+	[Tooltip("If true, the player can press [R] to reload manually")]
 	public bool manualReloadAllowed = true;
 	[JsonField]
-[Tooltip("If true, attempting to fire on empty will trigger a reload")]
+	[Tooltip("If true, attempting to fire on empty will trigger a reload")]
 	public bool autoReloadWhenEmpty = true;
 	[JsonField]
 	public string startActionKey = "primary_reload_start";

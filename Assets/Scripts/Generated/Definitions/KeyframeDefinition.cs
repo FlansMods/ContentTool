@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class KeyframeDefinition
+public class KeyframeDefinition : Element
 {
 	[JsonField]
 	public string name = "";

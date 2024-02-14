@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ColourDefinition
+public class ColourDefinition : Element
 {
 	[JsonField]
 	public float alpha = 1.0f;

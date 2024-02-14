@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class SequenceEntryDefinition
+public class SequenceEntryDefinition : Element
 {
 	[JsonField]
 	public int tick = 0;

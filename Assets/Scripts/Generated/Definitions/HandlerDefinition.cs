@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class HandlerDefinition
+public class HandlerDefinition : Element
 {
 	[JsonField]
 	public EPlayerInput inputType = EPlayerInput.Fire1;

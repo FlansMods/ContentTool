@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class WheelDefinition
+public class WheelDefinition : Element
 {
 	[JsonField]
 	public string attachedTo = "body";

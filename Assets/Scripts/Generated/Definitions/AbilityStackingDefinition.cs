@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class AbilityStackingDefinition
+public class AbilityStackingDefinition : Element
 {
 	[JsonField]
 	public string stackingKey = "";
@@ -11,7 +11,7 @@ public class AbilityStackingDefinition
 	[JsonField]
 	public bool decayAllAtOnce = false;
 	[JsonField]
-	public AbilityStackingSourceDefinition[] decayTime = new AbilityStackingSourceDefinition[0];
+	public FloatStatDefinition decayTime = new FloatStatDefinition();
 	[JsonField]
-	public AbilityStackingSourceDefinition[] intensity = new AbilityStackingSourceDefinition[0];
+	public FloatStatDefinition intensity = new FloatStatDefinition();
 }

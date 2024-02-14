@@ -14,6 +14,6 @@ public class BulletDefinition : Definition
 	[JsonField]
 	public AbilityDefinition[] triggers = new AbilityDefinition[0];
 	[JsonField]
-[Tooltip("These action groups can be triggered at the point of impact")]
+	[Tooltip("These action groups can be triggered at the point of impact")]
 	public ActionGroupDefinition[] actionGroups = new ActionGroupDefinition[0];
 }

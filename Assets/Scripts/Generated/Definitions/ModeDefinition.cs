@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ModeDefinition
+public class ModeDefinition : Element
 {
 	[JsonField]
 	public string key = "mode";

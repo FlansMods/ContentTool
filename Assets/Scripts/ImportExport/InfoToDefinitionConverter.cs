@@ -81,6 +81,41 @@ public abstract class Converter<TInfo, TDefinition>
 			item = Utils.ToLowerWithUnderscores(typeName),
 		};
 	}
+	public ModifierDefinition BaseStat(string stat, float value)
+	{
+		return new ModifierDefinition
+		{
+			stat = stat,
+			accumulators = new StatAccumulatorDefinition[] {
+				new StatAccumulatorDefinition {
+					operation = EAccumulationOperation.Constant,
+					value = value,
+				}
+			}
+		};
+	}
+	public ModifierDefinition MultiplierStat(string stat, float value, string groupPath = "")
+	{
+		return new ModifierDefinition
+		{
+			stat = stat,
+			matchGroupPaths = groupPath.Length > 0 ? new string[] { groupPath } : new string[0],
+			accumulators = new StatAccumulatorDefinition[] {
+				new StatAccumulatorDefinition {
+					operation = EAccumulationOperation.Multiply,
+					value = value - 1.0f,
+				}
+			}
+		};
+	}
+	public ModifierDefinition StringStat(string stat, string value)
+	{
+		return new ModifierDefinition
+		{
+			stat = stat,
+			setValue = value,
+		};
+	}
 
 	protected abstract void DoConversion(TInfo input, TDefinition output);
 }
@@ -237,7 +272,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = Utils.ToLowerWithUnderscores(inf.reloadSound),
+						sound = new ResourceLocation(Utils.ToLowerWithUnderscores(inf.reloadSound)),
 					}
 				}
 			});
@@ -357,7 +392,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = Utils.ToLowerWithUnderscores(inf.shootSound),
+						sound = new ResourceLocation(Utils.ToLowerWithUnderscores(inf.shootSound)),
 						length = inf.shootSoundLength,
 						minPitchMultiplier = inf.distortSound ? 1.0f / 1.2f : 1.0f,
 						maxPitchMultiplier = inf.distortSound ? 1.0f / 0.8f : 1.0f,
@@ -375,7 +410,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition() 
 					{
-						sound = Utils.ToLowerWithUnderscores(inf.meleeSound),
+						sound = new ResourceLocation(Utils.ToLowerWithUnderscores(inf.meleeSound)),
 					},
 				},
 			});
@@ -428,30 +463,14 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	public ModifierDefinition[] CreateShotModifiers(GunType type)
 	{
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
-		mods.Add(new ModifierDefinition() {
-			Stat = "vertical_recoil",
-			Multiply = type.recoil,
-		});
-		mods.Add(new ModifierDefinition() {
-			Stat = "spread",
-			Multiply = type.bulletSpread,
-		});
-		mods.Add(new ModifierDefinition() {
-			Stat = "speed",
-			Multiply = type.bulletSpeed,
-		});
-		mods.Add(new ModifierDefinition() {
-			Stat = "bullet_count",
-			Multiply = type.numBullets,
-		});
-		mods.Add(new ModifierDefinition() {
-			Stat = "impact_damage",
-			Multiply = type.damage,
-		});
-		mods.Add(new ModifierDefinition() {
-			Stat = "knockback",
-			Multiply = type.knockback,
-		});
+
+		mods.Add(BaseStat(Constants.STAT_SHOT_VERTICAL_RECOIL, type.recoil));
+		mods.Add(BaseStat(Constants.STAT_SHOT_HORIZONTAL_RECOIL, type.recoil));
+		mods.Add(BaseStat(Constants.STAT_SHOT_SPREAD, type.bulletSpread));
+		mods.Add(BaseStat(Constants.STAT_SHOT_SPEED, type.bulletSpeed));
+		mods.Add(BaseStat(Constants.STAT_SHOT_BULLET_COUNT, type.numBullets));
+		mods.Add(BaseStat(Constants.STAT_IMPACT_DAMAGE, type.damage));
+		mods.Add(BaseStat(Constants.STAT_IMPACT_KNOCKBACK, type.knockback));
 
 		return mods.ToArray();
 	}
@@ -623,14 +642,8 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 					new AbilityEffectDefinition() {
 						effectType = EAbilityEffect.SpawnEntity,
 						modifiers = new ModifierDefinition[] {
-							new ModifierDefinition() {
-								Stat = Constants.KEY_ENTITY_ID,
-								SetValue = "minecraft:item",
-							},
-							new ModifierDefinition() {
-								Stat = Constants.KEY_ENTITY_TAG,
-								SetValue = "{Item:{id:\""+input.dropItemOnShoot+"\",Count:1b}}"
-							}
+							StringStat(Constants.KEY_ENTITY_ID, "minecraft:item"),
+							StringStat(Constants.KEY_ENTITY_TAG, "{Item:{id:\""+input.dropItemOnShoot+"\",Count:1b}}")
 						}
 					}
 				}
@@ -654,14 +667,8 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 					new AbilityEffectDefinition() {
 						effectType = EAbilityEffect.SpawnEntity,
 						modifiers = new ModifierDefinition[] {
-							new ModifierDefinition() {
-								Stat = Constants.KEY_ENTITY_ID,
-								SetValue = "minecraft:item",
-							},
-							new ModifierDefinition() {
-								Stat = Constants.KEY_ENTITY_TAG,
-								SetValue = "{Item:{id:\""+input.dropItemOnReload+"\",Count:1b}}"
-							}
+							StringStat(Constants.KEY_ENTITY_ID, "minecraft:item"),
+							StringStat(Constants.KEY_ENTITY_TAG, "{Item:{id:\""+input.dropItemOnReload+"\",Count:1b}}")
 						}
 					}
 				}
@@ -670,18 +677,10 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 		output.triggers = abilityDefinitions.ToArray();
 
 		List<ModifierDefinition> modifiers = new List<ModifierDefinition>();
-		if(input.damageVsLiving != 1.0f)
-			modifiers.Add(new ModifierDefinition()
-			{
-				Stat = "multiplier_vs_living",
-				Multiply = input.damageVsLiving,
-			});
-		if(input.damageVsDriveable != 1.0f)
-			modifiers.Add(new ModifierDefinition()
-			{
-				Stat = Constants.STAT_IMPACT_MULTIPLIER_VS_VEHICLES,
-				Multiply = input.damageVsDriveable,
-			});
+		if (input.damageVsLiving != 1.0f)
+			modifiers.Add(MultiplierStat(Constants.STAT_IMPACT_MULTIPLIER_VS_PLAYERS, input.damageVsLiving));
+		if (input.damageVsDriveable != 1.0f)
+			modifiers.Add(MultiplierStat(Constants.STAT_IMPACT_MULTIPLIER_VS_VEHICLES, input.damageVsDriveable));
 		
 		//if(input.)
 
@@ -750,72 +749,40 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 
 		if(input.silencer)
 		{
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "soundVolume",
-				Multiply = 0.1f,
-			});
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "soundPitch",
-				Multiply = 1.5f,
-			});
+			mods.Add(MultiplierStat(Constants.STAT_GROUP_LOUDNESS, 0.1f));
+			mods.Add(MultiplierStat(Constants.STAT_SOUND_PITCH, 1.5f));
 		}
 
 		if(input.flashlight)
 		{
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "flashlightStrength",
-				Add = input.flashlightStrength,
-			});
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "flashlightRange",
-				Add = input.flashlightRange,
-			});
+			mods.Add(BaseStat(Constants.STAT_LIGHT_STRENGTH, input.flashlightStrength));
+			mods.Add(BaseStat(Constants.STAT_LIGHT_RANGE, input.flashlightRange));
 		}
 
 
-		if(input.spreadMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "spread",
-				Multiply = input.spreadMultiplier,
-			});
-		if(input.recoilMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "recoil",
-				Multiply = input.recoilMultiplier,
-			});
+		if (input.spreadMultiplier != 1f)
+			mods.Add(MultiplierStat(Constants.STAT_SHOT_SPREAD, input.spreadMultiplier));
+
+		if (input.recoilMultiplier != 1f)
+		{
+			mods.Add(MultiplierStat(Constants.STAT_SHOT_VERTICAL_RECOIL, input.recoilMultiplier));
+			mods.Add(MultiplierStat(Constants.STAT_SHOT_HORIZONTAL_RECOIL, input.recoilMultiplier));
+		}
+
 		if(input.damageMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "damage",
-				Multiply = input.damageMultiplier,
-			});
-		if(input.meleeDamageMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "melee",
-				Multiply = input.meleeDamageMultiplier,
-			});
-		if(input.bulletSpeedMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "bulletSpeed",
-				Multiply = input.bulletSpeedMultiplier,
-			});
-		if(input.reloadTimeMultiplier != 1f)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "reloadTime",
-				Multiply = input.reloadTimeMultiplier,
-			});
+			mods.Add(MultiplierStat(Constants.STAT_IMPACT_DAMAGE, input.damageMultiplier));
+
+		if (input.meleeDamageMultiplier != 1f)
+			mods.Add(MultiplierStat(Constants.STAT_MELEE_DAMAGE, input.meleeDamageMultiplier));
+
+		if (input.bulletSpeedMultiplier != 1f)
+			mods.Add(MultiplierStat(Constants.STAT_SHOT_SPEED, input.bulletSpeedMultiplier));
+
+		if (input.reloadTimeMultiplier != 1f)
+			mods.Add(MultiplierStat(Constants.STAT_DURATION, input.reloadTimeMultiplier, "reload"));
 
 
-		if(input.type == EAttachmentType.Sights)
+		if (input.type == EAttachmentType.Sights)
 		{
 			if(input.hasScopeOverlay)
 			{
@@ -952,7 +919,7 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
-						sound = Utils.ToLowerWithUnderscores(inf.throwSound),
+						sound = new ResourceLocation(Utils.ToLowerWithUnderscores(inf.throwSound)),
 						length = 1,
 					}
 				}
@@ -1120,12 +1087,12 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						traveseIndependently = input.seats[i].yawBeforePitch,
 						yawSound = new SoundDefinition()
 						{ 
-							sound = Utils.ToLowerWithUnderscores(input.seats[i].yawSound),
+							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(input.seats[i].yawSound)),
 							length = input.seats[i].yawSoundLength
 						},
 						pitchSound = new SoundDefinition()
 						{ 
-							sound = Utils.ToLowerWithUnderscores(input.seats[i].pitchSound),
+							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(input.seats[i].pitchSound)),
 							length = input.seats[i].pitchSoundLength,
 						},
 						primaryActions = CreateGunActions(input.seats[i]),
@@ -1156,7 +1123,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 						sounds = new SoundDefinition[] {
 							new SoundDefinition()
 							{
-								sound = Utils.ToLowerWithUnderscores(gunType.shootSound),
+								sound = new ResourceLocation(Utils.ToLowerWithUnderscores(gunType.shootSound)),
 								length = gunType.shootSoundLength,
 								minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
 								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
@@ -1206,7 +1173,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 					sounds = new SoundDefinition[] {
 						new SoundDefinition()
 						{
-							sound = Utils.ToLowerWithUnderscores(gunType.shootSound),
+							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(gunType.shootSound)),
 							length = gunType.shootSoundLength,
 							minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
 							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
@@ -1795,85 +1762,58 @@ public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
 		};
 
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
-		if(!Mathf.Approximately(input.speedMultiplier, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "movementSpeed",
-				Multiply = input.speedMultiplier,
-			});
+		if (!Mathf.Approximately(input.speedMultiplier, 1f))
+			mods.Add(MultiplierStat(Constants.STAT_MOVEMENT_SPEED, input.speedMultiplier));
 		if(!Mathf.Approximately(input.damageResistance, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "damageResistance",
-				Add = input.damageResistance,
-			});
-		if(!Mathf.Approximately(input.damageResistance, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "damageResistance",
-				Add = input.damageResistance,
-			});
-		if(input.lightLevel != 0)
-		{
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "flashlightStrength",
-				Add = input.lightLevel,
-			});
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "flashlightRange",
-				Add = input.lightLevel,
-			});
-		}
-		if(input.stopMechaFallDamage)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fallDamage",
-				Multiply = 0f,
-			});
-		if(input.forceBlockFallDamage)
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "explodeOnFallDamage",
-				Add = 1f,
-			});
+			mods.Add(MultiplierStat(Constants.STAT_DAMAGE_RESISTANCE, input.damageResistance));
 
-		if(!Mathf.Approximately(input.fortuneCoal, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fortune",
-				Filter = "minecraft:coal_ore_block",
-				Multiply = input.fortuneCoal,
-			});
-		if(!Mathf.Approximately(input.fortuneIron, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fortune",
-				Filter = "minecraft:iron_ore_block",
-				Multiply = input.fortuneIron,
-			});
-		if(!Mathf.Approximately(input.fortuneEmerald, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fortune",
-				Filter = "minecraft:emerald_ore_block",
-				Multiply = input.fortuneEmerald,
-			});
-		if(!Mathf.Approximately(input.fortuneRedstone, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fortune",
-				Filter = "minecraft:redstone_ore_block",
-				Multiply = input.fortuneRedstone,
-			});
-		if(!Mathf.Approximately(input.fortuneDiamond, 1f))
-			mods.Add(new ModifierDefinition()
-			{
-				Stat = "fortune",
-				Filter = "minecraft:diamond_ore_block",
-				Multiply = input.fortuneDiamond,
-			});
+		if (input.lightLevel != 0)
+		{
+			mods.Add(BaseStat(Constants.STAT_LIGHT_STRENGTH, input.lightLevel));
+			mods.Add(BaseStat(Constants.STAT_LIGHT_RANGE, input.lightLevel));
+		}
+
+		// TODO:
+		//if(input.stopMechaFallDamage)
+		//	mods.Add(MultiplierStat("fall_damage", 0f));
+		//if (input.forceBlockFallDamage)
+		//	mods.Add(BaseStat("transfer_fall_damage_into_explosion", 1.0f));
+		//
+		//if(!Mathf.Approximately(input.fortuneCoal, 1f))
+		//	mods.Add(new ModifierDefinition()
+		//	{
+		//		Stat = "fortune",
+		//		Filter = "minecraft:coal_ore_block",
+		//		Multiply = input.fortuneCoal,
+		//	});
+		//if(!Mathf.Approximately(input.fortuneIron, 1f))
+		//	mods.Add(new ModifierDefinition()
+		//	{
+		//		Stat = "fortune",
+		//		Filter = "minecraft:iron_ore_block",
+		//		Multiply = input.fortuneIron,
+		//	});
+		//if(!Mathf.Approximately(input.fortuneEmerald, 1f))
+		//	mods.Add(new ModifierDefinition()
+		//	{
+		//		Stat = "fortune",
+		//		Filter = "minecraft:emerald_ore_block",
+		//		Multiply = input.fortuneEmerald,
+		//	});
+		//if(!Mathf.Approximately(input.fortuneRedstone, 1f))
+		//	mods.Add(new ModifierDefinition()
+		//	{
+		//		Stat = "fortune",
+		//		Filter = "minecraft:redstone_ore_block",
+		//		Multiply = input.fortuneRedstone,
+		//	});
+		//if(!Mathf.Approximately(input.fortuneDiamond, 1f))
+		//	mods.Add(new ModifierDefinition()
+		//	{
+		//		Stat = "fortune",
+		//		Filter = "minecraft:diamond_ore_block",
+		//		Multiply = input.fortuneDiamond,
+		//	});
 		output.modifiers = mods.ToArray();
 
 		List<EMechaEffect> effects = new List<EMechaEffect>();
@@ -2048,15 +1988,9 @@ public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
 		output.armourTextureName = input.armourTextureName;
 		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 		if(!Mathf.Approximately(input.moveSpeedModifier, 1f))
-			mods.Add(new ModifierDefinition() { 
-				Stat = "MoveSpeed", 
-				Multiply = input.moveSpeedModifier,
-			});
+			mods.Add(MultiplierStat(Constants.STAT_MOVEMENT_SPEED, input.moveSpeedModifier));
 		if(!Mathf.Approximately(input.knockbackModifier, 1f))
-			mods.Add(new ModifierDefinition() { 
-				Stat = "Knockback", 
-				Multiply = input.knockbackModifier,
-			});
+			mods.Add(MultiplierStat(Constants.STAT_IMPACT_KNOCKBACK, input.knockbackModifier));
 		output.modifiers = mods.ToArray();
 		output.nightVision = input.nightVision;
 		output.screenOverlay = input.overlay;

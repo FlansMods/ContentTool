@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class JsonFieldAttribute : Attribute
 {
-    
+    public string AssetPathHint = "";
 }

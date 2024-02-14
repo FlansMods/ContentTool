@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class InputDefinition
+public class InputDefinition : Element
 {
 	[JsonField]
 	public EPlayerInput key = EPlayerInput.Jump;
@@ -15,7 +15,7 @@ public class InputDefinition
 	[JsonField]
 	public ArmInputDefinition[] arms = new ArmInputDefinition[0];
 	[JsonField]
-[Tooltip("If true, each articulation/gun/driving control will be triggered in order. If false, one press = activate all")]
+	[Tooltip("If true, each articulation/gun/driving control will be triggered in order. If false, one press = activate all")]
 	public bool alternateInputs = false;
 	[JsonField]
 	public string switchVehicleMode = "";

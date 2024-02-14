@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ArticulatedPartDefinition
+public class ArticulatedPartDefinition : Element
 {
 	[JsonField]
 	public string partName = "";
@@ -25,6 +25,6 @@ public class ArticulatedPartDefinition
 	[JsonField]
 	public Vector3 maxOffset = Vector3.zero;
 	[JsonField]
-[Tooltip("How fast does the part turn? Set to 0 or negative to make it move at player look speed.")]
+	[Tooltip("How fast does the part turn? Set to 0 or negative to make it move at player look speed.")]
 	public float rotateSpeed = 1.0f;
 }

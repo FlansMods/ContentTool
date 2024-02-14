@@ -2,21 +2,14 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ModifierDefinition
+public class ModifierDefinition : Element
 {
 	[JsonField]
-	public string Stat = "";
+	public string stat = "";
 	[JsonField]
-	public string Filter = "";
+	public string[] matchGroupPaths = new string[0];
 	[JsonField]
-[Tooltip("Additive modifiers are applied first")]
-	public float Add = 0.0f;
+	public StatAccumulatorDefinition[] accumulators = new StatAccumulatorDefinition[0];
 	[JsonField]
-[Tooltip("All multiplys are applied after all adds, so notably a 0x multiplier will always 0 the stat")]
-	public float Multiply = 1.0f;
-	[JsonField]
-[Tooltip("For non-numeric values, such as enums, this is a simple override")]
-	public string SetValue = "";
-	[JsonField]
-	public string[] ApplyFilters = new string[0];
+	public string setValue = "";
 }

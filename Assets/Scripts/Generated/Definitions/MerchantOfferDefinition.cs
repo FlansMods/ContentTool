@@ -2,13 +2,13 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class MerchantOfferDefinition
+public class MerchantOfferDefinition : Element
 {
 	[JsonField]
-[Tooltip("Relative to other offers from this merchant")]
+	[Tooltip("Relative to other offers from this merchant")]
 	public float weighting = 1.0f;
 	[JsonField]
-[Tooltip("The level at which this offer appears")]
+	[Tooltip("The level at which this offer appears")]
 	public int merchantLevel = 0;
 	[JsonField]
 	public ItemStackDefinition[] inputs = new ItemStackDefinition[0];

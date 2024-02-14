@@ -10,16 +10,16 @@ public class GunDefinition : Definition
 	[JsonField]
 	public PaintableDefinition paints = new PaintableDefinition();
 	[JsonField]
-[Tooltip("For each key input this gun should accept, you need a handler")]
+	[Tooltip("For each key input this gun should accept, you need a handler")]
 	public HandlerDefinition[] inputHandlers = new HandlerDefinition[0];
 	[JsonField]
-[Tooltip("The possible actions of this gun")]
+	[Tooltip("The possible actions of this gun")]
 	public ActionGroupDefinition[] actionGroups = new ActionGroupDefinition[0];
 	[JsonField]
-[Tooltip("Defines which magazine options there are")]
+	[Tooltip("Defines which magazine options there are")]
 	public MagazineSlotSettingsDefinition[] magazines = new MagazineSlotSettingsDefinition[0];
 	[JsonField]
-[Tooltip("These are triggered actions that fire when certain conditions are met")]
+	[Tooltip("These are triggered actions that fire when certain conditions are met")]
 	public AbilityDefinition[] staticAbilities = new AbilityDefinition[0];
 	[JsonField]
 	public ReloadDefinition[] reloads = new ReloadDefinition[0];

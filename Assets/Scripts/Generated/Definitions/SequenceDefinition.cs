@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class SequenceDefinition
+public class SequenceDefinition : Element
 {
 	[JsonField]
 	public string name = "";

@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ItemStackDefinition
+public class ItemStackDefinition : Element
 {
 	[JsonField]
 	public string item = "minecraft:air";

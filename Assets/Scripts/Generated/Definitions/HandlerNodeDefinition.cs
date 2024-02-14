@@ -2,12 +2,12 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class HandlerNodeDefinition
+public class HandlerNodeDefinition : Element
 {
 	[JsonField]
 	public string actionGroupToTrigger = "";
 	[JsonField]
-[Tooltip("[TODO] If non-empty, this will check to see if the gun is in the specified mode. If you start with '!', it will check for not being in that mode")]
+	[Tooltip("[TODO] If non-empty, this will check to see if the gun is in the specified mode. If you start with '!', it will check for not being in that mode")]
 	public string modalCheck = "";
 	[JsonField]
 	public bool canTriggerWhileReloading = false;

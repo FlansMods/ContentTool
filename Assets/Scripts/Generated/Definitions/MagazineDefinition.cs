@@ -14,12 +14,12 @@ public class MagazineDefinition : Definition
 	[JsonField]
 	public EAmmoConsumeMode ammoConsumeMode = EAmmoConsumeMode.RoundRobin;
 	[JsonField]
-[Tooltip("The number of Magazine Upgrade items needed to swap to this mag")]
+	[Tooltip("The number of Magazine Upgrade items needed to swap to this mag")]
 	public int upgradeCost = 0;
 	[JsonField]
 	public int numRounds = 0;
 	[JsonField]
-[Tooltip("A performance optimisation, recommended if the mag size is 100 or more")]
+	[Tooltip("A performance optimisation, recommended if the mag size is 100 or more")]
 	public bool allRoundsMustBeIdentical = true;
 	[JsonField]
 	public ItemCollectionDefinition matchingBullets = new ItemCollectionDefinition();

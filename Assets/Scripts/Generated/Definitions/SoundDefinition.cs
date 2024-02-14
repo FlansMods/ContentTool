@@ -2,12 +2,12 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class SoundDefinition
+public class SoundDefinition : Element
 {
+	[JsonField(AssetPathHint = "sounds/")]
+	public ResourceLocation sound = InvalidLocation;
 	[JsonField]
-	public string sound = "";
-	[JsonField]
-[Tooltip("In seconds")]
+	[Tooltip("In seconds")]
 	public float length = 1f;
 	[JsonField]
 	public float minPitchMultiplier = 1f;

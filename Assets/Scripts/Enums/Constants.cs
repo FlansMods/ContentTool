@@ -70,7 +70,12 @@ public static class Constants
 	public const string STAT_LASER_BLUE = "laser_blue";
 	public const string MODAL_FIXED_LASER_DIRECTION = "fixed_laser_direction";
 
-	public static readonly string[] STAT_SUGGESTIONS = new string[]
+
+	// Vehicles
+	public const string STAT_MOVEMENT_SPEED = "movement_speed";
+	public const string STAT_DAMAGE_RESISTANCE = "damage_resistance";
+
+	public static readonly List<string> STAT_SUGGESTIONS = new List<string>
 	{
 		STAT_GROUP_REPEAT_MODE,
 		STAT_GROUP_REPEAT_DELAY,
@@ -137,22 +142,5 @@ public static class Constants
 		STAT_LASER_GREEN,
 		STAT_LASER_BLUE,
 		MODAL_FIXED_LASER_DIRECTION,
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	};
 }

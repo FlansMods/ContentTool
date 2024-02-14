@@ -35,27 +35,33 @@ MonoBehaviour:
     Lang: 0
     Localised: Increases damage by 100%
   maxLevel: 5
-  startTrigger: 0
-  endTrigger: 0
-  triggerConditions: []
-  targetType: 1
-  effectType: 6
-  effectParameters: []
-  modifiers:
-  - Stat: impact_damage
-    Filter: 
-    Add: 0
-    Multiply: 1.2
-    SetValue: 
-    ApplyFilters: []
-  baseIntensity: 1
-  addIntensityPerLevel: 1
-  mulIntensityPerAttachment: 0
-  mulIntensityForFullMag: 0
-  invertMagFullness: 0
-  baseDuration: 1
-  extraDurationPerLevel: 1
-  stackAmount: 0
-  maxAmount: 1
-  stackDuration: 0
-  maxDuration: 1
+  abilities:
+  - startTriggers:
+    - triggerType: 0
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 6
+      modifiers:
+      - Stat: impact_damage
+        Filter: 
+        Add: 0
+        Multiply: 1
+        SetValue: 
+        ApplyFilters: []
+    stacking:
+      stackingKey: 
+      maxStacks: 1
+      decayAllAtOnce: 0
+      decayTime: []
+      intensity:
+      - operation: 2
+        value: 1
+        multiplyPer: 0
+      - operation: 0
+        value: 0.2
+        multiplyPer: 2

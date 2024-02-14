@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class GunCraftingDefinition
+public class GunCraftingDefinition : Element
 {
 	[JsonField]
 	public bool isActive = false;

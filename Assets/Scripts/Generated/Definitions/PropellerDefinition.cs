@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class PropellerDefinition
+public class PropellerDefinition : Element
 {
 	[JsonField]
 	public string attachedTo = "body";

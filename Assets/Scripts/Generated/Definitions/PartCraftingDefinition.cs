@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class PartCraftingDefinition
+public class PartCraftingDefinition : Element
 {
 	[JsonField]
 	public bool isActive = false;
@@ -11,7 +11,7 @@ public class PartCraftingDefinition
 	[JsonField]
 	public int outputSlots = 8;
 	[JsonField]
-[Tooltip("In seconds")]
+	[Tooltip("In seconds")]
 	public float timePerCraft = 1.0f;
 	[JsonField]
 	public float FECostPerCraft = 0.0f;

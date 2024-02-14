@@ -7,7 +7,7 @@ public class WorkbenchDefinition : Definition
 {
 	[JsonField]
 	public string titleString = "workbench";
-	[JsonField]
+	[JsonField(AssetPathHint = "textures/gui/")]
 	public ResourceLocation bannerTextureLocation = InvalidLocation;
 	[JsonField]
 	public GunCraftingDefinition gunCrafting = new GunCraftingDefinition();

@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class WorkbenchSideDefinition
+public class WorkbenchSideDefinition : Element
 {
 	[JsonField]
 	public Direction side;
@@ -13,6 +13,6 @@ public class WorkbenchSideDefinition
 	[JsonField]
 	public WorkbenchIOSettingDefinition[] ioSettings = new WorkbenchIOSettingDefinition[0];
 	[JsonField]
-[Tooltip("To-Do, potential option to directly access neighbour inventories when crafting")]
+	[Tooltip("To-Do, potential option to directly access neighbour inventories when crafting")]
 	public bool workbenchCanUseInventoriesOnSide = false;
 }

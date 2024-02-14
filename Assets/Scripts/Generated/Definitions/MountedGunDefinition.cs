@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class MountedGunDefinition
+public class MountedGunDefinition : Element
 {
 	[JsonField]
 	public string name = "default";
@@ -27,7 +27,7 @@ public class MountedGunDefinition
 	[JsonField]
 	public bool lockSeatToGunAngles = false;
 	[JsonField]
-[Tooltip("If set true, this turret has to line up its yaw, then its pitch, one at a time")]
+	[Tooltip("If set true, this turret has to line up its yaw, then its pitch, one at a time")]
 	public bool traveseIndependently = false;
 	[JsonField]
 	public SoundDefinition yawSound = new SoundDefinition();

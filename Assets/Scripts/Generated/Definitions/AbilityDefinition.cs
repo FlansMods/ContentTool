@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class AbilityDefinition
+public class AbilityDefinition : Element
 {
 	[JsonField]
 	public AbilityTriggerDefinition[] startTriggers = new AbilityTriggerDefinition[0];

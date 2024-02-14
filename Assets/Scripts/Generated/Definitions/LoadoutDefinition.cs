@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class LoadoutDefinition
+public class LoadoutDefinition : Element
 {
 	[JsonField]
 	public string[] slots = new string[0];

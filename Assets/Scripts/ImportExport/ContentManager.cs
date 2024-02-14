@@ -929,15 +929,15 @@ public class ContentManager : MonoBehaviour
 			if(obj is SoundDefinition soundDef)
 			{
 				Debug.Log("Found sound " + obj + " at " + debug);
-				if(!soundDef.sound.Contains(":"))
+				if(soundDef.sound.Namespace == "minecraft")
 				{
-					soundDef.sound = $"{pack.ModName}:{soundDef.sound}";
+					soundDef.sound = new ResourceLocation(pack.ModName, soundDef.sound.ID);
 				}
 				foreach(SoundLODDefinition soundLOD in soundDef.LODs)
 				{
-					if(!soundLOD.sound.Contains(":"))
+					if (soundLOD.sound.Namespace == "minecraft")
 					{
-						soundLOD.sound = $"{pack.ModName}:{soundLOD.sound}";
+						soundLOD.sound = new ResourceLocation(pack.ModName, soundLOD.sound.ID);
 					}
 				}
 			}
@@ -1554,90 +1554,7 @@ public class ContentManager : MonoBehaviour
 			return;
 		}
 
-		Dictionary<ENewDefinitionType, Dictionary<string, Dictionary<string, string>>> output = new Dictionary<ENewDefinitionType, Dictionary<string, Dictionary<string, string>>>();
-		Dictionary<ENewDefinitionType, List<string>> columnHeaders = new Dictionary<ENewDefinitionType, List<string>>();
-		foreach (Definition def in pack.AllContent)
-		{
-			ENewDefinitionType defType = DefinitionTypes.GetFromObject(def);
-			if (!output.ContainsKey(defType))
-				output.Add(defType, new Dictionary<string, Dictionary<string, string>>());
-			if (!columnHeaders.ContainsKey(defType))
-				columnHeaders.Add(defType, new List<string>());
-			if (defType == ENewDefinitionType.gun)
-			{
-				GunDefinition gunDef = def as GunDefinition;
-				if (!output[defType].ContainsKey(def.name))
-				{
-					output[defType].Add(def.name, new Dictionary<string, string>());
-					foreach (ActionGroupDefinition actionGroup in gunDef.actionGroups)
-					{
-						foreach(ActionDefinition action in actionGroup.actions)
-						{
-							foreach(ModifierDefinition mod in action.modifiers)
-							{
-								if (mod.SetValue.Length > 0)
-								{
-									string key = $"{mod.Stat}_set";
-									if (!output[defType][def.name].ContainsKey(key))
-										output[defType][def.name].Add(key, mod.SetValue);
-									if (!columnHeaders[defType].Contains(key))
-										columnHeaders[defType].Add(key);
-								}
-								if (!Mathf.Approximately(mod.Add, 0.0f))
-								{
-									string key = $"{mod.Stat}_add";
-									if (!output[defType][def.name].ContainsKey(key))
-										output[defType][def.name].Add(key, $"{mod.Add}");
-									if (!columnHeaders[defType].Contains(key))
-										columnHeaders[defType].Add(key);
-								}
-								if (!Mathf.Approximately(mod.Multiply, 1.0f))
-								{
-									string key = $"{mod.Stat}_mul";
-									if (!output[defType][def.name].ContainsKey(key))
-										output[defType][def.name].Add(key, $"{mod.Multiply}");
-									if (!columnHeaders[defType].Contains(key))
-										columnHeaders[defType].Add(key);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		foreach(var defDictPair in output)
-		{
-			if(defDictPair.Value.Count > 0)
-			{
-				if (!Directory.Exists($"{ASSET_ROOT}/{packName}/csv/"))
-					Directory.CreateDirectory($"{ASSET_ROOT}/{packName}/csv/");
-				string outputPath = $"{ASSET_ROOT}/{packName}/csv/{defDictPair.Key}.csv";
-				string csv = "asset_id,";
-				foreach (string column in columnHeaders[defDictPair.Key])
-				{
-					csv += $"{column},";
-				}
-				csv += "\r\n";
-
-				foreach (var assetIDValuesPair in defDictPair.Value)
-				{
-					csv += $"{assetIDValuesPair.Key},";
-					foreach (string column in columnHeaders[defDictPair.Key])
-					{
-						if (assetIDValuesPair.Value.ContainsKey(column))
-						{
-							csv += $"{assetIDValuesPair.Value[column]},";
-						}
-						else csv += ",";
-					}
-					csv += "\r\n";
-				}
-
-				File.WriteAllText(outputPath, csv);
-				
-			}
-		}
+		SpreadsheetImportExport.ExportToCSV(pack);
 	}
 
 	public void ExportPack(string packName, bool overwrite, List<Verification> verifications = null)

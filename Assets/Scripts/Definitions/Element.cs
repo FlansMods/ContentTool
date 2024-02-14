@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EOperationType
+public class Element
 {
-	Add,
-	Mul,
-	Set,
+
 }

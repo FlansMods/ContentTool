@@ -55,7 +55,7 @@ public class JavaToCSImport : MonoBehaviour
 		if(!isElement)
 			output.Add($"[CreateAssetMenu(menuName = \"Flans Mod/{className}\")]");
 		if(isElement)
-			output.Add($"public class {className}");
+			output.Add($"public class {className} : Element");
 		else
 			output.Add($"public class {className} : Definition");
 		output.Add("{");
@@ -64,12 +64,20 @@ public class JavaToCSImport : MonoBehaviour
 		{
 			if(input[i].Contains("@JsonField"))
 			{
-				output.Add("	[JsonField]");
+				if (input[i].Contains("AssetPathHint = \""))
+				{
+					string assetPathString = input[i].Substring(input[i].IndexOf("AssetPathHint = \"") + "AssetPathHint = \"".Length);
+					assetPathString = assetPathString.Substring(0, assetPathString.IndexOf("\""));
+					output.Add($"	[JsonField(AssetPathHint = \"{assetPathString}\")]");
+				}
+				else 
+					output.Add("	[JsonField]");
+
 				if(input[i].Contains("Docs = \""))
 				{
 					string docString = input[i].Substring(input[i].IndexOf("Docs = \"") + 8);
 					docString = docString.Substring(0, docString.IndexOf("\""));
-					output.Add($"[Tooltip(\"{docString}\")]");
+					output.Add($"	[Tooltip(\"{docString}\")]");
 				}
 
 				int lineToInclude = i+1;

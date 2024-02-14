@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ItemHoldingDefinition
+public class ItemHoldingDefinition : Element
 {
 	[JsonField]
 	public ItemHoldingSlotDefinition[] slots = new ItemHoldingSlotDefinition[0];

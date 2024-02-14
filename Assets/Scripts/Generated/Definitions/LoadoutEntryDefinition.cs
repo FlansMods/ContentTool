@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class LoadoutEntryDefinition
+public class LoadoutEntryDefinition : Element
 {
 	[JsonField]
 	public string paintjobName = "";

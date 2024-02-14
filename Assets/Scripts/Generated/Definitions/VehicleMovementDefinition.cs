@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class VehicleMovementDefinition
+public class VehicleMovementDefinition : Element
 {
 	[JsonField]
 	public string name = "default";

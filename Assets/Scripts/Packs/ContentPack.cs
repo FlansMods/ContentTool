@@ -85,6 +85,13 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 				yield return id;
 		}
 	}
+	public IEnumerable<string> IDsWithPrefix(string prefix)
+	{
+		Refresh();
+		foreach (string id in IDs)
+			if(id.StartsWith(prefix))
+				yield return id.Substring(prefix.Length);
+	}
 	public Dictionary<ENewDefinitionType, List<Definition>> GetSortedContent()
 	{
 		Refresh();

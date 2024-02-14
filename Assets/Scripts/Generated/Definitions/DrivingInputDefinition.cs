@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class DrivingInputDefinition
+public class DrivingInputDefinition : Element
 {
 	[JsonField]
 	public EDrivingControl control = EDrivingControl.Brake;

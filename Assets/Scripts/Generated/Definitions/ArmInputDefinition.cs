@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class ArmInputDefinition
+public class ArmInputDefinition : Element
 {
 	[JsonField]
 	public string armName = "default";

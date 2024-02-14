@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class EnergyBlockDefinition
+public class EnergyBlockDefinition : Element
 {
 	[JsonField]
 	public int maxFE = 0;
@@ -15,7 +15,7 @@ public class EnergyBlockDefinition
 	[JsonField]
 	public int batterySlotStackSize = 1;
 	[JsonField]
-[Tooltip("In millibuckets")]
+	[Tooltip("In millibuckets")]
 	public int liquidFuelStorage = 0;
 	[JsonField]
 	public string liquidFuelFilter = "";

@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class MaterialFilterDefinition
+public class MaterialFilterDefinition : Element
 {
 	[JsonField]
 	public EFilterType filterType = EFilterType.Allow;

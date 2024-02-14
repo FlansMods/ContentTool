@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,28 +14,79 @@ public class ResourceLocationPropertyDrawer : PropertyDrawer
 {
 	public override VisualElement CreatePropertyGUI(SerializedProperty property)
 	{
-		VisualElement container = new VisualElement();
+		// Load from Resources
+		var asset = Resources.Load<VisualTreeAsset>("resource_location_drawer");
+		var drawer = asset.Instantiate(property.propertyPath);
 
 		SerializedProperty namespaceProp = property.FindPropertyRelative("Namespace");
-		if (namespaceProp != null)
+		SerializedProperty idProp = property.FindPropertyRelative("ID");
+
+		JsonFieldAttribute jsonFieldAttrib = property.GetUnderlyingField().GetAttribute<JsonFieldAttribute>();
+		string assetPathHint = jsonFieldAttrib != null ? jsonFieldAttrib.AssetPathHint : "";
+
+		drawer.Q<Label>().text = property.displayName;
+
+		drawer.Q<TextField>("NamespaceEntry")?.BindProperty(namespaceProp);
+		drawer.Q<TextField>("IDEntry")?.BindProperty(idProp);
+
+		DropdownField namespaceDropdown = drawer.Q<DropdownField>("NamespaceDropdown");
+		if(namespaceDropdown != null)
 		{
-			List<string> namespaces = new List<string>(new string[] { "minecraft", "forge", "flansmod" });
-			foreach (ContentPack pack in ContentManager.inst.Packs)
-			{
-				if (!namespaces.Contains(pack.ModName))
-					namespaces.Add(pack.ModName);
-			}
-			int index = namespaces.IndexOf(namespaceProp.stringValue);
-			DropdownField namespaceDropdown = new DropdownField(
-				namespaces,
-				index
-			);
+			namespaceDropdown.choices = ResourceLocation.Namespaces;
 			namespaceDropdown.BindProperty(namespaceProp);
-			container.Add(namespaceDropdown);
+			namespaceDropdown.RegisterValueChangedCallback((changeEvent) =>
+			{
+				if(changeEvent.newValue == ResourceLocation.NEW_NAMESPACE)
+				{
+					// TODO:
+				}
+
+				RefreshIDChoices(drawer, changeEvent.newValue, assetPathHint);
+			});
+			namespaceDropdown.formatSelectedValueCallback = (toFormat) => { return ""; };
 		}
-		container.Add(new PropertyField(property.FindPropertyRelative("ID")));
 
+		DropdownField idDropdown = drawer.Q<DropdownField>("IDDropdown");
+		if (idDropdown != null)
+		{
+			ContentPack pack = ContentManager.inst.FindContentPack(namespaceProp.stringValue);
+			if(pack != null)
+			{
+				if(assetPathHint.Length > 0)
+				{
+					idDropdown.choices = new List<string>(pack.IDsWithPrefix(assetPathHint));
+				}
+				else idDropdown.choices = new List<string>(pack.AllIDs);
+			}
+			else
+			{
+				idDropdown.choices = new List<string>(new string[] { "Pack not found" });
+			}
+			idDropdown.BindProperty(idProp);
+			idDropdown.formatSelectedValueCallback = (toFormat) => { return ""; };
+		}
 
-		return container;
+		return drawer;
+	}
+
+	private void RefreshIDChoices(VisualElement drawer, string newValue, string assetPathHint)
+	{
+		DropdownField idDropdown = drawer.Q<DropdownField>("IDDropdown");
+		if (idDropdown != null)
+		{
+			ContentPack pack = ContentManager.inst.FindContentPack(newValue);
+			if (pack != null)
+			{
+				if (assetPathHint.Length > 0)
+				{
+					idDropdown.choices = new List<string>(pack.IDsWithPrefix(assetPathHint));
+				}
+				else idDropdown.choices = new List<string>(pack.AllIDs);
+			}
+			else
+			{
+				idDropdown.choices = new List<string>(new string[] { "Pack not found" });
+			}
+		}
 	}
 }

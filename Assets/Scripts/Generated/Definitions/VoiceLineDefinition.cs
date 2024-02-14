@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class VoiceLineDefinition
+public class VoiceLineDefinition : Element
 {
 	[JsonField]
 	public EVoiceLineType type = EVoiceLineType.Chat;

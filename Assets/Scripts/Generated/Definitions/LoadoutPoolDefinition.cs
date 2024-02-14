@@ -22,6 +22,6 @@ public class LoadoutPoolDefinition : Definition
 	[JsonField]
 	public string[] availableRewardBoxes = new string[0];
 	[JsonField]
-[Tooltip("Level 0 will be unlocked automatically. Put starter gear in there.")]
+	[Tooltip("Level 0 will be unlocked automatically. Put starter gear in there.")]
 	public LevelUpDefinition[] levelUps = new LevelUpDefinition[0];
 }

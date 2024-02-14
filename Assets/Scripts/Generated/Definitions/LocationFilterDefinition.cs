@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class LocationFilterDefinition
+public class LocationFilterDefinition : Element
 {
 	[JsonField]
 	public EFilterType filterType = EFilterType.Allow;

@@ -2,7 +2,7 @@ using UnityEngine;
 using static ResourceLocation;
 
 [System.Serializable]
-public class PaintjobUnlockDefinition
+public class PaintjobUnlockDefinition : Element
 {
 	[JsonField]
 	public string forItem = "";
