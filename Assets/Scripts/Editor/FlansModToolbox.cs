@@ -244,19 +244,24 @@ public class FlansModToolbox : EditorWindow
 	private RootNode SelectedRig { get { return 0 <= SelectedRigIndex && SelectedRigIndex < ActiveRigs.Count ? ActiveRigs[SelectedRigIndex] : null; } }
 	private int SelectedRigIndex = 0;
 	private Editor SelectedRigEditor = null;
+	private FlanStyles.FoldoutTree RigsTree = new FlanStyles.FoldoutTree();
 	private void RigsTab()
 	{
+		bool forceUpdate = false;
 		List<string> modelNames = new List<string>();
-		ActiveRigs.Clear();
-		foreach (RootNode rig in FindObjectsOfType<RootNode>())
+		if (ActiveRigs.Count == 0 || forceUpdate)
 		{
-			ActiveRigs.Add(rig);
-			modelNames.Add(rig.name);
+			ActiveRigs.Clear();
+			foreach (RootNode rig in FindObjectsOfType<RootNode>())
+			{
+				ActiveRigs.Add(rig);
+				modelNames.Add(rig.name);
+			}
+			ActiveRigs.Sort((RootNode a, RootNode b) =>
+			{
+				return string.Compare(a.name, b.name);
+			});
 		}
-		ActiveRigs.Sort((RootNode a, RootNode b) =>
-		{
-			return string.Compare(a.name, b.name);
-		});
 
 		FlanStyles.BigHeader("Rig Editor");
 
@@ -291,25 +296,29 @@ public class FlansModToolbox : EditorWindow
 		for (int i = 0; i < ActiveRigs.Count; i++)
 		{
 			RootNode rig = ActiveRigs[i];
-			GUILayout.BeginHorizontal();
-			//if(GUILayout.Button("Inspect", GUILayout.Width(32)))
-			//{
-			//	SelectedRigIndex = i;
-			//	Selection.SetActiveObjectWithContext(rig, this);
-			//}
-			EditorGUILayout.ObjectField(rig, typeof(RootNode), false, RIG_COL_X);
-			AttachPoseDropdown(rig, ATTACH_COL_X);
-			AttachPointDropdown(rig, AP_COL_X);
-
-			EditorGUI.BeginDisabledGroup(SelectedRigIndex == i);
-			if (GUILayout.Button("Select"))
+			bool foldout = RigsTree.Foldout(new GUIContent(rig.name), rig.name);
+			if (foldout)
 			{
-				SelectedRigIndex = i;
-				Selection.SetActiveObjectWithContext(SelectedRig, this);
-			}
-			EditorGUI.EndDisabledGroup();
+				GUILayout.BeginHorizontal();
+				//if(GUILayout.Button("Inspect", GUILayout.Width(32)))
+				//{
+				//	SelectedRigIndex = i;
+				//	Selection.SetActiveObjectWithContext(rig, this);
+				//}
+				EditorGUILayout.ObjectField(rig, typeof(RootNode), false, RIG_COL_X);
+				AttachPoseDropdown(rig, ATTACH_COL_X);
+				AttachPointDropdown(rig, AP_COL_X);
 
-			GUILayout.EndHorizontal();
+				EditorGUI.BeginDisabledGroup(SelectedRigIndex == i);
+				if (GUILayout.Button("Select"))
+				{
+					SelectedRigIndex = i;
+					Selection.SetActiveObjectWithContext(SelectedRig, this);
+				}
+				EditorGUI.EndDisabledGroup();
+
+				GUILayout.EndHorizontal();
+			}
 		}
 
 		

@@ -88,7 +88,7 @@ public abstract class Converter<TInfo, TDefinition>
 			stat = stat,
 			accumulators = new StatAccumulatorDefinition[] {
 				new StatAccumulatorDefinition {
-					operation = EAccumulationOperation.Constant,
+					operation = EAccumulationOperation.BaseAdd,
 					value = value,
 				}
 			}
@@ -102,8 +102,8 @@ public abstract class Converter<TInfo, TDefinition>
 			matchGroupPaths = groupPath.Length > 0 ? new string[] { groupPath } : new string[0],
 			accumulators = new StatAccumulatorDefinition[] {
 				new StatAccumulatorDefinition {
-					operation = EAccumulationOperation.Multiply,
-					value = value - 1.0f,
+					operation = EAccumulationOperation.StackablePercentage,
+					value = 100.0f * (value - 1.0f),
 				}
 			}
 		};

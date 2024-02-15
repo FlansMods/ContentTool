@@ -210,7 +210,7 @@ public static class GUIVerify
 		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
 			verifications.AddRange(GetCachedVerifications(asset, forceRefresh));
 		if (container is IVerifiableAsset containerAsset)
-			containerAsset.GetVerifications(verifications);
+			verifications.AddRange(GetCachedVerifications(containerAsset, forceRefresh));
 		return verifications;
 	}
 	public static void InvalidateCaches()

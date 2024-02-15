@@ -175,14 +175,14 @@ public class ContentManagerEditor : Editor
 
 	public void ImportTab_Packs(ContentManager instance)
 	{
-		foreach (string sourcePack in instance.GetPreImportPackNames())
+		foreach (var kvp in instance.GetImportPackMap())
 		{
-			string packFoldoutPath = $"{sourcePack}";
+			string sourcePack = kvp.Key.PackName;
 			GUILayout.BeginHorizontal();
-			bool packFoldout = NestedFoldout(packFoldoutPath, sourcePack);
+			bool packFoldout = NestedFoldout(sourcePack, sourcePack);
 
 			// --- Import Status ---
-			bool alreadyImported = instance.FindContentPack(sourcePack) != null;
+			bool alreadyImported = kvp.Value != null;
 			if (alreadyImported)
 				GUILayout.Label("[Imported]", FlanStyles.GreenLabel, GUILayout.Width(120));
 			else
@@ -233,7 +233,7 @@ public class ContentManagerEditor : Editor
 					int count = instance.GetNumAssetsInPack(sourcePack, defType);
 					if (count > 0)
 					{
-						string typeFoldoutPath = $"{packFoldoutPath}/{defType}";
+						string typeFoldoutPath = $"{sourcePack}/{defType}";
 						GUILayout.BeginHorizontal();
 						bool typeFoldout = NestedFoldout(typeFoldoutPath, defType.ToString());
 						GUILayout.FlexibleSpace();

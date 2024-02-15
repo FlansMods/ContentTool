@@ -3,8 +3,38 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class FlansModAssetModificationProcessor : AssetModificationProcessor
+public class FlansModAssetModificationProcessor : AssetPostprocessor
 {
+	private void OnPreprocessAsset()
+	{
+		string path = assetImporter.assetPath;
+		if(path.EndsWith(".asset"))
+		{
+			List<string> lines = new List<string>(File.ReadAllLines(path));
+			for (int i = 0; i < lines.Count; i++)
+			{
+				if(lines[i].EndsWith("itemSettings:"))
+				{
+
+				}
+			}
+		}
+		Definition def = AssetDatabase.LoadAssetAtPath<Definition>(path);
+		if(def != null)
+		{
+			
+		}
+
+		{
+			ModelImporter modelImporter = assetImporter as ModelImporter;
+			if (modelImporter != null)
+			{
+				if (!assetPath.Contains("@"))
+					modelImporter.importAnimation = false;
+				modelImporter.materialImportMode = ModelImporterMaterialImportMode.None;
+			}
+		}
+	}
 
 	public static string[] OnWillSaveAssets(string[] paths)
 	{
@@ -13,7 +43,13 @@ public class FlansModAssetModificationProcessor : AssetModificationProcessor
 		for(int i = paths.Length - 1; i >= 0; i--)
 		{
 			string path = paths[i];
+
+			Definition def = AssetDatabase.LoadAssetAtPath<Definition>(path);
+
+			/*
 			System.Type assetType = AssetDatabase.GetMainAssetTypeAtPath(path);
+
+
 			if(typeof(TurboRootNode).IsAssignableFrom(assetType))
 			{
 				TurboRootNode model = AssetDatabase.LoadAssetAtPath<TurboRootNode>(path);
@@ -54,7 +90,7 @@ public class FlansModAssetModificationProcessor : AssetModificationProcessor
 					}
 					else Debug.Log($"Did not save {model.name} Model asset due to user prompt");
 				}
-			}
+			}*/
 		}
 		return paths;
 	}

@@ -97,7 +97,7 @@ public abstract class GeometryNode : Node
 	protected override void EditorUpdate()
 	{
 		base.EditorUpdate();
-		if (Root != null && Root is TurboRootNode turboRoot)
+		if (Root != null && Root is TurboRootNode turboRoot && EditorUtility.IsDirty(this))
 		{
 			GenerateBakedGeometry(turboRoot.UVMapSize);
 			if (MR == null)

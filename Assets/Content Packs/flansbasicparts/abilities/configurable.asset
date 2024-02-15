@@ -47,21 +47,20 @@ MonoBehaviour:
     effects:
     - effectType: 6
       modifiers:
-      - Stat: impact_damage
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
+      - stat: impact_damage
+        matchGroupPaths: []
+        accumulators:
+        - operation: 1
+          value: 10
+          multiplyPer: 0300000002000000
+        setValue: 
     stacking:
       stackingKey: configurable
       maxStacks: 1
       decayAllAtOnce: 0
-      decayTime: []
+      decayTime:
+        baseValue: 0
+        additional: []
       intensity:
-      - operation: 0
-        value: 1
-        multiplyPer: 3
-      - operation: 1
-        value: 1.1
-        multiplyPer: 2
+        baseValue: 0
+        additional: []

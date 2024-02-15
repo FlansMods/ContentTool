@@ -60,13 +60,16 @@ public class SpreadsheetImportExport : MonoBehaviour
 									{
 										string key = $"{mod.stat}_{accumulator.operation.ToString().ToLower()}";
 										string valueOutput = $"{accumulator.value}";
-										switch(accumulator.multiplyPer)
+										foreach(EAccumulationSource source in accumulator.multiplyPer)
 										{
-											case EAccumulationSource.PerLevel: valueOutput += "L"; break;
-											case EAccumulationSource.PerStacks: valueOutput += "S"; break;
-											case EAccumulationSource.PerAttachment: valueOutput += "A"; break;
-											case EAccumulationSource.PerMagFullness: valueOutput += "F"; break;
-											case EAccumulationSource.PerMagEmptiness: valueOutput += "E"; break;
+											switch (source)
+											{
+												case EAccumulationSource.PerLevel: valueOutput += "L"; break;
+												case EAccumulationSource.PerStacks: valueOutput += "S"; break;
+												case EAccumulationSource.PerAttachment: valueOutput += "A"; break;
+												case EAccumulationSource.PerMagFullness: valueOutput += "F"; break;
+												case EAccumulationSource.PerMagEmptiness: valueOutput += "E"; break;
+											}
 										}
 										if (output[defType][def.name].ContainsKey(key))
 										{

@@ -5,9 +5,9 @@ using static ResourceLocation;
 public class StatAccumulatorDefinition : Element
 {
 	[JsonField]
-	public EAccumulationOperation operation = EAccumulationOperation.Add;
+	public EAccumulationOperation operation = EAccumulationOperation.BaseAdd;
 	[JsonField]
 	public float value = 0.0f;
 	[JsonField]
-	public EAccumulationSource multiplyPer = EAccumulationSource.One;
+	public EAccumulationSource[] multiplyPer = new EAccumulationSource[0];
 }

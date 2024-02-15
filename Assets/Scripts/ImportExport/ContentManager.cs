@@ -54,7 +54,7 @@ public class ContentManager : MonoBehaviour
 	// ---------------------------------------------------------------------------------------
 	#region Pre-Import Pack storage
 	// ---------------------------------------------------------------------------------------
-	private class PreImportPack
+	public class PreImportPack
 	{
 		public string PackName;
 		public string RootLocation { get { return $"{IMPORT_ROOT}/{PackName}"; } }
@@ -314,6 +314,21 @@ public class ContentManager : MonoBehaviour
 		}
 		return names;
 	}
+	public List<PreImportPack> GetPreImportPacks()
+	{
+		Refresh();
+		return PreImportPacks;
+	}
+	public Dictionary<PreImportPack, ContentPack> GetImportPackMap()
+	{
+		Refresh();
+		Dictionary<PreImportPack, ContentPack> dict = new Dictionary<PreImportPack, ContentPack>();
+		foreach (PreImportPack pack in PreImportPacks)
+		{
+			dict.Add(pack, FindContentPack(pack.PackName, false));
+		}
+		return dict;
+	}
 	public int GetNumAssetsInPack(string packName)
 	{
 		Refresh();
@@ -456,7 +471,7 @@ public class ContentManager : MonoBehaviour
 	[SerializeField, FormerlySerializedAs("Packs")]
 	private List<ContentPack> _Packs = new List<ContentPack>();
 
-	public ContentPack FindContentPack(string packName)
+	public ContentPack FindContentPack(string packName, bool canSearchAssets = true)
 	{
 		// First, see if we already cached it
 		foreach (ContentPack pack in Packs)
@@ -465,13 +480,16 @@ public class ContentManager : MonoBehaviour
 					return pack;
 
 		// Second, try to find it in the asset database
-		foreach (string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
+		if (canSearchAssets)
 		{
-			ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
-			if (loadedPack != null)
+			foreach (string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
 			{
-				Packs.Add(loadedPack);
-				return loadedPack;
+				ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
+				if (loadedPack != null)
+				{
+					Packs.Add(loadedPack);
+					return loadedPack;
+				}
 			}
 		}
 
