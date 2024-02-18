@@ -16,7 +16,7 @@ public class PartDefinition : Definition
 	[JsonField]
 	public ModifierDefinition[] modifiers = new ModifierDefinition[0];
 	[JsonField]
-	public CraftingTraitProviderDefinition[] abilities = new CraftingTraitProviderDefinition[0];
+	public CraftingTraitProviderDefinition[] traits = new CraftingTraitProviderDefinition[0];
 	[JsonField]
 	public EngineDefinition engine = new EngineDefinition();
 	[JsonField(AssetPathHint = "materials/")]

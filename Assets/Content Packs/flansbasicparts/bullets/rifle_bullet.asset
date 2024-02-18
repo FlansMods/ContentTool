@@ -17,9 +17,6 @@ MonoBehaviour:
     Name: Rifle Bullet
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:bullet
-    - flansmod:rifle_bullet
     maxStackSize: 64
     tags:
     - Namespace: flansmod
@@ -39,8 +36,8 @@ MonoBehaviour:
     penetrationPower: 1
     impact:
       decal:
-        Namespace: minecraft
-        ID: null
+        Namespace: flansmod
+        ID: effects/bullet_decal
       damageToTarget: 1.5
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
@@ -66,6 +63,5 @@ MonoBehaviour:
     secondsBetweenTrailParticles: 0.25
     dragInWater: 0.2
     waterParticles: 
-  onShootActions: []
-  onClipEmptyActions: []
-  onReloadActions: []
+  triggers: []
+  actionGroups: []

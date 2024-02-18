@@ -21,8 +21,13 @@ public class ResourceLocationPropertyDrawer : PropertyDrawer
 		SerializedProperty namespaceProp = property.FindPropertyRelative("Namespace");
 		SerializedProperty idProp = property.FindPropertyRelative("ID");
 
-		JsonFieldAttribute jsonFieldAttrib = property.GetUnderlyingField().GetAttribute<JsonFieldAttribute>();
-		string assetPathHint = jsonFieldAttrib != null ? jsonFieldAttrib.AssetPathHint : "";
+		string assetPathHint = "";
+		if (property.serializedObject.targetObjects.Length <= 1)
+		{
+			JsonFieldAttribute jsonFieldAttrib = property.GetUnderlyingField().GetAttribute<JsonFieldAttribute>();
+			if (jsonFieldAttrib != null)
+				assetPathHint = jsonFieldAttrib.AssetPathHint;
+		}
 
 		drawer.Q<Label>().text = property.displayName;
 

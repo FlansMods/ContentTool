@@ -17,9 +17,6 @@ MonoBehaviour:
     Name: Poisoned Flechette Shell
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:bullet
-    - flansmod:shotgun_shell
     maxStackSize: 64
     tags:
     - Namespace: flansmod
@@ -39,8 +36,8 @@ MonoBehaviour:
     penetrationPower: 0
     impact:
       decal:
-        Namespace: minecraft
-        ID: null
+        Namespace: flansmod
+        ID: effects/bullet_decal
       damageToTarget: 1.25
       multiplierVsPlayers: 1
       multiplierVsVehicles: 1
@@ -66,6 +63,5 @@ MonoBehaviour:
     secondsBetweenTrailParticles: 0.25
     dragInWater: 0.2
     waterParticles: 
-  onShootActions: []
-  onClipEmptyActions: []
-  onReloadActions: []
+  triggers: []
+  actionGroups: []

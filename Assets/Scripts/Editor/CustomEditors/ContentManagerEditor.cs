@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -340,8 +341,8 @@ public class ContentManagerEditor : Editor
 	}
 
 	public bool ExpandExportResults = false;
-	public void ExportTab(ContentManager instance)
-	{
+	public void ExportTab(ContentManager instance, Action<ContentPack> viewDetailsFunc = null)
+	{ 
 		if (ContentManager.LastExportOperation != "None" && ContentManager.LastExportOperationResults.Count > 0)
 		{
 			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
@@ -385,6 +386,13 @@ public class ContentManagerEditor : Editor
 			}
 			else
 			{
+				if (viewDetailsFunc != null)
+				{
+					if (GUILayout.Button("View Details"))
+					{
+						viewDetailsFunc.Invoke(pack);
+					}
+				}
 				EditorGUI.BeginDisabledGroup(true);
 				GUILayout.Button(FlanStyles.ExportError, GUILayout.Width(68));
 				EditorGUI.EndDisabledGroup();
@@ -425,9 +433,9 @@ public class ContentManagerEditor : Editor
 		}
 	}
 
-	private void AssetListFoldout(ContentManager instance, ContentPack pack, string foldoutPath, IEnumerable<Object> assets)
+	private void AssetListFoldout(ContentManager instance, ContentPack pack, string foldoutPath, IEnumerable<UnityEngine.Object> assets)
 	{
-		foreach (Object asset in assets)
+		foreach (UnityEngine.Object asset in assets)
 		{
 			List<Verification> verifications = new List<Verification>();
 			if (asset is IVerifiableAsset verifiable)

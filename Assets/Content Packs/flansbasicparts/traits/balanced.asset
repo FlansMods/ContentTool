@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
+  m_Name: balanced
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Balanced
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.balanced.colour
+    Lang: 0
+    Localised: b
+  - Unlocalised: ability.flansbasicparts.balanced.tooltip.1
+    Lang: 0
+    Localised: Reduces the dual wielding recoil and spread penalty by 50%
+  maxLevel: 1
+  abilities:
+  - startTriggers:
+    - triggerType: 0
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 6
+      modifiers:
+      - stat: dual_wield_penalty
+        matchGroupPaths: []
+        accumulators:
+        - operation: 2
+          value: -50
+          multiplyPer: 
+        setValue: 
+    stacking:
+      stackingKey: 
+      maxStacks: 0
+      decayAllAtOnce: 0
+      decayTime:
+        baseValue: 0
+        additional: []
+      intensity:
+        baseValue: 0
+        additional: []

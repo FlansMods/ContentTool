@@ -17,15 +17,7 @@ public class ActionDefinition : Element
 	[Tooltip("These will be applied to this action if applicable")]
 	public ModifierDefinition[] modifiers = new ModifierDefinition[0];
 	[JsonField]
-	public float fovFactor = 1.25f;
-	[JsonField]
 	public string scopeOverlay = "";
 	[JsonField]
 	public string anim = "";
-	[JsonField]
-	public float toolLevel = 1.0f;
-	[JsonField]
-	public float harvestSpeed = 1.0f;
-	[JsonField]
-	public float reach = 1.0f;
 }

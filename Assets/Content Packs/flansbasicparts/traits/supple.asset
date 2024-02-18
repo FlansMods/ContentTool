@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
+  m_Name: supple
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Supple
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.supple.colour
+    Lang: 0
+    Localised: c
+  - Unlocalised: ability.flansbasicparts.supple.tooltip.1
+    Lang: 0
+    Localised: Reduces recoil by 15%
+  - Unlocalised: ability.flansbasicparts.supple.tooltip.2
+    Lang: 0
+    Localised: Reduces recoil by 30%
+  - Unlocalised: ability.flansbasicparts.supple.tooltip.3
+    Lang: 0
+    Localised: Reduces recoil by 45%
+  - Unlocalised: ability.flansbasicparts.supple.tooltip.4
+    Lang: 0
+    Localised: Reduces recoil by 60%
+  - Unlocalised: ability.flansbasicparts.supple.tooltip.5
+    Lang: 0
+    Localised: Reduces recoil by 75%
+  maxLevel: 5
+  abilities:
+  - startTriggers:
+    - triggerType: 0
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 6
+      modifiers:
+      - stat: horizontal_recoil
+        matchGroupPaths: []
+        accumulators:
+        - operation: 2
+          value: -15
+          multiplyPer: 01000000
+        setValue: 
+      - stat: vertical_recoil
+        matchGroupPaths: []
+        accumulators:
+        - operation: 2
+          value: -15
+          multiplyPer: 01000000
+        setValue: 
+    stacking:
+      stackingKey: 
+      maxStacks: 0
+      decayAllAtOnce: 0
+      decayTime:
+        baseValue: 0
+        additional: []
+      intensity:
+        baseValue: 0
+        additional: []

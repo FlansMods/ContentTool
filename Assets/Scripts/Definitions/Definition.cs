@@ -276,7 +276,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		|| this is MaterialDefinition
 		|| this is NpcDefinition
 		|| this is TeamDefinition
-		|| this is AbilityDefinition)
+		|| this is CraftingTraitDefinition)
 			return false;
 
 		return true;

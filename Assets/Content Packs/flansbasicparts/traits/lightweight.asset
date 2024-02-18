@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
+  m_Name: lightweight
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Lightweight
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.lightweight.colour
+    Lang: 0
+    Localised: 3
+  - Unlocalised: ability.flansbasicparts.lightweight.tooltip.1
+    Lang: 0
+    Localised: Increases movement speed by 0.2 block/s
+  - Unlocalised: ability.flansbasicparts.lightweight.tooltip.2
+    Lang: 0
+    Localised: Increases movement speed by 0.4 block/s
+  - Unlocalised: ability.flansbasicparts.lightweight.tooltip.3
+    Lang: 0
+    Localised: Increases movement speed by 0.6 block/s
+  - Unlocalised: ability.flansbasicparts.lightweight.tooltip.4
+    Lang: 0
+    Localised: Increases movement speed by 0.8 block/s
+  - Unlocalised: ability.flansbasicparts.lightweight.tooltip.5
+    Lang: 0
+    Localised: Increases movement speed by 1.0 block/s
+  maxLevel: 5
+  abilities:
+  - startTriggers:
+    - triggerType: 16
+      triggerConditions: []
+    endTriggers:
+    - triggerType: 17
+      triggerConditions: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 1
+      modifiers:
+      - stat: attribute_id
+        matchGroupPaths: []
+        accumulators: []
+        setValue: generic.movement_speed
+      - stat: attribute_multiplier
+        matchGroupPaths: []
+        accumulators:
+        - operation: 0
+          value: 0.2
+          multiplyPer: 01000000
+        setValue: 
+    stacking:
+      stackingKey: 
+      maxStacks: 0
+      decayAllAtOnce: 0
+      decayTime:
+        baseValue: 0
+        additional: []
+      intensity:
+        baseValue: 0
+        additional: []

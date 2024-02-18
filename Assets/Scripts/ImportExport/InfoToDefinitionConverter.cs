@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class InfoToDefinitionConverter
@@ -373,13 +374,10 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				sounds = new SoundDefinition[0],
 				modifiers = CreateShotModifiers(inf),
 				itemStack = "", // Not used by this action
-				fovFactor = 1.0f, // Not used by this action
 				scopeOverlay = "", // Not used by this action
 				anim = "", // Not used by this action
-				toolLevel = 1.0f, // Not used by this action
-				harvestSpeed = 1.0f, // Not used by this action
-				reach = 5.0f, // Not used by this action
 
+	
 				duration = inf.shootDelay / 20f,
 
 				// warmup
@@ -405,10 +403,12 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			primaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.Melee,
-				reach = 5.0f,
-				toolLevel = inf.meleeDamage,
+				modifiers = new ModifierDefinition[] {
+					BaseStat(Constants.STAT_TOOL_REACH, 5.0f),
+					BaseStat(Constants.STAT_MELEE_DAMAGE, inf.meleeDamage)
+				},
 				sounds = new SoundDefinition[] {
-					new SoundDefinition() 
+					new SoundDefinition()
 					{
 						sound = new ResourceLocation(Utils.ToLowerWithUnderscores(inf.meleeSound)),
 					},
@@ -511,6 +511,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionGroupDefinition CreateSecondaryActions(GunType inf)
 	{
 		List<ActionDefinition> secondaryActions = new List<ActionDefinition>();
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 
 		if(inf.shield)
 		{
@@ -529,7 +530,9 @@ public class GunConverter : Converter<GunType, GunDefinition>
 				actionType = EActionType.Scope,
 				scopeOverlay = inf.defaultScopeTexture,
 				//zoomFactor = inf.zoomLevel,
-				fovFactor = Mathf.Approximately(inf.FOVFactor, 1.0f) ? inf.zoomLevel : inf.FOVFactor,
+				modifiers = new ModifierDefinition[] {
+					BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(inf.FOVFactor, 1.0f) ? inf.zoomLevel : inf.FOVFactor)
+				},
 			});
 		}
 		else if(inf.FOVFactor > 1.0f)
@@ -537,7 +540,9 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			secondaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.AimDownSights,
-				fovFactor = inf.FOVFactor,
+				modifiers = new ModifierDefinition[] {
+					BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, inf.FOVFactor)
+				},
 			});
 			// Add animation action?
 			secondaryActions.Add(new ActionDefinition()
@@ -559,6 +564,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			spinUpDuration = inf.minigunStartSpeed / 10f,
 
 			actions = secondaryActions.ToArray(),
+			
 		};
 	}
 }
@@ -812,7 +818,9 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 								actionType = EActionType.Scope,
 								scopeOverlay = input.zoomOverlay,
 								// Legacy, people much prefer FOV zoom to regular ZOOM
-								fovFactor = Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel,
+								modifiers = new ModifierDefinition[] {
+									BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel)
+								},
 							}
 						}
 					}
@@ -845,7 +853,7 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 							{
 								actionType = EActionType.AimDownSights,
 								scopeOverlay = input.zoomOverlay,
-								fovFactor = input.FOVZoomLevel,
+								modifiers = new ModifierDefinition[] { BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, input.FOVZoomLevel) },
 							}
 						}
 					}
@@ -1674,77 +1682,41 @@ public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
 
 		List<ActionDefinition> primaryActions = new List<ActionDefinition>();
 		List<ActionDefinition> secondaryActions = new List<ActionDefinition>();
-		switch(input.function)
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
+		switch (input.function)
 		{
 			case EMechaToolType.pickaxe:
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Pickaxe,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
+				primaryActions.Add(new ActionDefinition() { actionType = EActionType.Pickaxe, });
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_LEVEL, input.toolHardness));
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_SPEED, input.speed));
+				mods.Add(BaseStat(Constants.STAT_TOOL_REACH, input.reach));
 				break;
-			}
 			case EMechaToolType.axe:
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Axe,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
-				secondaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Strip,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
+				primaryActions.Add(new ActionDefinition() { actionType = EActionType.Axe });
+				secondaryActions.Add(new ActionDefinition() { actionType = EActionType.Strip });
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_LEVEL, input.toolHardness));
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_SPEED, input.speed));
+				mods.Add(BaseStat(Constants.STAT_TOOL_REACH, input.reach));
 				break;
-			}
 			case EMechaToolType.shovel:
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Shovel,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
-				secondaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Flatten,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
+				primaryActions.Add(new ActionDefinition() { actionType = EActionType.Shovel });
+				secondaryActions.Add(new ActionDefinition() { actionType = EActionType.Flatten });
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_LEVEL, input.toolHardness));
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_SPEED, input.speed));
+				mods.Add(BaseStat(Constants.STAT_TOOL_REACH, input.reach));
 				break;
-			}
 			case EMechaToolType.shears:
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Shear,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
+				primaryActions.Add(new ActionDefinition() { actionType = EActionType.Shear });
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_LEVEL, input.toolHardness));
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_SPEED, input.speed));
+				mods.Add(BaseStat(Constants.STAT_TOOL_REACH, input.reach));
 				break;
-			}
 			case EMechaToolType.sword:
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Melee,
-					toolLevel = input.toolHardness,
-					harvestSpeed = input.speed,
-					reach = input.reach,
-				});
+				primaryActions.Add(new ActionDefinition() { actionType = EActionType.Melee });
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_LEVEL, input.toolHardness));
+				mods.Add(BaseStat(Constants.STAT_TOOL_HARVEST_SPEED, input.speed));
+				mods.Add(BaseStat(Constants.STAT_TOOL_REACH, input.reach));
 				break;
-			}
 		}
 
 		output.actionOverrides = new ActionGroupDefinition[]
@@ -1761,7 +1733,7 @@ public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
 			}
 		};
 
-		List<ModifierDefinition> mods = new List<ModifierDefinition>();
+		
 		if (!Mathf.Approximately(input.speedMultiplier, 1f))
 			mods.Add(MultiplierStat(Constants.STAT_MOVEMENT_SPEED, input.speedMultiplier));
 		if(!Mathf.Approximately(input.damageResistance, 1f))

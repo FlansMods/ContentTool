@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
+  m_Name: fresh_mags
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Fresh Mags
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.fresh_mags.colour
+    Lang: 0
+    Localised: d
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.1
+    Lang: 0
+    Localised: Adds 30% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.2
+    Lang: 0
+    Localised: Adds 60% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.3
+    Lang: 0
+    Localised: Adds 90% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.4
+    Lang: 0
+    Localised: Adds 120% damage for 5s after reloading
+  - Unlocalised: ability.flansbasicparts.fresh_mags.tooltip.5
+    Lang: 0
+    Localised: Adds 150% damage for 5s after reloading
+  - Unlocalised: effect.flansbasicparts.fresh_mags
+    Lang: 0
+    Localised: Fresh Mags
+  maxLevel: 5
+  abilities:
+  - startTriggers:
+    - triggerType: 9
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 2
+      modifiers:
+      - stat: impact_damage
+        matchGroupPaths: []
+        accumulators:
+        - operation: 1
+          value: 30
+          multiplyPer: 01000000
+        setValue: 
+      - stat: mob_effect_id
+        matchGroupPaths: []
+        accumulators: []
+        setValue: flansbasicparts:fresh_mags
+    stacking:
+      stackingKey: fresh_mags
+      maxStacks: 1
+      decayAllAtOnce: 1
+      decayTime:
+        baseValue: 5
+        additional: []
+      intensity:
+        baseValue: 0
+        additional: []

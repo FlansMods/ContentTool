@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0f7dd97514f1648bf06e8d5534d0a9, type: 3}
+  m_Name: shredder
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Shredder
+  LocalisedExtras:
+  - Unlocalised: ability.flansbasicparts.shredder.colour
+    Lang: 0
+    Localised: a
+  - Unlocalised: effect.flansbasicparts.shredder
+    Lang: 0
+    Localised: Shredder
+  - Unlocalised: ability.flansbasicparts.shredder.tooltip.1
+    Lang: 0
+    Localised: Adds 1% damage per enemy hit, up to 40%. The stack clears after 10s
+      without a hit
+  - Unlocalised: ability.flansbasicparts.shredder.tooltip.2
+    Lang: 0
+    Localised: Adds 2% damage per enemy hit, up to 80%. The stack clears after 10s
+      without a hit
+  - Unlocalised: ability.flansbasicparts.shredder.tooltip.3
+    Lang: 0
+    Localised: Adds 3% damage per enemy hit, up to 120%. The stack clears after 10s
+      without a hit
+  - Unlocalised: ability.flansbasicparts.shredder.tooltip.4
+    Lang: 0
+    Localised: Adds 4% damage per enemy hit, up to 160%. The stack clears after 10s
+      without a hit
+  - Unlocalised: ability.flansbasicparts.shredder.tooltip.5
+    Lang: 0
+    Localised: Adds 5% damage per enemy hit, up to 200%. The stack clears after 10s
+      without a hit
+  maxLevel: 5
+  abilities:
+  - startTriggers:
+    - triggerType: 2
+      triggerConditions: []
+    endTriggers: []
+    targets:
+    - targetType: 1
+      matchIDs: []
+      matchTags: []
+    effects:
+    - effectType: 2
+      modifiers:
+      - stat: impact_damage
+        matchGroupPaths: []
+        accumulators:
+        - operation: 1
+          value: 1
+          multiplyPer: 0000000001000000
+        setValue: 
+      - stat: mob_effect_id
+        matchGroupPaths: []
+        accumulators: []
+        setValue: flansbasicparts:shredder
+    stacking:
+      stackingKey: shredder
+      maxStacks: 40
+      decayAllAtOnce: 1
+      decayTime:
+        baseValue: 10
+        additional: []
+      intensity:
+        baseValue: 0
+        additional: []

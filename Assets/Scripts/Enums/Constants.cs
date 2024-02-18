@@ -61,6 +61,7 @@ public static class Constants
 	public const string KEY_MOB_EFFECT_ID = "mob_effect_id";
 	public const string STAT_POTION_MULTIPLIER = "potion_multiplier";
 	public const string STAT_POTION_DURATION = "potion_duration";
+	public const string STAT_ATTRIBUTE_ID = "attribute_id";
 	public const string STAT_ATTRIBUTE_MULTIPLIER = "attribute_multiplier";
 
 
@@ -134,6 +135,7 @@ public static class Constants
 		KEY_MOB_EFFECT_ID,
 		STAT_POTION_MULTIPLIER,
 		STAT_POTION_DURATION,
+		STAT_ATTRIBUTE_ID,
 		STAT_ATTRIBUTE_MULTIPLIER,
 		
 		

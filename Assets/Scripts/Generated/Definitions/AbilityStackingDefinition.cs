@@ -11,7 +11,5 @@ public class AbilityStackingDefinition : Element
 	[JsonField]
 	public bool decayAllAtOnce = false;
 	[JsonField]
-	public FloatStatDefinition decayTime = new FloatStatDefinition();
-	[JsonField]
-	public FloatStatDefinition intensity = new FloatStatDefinition();
+	public float decayTime = 0.0f;
 }

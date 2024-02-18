@@ -200,7 +200,10 @@ public class FlansModToolbox : EditorWindow
 		CreateContentManagerEditor();
 		ContentManager inst = ContentManager.inst;
 		if (ContentManagerEditor != null)
-			ContentManagerEditor.ExportTab(inst);
+			ContentManagerEditor.ExportTab(inst, (pack) => {
+				SelectedTab = Tab.ContentPacks;
+				SelectedContentPackIndex = Packs.IndexOf(pack);
+			});
 	}
 	#endregion
 	// -------------------------------------------------------------------------------------------------------
