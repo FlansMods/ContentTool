@@ -166,9 +166,9 @@ public static class GUIVerify
 	private static bool ShowNeutral = true;
 	private static bool ShowFail = true;
 
-	public static Texture2D TickTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/tick.png");
-	public static Texture2D NeutralTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/neutral.png");
-	public static Texture2D CrossTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/cross.png");
+	public static Texture2D TickTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/tick.png");
+	public static Texture2D NeutralTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/neutral.png");
+	public static Texture2D CrossTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/cross.png");
 
 	public static GUILayoutOption[] OBJECT_FIELD_OPTIONS = new GUILayoutOption[] { GUILayout.Width(128) };
 	public static GUILayoutOption[] STATUS_ICON_OPTIONS = new GUILayoutOption[] { GUILayout.Width(24) };

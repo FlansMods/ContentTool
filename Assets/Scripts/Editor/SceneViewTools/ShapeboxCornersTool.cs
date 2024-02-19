@@ -13,7 +13,7 @@ public class ShapeboxCornersTool : MinecraftModelEditorTool<ShapeboxGeometryNode
 
 	public void OnEnable()
 	{
-		FlanCustomButtons.ShapeboxCornersTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/shapebox_corners.png");
+		FlanCustomButtons.ShapeboxCornersTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/shapebox_corners.png");
 	}
 	public void OnDisable()
 	{

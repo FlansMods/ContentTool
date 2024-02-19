@@ -10,7 +10,7 @@ public class ColourPaintingTool : MinecraftModelPaintingTool
 	public override void OnEnable()
 	{
 		base.OnEnable();
-		BrushTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/paint_color.png");
+		BrushTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/paint_color.png");
 	}
 	public override void OnDisable()
 	{
@@ -34,7 +34,7 @@ public abstract class MinecraftModelPaintingTool : EditorTool
 	protected Texture2D BrushTexture = null;
 	public virtual void OnEnable()
 	{
-		ToolbarIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/model_painting.png");
+		ToolbarIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/model_painting.png");
 	}
 	public virtual void OnDisable()
 	{

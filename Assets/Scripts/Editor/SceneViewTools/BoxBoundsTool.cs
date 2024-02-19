@@ -13,7 +13,7 @@ public class BoxBoundsTool : MinecraftModelEditorTool<BoxGeometryNode>
 
 	public void OnEnable()
 	{
-		FlanCustomButtons.BoxBoundsTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/EditorAssets/shapebox_bounds.png");
+		FlanCustomButtons.BoxBoundsTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/shapebox_bounds.png");
 	}
 	public void OnDisable()
 	{

@@ -11,6 +11,21 @@ public class FlansModToolbox : EditorWindow
         GetWindow(typeof(FlansModToolbox));
     }
 
+	[MenuItem("Flan's Mod/Export .unitypackage")]
+	public static void ExportUnityPackage()
+	{
+		List<string> exportedAssetPaths = new List<string>();
+								
+		exportedAssetPaths.Add("Assets/Content Packs/flansmod");
+		exportedAssetPaths.Add("Assets/Content Packs/forge");
+		exportedAssetPaths.Add("Assets/Editor");
+		exportedAssetPaths.Add("Assets/Gizmos");
+		exportedAssetPaths.Add("Assets/Scripts");
+		exportedAssetPaths.Add("Assets/Scenes/ContentToolScene.unity");
+
+		AssetDatabase.ExportPackage(exportedAssetPaths.ToArray(), "flans_content_tool.unitypackage", ExportPackageOptions.Recurse | ExportPackageOptions.IncludeDependencies);
+	}
+
 	public void OnEnable()
 	{
 		EditorApplication.update += Repaint;
@@ -60,113 +75,6 @@ public class FlansModToolbox : EditorWindow
 		}
 		GUILayout.EndVertical();
 		GUILayout.EndScrollView();
-
-		// Temp - For Flan if I need to iterate some things in editor quickly
-		if (GUILayout.Button("Do the thing"))
-		{
-
-
-			string[] guids = AssetDatabase.FindAssets("t:Definition");
-			foreach (string guid in guids)
-			{
-				string path = AssetDatabase.GUIDToAssetPath(guid);
-				if (path != null)
-				{
-					Definition def = AssetDatabase.LoadAssetAtPath<Definition>(path);
-					//FlanimationDefinition anim = AssetDatabase.LoadAssetAtPath<FlanimationDefinition>(path);
-					//foreach (KeyframeDefinition keyframe in anim.keyframes)
-					//{
-					//	foreach (PoseDefinition pose in keyframe.poses)
-					//	{
-					//		pose.position = new VecWithOverride()
-					//		{
-					//			xValue = pose.position.zValue,
-					//			yValue = pose.position.yValue,
-					//			zValue = -pose.position.xValue,
-					//			xOverride = pose.position.xOverride,
-					//			yOverride = pose.position.yOverride,
-					//			zOverride = pose.position.zOverride
-					//		};
-					//		pose.rotation = new VecWithOverride()
-					//		{
-					//			xValue = -pose.rotation.zValue,
-					//			yValue = pose.rotation.yValue,
-					//			zValue = pose.rotation.xValue,
-					//			xOverride = pose.rotation.xOverride,
-					//			yOverride = pose.rotation.yOverride,
-					//			zOverride = pose.rotation.zOverride
-					//		};
-					//	}
-					//}
-					EditorUtility.SetDirty(def);
-				}
-			}
-				
-
-			/*
-				string[] guids = AssetDatabase.FindAssets("t:TurboRig");
-				foreach (string guid in guids)
-				{
-					string path = AssetDatabase.GUIDToAssetPath(guid);
-					if (path != null)
-					{
-						TurboRig rig = AssetDatabase.LoadAssetAtPath<TurboRig>(path);
-						foreach (ItemTransform transform in rig.Transforms)
-						{
-							if(transform.Type == ItemTransformType.FIRST_PERSON_LEFT_HAND ||
-								transform.Type == ItemTransformType.FIRST_PERSON_RIGHT_HAND)
-							{
-								transform.Rotation = Quaternion.Euler(0f, -90f, 0f);
-							}
-						}
-						foreach(AttachPoint ap in rig.AttachPoints)
-						{
-							if(ap.name == "laser_origin" || ap.name == "shoot_origin" || ap.name == "eye_line"
-							|| ap.name.StartsWith("barrel")
-							|| ap.name.StartsWith("stock")
-							|| ap.name.StartsWith("grip")
-							|| ap.name.StartsWith("sights"))
-							{
-								if(Mathf.Approximately(ap.euler.y, 0f))
-								{
-									TurboModel section = rig.GetSection(ap.name);
-									if(section != null)
-									{
-										foreach(TurboPiece piece in section.Pieces)
-										{
-											piece.Pos += Quaternion.Euler(piece.Euler) * piece.Origin;
-											piece.Origin = Vector3.zero;
-											piece.Euler += new Vector3(0f, 90f, 0f);
-										}
-									}
-								}
-								ap.euler = new Vector3(0, -90f, 0f);
-							}
-							else if(ap.name == "barrel" || ap.name == "grip" || ap.name == "")
-							{
-								//ap.euler = new Vector3(0f, 90f, 0f);
-							}
-						}
-						EditorUtility.SetDirty(rig);
-					}
-				}
-				*/
-			/*
-			guids = AssetDatabase.FindAssets("t:MagazineDefinition");
-			foreach (string guid in guids)
-			{
-				string path = AssetDatabase.GUIDToAssetPath(guid);
-				if (path != null)
-				{
-					MagazineDefinition mag = AssetDatabase.LoadAssetAtPath<MagazineDefinition>(path);
-					foreach (ModifierDefinition modifier in mag.modifiers)
-						if (modifier.ApplyFilters.Length > 0 && modifier.ApplyFilters[0] == "primary_reload")
-							modifier.ApplyFilters[0] = "reload_primary";
-					EditorUtility.SetDirty(mag);
-				}
-			}
-			*/
-		}
 	}
 
 	// -------------------------------------------------------------------------------------------------------
