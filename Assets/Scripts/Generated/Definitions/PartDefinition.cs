@@ -1,9 +1,10 @@
 using UnityEngine;
 using static ResourceLocation;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "Flans Mod/PartDefinition")]
-public class PartDefinition : Definition
+public class PartDefinition : Definition, ISerializationCallbackReceiver
 {
 	[JsonField]
 	public bool canPlaceInMachiningTable = false;
@@ -21,4 +22,12 @@ public class PartDefinition : Definition
 	public EngineDefinition engine = new EngineDefinition();
 	[JsonField(AssetPathHint = "materials/")]
 	public ResourceLocation material = InvalidLocation;
+	[FormerlySerializedAs("material")]
+	[HideInInspector]
+	public string _material;
+	public void OnBeforeSerialize() {}
+	public void OnAfterDeserialize() {
+		if(material == ResourceLocation.InvalidLocation)
+			material = new ResourceLocation(_material);
+	}
 }

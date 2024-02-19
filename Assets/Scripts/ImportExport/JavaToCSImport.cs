@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class JavaToCSImport : MonoBehaviour
@@ -14,6 +15,7 @@ public class JavaToCSImport : MonoBehaviour
 
 	public string RootJavaDir;
 	public const string RootCSDir = "Assets/Scripts/Generated";
+	public const string ManualOverridesDir = "Assets/Scripts/Generated/ManualOverrides";
 
 	public string ScanDir;
 
@@ -27,6 +29,8 @@ public class JavaToCSImport : MonoBehaviour
 			Directory.CreateDirectory(RootCSDir);
 		foreach(JavaCSClassMapping mapping in Mappings)
 		{
+			
+
 			Import($"{RootJavaDir}/{mapping.JavaPackage.Replace('.', '/')}/{mapping.JavaClassName}.java", 
 				$"{RootCSDir}/Definitions/{mapping.JavaClassName}.cs",
 				mapping.JavaClassName,
@@ -35,6 +39,13 @@ public class JavaToCSImport : MonoBehaviour
 		foreach(string autoMapping in AutoMappings)
 		{
 			string className = new FileInfo(autoMapping).Name.Split(".")[0];
+
+			if (File.Exists($"{ManualOverridesDir}/{className}.cs"))
+			{
+				Debug.Log($"Skipping cs import of {className} due to manual override");
+				continue;
+			}
+
 			Import(autoMapping,
 				$"{RootCSDir}/Definitions/{className}.cs",
 				className,
@@ -49,16 +60,22 @@ public class JavaToCSImport : MonoBehaviour
 		{
 			"using UnityEngine;",
 			"using static ResourceLocation;",
+			"using UnityEngine.Serialization;",
 			"",
 			"[System.Serializable]"
 		};
 		if(!isElement)
 			output.Add($"[CreateAssetMenu(menuName = \"Flans Mod/{className}\")]");
+		int classLine = output.Count;
 		if(isElement)
 			output.Add($"public class {className} : Element");
 		else
 			output.Add($"public class {className} : Definition");
 		output.Add("{");
+
+
+		List<string> serializeFixers = new List<string>();
+		List<string> serializeArrayFixers = new List<string>();
 
 		for(int i = 0; i < input.Length; i++)
 		{
@@ -83,12 +100,62 @@ public class JavaToCSImport : MonoBehaviour
 				int lineToInclude = i+1;
 				while(input[lineToInclude].Contains("@"))
 					lineToInclude++;
-				output.Add(ConvertToCS(input[lineToInclude]));
+
+				ImportLine(input[lineToInclude], output, serializeFixers, serializeArrayFixers);
 			}
 		}
+
+		if(serializeFixers.Count > 0 || serializeArrayFixers.Count > 0)
+		{
+			output[classLine] += ", ISerializationCallbackReceiver";
+			output.Add("	public void OnBeforeSerialize() {}");
+			output.Add("	public void OnAfterDeserialize() {");
+			foreach (string varName in serializeFixers)
+			{
+				output.Add($"		if({varName} == ResourceLocation.InvalidLocation)");
+				output.Add($"			{varName} = new ResourceLocation(_{varName});");
+			}
+			foreach(string arrayName in serializeArrayFixers)
+			{
+				output.Add($"		if({arrayName}.Length == 0) {{");
+				output.Add($"		{arrayName} = new ResourceLocation[_{arrayName}.Length];");
+				output.Add($"		for(int i = 0; i < _{arrayName}.Length; i++)");
+				output.Add($"			{arrayName}[i] = new ResourceLocation(_{arrayName}[i]);");
+				output.Add($"		}}");
+			}
+			output.Add("	}");
+		}
+
 		output.Add("}");
 		
 		File.WriteAllLines(csPath, output);
+	}
+
+	private static readonly Regex resLocRegex = new Regex("public ResourceLocation\\s*([a-z0-9_z-]*)\\s*=");
+	private static readonly Regex arrayResLocRegex = new Regex("public ResourceLocation\\[\\]\\s*([a-z0-9_z-]*)\\s*=");
+	private void ImportLine(string java, List<string> output, List<string> serializeFixers, List<string> serializeArrayFixers)
+	{
+
+		output.Add(ConvertToCS(java));
+
+		Match match = resLocRegex.Match(java);
+		if(match.Success)
+		{
+			string varName = match.Groups[1].Value;
+			output.Add($"	[FormerlySerializedAs(\"{varName}\")]");
+			output.Add("	[HideInInspector]");
+			output.Add($"	public string _{varName};");
+			serializeFixers.Add(varName);
+		}
+		Match array = arrayResLocRegex.Match(java);
+		if(array.Success)
+		{
+			string arrayName = array.Groups[1].Value;
+			output.Add($"	[FormerlySerializedAs(\"{arrayName}\")]");
+			output.Add("	[HideInInspector]");
+			output.Add($"	public string[] _{arrayName};");
+			serializeArrayFixers.Add(arrayName);
+		}
 	}
 
 	private string ConvertToCS(string java)

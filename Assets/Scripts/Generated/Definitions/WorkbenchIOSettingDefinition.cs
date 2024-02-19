@@ -1,5 +1,6 @@
 using UnityEngine;
 using static ResourceLocation;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class WorkbenchIOSettingDefinition : Element

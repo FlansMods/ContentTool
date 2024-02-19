@@ -1,11 +1,15 @@
 using UnityEngine;
 using static ResourceLocation;
+using UnityEngine.Serialization;
 
 [System.Serializable]
-public class ImpactDefinition : Element
+public class ImpactDefinition : Element, ISerializationCallbackReceiver
 {
 	[JsonField(AssetPathHint = "textures/")]
 	public ResourceLocation decal = InvalidLocation;
+	[FormerlySerializedAs("decal")]
+	[HideInInspector]
+	public string _decal;
 	[JsonField]
 	public float damageToTarget = 1.0f;
 	[JsonField]
@@ -40,4 +44,9 @@ public class ImpactDefinition : Element
 	[JsonField]
 	[Tooltip("WIP, will be able to apply actions at the point of impact")]
 	public ActionDefinition[] onImpactActions = new ActionDefinition[0];
+	public void OnBeforeSerialize() {}
+	public void OnAfterDeserialize() {
+		if(decal == ResourceLocation.InvalidLocation)
+			decal = new ResourceLocation(_decal);
+	}
 }
