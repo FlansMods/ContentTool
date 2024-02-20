@@ -56,14 +56,16 @@ public class ContentPackEditor : Editor
 				
 			}
 
-			if (GUILayout.Button("Import Balacing CSV [!]"))
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("Import Modifiers from Balacing CSV [!]"))
 			{
 				SpreadsheetImportExport.ImportFromCSV(pack);
 			}
-			if (GUILayout.Button("Export Balacing CSV"))
+			if (GUILayout.Button("Export Modifiers to Balacing CSV"))
 			{
 				SpreadsheetImportExport.ExportToCSV(pack);
 			}
+			GUILayout.EndHorizontal();
 
 			if (GUILayout.Button("Export"))
 			{

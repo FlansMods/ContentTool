@@ -272,7 +272,9 @@ public static class SpreadsheetImportExport
 		}
 		public bool GetBoolOrDefault(string[] path, string stat, bool defaultValue = false)
 		{
-			return TryGetRowData(path, out RowData row) && row.TryGetString(stat, out string value) && bool.TryParse(value, out defaultValue);
+			if (TryGetRowData(path, out RowData row) && row.TryGetString(stat, out string value) && bool.TryParse(value.ToLower(), out bool result))
+				return result;
+			return defaultValue;
 		}
 		public bool TryGetString(string[] path, string stat, out string result)
 		{
@@ -454,7 +456,6 @@ public static class SpreadsheetImportExport
 						actionGroup.repeatMode = mode;
 					actionGroup.repeatDelay = gunsSheet.GetFloatOrDefault(actionGroupPath, "repeatDelay", EAccumulationOperation.BaseAdd, 0.05f);
 					actionGroup.repeatCount = gunsSheet.GetIntOrDefault(actionGroupPath, "repeatCount", EAccumulationOperation.BaseAdd, 0);
-					actionGroup.loudness = gunsSheet.GetFloatOrDefault(actionGroupPath, "loudness", EAccumulationOperation.BaseAdd, 100f);
 					actionGroup.loudness = gunsSheet.GetFloatOrDefault(actionGroupPath, "loudness", EAccumulationOperation.BaseAdd, 100f);
 					actionGroup.twoHanded = gunsSheet.GetBoolOrDefault(actionGroupPath, "2h", false);
 					actionGroup.canBeOverriden = gunsSheet.GetBoolOrDefault(actionGroupPath, "canOverride", false);
