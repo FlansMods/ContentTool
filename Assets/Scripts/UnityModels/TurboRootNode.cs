@@ -12,6 +12,18 @@ public class TurboRootNode : RootNode
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
 	public FlanimationDefinition AnimationSet = null;
 
+	public override void AddDefaultTransforms()
+	{
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, new Vector3(8f, -7f, -13f), new Vector3(0f, 0f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND, new Vector3(-8f, -7f, -13f), new Vector3(0f, 0f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, new Vector3(-1f, -2f, 0f), new Vector3(0f, -90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND, new Vector3(-1f, -2f, 0f), new Vector3(0f, -90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.HEAD, Vector3.zero, new Vector3(-90f, -90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.GROUND, new Vector3(0f, 0.15f, 0f), new Vector3(0f, -90f, 0f), Vector3.one * 0.625f);
+		GetOrCreateItemTransform(ItemDisplayContext.FIXED, new Vector3(6f, 6f, 6f), new Vector3(0f, -90f, 45f));
+		GetOrCreateItemTransform(ItemDisplayContext.GUI, new Vector3(-0.001f, -0.02f, -0.001f), new Vector3(0f, 45f, 90f), Vector3.one * 1.185f);
+	}
+
 	public bool HasUVMap() { return UVMapSize != Vector2Int.zero; }
 	public bool NeedsUVRemap() 
 	{

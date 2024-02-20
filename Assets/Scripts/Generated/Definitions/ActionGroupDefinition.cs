@@ -36,4 +36,7 @@ public class ActionGroupDefinition : Element
 	public string autoCancelIfNotInMode = "";
 	[JsonField]
 	public ActionDefinition[] actions = new ActionDefinition[0];
+	[JsonField]
+	[Tooltip("These modifiers will be applied to the above actions if applicable")]
+	public ModifierDefinition[] modifiers = new ModifierDefinition[0];
 }

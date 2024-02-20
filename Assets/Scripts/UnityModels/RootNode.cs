@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class RootNode : Node
 {
@@ -37,9 +39,48 @@ public abstract class RootNode : Node
 	// -----------------------------------------------------------------------------------
 	#region ItemTransforms
 	// -----------------------------------------------------------------------------------
-	public void AddDefaultTransforms()
+	public virtual void AddDefaultTransforms()
 	{
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, new Vector3(8f, -7f, -13f), new Vector3(0f, 90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND, new Vector3(-8f, -7f, -13f), new Vector3(0f, 90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, new Vector3(8f, 8f, 6f), new Vector3(0f, 90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND, new Vector3(8f, 8f, 6f), new Vector3(0f, 90f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.HEAD, Vector3.zero, new Vector3(-90f, 0f, 0f));
+		GetOrCreateItemTransform(ItemDisplayContext.GROUND, new Vector3(0f, 0.15f, 0f), Vector3.zero, Vector3.one * 0.55f);
+		GetOrCreateItemTransform(ItemDisplayContext.FIXED, new Vector3(6f, 6f, 6f), new Vector3(0f, 0f, 45f));
+		GetOrCreateItemTransform(ItemDisplayContext.GUI, new Vector3(-0.001f, -0.02f, -0.001f), new Vector3(0f, 45f, 90f), Vector3.one * 1.185f);
+	}
+	public ItemPoseNode GetOrCreateItemTransform(ItemDisplayContext transformType, Vector3 atPos, Vector3 withEuler)
+	{
+		return GetOrCreateItemTransform(transformType, atPos, withEuler, Vector3.one);
+	}
+	public ItemPoseNode GetOrCreateItemTransform(ItemDisplayContext transformType,
+												 Vector3 atPos,
+												 Vector3 withEuler,
+												 Vector3 withScale)
+	{
+		foreach (ItemPoseNode itemPoseNode in GetChildNodes<ItemPoseNode>())
+			if (itemPoseNode.TransformType == transformType)
+				return itemPoseNode;
 
+		GameObject poseGO = new GameObject($"pose_{transformType}");
+		poseGO.transform.SetParent(transform);
+		poseGO.transform.localPosition = atPos;
+		poseGO.transform.localEulerAngles = withEuler;
+		poseGO.transform.localScale = withScale;
+		ItemPoseNode poseNode = poseGO.AddComponent<ItemPoseNode>();
+		return poseNode;
+	}
+	public ItemPoseNode GetOrCreateItemTransform(ItemDisplayContext transformType)
+	{
+		foreach (ItemPoseNode itemPoseNode in GetChildNodes<ItemPoseNode>())
+			if (itemPoseNode.TransformType == transformType)
+				return itemPoseNode;
+
+		GameObject poseGO = new GameObject($"pose_{transformType}");
+		poseGO.transform.SetParentZero(transform);
+		ItemPoseNode poseNode = poseGO.AddComponent<ItemPoseNode>();
+		return poseNode;
 	}
 	public bool TryGetItemTransform(ItemDisplayContext transformType, out ItemPoseNode node)
 	{

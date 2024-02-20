@@ -48,9 +48,9 @@ public class ModifierDefinition : Element, ISerializationCallbackReceiver
 		}
 	}
 	[FormerlySerializedAs("Add")]
-	[HideInInspector]
+	[HideInInspector, System.NonSerialized]
 	public float _add = float.NaN;
 	[FormerlySerializedAs("Multiply")]
-	[HideInInspector]
+	[HideInInspector, System.NonSerialized]
 	public float _mul = float.NaN;
 }

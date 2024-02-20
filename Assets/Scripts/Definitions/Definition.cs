@@ -158,6 +158,15 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 							}
 						}
 					}
+
+					foreach(ItemPoseNode poseNode in rootNode.GetChildNodes<ItemPoseNode>())
+					{
+						if (WillRenderIconInPose(poseNode.TransformType))
+						{
+							// Icon rendering has "suggested defaults"
+
+						}
+					}
 				}
 			}
 
@@ -250,9 +259,8 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	{
 		if (this is GunDefinition gunDef)
 			foreach (ActionGroupDefinition actionGroup in gunDef.actionGroups)
-				foreach (ActionDefinition action in actionGroup.actions)
-					foreach (ModifierDefinition modifier in action.modifiers)
-						VerifyModifier(modifier, verifications);
+				foreach (ModifierDefinition modifier in actionGroup.modifiers)
+					VerifyModifier(modifier, verifications);
 		else if (this is AttachmentDefinition attachmentDef)
 			foreach (ModifierDefinition modifier in attachmentDef.modifiers)
 				VerifyModifier(modifier, verifications);
@@ -265,6 +273,12 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	{
 		if (!Constants.STAT_SUGGESTIONS.Contains(modDef.stat))
 			verifications.Add(Verification.Neutral($"Unknown modifier {modDef.stat}"));
+	}
+
+	public bool WillRenderIconInPose(ItemDisplayContext pose)
+	{
+		if (this is GunDefinition) return pose == ItemDisplayContext.GUI;
+		return true;
 	}
 
 	public bool ExpectsModel()

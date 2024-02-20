@@ -19,6 +19,14 @@ public class VanillaIconRootNode : RootNode
 	#endregion
 	// -----------------------------------------------------------------------------------
 
+	public override void AddDefaultTransforms()
+	{
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, new Vector3(0f, 1.25f, -2.5f), new Vector3(0f, 90f, -35f), Vector3.one * 0.85f);
+		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND, new Vector3(0f, 1.25f, -2.5f), new Vector3(0f, 90f, -35f), Vector3.one * 0.85f);
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, new Vector3(0f, 4f, 2f), new Vector3(0f, -45f, 25f), Vector3.one * 0.85f);
+		GetOrCreateItemTransform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND, new Vector3(0f, 4f, 2f), new Vector3(0f, -45f, 25f), Vector3.one * 0.85f);
+	}
+
 	public override bool HasCompactEditorGUI() { return true; }
 	public override void CompactEditorGUI()
 	{

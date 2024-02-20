@@ -1563,18 +1563,6 @@ public class ContentManager : MonoBehaviour
 		*/
 	}
 
-	public void ExportBalancingCSV(string packName)
-	{
-		ContentPack pack = FindContentPack(packName);
-		if (pack == null)
-		{
-			Debug.LogError($"Failed to find pack {packName}");
-			return;
-		}
-
-		SpreadsheetImportExport.ExportToCSV(pack);
-	}
-
 	public void ExportPack(string packName, bool overwrite, List<Verification> verifications = null)
 	{
 		ContentPack pack = FindContentPack(packName);

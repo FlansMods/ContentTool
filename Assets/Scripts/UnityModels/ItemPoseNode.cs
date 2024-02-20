@@ -16,6 +16,18 @@ public class ItemPoseNode : Node
 
 	public ItemDisplayContext TransformType = ItemDisplayContext.FIXED;
 
+	public void Pose(Vector3 pos, Vector3 euler)
+	{
+		transform.localPosition = pos;
+		transform.localEulerAngles = euler;
+	}
+	public void Pose(Vector3 pos, Vector3 euler, Vector3 scale)
+	{
+		transform.localPosition = pos;
+		transform.localEulerAngles = euler;
+		transform.localScale = scale;
+	}
+
 #if UNITY_EDITOR
 	public override bool HasCompactEditorGUI() { return true; }
 	public override void CompactEditorGUI()

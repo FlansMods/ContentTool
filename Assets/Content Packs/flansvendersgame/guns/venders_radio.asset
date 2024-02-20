@@ -17,12 +17,12 @@ MonoBehaviour:
     Name: Vender's Interdimensional Rapid Response Relay
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:gun
     maxStackSize: 1
     tags:
     - Namespace: flansmod
       ID: gun
+    _tags:
+    - 
   paints:
     paintjobs: []
   inputHandlers:
@@ -37,13 +37,13 @@ MonoBehaviour:
       andContinueEvaluating: 0
   actionGroups:
   - key: primary_fire
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
-    twoHanded: 0
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0.05
-    repeatCount: 3
+    repeatCount: 0
     spinUpDuration: 1.5
     loudness: 150
     autoCancelIfNotInMode: 
@@ -52,37 +52,17 @@ MonoBehaviour:
       duration: 2
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: entity_id
-        Filter: 
-        Add: 0
-        Multiply: 25
-        SetValue: flansvendersgame:vender
-        ApplyFilters: []
-      fovFactor: 1
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 5
     - actionType: 2
       duration: 2
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: entity_id
-        Filter: 
-        Add: 0
-        Multiply: 25
-        SetValue: flansvendersgame:vender
-        ApplyFilters: []
-      fovFactor: 1
       scopeOverlay: 
       anim: speaking
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 5
+    modifiers: []
   magazines: []
+  staticAbilities: []
   reloads: []
   modes: []
   loopingSounds: []

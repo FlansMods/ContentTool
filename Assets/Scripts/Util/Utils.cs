@@ -2,6 +2,41 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+public class CSVReader
+{
+	public string CSVData;
+	public char Separator;
+	public char LineEnding;
+
+
+	private int ReaderPosition = 0;
+
+	public bool ReadLine(out string[] values)
+	{
+		if (ReaderPosition == CSVData.Length)
+		{
+			values = new string[0];
+			return false;
+		}
+
+		int nextLineEnding = CSVData.IndexOf(LineEnding, ReaderPosition);
+		string src = (nextLineEnding == -1) ? CSVData.Substring(ReaderPosition) 
+											: CSVData.Substring(ReaderPosition, nextLineEnding - ReaderPosition);
+		if (src.EndsWith('\r'))
+			src = src.Substring(0, src.Length - 1);
+		ReaderPosition = nextLineEnding + 1;
+		values = src.Split(Separator);
+		return true;
+	}
+
+	public CSVReader(string csv, char separator, char lineEnding)
+	{
+		CSVData = csv;
+		Separator = separator;
+		LineEnding = lineEnding == '\r' ? '\n' : lineEnding;
+	}
+}
+
 public static class Utils
 {
 	public static readonly char[] SLASHES = new char[] { '/', '\\' };

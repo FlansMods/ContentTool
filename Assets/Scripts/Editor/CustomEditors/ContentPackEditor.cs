@@ -56,13 +56,13 @@ public class ContentPackEditor : Editor
 				
 			}
 
-			if(GUILayout.Button("Export Balacing CSV"))
+			if (GUILayout.Button("Import Balacing CSV [!]"))
 			{
-				ContentManager importExport = FindObjectOfType<ContentManager>();
-				if (importExport != null)
-				{
-					importExport.ExportBalancingCSV(pack.name);
-				}
+				SpreadsheetImportExport.ImportFromCSV(pack);
+			}
+			if (GUILayout.Button("Export Balacing CSV"))
+			{
+				SpreadsheetImportExport.ExportToCSV(pack);
 			}
 
 			if (GUILayout.Button("Export"))

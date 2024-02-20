@@ -364,15 +364,15 @@ public class GunConverter : Converter<GunType, GunDefinition>
 	private ActionGroupDefinition CreatePrimaryActions(GunType inf)
 	{
 		List<ActionDefinition> primaryActions = new List<ActionDefinition>();
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 
-		if(inf.shootDelay > 0.0f)
+		if (inf.shootDelay > 0.0f)
 		{
 			primaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.Shoot,
 						
 				sounds = new SoundDefinition[0],
-				modifiers = CreateShotModifiers(inf),
 				itemStack = "", // Not used by this action
 				scopeOverlay = "", // Not used by this action
 				anim = "", // Not used by this action
@@ -397,16 +397,13 @@ public class GunConverter : Converter<GunType, GunDefinition>
 					},
 				},
 			});
+			mods.AddRange(CreateShotModifiers(inf));
 		}
 		else if(inf.meleeDamage > 0.0f)
 		{
 			primaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.Melee,
-				modifiers = new ModifierDefinition[] {
-					BaseStat(Constants.STAT_TOOL_REACH, 5.0f),
-					BaseStat(Constants.STAT_MELEE_DAMAGE, inf.meleeDamage)
-				},
 				sounds = new SoundDefinition[] {
 					new SoundDefinition()
 					{
@@ -414,7 +411,9 @@ public class GunConverter : Converter<GunType, GunDefinition>
 					},
 				},
 			});
-		}
+			mods.Add(BaseStat(Constants.STAT_TOOL_REACH, 5.0f));
+			mods.Add(BaseStat(Constants.STAT_MELEE_DAMAGE, inf.meleeDamage));
+		}			
 
 		if(inf.dropItemOnShoot != null && inf.dropItemOnShoot.Length > 0)
 		{
@@ -449,7 +448,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			canActUnderwater = inf.canShootUnderwater,
 			canActUnderOtherLiquid = false,
 			canBeOverriden = true,
-			twoHanded = !inf.oneHanded,		
+			twoHanded = !inf.oneHanded,
 
 			repeatMode = inf.mode,
 			repeatCount = inf.numBurstRounds,
@@ -457,6 +456,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			spinUpDuration = inf.minigunStartSpeed / 10f,
 
 			actions = primaryActions.ToArray(),
+			modifiers = mods.ToArray(),
 		};
 	}
 
@@ -529,21 +529,16 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			{
 				actionType = EActionType.Scope,
 				scopeOverlay = inf.defaultScopeTexture,
-				//zoomFactor = inf.zoomLevel,
-				modifiers = new ModifierDefinition[] {
-					BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(inf.FOVFactor, 1.0f) ? inf.zoomLevel : inf.FOVFactor)
-				},
 			});
+			mods.Add(BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(inf.FOVFactor, 1.0f) ? inf.zoomLevel : inf.FOVFactor));
 		}
 		else if(inf.FOVFactor > 1.0f)
 		{	
 			secondaryActions.Add(new ActionDefinition()
 			{
 				actionType = EActionType.AimDownSights,
-				modifiers = new ModifierDefinition[] {
-					BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, inf.FOVFactor)
-				},
 			});
+			mods.Add(BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, inf.FOVFactor));
 			// Add animation action?
 			secondaryActions.Add(new ActionDefinition()
 			{
@@ -556,7 +551,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			canActUnderwater = inf.canShootUnderwater,
 			canActUnderOtherLiquid = false,
 			canBeOverriden = true,
-			twoHanded = !inf.oneHanded,		
+			twoHanded = !inf.oneHanded,
 
 			repeatMode = inf.mode,
 			repeatCount = inf.numBurstRounds,
@@ -564,6 +559,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			spinUpDuration = inf.minigunStartSpeed / 10f,
 
 			actions = secondaryActions.ToArray(),
+			modifiers = mods.ToArray(),
 			
 		};
 	}
@@ -817,11 +813,10 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 							{
 								actionType = EActionType.Scope,
 								scopeOverlay = input.zoomOverlay,
-								// Legacy, people much prefer FOV zoom to regular ZOOM
-								modifiers = new ModifierDefinition[] {
-									BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel)
-								},
 							}
+						},
+						modifiers = new ModifierDefinition[] {
+							BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel)
 						}
 					}
 				};
@@ -853,8 +848,10 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 							{
 								actionType = EActionType.AimDownSights,
 								scopeOverlay = input.zoomOverlay,
-								modifiers = new ModifierDefinition[] { BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, input.FOVZoomLevel) },
 							}
+						},
+						modifiers = new ModifierDefinition[] {
+							BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, input.FOVZoomLevel)
 						}
 					}
 				};
@@ -1020,12 +1017,14 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 		for(int i = 0; i < input.shootPointsPrimary.Count; i++)
 		{
 			ShootPoint point = input.shootPointsPrimary[i];
+			var kvp = CreateGunActions(input, input.primary, input.alternatePrimary,
+					input.shootDelayPrimary, input.modePrimary, input.damageModifierPrimary, point,
+					input.primary == EWeaponType.GUN ? input.pilotGuns[i] : null);
 			mountedGuns.Add(new MountedGunDefinition()
 			{
 				name = $"pilot_gun_primary_{i}",
-				primaryActions = CreateGunActions(input, input.primary, input.alternatePrimary,
-					input.shootDelayPrimary, input.modePrimary, input.damageModifierPrimary, point, 
-					input.primary == EWeaponType.GUN ? input.pilotGuns[i] : null),
+				primaryActions = kvp.Key,
+				// modifiers = kvp.Value // TODO: Shouldn't we embed a GunDef? Wasn't that the whole point?
 				attachedTo = "body", // Tanks should be on the turret
 				shootPointOffset = point.offPos,
 				minYaw = 0f,
@@ -1038,12 +1037,14 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 		for(int i = 0; i < input.shootPointsSecondary.Count; i++)
 		{
 			ShootPoint point = input.shootPointsSecondary[i];
+			var kvp = CreateGunActions(input, input.secondary, input.alternateSecondary,
+					input.shootDelaySecondary, input.modeSecondary, input.damageModifierSecondary, point,
+					input.secondary == EWeaponType.GUN ? input.pilotGuns[i] : null);
 			mountedGuns.Add(new MountedGunDefinition()
 			{
 				name = $"pilot_gun_secondary_{i}",
-				primaryActions = CreateGunActions(input, input.secondary, input.alternateSecondary,
-					input.shootDelaySecondary, input.modeSecondary, input.damageModifierSecondary, point, 
-					input.secondary == EWeaponType.GUN ? input.pilotGuns[i] : null),
+				primaryActions = kvp.Key,
+				// modifiers = kvp.Value // TODO: Shouldn't we embed a GunDef? Wasn't that the whole point?
 				attachedTo = "body", // Tanks should be on the turret
 				shootPointOffset = point.offPos,
 				minYaw = 0f,
@@ -1080,6 +1081,7 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 
 				if(input.seats[i].gunType != null && input.seats[i].gunType.Length > 0)
 				{
+					var kvp = CreateGunActions(input.seats[i]);
 					gunDefs.Add(new MountedGunDefinition()
 					{
 						name = $"seat_{i}_gun",
@@ -1103,7 +1105,8 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(input.seats[i].pitchSound)),
 							length = input.seats[i].pitchSoundLength,
 						},
-						primaryActions = CreateGunActions(input.seats[i]),
+						primaryActions = kvp.Key,
+						// mods = kvp.Value TODO:
 					});
 				}
 			}
@@ -1112,11 +1115,11 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 		return gunDefs;
 	}
 
-	private ActionDefinition[] CreateGunActions(DriveableType input, EWeaponType weaponType, bool alternate,
+	private KeyValuePair<ActionDefinition[], ModifierDefinition[]> CreateGunActions(DriveableType input, EWeaponType weaponType, bool alternate,
 		int shootDelay, ERepeatMode fireMode, int damageModifier, ShootPoint shootPoint, PilotGun gun)
 	{
 		List<ActionDefinition> actions = new List<ActionDefinition>();
-
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 		switch(weaponType)
 		{
 			// This is a reference to a GunType and its corresponding stats
@@ -1137,8 +1140,9 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
 							},
 						},
-						modifiers = GunConverter.inst.CreateShotModifiers(gunType),
+						
 					});
+					mods.AddRange(GunConverter.inst.CreateShotModifiers(gunType));
 				}
 				else Debug.LogError($"Could not find gun {gun.type}");
 				
@@ -1164,12 +1168,13 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 			}
 		}
 
-		return actions.ToArray();
+		return new KeyValuePair<ActionDefinition[], ModifierDefinition[]>(actions.ToArray(), mods.ToArray());
 	}
 
-	private ActionDefinition[] CreateGunActions(Seat seat)
+	private KeyValuePair<ActionDefinition[], ModifierDefinition[]> CreateGunActions(Seat seat)
 	{
 		List<ActionDefinition> primaryActions = new List<ActionDefinition>();
+		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 
 		if(seat.gunType != null && seat.gunType.Length > 0)
 		{
@@ -1187,12 +1192,12 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
 						},
 					},
-					modifiers = GunConverter.inst.CreateShotModifiers(gunType),
+					
 				});
+				mods.AddRange(GunConverter.inst.CreateShotModifiers(gunType));
 			}
 		}
-
-		return primaryActions.ToArray();
+		return new KeyValuePair<ActionDefinition[], ModifierDefinition[]>(primaryActions.ToArray(), mods.ToArray());
 	}
 
 	public WheelDefinition[] CreateWheelDefs(DriveableType input)

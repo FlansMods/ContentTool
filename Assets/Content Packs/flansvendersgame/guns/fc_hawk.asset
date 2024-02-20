@@ -35,15 +35,15 @@ MonoBehaviour:
     Lang: 0
     Localised: Flint & Cobbleson Hawk Venom
   itemSettings:
-    _tempArray:
-    - flansmod:gun
-    - flansvendersgame:fc_craftable
     maxStackSize: 64
     tags:
     - Namespace: flansmod
       ID: gun
     - Namespace: flansvendersgame
       ID: fc_craftable
+    _tags:
+    - 
+    - 
   paints:
     paintjobs:
     - textureName: fc_hawk_coral_snake
@@ -161,13 +161,13 @@ MonoBehaviour:
       andContinueEvaluating: 1
   actionGroups:
   - key: primary_fire
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
-    twoHanded: 0
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0.05
-    repeatCount: 3
+    repeatCount: 0
     spinUpDuration: 1.5
     loudness: 150
     autoCancelIfNotInMode: 
@@ -176,53 +176,15 @@ MonoBehaviour:
       duration: 0.05
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: vertical_recoil
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: spread
-        Filter: 
-        Add: 0
-        Multiply: 10
-        SetValue: 
-        ApplyFilters: []
-      - Stat: speed
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      - Stat: bullet_count
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: impact_damage
-        Filter: 
-        Add: 0
-        Multiply: 10
-        SetValue: 
-        ApplyFilters: []
-      - Stat: knockback
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      fovFactor: 1
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 5
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmod:gunshot_kapow
+      - sound:
+          Namespace: flansmod
+          ID: gunshot_kapow
+        _sound: flansmod:gunshot_kapow
         length: 0
         minPitchMultiplier: 0.8333333
         maxPitchMultiplier: 1.25
@@ -231,32 +193,44 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 2
       duration: 0.1
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: shoot
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers:
+    - stat: impact_damage
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 10
+        multiplyPer: 
+      setValue: 
+    - stat: vertical_recoil
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 12
+        multiplyPer: 
+      setValue: 
+    - stat: spread
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 10
+        multiplyPer: 
+      setValue: 
   - key: ads
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
-    twoHanded: 0
+    twoHanded: 1
     repeatMode: 4
     repeatDelay: 0.05
-    repeatCount: 3
+    repeatCount: 0
     spinUpDuration: 1.5
     loudness: 150
     autoCancelIfNotInMode: 
@@ -265,18 +239,14 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.2
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: look
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
+    canBeOverriden: 1
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0
     repeatCount: 0
@@ -288,18 +258,14 @@ MonoBehaviour:
       duration: 2.5
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: look_at
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_start
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
+    canBeOverriden: 1
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0
     repeatCount: 0
@@ -311,18 +277,14 @@ MonoBehaviour:
       duration: 0.375
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_start
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_eject
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
+    canBeOverriden: 1
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0
     repeatCount: 0
@@ -334,17 +296,15 @@ MonoBehaviour:
       duration: 0.375
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_eject
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 1
       duration: 0.375
       sounds:
-      - sound: flansmod:magazine_unload_smooth
+      - sound:
+          Namespace: flansmod
+          ID: magazine_unload_smooth
+        _sound: flansmod:magazine_unload_smooth
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -353,18 +313,14 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_load_one
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
+    canBeOverriden: 1
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0
     repeatCount: 0
@@ -376,17 +332,15 @@ MonoBehaviour:
       duration: 0.375
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_load_one
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 1
       duration: 0.375
       sounds:
-      - sound: flansmod:magazine_load_smooth
+      - sound:
+          Namespace: flansmod
+          ID: magazine_load_smooth
+        _sound: flansmod:magazine_load_smooth
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -395,18 +349,14 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_end
-    canActUnderwater: 1
+    canActUnderwater: 0
     canActUnderOtherLiquid: 0
-    canBeOverriden: 0
-    twoHanded: 0
+    canBeOverriden: 1
+    twoHanded: 1
     repeatMode: 1
     repeatDelay: 0
     repeatCount: 0
@@ -418,19 +368,16 @@ MonoBehaviour:
       duration: 0.375
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_end
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   magazines:
   - key: primary
     matchByNames: []
     matchByTags:
     - flansvendersgame:fc_hawk
     baseCostToSwap: 0
+  staticAbilities: []
   reloads:
   - key: primary_fire
     manualReloadAllowed: 1
