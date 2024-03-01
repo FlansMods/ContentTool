@@ -17,13 +17,6 @@ MonoBehaviour:
     Name: HitMarket Snap Stock
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_pistol
-    - flansmod:attach_to_rifle
-    - flansmod:attach_to_shotgun
-    - flansmod:attach_to_grenade_launcher
-    - flansmod:stock_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -38,20 +31,29 @@ MonoBehaviour:
       ID: stock_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
   attachmentType: 2
   modifiers:
-  - Stat: vertical_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.75
-    SetValue: 
-    ApplyFilters: []
-  - Stat: horizontal_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.75
-    SetValue: 
-    ApplyFilters: []
+  - stat: vertical_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 75
+      multiplyPer: 
+    setValue: 
+  - stat: horizontal_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 75
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

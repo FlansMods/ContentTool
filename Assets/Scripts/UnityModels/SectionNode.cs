@@ -23,7 +23,11 @@ public class SectionNode : Node
 		{
 			if (name != apParent.APName)
 				verifications.Add(Verification.Failure($"Section {name} is attached to AP {apParent.name}, which does not match",
-					() => name = apParent.APName));
+					() =>
+					{
+						name = apParent.APName;
+						return this;
+					}));
 		}
 		else if(ParentNode is TurboRootNode rootParent)
 		{

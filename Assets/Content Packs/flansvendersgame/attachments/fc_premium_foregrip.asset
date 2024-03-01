@@ -17,10 +17,6 @@ MonoBehaviour:
     Name: Flint & Cobblesons Premium Quick-Hands Foregrip
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_any
-    - flansmod:grip_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -29,27 +25,34 @@ MonoBehaviour:
       ID: grip_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
   attachmentType: 3
   modifiers:
-  - Stat: vertical_recoil
-    Filter: 
-    Add: 0
-    Multiply: 1.1
-    SetValue: 
-    ApplyFilters: []
-  - Stat: horizontal_recoil
-    Filter: 
-    Add: 0
-    Multiply: 1.1
-    SetValue: 
-    ApplyFilters: []
-  - Stat: duration
-    Filter: 
-    Add: 0
-    Multiply: 0.7
-    SetValue: 
-    ApplyFilters:
+  - stat: vertical_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 1
+      value: 10
+      multiplyPer: 
+    setValue: 
+  - stat: horizontal_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 1
+      value: 10
+      multiplyPer: 
+    setValue: 
+  - stat: duration
+    matchGroupPaths:
     - primary_reload
+    accumulators:
+    - operation: 2
+      value: 70
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

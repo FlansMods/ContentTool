@@ -129,7 +129,7 @@ MonoBehaviour:
   - {fileID: 807701650216316301, guid: ca3be6fc30ae18844bc657baf2595a4c, type: 3}
   - {fileID: 807701650216316301, guid: 259060e3b08193f4a97c9849bf07b601, type: 3}
   - {fileID: 5399130955555443001, guid: 19d8ecda80e536a4f88ab8e98140dcd2, type: 3}
-  - {fileID: 3595494442586529076, guid: ee92a88ec9bec6e4880cd832099db519, type: 3}
+  - {fileID: 6374008793511428222, guid: ee92a88ec9bec6e4880cd832099db519, type: 3}
   - {fileID: 6947862286540602280, guid: 0f420c23b0e639648bb4fbc01f17df3f, type: 3}
   - {fileID: 1117043911214111143, guid: 69c38e5f96e825748968f0f6022011d6, type: 3}
   - {fileID: 5166481089791544362, guid: a8cc0105e608edc4abe4152c9018d210, type: 3}
@@ -172,6 +172,7 @@ MonoBehaviour:
   - {fileID: 3911869274135174697, guid: 88099bdf5205a9d4cb3d97405634d04b, type: 3}
   - {fileID: 5879554570798704326, guid: f9a045047e657c944b2915a78797ab2a, type: 3}
   - {fileID: 7388108120304110042, guid: fd7056f43164ca34aa5bf60f0c578742, type: 3}
+  - {fileID: 7553642714128080492, guid: d82d0922d1609c44ba98503fbe45a0c2, type: 3}
   - {fileID: 580562778160400964, guid: 8b7e373d4f55694439a2d30b06db3a10, type: 3}
   - {fileID: 7988532195378554445, guid: bc152ad412f22374ea4e05d574359286, type: 3}
   - {fileID: 4991529970614034011, guid: 17e43c112c4bf1d43b64e3b00eebebe0, type: 3}
@@ -243,6 +244,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 849d7c2ae2604d24a881f2cd88692f43, type: 3}
   - {fileID: 2800000, guid: 1d305de608657e047a05ed1be84a02c5, type: 3}
   - {fileID: 2800000, guid: 079455fc1a4fef04ab2f25e1439ebaef, type: 3}
+  - {fileID: 2800000, guid: fc9b16675fbf7a84293b9d246d90b255, type: 3}
   - {fileID: 2800000, guid: 9367c5df18f16ca48be043096b9dfa9c, type: 3}
   - {fileID: 2800000, guid: cfea7663548907b438a93e343f4b2ec5, type: 3}
   - {fileID: 2800000, guid: 212e0090e41d52449b886db38f9ed38f, type: 3}
@@ -270,6 +272,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 9e2224bf10ed06f4db41727ed9975940, type: 3}
   - {fileID: 2800000, guid: da1d859678ad33f4abea4bf623d07183, type: 3}
   - {fileID: 2800000, guid: 1b585f15d438a4a44ad7b904e06cc9b2, type: 3}
+  - {fileID: 2800000, guid: 60b2a58374d7e6c4089e3953a95b5143, type: 3}
   - {fileID: 2800000, guid: 07bf268cc1ff27b4ba334648914fa86f, type: 3}
   - {fileID: 2800000, guid: b4f363734741060458690b7111be2992, type: 3}
   - {fileID: 2800000, guid: 16e37a2607d20564ab75bc398171b37b, type: 3}
@@ -319,6 +322,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 792ff2aba4e9d8f479806917fcbb1d02, type: 3}
   - {fileID: 2800000, guid: 5b083ee32978d59448c2bb6dce43f32a, type: 3}
   - {fileID: 2800000, guid: f52ac8135b6c60b498eb7b1d7e227b06, type: 3}
+  - {fileID: 2800000, guid: cfd7e1388932f004c94876f5941a2c3c, type: 3}
+  - {fileID: 2800000, guid: db98bbb29ca54b84cb3c8083ac5e3e44, type: 3}
   - {fileID: 2800000, guid: 60cca2d663abf5147a0942ba4fdecc1d, type: 3}
   - {fileID: 2800000, guid: 5b4277c4a5d952f43b34f7d7dc434fb6, type: 3}
   - {fileID: 2800000, guid: 33e1859d97bb16443bed807b16b9e431, type: 3}
@@ -704,6 +709,7 @@ MonoBehaviour:
   - textures/item/fc_puncher_blackwood
   - textures/item/fc_puncher_dark
   - textures/item/fc_puncher_static
+  - textures/item/fc_raiders_swing_grapple
   - textures/item/fc_spin_grip
   - textures/item/fc_telescopic_sight
   - textures/item/hm_1200
@@ -731,6 +737,7 @@ MonoBehaviour:
   - textures/item/hm_combine_wood
   - textures/item/hm_flashlight
   - textures/item/hm_flashlight_mini
+  - textures/item/hm_item_snagger
   - textures/item/hm_krank
   - textures/item/hm_krank_blang
   - textures/item/hm_krank_plum
@@ -780,6 +787,8 @@ MonoBehaviour:
   - textures/item/phantek_mamba_black
   - textures/item/phantek_mamba_olive
   - textures/item/phantek_mamba_original
+  - textures/item/phantek_orbcatcher
+  - textures/item/phantek_personal_relocator
   - textures/item/phantek_phaseraser_laser
   - textures/item/phantek_seeker
   - textures/item/phantek_seeker_forest
@@ -1038,6 +1047,7 @@ MonoBehaviour:
   - models/item/phantek_impact_stock
   - models/item/phantek_lock
   - models/item/phantek_mamba
+  - models/item/phantek_orbcatcher
   - models/item/phantek_phaseraser_laser
   - models/item/phantek_seeker
   - models/item/phantek_shotgun_silencer

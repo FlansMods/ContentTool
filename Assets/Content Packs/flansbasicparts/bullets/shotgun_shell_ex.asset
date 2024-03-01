@@ -23,45 +23,26 @@ MonoBehaviour:
       ID: bullet
     - Namespace: flansmod
       ID: shotgun_shell
+    _tags:
+    - 
+    - 
   roundsPerItem: 1
-  shootStats:
-    verticalRecoil: 1
-    horizontalRecoil: 0
-    spread: 1
-    spreadPattern: 1
-    speed: 0
-    bulletCount: 1
-    spinSpeed: 360
-    breaksBlockTags: []
+  hitscans:
+  - shotCount: 1
+    splashRadius: 0
+    impacts:
+    - targetType: 6
+      impactEffects:
+      - effectType: 22
+        modifiers:
+        - stat: explosion_radius
+          matchGroupPaths: []
+          accumulators:
+          - operation: 0
+            value: 0.75
+            multiplyPer: 
+          setValue: 
     penetrationPower: 0
-    impact:
-      decal:
-        Namespace: flansmod
-        ID: effects/bullet_decal
-      damageToTarget: 5
-      multiplierVsPlayers: 1
-      multiplierVsVehicles: 10
-      knockback: 1
-      potionEffectOnTarget: 
-      splashDamage: 0
-      splashDamageRadius: 1.5
-      splashDamageFalloff: 2
-      potionEffectOnSplash: 
-      setFireToTarget: 0
-      fireSpreadRadius: 0
-      fireSpreadAmount: 0
-      explosionRadius: 1
-      hitSounds: []
-      onImpactActions: []
-    hitscan: 1
-    fuseTime: 0
-    gravityFactor: 1
-    sticky: 0
-    turnRate: 0.5
-    dragInAir: 0.01
-    trailParticles: 
-    secondsBetweenTrailParticles: 0.25
-    dragInWater: 0.2
-    waterParticles: 
+  projectiles: []
   triggers: []
   actionGroups: []

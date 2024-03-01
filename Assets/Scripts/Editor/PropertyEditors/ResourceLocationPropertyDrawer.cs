@@ -68,6 +68,10 @@ public class ResourceLocationPropertyDrawer : PropertyDrawer
 				idDropdown.choices = new List<string>(new string[] { "Pack not found" });
 			}
 			idDropdown.BindProperty(idProp);
+			idDropdown.RegisterValueChangedCallback((changeEvent) => {
+				if (changeEvent.newValue.StartsWith($"{assetPathHint}/"))
+					idProp.stringValue = changeEvent.newValue.Substring(assetPathHint.Length + 1);
+			});
 			idDropdown.formatSelectedValueCallback = (toFormat) => { return ""; };
 		}
 

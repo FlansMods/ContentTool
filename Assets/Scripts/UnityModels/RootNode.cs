@@ -174,6 +174,7 @@ public abstract class RootNode : Node
 				{
 					_this.Textures[0].Key = "default";
 				});
+				return this;
 			}));
 
 		// Icons
@@ -189,6 +190,7 @@ public abstract class RootNode : Node
 					{
 						_this.Icons[0].Key = "default";
 					});
+					return this;
 				}));
 		}
 

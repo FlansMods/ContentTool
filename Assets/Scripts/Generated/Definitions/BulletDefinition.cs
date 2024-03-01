@@ -11,7 +11,11 @@ public class BulletDefinition : Definition
 	[JsonField]
 	public int roundsPerItem = 1;
 	[JsonField]
-	public ShotDefinition shootStats = new ShotDefinition();
+	[Tooltip("Any number of hitscan rays. These shoot the target instantly")]
+	public HitscanDefinition[] hitscans = new HitscanDefinition[0];
+	[JsonField]
+	[Tooltip("Any number of entity projectiles. These take time to get to their target")]
+	public ProjectileDefinition[] projectiles = new ProjectileDefinition[0];
 	[JsonField]
 	public AbilityDefinition[] triggers = new AbilityDefinition[0];
 	[JsonField]

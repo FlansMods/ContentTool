@@ -221,6 +221,28 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		}
 	}
 
+	public int GetContentCount(ENewDefinitionType defType)
+	{ 
+		int count = 0;
+		Refresh();
+		foreach (Definition def in Content)
+		{
+			if (DefinitionTypes.GetFromObject(def) == defType)
+				count++;
+		}
+		return count;
+	}
+
+	public IEnumerable<TDefType> GetContent<TDefType>() where TDefType : Definition
+	{
+		Refresh();
+		foreach (Definition def in Content)
+		{
+			if (def is TDefType tDef)
+				yield return tDef;
+		}
+	}
+
 	public bool TryGetContent(string shortName, out Definition result)
 	{
 		shortName = Utils.ToLowerWithUnderscores(shortName);
@@ -249,7 +271,8 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 				$"Pack {ModName} does not have a Minecraft-compliant name",
 				() => 
 				{ 
-					name = Utils.ToLowerWithUnderscores(name); 
+					name = Utils.ToLowerWithUnderscores(name);
+					return this;
 				})
 			);
 		}

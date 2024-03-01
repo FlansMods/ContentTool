@@ -173,12 +173,18 @@ public class TurboRootNode : RootNode
 			else if(numToRemap == totalNum)
 			{
 				verifications.Add(Verification.Failure("UV map has not been calculated",
-					() => { ApplyAutoUV(); }));
+					() => { 
+						ApplyAutoUV();
+						return this;
+					}));
 			}
 			else
 			{
 				verifications.Add(Verification.Failure($"UV map has {numToRemap} missing pieces",
-						() => { ApplyAutoUV(); }));
+						() => { 
+							ApplyAutoUV();
+							return this;
+						}));
 			}
 		}
 
@@ -207,6 +213,7 @@ public class TurboRootNode : RootNode
 						empty = root.GetComponentInChildren<EmptyNode>();
 					}
 				}
+				return this;
 			}));
 		}
 
@@ -236,6 +243,7 @@ public class TurboRootNode : RootNode
 						section.transform.ZeroTransformButNotChildren();
 					}
 				}
+				return this;
 			}));
 		}
 

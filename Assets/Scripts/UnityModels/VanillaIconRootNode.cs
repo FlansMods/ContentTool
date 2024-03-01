@@ -63,6 +63,7 @@ public class VanillaIconRootNode : RootNode
 					ApplyQuickFix((VanillaIconRootNode _this) => {
 						_this.Icons.Add(new NamedTexture("default"));
 					});
+					return this;
 				}));
 		}
 		else if(Icons.Count > 1)
@@ -73,6 +74,7 @@ public class VanillaIconRootNode : RootNode
 						while (_this.Icons.Count > 1)
 							_this.Icons.RemoveAt(1);
 					});
+					return this;
 				}));
 		}
 		// So you have exactly one icon, what's up with it
@@ -82,8 +84,9 @@ public class VanillaIconRootNode : RootNode
 				verifications.Add(Verification.Failure($"VanillaIconRootNode ({name}) icon is not keyed as 'default'",
 					() => { 
 						ApplyQuickFix((VanillaIconRootNode _this) => { 
-							_this.Icons[0].Key = "default"; 
-						}); 
+							_this.Icons[0].Key = "default";
+						});
+						return this;
 					}));
 
 			if(Icons[0].Location == ResourceLocation.InvalidLocation)
@@ -95,7 +98,8 @@ public class VanillaIconRootNode : RootNode
 						() => { 
 							ApplyQuickFix((VanillaIconRootNode _this) => { 
 								_this.Icons[0] = new NamedTexture("default", match); 
-							}); 
+							});
+							return this;
 						}));
 				}
 				// Otherwise, we don't know what to do, so just warn about it

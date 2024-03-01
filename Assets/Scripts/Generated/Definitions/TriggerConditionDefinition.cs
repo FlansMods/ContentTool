@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 public class TriggerConditionDefinition : Element
 {
 	[JsonField]
-	public ETriggerConditionType conditionType = ETriggerConditionType.AlwaysAllowed;
+	public ETriggerConditionType conditionType = ETriggerConditionType.CheckActionGroupPath;
 	[JsonField]
 	public string[] allowedValues = new string[0];
 }

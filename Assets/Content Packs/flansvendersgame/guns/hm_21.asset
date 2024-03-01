@@ -244,7 +244,14 @@ MonoBehaviour:
       itemStack: 
       scopeOverlay: flansvendersgame:hm_acog
       anim: 
-    modifiers: []
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.5
+        multiplyPer: 
+      setValue: 
   - key: ads_45
     canActUnderwater: 0
     canActUnderOtherLiquid: 0
@@ -263,7 +270,14 @@ MonoBehaviour:
       itemStack: 
       scopeOverlay: 
       anim: 
-    modifiers: []
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.25
+        multiplyPer: 
+      setValue: 
   - key: look
     canActUnderwater: 0
     canActUnderOtherLiquid: 0

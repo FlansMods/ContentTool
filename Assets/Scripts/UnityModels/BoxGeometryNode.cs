@@ -24,6 +24,13 @@ public class BoxGeometryNode : GeometryNode
 		// TODO: transform.localEulerAngles = 
 		//Offsets = JavaModelImporter.MirrorOffsets(Offsets, mirrorX, mirrorY, mirrorZ);
 	}
+	public virtual void Resize(Vector3 newOrigin, Vector3 newDims)
+	{
+		Undo.RegisterCompleteObjectUndo(gameObject, $"Resize BoxGeometry {name} to {newDims} at {newOrigin}");
+		LocalOrigin = newOrigin;
+		Dim = newDims;
+		EditorUtility.SetDirty(gameObject);
+	}
 	public virtual void Resize(Vector3 newDims)
 	{
 		Undo.RegisterCompleteObjectUndo(gameObject, $"Resize BoxGeometry {name} to {newDims}");
@@ -48,7 +55,7 @@ public class BoxGeometryNode : GeometryNode
 		Vector3 newDim = FlanStyles.CompactVector3Field("Dimensions", Dim);
 		if(!newDim.Approximately(Dim))
 		{
-			Resize(newDim);
+			//Resize(newDim);
 		}
 		GUILayout.EndHorizontal();
 	}

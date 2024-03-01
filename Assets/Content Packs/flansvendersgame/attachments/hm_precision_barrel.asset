@@ -17,11 +17,6 @@ MonoBehaviour:
     Name: HitMarket Precision Long Barrel
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_pistol
-    - flansmod:attach_to_rifle
-    - flansmod:barrel_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -32,20 +27,27 @@ MonoBehaviour:
       ID: barrel_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
+    - 
   attachmentType: 0
   modifiers:
-  - Stat: spread
-    Filter: 
-    Add: 0
-    Multiply: 0.1
-    SetValue: 
-    ApplyFilters: []
-  - Stat: impact_damage
-    Filter: 
-    Add: 0
-    Multiply: 1.2
-    SetValue: 
-    ApplyFilters: []
+  - stat: spread
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 10
+      multiplyPer: 
+    setValue: 
+  - stat: impact_damage
+    matchGroupPaths: []
+    accumulators:
+    - operation: 1
+      value: 20
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

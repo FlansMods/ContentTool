@@ -17,10 +17,6 @@ MonoBehaviour:
     Name: PhanTek Peek-a-Boo Shotgun Silencer
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_shotgun
-    - flansmod:barrel_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -29,26 +25,33 @@ MonoBehaviour:
       ID: barrel_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
   attachmentType: 0
   modifiers:
-  - Stat: loudness
-    Filter: 
-    Add: 0
-    Multiply: 0.25
-    SetValue: 
-    ApplyFilters: []
-  - Stat: pitch
-    Filter: 
-    Add: 0
-    Multiply: 6
-    SetValue: 
-    ApplyFilters: []
-  - Stat: impact_damage
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
+  - stat: loudness
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 25
+      multiplyPer: 
+    setValue: 
+  - stat: pitch
+    matchGroupPaths: []
+    accumulators:
+    - operation: 1
+      value: 100
+      multiplyPer: 
+    setValue: 
+  - stat: impact_damage
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

@@ -1,7 +1,6 @@
 using UnityEngine;
 using static ResourceLocation;
 using UnityEngine.Serialization;
-using System.Collections.Generic;
 
 [System.Serializable]
 public class ActionDefinition : Element

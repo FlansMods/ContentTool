@@ -17,15 +17,15 @@ MonoBehaviour:
     Name: HitMarket Laser Range Finder
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_any
-    - flansmod:grip
     maxStackSize: 1
     tags:
     - Namespace: flansmod
       ID: attach_to_any
     - Namespace: flansmod
       ID: grip
+    _tags:
+    - 
+    - 
   attachmentType: 3
   modifiers: []
   mechaEffects: 
@@ -57,31 +57,30 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: laser_red
-        Filter: 
-        Add: 1
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      - Stat: laser_green
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      - Stat: laser_blue
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      fovFactor: 0
       scopeOverlay: 
       anim: 
-      toolLevel: 0
-      harvestSpeed: 0
-      reach: 0
+    modifiers:
+    - stat: laser_red
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1
+        multiplyPer: 
+      setValue: 
+    - stat: laser_green
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 0
+        multiplyPer: 
+      setValue: 
+    - stat: laser_blue
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 0
+        multiplyPer: 
+      setValue: 
   reloadOverrides: []
   abilities: []
   modeOverride: 0

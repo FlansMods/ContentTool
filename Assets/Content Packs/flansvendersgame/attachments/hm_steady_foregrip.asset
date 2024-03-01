@@ -17,10 +17,6 @@ MonoBehaviour:
     Name: HitMarket Max-Stability Foregrip
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_any
-    - flansmod:grip_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -29,26 +25,33 @@ MonoBehaviour:
       ID: grip_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
   attachmentType: 3
   modifiers:
-  - Stat: spread
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
-  - Stat: vertical_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.5
-    SetValue: 
-    ApplyFilters: []
-  - Stat: horizontal_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.5
-    SetValue: 
-    ApplyFilters: []
+  - stat: spread
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
+  - stat: vertical_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 50
+      multiplyPer: 
+    setValue: 
+  - stat: horizontal_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 50
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

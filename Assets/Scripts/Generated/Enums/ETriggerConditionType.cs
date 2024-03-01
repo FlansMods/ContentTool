@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ETriggerConditionType
 {
-	AlwaysAllowed,
-	AlwaysDenied,
-	EntityType,
+	CheckOwnerEntityType,
+	CheckShooterEntityType,
+	CheckActionGroupPath,
 }

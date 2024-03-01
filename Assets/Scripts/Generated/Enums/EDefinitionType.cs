@@ -21,6 +21,7 @@ public enum ENewDefinitionType
 	magazine,
 	npc,
 	material,
+	trait,
 }
 
 public enum EDefinitionType
@@ -96,8 +97,9 @@ public static class DefinitionTypes
 		if(def is MagazineDefinition) return ENewDefinitionType.magazine;
 		if(def is NpcDefinition) return ENewDefinitionType.npc;
 		if(def is MaterialDefinition) return ENewDefinitionType.material;
+		if(def is CraftingTraitDefinition) return ENewDefinitionType.trait;
 
-		Debug.LogError("Unknown definition output type");
+		Debug.LogError($"Unknown definition output type {def}");
 		return ENewDefinitionType.part;
 	}
 
@@ -259,9 +261,10 @@ public static class DefinitionTypes
 			case ENewDefinitionType.magazine: return "magazines";
 			case ENewDefinitionType.npc: return "npcs";
 			case ENewDefinitionType.material: return "materials";
+			case ENewDefinitionType.trait: return "traits";
 			default:
 			{
-				Debug.LogError("Unknown definition output type");
+				Debug.LogError($"Unknown definition output type {defType}");
 				return "";
 			}
 		}

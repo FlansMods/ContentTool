@@ -190,7 +190,14 @@ MonoBehaviour:
       itemStack: 
       scopeOverlay: 
       anim: 
-    modifiers: []
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.25
+        multiplyPer: 
+      setValue: 
   - key: look
     canActUnderwater: 0
     canActUnderOtherLiquid: 0

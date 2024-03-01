@@ -551,7 +551,8 @@ public class ContentManager : MonoBehaviour
 			errors.Add(Verification.Failure($"Pack name '{packName}' is not in Minecraft format. Try '{sanitisedName}'.",
 			() => { 
 				Debug.Log($"Copied '{sanitisedName}' to the clipboard"); 
-				GUIUtility.systemCopyBuffer = sanitisedName; 
+				GUIUtility.systemCopyBuffer = sanitisedName;
+				return null;
 			}));
 			return false;
 		}

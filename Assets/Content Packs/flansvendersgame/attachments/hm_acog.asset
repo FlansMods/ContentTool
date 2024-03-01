@@ -17,35 +17,38 @@ MonoBehaviour:
     Name: HitMarket 4x ACOG
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_any
-    - flansmod:sights_attach
     maxStackSize: 1
     tags:
     - Namespace: flansmod
       ID: attach_to_any
     - Namespace: flansmod
       ID: sights_attach
+    _tags:
+    - 
+    - 
   attachmentType: 1
   modifiers:
-  - Stat: spread
-    Filter: 
-    Add: 0
-    Multiply: 0.4
-    SetValue: 
-    ApplyFilters: []
-  - Stat: vertical_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
-  - Stat: horizontal_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
+  - stat: spread
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 40
+      multiplyPer: 
+    setValue: 
+  - stat: vertical_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
+  - stat: horizontal_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides:
@@ -75,13 +78,16 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 4
       scopeOverlay: flansvendersgame:hm_acog
       anim: 
-      toolLevel: 0
-      harvestSpeed: 0
-      reach: 0
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 2
+        multiplyPer: 
+      setValue: 
   reloadOverrides: []
   abilities: []
   modeOverride: 0

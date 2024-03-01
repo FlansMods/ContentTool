@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Editor/Resources/flan-styles.uss?fileID=7433441132597879392&amp;guid=ec756012207b9d04bb2544d7fa157eb3&amp;type=3#flan-styles" />
+    <ui:VisualElement name="Outer" class="custom-unity-field-container" style="flex-direction: row;">
+        <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="OperationDropdown" />
+        <ui:FloatField value="42.2" name="ValueField" />
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row-reverse;">
+            <ui:Toggle label="x Level" name="xLevel" style="flex-shrink: 0;" />
+            <ui:Toggle label="x Stacks" name="xStacks" style="flex-shrink: 0;" />
+            <ui:Toggle label="x #Attachments" name="xAttachments" />
+            <ui:Toggle label="x Mag Full %" name="xMagFullness" />
+            <ui:Toggle label="x Mag Empty %" name="xMagEmptiness" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

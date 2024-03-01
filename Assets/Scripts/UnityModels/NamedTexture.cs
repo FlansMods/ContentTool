@@ -47,6 +47,7 @@ public class NamedTexture : IVerifiableAsset, IModifyable, ICloneable<NamedTextu
 				verifications.Add(Verification.Neutral($"Key for skin does not match the skin name",
 				() => {
 					Key = Location.IDWithoutPrefixes();
+					return null;
 				}));
 			}
 

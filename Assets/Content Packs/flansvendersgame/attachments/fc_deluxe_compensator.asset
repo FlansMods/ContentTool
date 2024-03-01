@@ -17,11 +17,6 @@ MonoBehaviour:
     Name: Flint & Cobblesons Deluxe Triple-Rifled Compensator
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_pistol
-    - flansmod:attach_to_rifle
-    - flansmod:barrel_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -32,20 +27,27 @@ MonoBehaviour:
       ID: barrel_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
+    - 
   attachmentType: 0
   modifiers:
-  - Stat: spread
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
-  - Stat: impact_damage
-    Filter: 
-    Add: 0
-    Multiply: 1.5
-    SetValue: 
-    ApplyFilters: []
+  - stat: spread
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
+  - stat: impact_damage
+    matchGroupPaths: []
+    accumulators:
+    - operation: 1
+      value: 50
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

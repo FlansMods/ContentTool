@@ -17,10 +17,6 @@ MonoBehaviour:
     Name: HitMarket Extended Shell Rack
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_shotgun
-    - flansmod:stock_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -29,14 +25,19 @@ MonoBehaviour:
       ID: stock_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
   attachmentType: 2
   modifiers:
-  - Stat: magazine_size
-    Filter: 
-    Add: 3
-    Multiply: 1
-    SetValue: 
-    ApplyFilters: []
+  - stat: magazine_size
+    matchGroupPaths: []
+    accumulators:
+    - operation: 0
+      value: 3
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides: []

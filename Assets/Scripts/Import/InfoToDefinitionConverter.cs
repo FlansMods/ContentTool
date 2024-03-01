@@ -475,39 +475,6 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		return mods.ToArray();
 	}
 
-	public ShotDefinition[] CreateShotDefinition(GunType type)
-	{
-		return new ShotDefinition[] { 
-			new ShotDefinition()
-			{
-				verticalRecoil = type.recoil,
-				horizontalRecoil = 0.0f,
-				spread = type.bulletSpread,
-				spreadPattern = ESpreadPattern.FilledCircle,
-				hitscan = type.bulletSpeed <= 0.0f,
-				speed = type.bulletSpeed,
-				bulletCount = type.numBullets,
-				spinSpeed = 360f,
-				//breaksMaterials = new string[0],
-				penetrationPower = 1.0f,
-				trailParticles = "",
-				impact = new ImpactDefinition()
-				{
-					decal = new ResourceLocation("flansmod", "effects/bullet_decal.png"),
-					damageToTarget = type.damage,
-					multiplierVsPlayers = 1.0f,
-					multiplierVsVehicles = 1.0f,
-					knockback = type.knockback,
-					splashDamageRadius = 0.0f,
-					splashDamageFalloff = 0.0f,
-					setFireToTarget = 0.0f,
-					fireSpreadAmount = 0.0f,
-					fireSpreadRadius = 0.0f,
-				},
-			}
-		};
-	}
-
 	private ActionGroupDefinition CreateSecondaryActions(GunType inf)
 	{
 		List<ActionDefinition> secondaryActions = new List<ActionDefinition>();
@@ -621,7 +588,7 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 	public static BulletConverter inst = new BulletConverter();
 	protected override void DoConversion(BulletType input, BulletDefinition output)
 	{
-		output.shootStats.gravityFactor = input.fallSpeed;
+		//output.shootStats.gravityFactor = input.fallSpeed;
 		output.itemSettings.maxStackSize = input.maxStackSize;
 		output.itemSettings.tags = GetTags(input);
 		output.roundsPerItem = input.roundsPerItem;
@@ -889,20 +856,21 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 		output.fuse = input.fuse;
 		output.spinForceX = input.spinWhenThrown ? 10.0f : 0.0f;
 		output.spinForceY = input.spinWhenThrown ? 10.0f : 0.0f;
-		output.impact = new ImpactDefinition()
-		{
-			fireSpreadAmount = input.fireRadius,
-			fireSpreadRadius = input.fireRadius,
-			setFireToTarget = input.fireRadius,
-			damageToTarget = input.damageVsLiving,
-			splashDamageRadius = input.explosionRadius,
-			splashDamageFalloff = input.explosionDamageVsLiving,
-			multiplierVsPlayers = 1.0f,
-			multiplierVsVehicles =  input.explosionDamageVsLiving <= 0.01f ? 0.0f : input.explosionDamageVsDriveable / input.explosionDamageVsLiving,
-			hitSounds = new SoundDefinition[0],
-			knockback = 0f,
-			decal = new ResourceLocation("flansmod", "effects/bullet_decal"),
-		};
+		// TODO:
+		//output.impact = new ImpactDefinition()
+		//{
+		//	fireSpreadAmount = input.fireRadius,
+		//	fireSpreadRadius = input.fireRadius,
+		//	setFireToTarget = input.fireRadius,
+		//	damageToTarget = input.damageVsLiving,
+		//	splashDamageRadius = input.explosionRadius,
+		//	splashDamageFalloff = input.explosionDamageVsLiving,
+		//	multiplierVsPlayers = 1.0f,
+		//	multiplierVsVehicles =  input.explosionDamageVsLiving <= 0.01f ? 0.0f : input.explosionDamageVsDriveable / input.explosionDamageVsLiving,
+		//	hitSounds = new SoundDefinition[0],
+		//	knockback = 0f,
+		//	decal = new ResourceLocation("flansmod", "effects/bullet_decal"),
+		//};
 		output.lifetimeAfterDetonation = input.smokeTime;
 		output.effectsToApplyInSmoke = input.smokeEffects.ToArray();
 		output.smokeParticles = new string[] { input.smokeParticleType };

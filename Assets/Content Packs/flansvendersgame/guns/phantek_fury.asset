@@ -220,7 +220,14 @@ MonoBehaviour:
       itemStack: 
       scopeOverlay: flansvendersgame:phantek_fury_default_scope
       anim: 
-    modifiers: []
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 2
+        multiplyPer: 
+      setValue: 
   - key: look
     canActUnderwater: 0
     canActUnderOtherLiquid: 0

@@ -1088,6 +1088,24 @@ MonoBehaviour:
   - Unlocalised: modifier.stat_name.fire_spread_amount
     Lang: 0
     Localised: Fire Spread Coverage
+  - Unlocalised: modifier.stat_name.duration
+    Lang: 0
+    Localised: Duration
+  - Unlocalised: modifier.stat_name.impact_damage
+    Lang: 0
+    Localised: Hit Damage
+  - Unlocalised: modifier.stat_name.melee_damage
+    Lang: 0
+    Localised: Melee Damage
+  - Unlocalised: modifier.stat_name.loudness
+    Lang: 0
+    Localised: Loudness
+  - Unlocalised: modifier.stat_name.pitch
+    Lang: 0
+    Localised: Sound Pitch
+  - Unlocalised: modifier.stat_name.magazine_size
+    Lang: 0
+    Localised: Magazine Size
   - Unlocalised: magazine.num_rounds
     Lang: 0
     Localised: '%d Rounds'
@@ -1459,19 +1477,190 @@ MonoBehaviour:
     Localised: "\xA76%s (Craftable)"
   - Unlocalised: modifier.scalar.one
     Lang: 0
-    Localised: "%s %s"
+    Localised: '%s %s'
   - Unlocalised: modifier.scalar.stacks
     Lang: 0
-    Localised: "%s %s per Stack"
+    Localised: '%s %s per Stack'
   - Unlocalised: modifier.scalar.level
     Lang: 0
-    Localised: "%s %s per Level"
+    Localised: '%s %s per Level'
   - Unlocalised: modifier.scalar.attachment
     Lang: 0
-    Localised: "%s %s per Attachment"
+    Localised: '%s %s per Attachment'
   - Unlocalised: modifier.scalar.mag_full
     Lang: 0
-    Localised: "Up to %s %s when magazine is full"
+    Localised: Up to %s %s when magazine is full
   - Unlocalised: modifier.scalar.mag_empty
     Lang: 0
-    Localised: "Up to %s %s when magazine is empty"
+    Localised: Up to %s %s when magazine is empty
+  - Unlocalised: action.group_path.primary_fire
+    Lang: 0
+    Localised: Primary Fire
+  - Unlocalised: action.group_path.secondary_fire
+    Lang: 0
+    Localised: Secondary Fire
+  - Unlocalised: action.group_path.look
+    Lang: 0
+    Localised: Look At
+  - Unlocalised: action.group_path.ads
+    Lang: 0
+    Localised: Aim Down Sights
+  - Unlocalised: action.group_path.scope
+    Lang: 0
+    Localised: Use Scope
+  - Unlocalised: action.group_path.gadget
+    Lang: 0
+    Localised: Toggle Gadget
+  - Unlocalised: action.group_path.reload
+    Lang: 0
+    Localised: All Reloads
+  - Unlocalised: action.group_path.primary_reload
+    Lang: 0
+    Localised: Primary Reload
+  - Unlocalised: action.group_path.secondary_reload
+    Lang: 0
+    Localised: Secondary Reload
+  - Unlocalised: comma_list.append_one
+    Lang: 0
+    Localised: '%s, %s'
+  - Unlocalised: comma_list.append_last
+    Lang: 0
+    Localised: '%s and %s'
+  - Unlocalised: comma_list.brackets
+    Lang: 0
+    Localised: (%s)
+  - Unlocalised: attachment.add_input
+    Lang: 0
+    Localised: "Modifies (or adds) the \xA72[%s\xA72]\xA7f action"
+  - Unlocalised: player.input.moveforward
+    Lang: 0
+    Localised: Forward
+  - Unlocalised: player.input.movebackward
+    Lang: 0
+    Localised: Backward
+  - Unlocalised: player.input.moveleft
+    Lang: 0
+    Localised: Left
+  - Unlocalised: player.input.moveright
+    Lang: 0
+    Localised: Right
+  - Unlocalised: player.input.yawleft
+    Lang: 0
+    Localised: Yaw Left
+  - Unlocalised: player.input.yawright
+    Lang: 0
+    Localised: Yaw Right
+  - Unlocalised: player.input.rollleft
+    Lang: 0
+    Localised: Roll Left
+  - Unlocalised: player.input.rollright
+    Lang: 0
+    Localised: Roll Right
+  - Unlocalised: player.input.pitchup
+    Lang: 0
+    Localised: Pitch Up
+  - Unlocalised: player.input.pitchdown
+    Lang: 0
+    Localised: Pitch Down
+  - Unlocalised: player.input.fire1
+    Lang: 0
+    Localised: Primary Fire
+  - Unlocalised: player.input.fire2
+    Lang: 0
+    Localised: Secondary Fire
+  - Unlocalised: player.input.fire3
+    Lang: 0
+    Localised: Tertiary Fire
+  - Unlocalised: player.input.reload1
+    Lang: 0
+    Localised: Primary Reload
+  - Unlocalised: player.input.reload2
+    Lang: 0
+    Localised: Secondary Reload
+  - Unlocalised: player.input.reload3
+    Lang: 0
+    Localised: Tertiary Reload
+  - Unlocalised: player.input.jump
+    Lang: 0
+    Localised: Jump
+  - Unlocalised: player.input.sprint
+    Lang: 0
+    Localised: Sprint
+  - Unlocalised: player.input.specialkey1
+    Lang: 0
+    Localised: Special 1
+  - Unlocalised: player.input.specialkey2
+    Lang: 0
+    Localised: Special 2
+  - Unlocalised: player.input.gearup
+    Lang: 0
+    Localised: Gear Up
+  - Unlocalised: player.input.geardown
+    Lang: 0
+    Localised: Gear Down
+  - Unlocalised: trigger.expanded.alwayson
+    Lang: 0
+    Localised: Always
+  - Unlocalised: trigger.expanded.instant
+    Lang: 0
+    Localised: 
+  - Unlocalised: trigger.expanded.shotentity
+    Lang: 0
+    Localised: Shot Entity
+  - Unlocalised: trigger.expanded.shotblock
+    Lang: 0
+    Localised: Shot Block
+  - Unlocalised: trigger.expanded.shotandbrokeblock
+    Lang: 0
+    Localised: Broke Block
+  - Unlocalised: trigger.expanded.shotheadshot
+    Lang: 0
+    Localised: Headshotted
+  - Unlocalised: trigger.expanded.reloadstart
+    Lang: 0
+    Localised: Start Reload
+  - Unlocalised: trigger.expanded.reloadeject
+    Lang: 0
+    Localised: Ejected Mag
+  - Unlocalised: trigger.expanded.reloadloadone
+    Lang: 0
+    Localised: Loaded Ammo
+  - Unlocalised: trigger.expanded.reloadend
+    Lang: 0
+    Localised: Finish Reload
+  - Unlocalised: trigger.expanded.startactiongroup
+    Lang: 0
+    Localised: Started %s
+  - Unlocalised: trigger.expanded.triggeractiongroup
+    Lang: 0
+    Localised: Triggered %s
+  - Unlocalised: trigger.expanded.endactiongroup
+    Lang: 0
+    Localised: Finished %s
+  - Unlocalised: trigger.expanded.switchmode
+    Lang: 0
+    Localised: Switched Mode
+  - Unlocalised: trigger.expanded.addtoinventory
+    Lang: 0
+    Localised: Added to Inventory
+  - Unlocalised: trigger.expanded.removefrominventory
+    Lang: 0
+    Localised: Removed from Inventory
+  - Unlocalised: trigger.expanded.equip
+    Lang: 0
+    Localised: Equipped
+  - Unlocalised: trigger.expanded.unequip
+    Lang: 0
+    Localised: Unequipped
+  - Unlocalised: trigger.expanded.bulletconsumed
+    Lang: 0
+    Localised: Bullet Consumed
+  - Unlocalised: trigger.expanded.firstbulletconsumed
+    Lang: 0
+    Localised: First Bullet Consumed
+  - Unlocalised: trigger.expanded.lastbulletconsumed
+    Lang: 0
+    Localised: Last Bullet Consumed
+  - Unlocalised: trigger.expanded.raycastaction
+    Lang: 0
+    Localised: Ray Casted

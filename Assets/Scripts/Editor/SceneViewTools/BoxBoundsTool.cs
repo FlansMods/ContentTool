@@ -20,16 +20,24 @@ public class BoxBoundsTool : MinecraftModelEditorTool<BoxGeometryNode>
 		FlanCustomButtons.BoxBoundsTexture = null;
 	}
 
+
+
 	public override void CopyFromHandle(BoxGeometryNode boxNode)
 	{
 		if (boxNode == null)
 			return;
 
-		if (!boxNode.Pos.Approximately(_Handle.Origin))
-			boxNode.Translate(_Handle.Origin);
+		Vector3 deltaPos = GetRelativeToStartPoint(boxNode.transform.position);
 
-		if (!boxNode.Dim.Approximately(_Handle.Dimensions))
+		if (!_Handle.Origin.Approximately(deltaPos))
+		{
+			boxNode.Translate(_Handle.Origin - deltaPos);
+		}
+
+		if(!boxNode.Dim.Approximately(_Handle.Dimensions))
+		{
 			boxNode.Resize(_Handle.Dimensions);
+		}		
 	}
 
 	public override void CopyToHandle(BoxGeometryNode boxNode)
@@ -37,7 +45,9 @@ public class BoxBoundsTool : MinecraftModelEditorTool<BoxGeometryNode>
 		if(boxNode == null)
 			return;
 
-		_Handle.SetOriginAndDims(Vector3.zero, boxNode.Dim);
+		Vector3 deltaPos = GetRelativeToStartPoint(boxNode.transform.position);
+
+		_Handle.SetOriginAndDims(deltaPos, boxNode.Dim);
 		//_Handle.Offsets = preview.Piece.Offsets;
 	}
 }

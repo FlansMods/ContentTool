@@ -17,7 +17,7 @@ public enum VerifyType
 [System.Serializable]
 public class Verification
 {
-	public delegate void QuickFixFunc();
+	public delegate UnityEngine.Object QuickFixFunc();
 	public QuickFixFunc Func = null;
     public string Message;
     public VerifyType Type;
@@ -123,7 +123,11 @@ public class Verification
 	{
 		foreach (Verification v in verifications)
 			if (v.Func != null)
-				v.Func();
+			{
+				UnityEngine.Object dirty = v.Func();
+				if (dirty != null)
+					EditorUtility.SetDirty(dirty);
+			}
 	}
 	public static int CountQuickFixes(Dictionary<UnityEngine.Object, List<Verification>> multiVerify)
 	{
@@ -140,7 +144,11 @@ public class Verification
 		foreach (var kvp in multiVerify)
 			foreach (Verification v in kvp.Value)
 				if (v.Func != null)
-					v.Func();
+				{
+					UnityEngine.Object dirty = v.Func();
+					if (dirty != null)
+						EditorUtility.SetDirty(dirty);
+				}
 	}
 
 	public override string ToString()
@@ -468,7 +476,11 @@ public static class GUIVerify
 			{
 				if (GUILayout.Button("Quick-Fix", QUICK_FIX_BUTTON_OPTIONS))
 				{
-					verification.Func.Invoke();
+					UnityEngine.Object dirty = verification.Func();
+					if(dirty != null)
+					{
+						EditorUtility.SetDirty(dirty);
+					}
 					pressedAnyQuickFix = true;
 				}
 			}

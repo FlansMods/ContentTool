@@ -17,10 +17,6 @@ MonoBehaviour:
     Name: HitMarket Pinpoint Holo-Sight
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:attach_to_any
-    - flansmod:sights_attach
-    - flansbasicparts:add_to_part_fab
     maxStackSize: 1
     tags:
     - Namespace: flansmod
@@ -29,26 +25,33 @@ MonoBehaviour:
       ID: sights_attach
     - Namespace: flansbasicparts
       ID: add_to_part_fab
+    _tags:
+    - 
+    - 
+    - 
   attachmentType: 1
   modifiers:
-  - Stat: spread
-    Filter: 
-    Add: 0
-    Multiply: 0.7
-    SetValue: 
-    ApplyFilters: []
-  - Stat: vertical_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
-  - Stat: horizontal_recoil
-    Filter: 
-    Add: 0
-    Multiply: 0.8
-    SetValue: 
-    ApplyFilters: []
+  - stat: spread
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 70
+      multiplyPer: 
+    setValue: 
+  - stat: vertical_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
+  - stat: horizontal_recoil
+    matchGroupPaths: []
+    accumulators:
+    - operation: 2
+      value: 80
+      multiplyPer: 
+    setValue: 
   mechaEffects: 
   mechaEffectFilter: 
   handlerOverrides:
@@ -78,13 +81,16 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1
       scopeOverlay: 
       anim: 
-      toolLevel: 0
-      harvestSpeed: 0
-      reach: 0
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.75
+        multiplyPer: 
+      setValue: 
   reloadOverrides: []
   abilities: []
   modeOverride: 0
