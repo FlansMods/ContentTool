@@ -326,6 +326,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		{
 			for (int i = 0; i < itemSettings.tags.Length; i++)
 			{
+				int index = i;
 				ResourceLocation tagLoc = itemSettings.tags[i];
 				if (tagLoc.Namespace.Length == 0)
 				{
@@ -344,7 +345,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 					}
 					else if (prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
 					{
-						int index = i;
+						
 						verifications.Add(Verification.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
 						() =>
 						{
@@ -353,9 +354,45 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 							return def;
 						}));
 					}
-					else
+					else if(prefixes == "ingot")
 					{
-
+						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'ingot' instead of Forge tag 'ingots'",
+						() => 
+						{
+							ResourceLocation innerTagLoc = itemSettings.tags[index];
+							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("ingot", "ingots")}");
+							return def;
+						}));
+					}
+					else if (prefixes == "nugget")
+					{
+						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'nugget' instead of Forge tag 'nuggets'",
+						() =>
+						{
+							ResourceLocation innerTagLoc = itemSettings.tags[index];
+							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("nugget", "nuggets")}");
+							return def;
+						}));
+					}
+					else if (prefixes == "plate")
+					{
+						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'plate' instead of Forge tag 'plates'",
+						() =>
+						{
+							ResourceLocation innerTagLoc = itemSettings.tags[index];
+							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("plate", "plates")}");
+							return def;
+						}));
+					}
+					else if (prefixes == "storage_block")
+					{
+						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'storage_block' instead of Forge tag 'storage_blocks'",
+						() =>
+						{
+							ResourceLocation innerTagLoc = itemSettings.tags[index];
+							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("storage_block", "storage_blocks")}");
+							return def;
+						}));
 					}
 				}
 			}

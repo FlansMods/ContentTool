@@ -21,8 +21,6 @@ MonoBehaviour:
     Namespace: minecraft
     ID: null
   gunCrafting:
-    _idArray: []
-    _tagArray: []
     isActive: 0
     craftableGuns:
       itemIDFilters: []
@@ -31,8 +29,6 @@ MonoBehaviour:
     maxSlots: 8
     FECostPerCraft: 0
   partCrafting:
-    _idArray: []
-    _tagArray: []
     isActive: 0
     inputSlots: 8
     outputSlots: 8
@@ -43,8 +39,6 @@ MonoBehaviour:
       itemTagFilters: []
       materialFilters: []
   gunModifying:
-    _tempArray: []
-    _tempArray2: []
     isActive: 1
     disallowedMods: []
     allowedMods: []
@@ -73,7 +67,9 @@ MonoBehaviour:
     allow: 
     maxStackSize: 64
   itemSettings:
-    _tempArray: []
     maxStackSize: 64
-    tags: []
+    tags:
+    - Namespace: minecraft
+      ID: mineable/pickaxe
+    _tags: []
   sides: []

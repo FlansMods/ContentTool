@@ -1203,7 +1203,7 @@ public class ContentManager : MonoBehaviour
 			return "block";
 		if (def is NpcDefinition)
 			return "entity";
-		if (def is AbilityDefinition)
+		if (def is CraftingTraitDefinition)
 			return "ability";
 		return "item";
 	}

@@ -71,6 +71,9 @@ public static class Constants
 	public const string STAT_LASER_BLUE = "laser_blue";
 	public const string MODAL_FIXED_LASER_DIRECTION = "fixed_laser_direction";
 
+	public const string FLASH_ATTACH_POINT = "flash_attach_point";
+	public const string FLASH_MODEL = "flash_model";
+	public const string FLASH_TEXTURE = "flash_texture";
 
 	// Vehicles
 	public const string STAT_MOVEMENT_SPEED = "movement_speed";
@@ -144,5 +147,9 @@ public static class Constants
 		STAT_LASER_GREEN,
 		STAT_LASER_BLUE,
 		MODAL_FIXED_LASER_DIRECTION,
+
+		FLASH_ATTACH_POINT,
+		FLASH_MODEL,
+		FLASH_TEXTURE
 	};
 }

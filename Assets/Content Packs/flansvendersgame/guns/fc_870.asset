@@ -189,6 +189,12 @@ MonoBehaviour:
       itemStack: 
       scopeOverlay: 
       anim: shoot
+    - actionType: 30
+      duration: 0.05
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: shoot
     modifiers:
     - stat: impact_damage
       matchGroupPaths: []
@@ -211,6 +217,13 @@ MonoBehaviour:
         value: 9
         multiplyPer: 
       setValue: 
+    - stat: flash_model
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 9
+        multiplyPer: 
+      setValue: flansmod:effects/muzzle_flash_large
   - key: ads
     canActUnderwater: 0
     canActUnderOtherLiquid: 0
