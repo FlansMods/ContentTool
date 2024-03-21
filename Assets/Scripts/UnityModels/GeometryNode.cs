@@ -16,7 +16,7 @@ public abstract class GeometryNode : Node
 	public bool IsUVMapCurrent() { return BakedUV.size == BoxUVBounds; }
 	public Vector2Int BakedUVBounds { get { return BakedUV.size; } }
 	public abstract Vector2Int BoxUVBounds { get; }
-
+	public abstract UVPatch UVRequirements { get; }
 
 
 	// -------------------------------------------------------------------
@@ -26,8 +26,6 @@ public abstract class GeometryNode : Node
 	private MeshRenderer _MR = null;
 	[SerializeField, HideInInspector]
 	private MeshFilter _MF = null;
-	[SerializeField, HideInInspector]
-	private Mesh _Mesh = null;
 
 	protected MeshRenderer MR
 	{
@@ -55,10 +53,12 @@ public abstract class GeometryNode : Node
 	{
 		get
 		{
-			if (_Mesh == null)
-				_Mesh = new Mesh();
-			MF.sharedMesh = _Mesh;
-			return _Mesh;
+			if (MF.sharedMesh == null)
+			{
+				MF.sharedMesh = new Mesh();
+				MF.sharedMesh.name = $"Auto[{name}]";
+			}
+			return MF.sharedMesh;
 		}
 	}
 	#endregion

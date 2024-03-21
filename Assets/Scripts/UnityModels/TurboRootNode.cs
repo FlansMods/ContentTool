@@ -47,9 +47,39 @@ public class TurboRootNode : RootNode
 				numToRemap++;
 		}
 	}
+	public UVMap ToMap()
+	{
+		UVMap map = new UVMap();
+		foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
+		{
+			if (!HasUVMap() || !geomNode.IsUVMapCurrent())
+				map.AddPatchForPlacement(geomNode.UVRequirements);
+			else
+				map.AddExistingPatchPlacement(geomNode.BakedUV.min, geomNode.UVRequirements);
+		}
+		return map;
+	}
 	public void ApplyAutoUV()
 	{
-		
+		if (NeedsUVRemap())
+		{
+			UVMap map = ToMap();
+
+			// Run the Auto-UV algorithm
+			map.AutoPlacePatches();
+
+			foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
+			{
+				BoxUVPlacement placement = map.GetPlacedPatch(geomNode.UniqueName);
+				if (placement.Valid)
+				{
+					geomNode.BakedUV = placement.Bounds;
+				}
+			}
+			UVMapSize = map.MaxSize;
+			Debug.Log("Applied auto UV map");
+			EditorUtility.SetDirty(this);
+		}
 	}
 	public NamedTexture CreateNewDefaultSkin()
 	{
@@ -66,7 +96,8 @@ public class TurboRootNode : RootNode
 		string fullPath = $"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png";
 
 		newSkinTexture.name = newSkinName;
-		//SkinGenerator.CreateDefaultTexture(bakedMap, newSkinTexture);
+		ApplyAutoUV();
+		SkinGenerator.CreateDefaultTexture(ToMap(), newSkinTexture);
 		File.WriteAllBytes(fullPath, newSkinTexture.EncodeToPNG());
 		AssetDatabase.Refresh();
 		newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);

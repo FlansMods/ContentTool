@@ -16,6 +16,11 @@ public class SectionNode : Node
 				node.Mirror(mirrorX, mirrorY, mirrorZ);
 	}
 
+	protected override void EditorUpdate()
+	{
+		base.EditorUpdate();
+	}
+
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);

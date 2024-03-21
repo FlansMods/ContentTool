@@ -42,6 +42,11 @@ public class IconRootNodeEditor : NodeEditor<VanillaIconRootNode>
 {
 
 }
+[CustomEditor(typeof(AnimationControllerNode))]
+public class AnimationControllerNodeEditor : NodeEditor<AnimationControllerNode>
+{
+
+}
 
 public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 {

@@ -48,9 +48,12 @@ public class UVMap
 	// --------------------------------------------------------------------------
 	#region Adding Patches and/or Placements
 	// --------------------------------------------------------------------------
-	public void AddPatchForPlacement(BoxUVPatch patch)
+	public void AddPatchForPlacement(UVPatch patch)
 	{
-		UnplacedBoxes.Add(patch);
+		if (patch is BoxUVPatch boxPatch)
+			UnplacedBoxes.Add(boxPatch);
+		else
+			Debug.LogError("Need to implement AutoUV for non-box UV");
 	}
 	public void SetUVPlacement(string key, Vector2Int uvCoords)
 	{
@@ -94,6 +97,20 @@ public class UVMap
 			});
 		}
 	}
+	public void AddExistingPatchPlacement(Vector2Int placement, UVPatch patch)
+	{
+		if (patch is BoxUVPatch boxPatch)
+		{
+			PlacedBoxes.Add(new BoxUVPlacement()
+			{
+				Origin = placement,
+				Patch = boxPatch
+			});
+		}
+		else
+			Debug.LogError("Non-box UV patch placement not supported yet");
+	}
+
 	public void AddExistingPatchPlacement(BoxUVPlacement placement)
 	{
 		PlacedBoxes.Add(placement);

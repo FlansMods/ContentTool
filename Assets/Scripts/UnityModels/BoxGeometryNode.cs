@@ -9,9 +9,12 @@ public class BoxGeometryNode : GeometryNode
 {
 	public Vector3 Pos { get { return transform.localPosition; } }
 	public Vector3 Dim = Vector3.one;
-	
+
+
+
 	public Vector3Int DimsForUV { get { return new Vector3Int(Mathf.CeilToInt(Dim.x), Mathf.CeilToInt(Dim.y), Mathf.CeilToInt(Dim.z)); } }
 	public override Vector2Int BoxUVBounds { get { return new Vector2Int(DimsForUV.z * 2 + DimsForUV.x * 2, DimsForUV.z + DimsForUV.y); } }
+	public override UVPatch UVRequirements { get { return new BoxUVPatch() { Key = UniqueName, BoxDims = DimsForUV }; } }
 
 	// Operations
 	public override bool SupportsMirror() { return true; }
@@ -27,8 +30,14 @@ public class BoxGeometryNode : GeometryNode
 	public virtual void Resize(Vector3 newOrigin, Vector3 newDims)
 	{
 		Undo.RegisterCompleteObjectUndo(gameObject, $"Resize BoxGeometry {name} to {newDims} at {newOrigin}");
-		LocalOrigin = newOrigin;
-		Dim = newDims;
+
+		Vector3 deltaMin = newOrigin - LocalOrigin;
+		Vector3 deltaMax = (newOrigin + newDims) - (LocalOrigin + Dim);
+		deltaMin = Quaternion.Inverse(transform.localRotation) * deltaMin;
+		deltaMax = Quaternion.Inverse(transform.localRotation) * deltaMax;
+		LocalOrigin += deltaMin;
+		Dim += deltaMax - deltaMin;
+
 		EditorUtility.SetDirty(gameObject);
 	}
 	public virtual void Resize(Vector3 newDims)
@@ -259,4 +268,9 @@ public class BoxGeometryNode : GeometryNode
 	}
 	#endregion
 	// ------------------------------------------------------------------------------------------
+
+	public override string ToString()
+	{
+		return $"Box[{LocalOrigin}x{Dim}]";
+	}
 }

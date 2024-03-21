@@ -27,16 +27,20 @@ public class BoxBoundsTool : MinecraftModelEditorTool<BoxGeometryNode>
 		if (boxNode == null)
 			return;
 
-		Vector3 deltaPos = GetRelativeToStartPoint(boxNode.transform.position);
+		Vector3 toolOrigin = ToolStartedAtLocalPos.Value;
 
-		if (!_Handle.Origin.Approximately(deltaPos))
+		Vector3 minLocalSpace = _Handle.Origin + toolOrigin;
+		Vector3 dimLocalSpace = _Handle.Dimensions;
+
+		if (!minLocalSpace.Approximately(boxNode.LocalOrigin))
 		{
-			boxNode.Translate(_Handle.Origin - deltaPos);
+			Vector3 delta = minLocalSpace - boxNode.LocalOrigin;
+			boxNode.Resize(boxNode.LocalOrigin + delta, boxNode.Dim - delta);
 		}
 
-		if(!boxNode.Dim.Approximately(_Handle.Dimensions))
+		if (!boxNode.Dim.Approximately(dimLocalSpace))
 		{
-			boxNode.Resize(_Handle.Dimensions);
+			boxNode.Resize(dimLocalSpace);
 		}		
 	}
 
@@ -45,9 +49,8 @@ public class BoxBoundsTool : MinecraftModelEditorTool<BoxGeometryNode>
 		if(boxNode == null)
 			return;
 
-		Vector3 deltaPos = GetRelativeToStartPoint(boxNode.transform.position);
+		Vector3 toolOrigin = ToolStartedAtLocalPos.Value;
 
-		_Handle.SetOriginAndDims(deltaPos, boxNode.Dim);
-		//_Handle.Offsets = preview.Piece.Offsets;
+		_Handle.SetOriginAndDims(boxNode.LocalOrigin - toolOrigin, boxNode.Dim);
 	}
 }

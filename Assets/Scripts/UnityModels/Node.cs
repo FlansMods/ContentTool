@@ -225,6 +225,18 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	public Vector3 Right { get { return transform.right; } }
 	public Vector3 Up { get { return transform.up; } }
 
+	public string UniqueName 
+	{ 
+		get 
+		{
+			if (ParentNode != null)
+			{
+				return $"{ParentNode.UniqueName}/{transform.GetSiblingIndex()}-{name}";
+			}
+			return name;
+		} 
+	}
+
 #if UNITY_EDITOR
 	protected void OnEnable()
 	{

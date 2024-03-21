@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -86,6 +87,7 @@ public class AnimationEditor : Editor
 		}
 	}
 
+	private const float QUICK_BUTTON_X = 32f;
 	private void KeyframeEditor(List<string> frameNames, FlanimationDefinition instance)
 	{
 		int num32Blocks = (frameNames.Count + 31) / 32;
@@ -138,12 +140,23 @@ public class AnimationEditor : Editor
 		GUILayout.EndHorizontal();
 
 
+		int keyframeToDuplicate = -1;
 		int keyframeToDelete = -1;
-		for(int i = 0; i < instance.keyframes.Length; i++)
+		for (int i = 0; i < instance.keyframes.Length; i++)
 		{
+			GUILayout.BeginHorizontal();
 			string keyframe_id = $"{instance.name}_{i}";
 			bool bFoldout = EditorGUILayout.Foldout(IsFoldout(keyframe_id), instance.keyframes[i].name);
 			SetFoldout(keyframe_id, bFoldout);
+			if(!bFoldout)
+			{
+				GUILayout.FlexibleSpace();
+				if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(QUICK_BUTTON_X)))
+					keyframeToDuplicate = i;
+				if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(QUICK_BUTTON_X)))
+					keyframeToDelete = i;
+			}
+			GUILayout.EndHorizontal();
 
 			if(bFoldout)
 			{
@@ -154,7 +167,9 @@ public class AnimationEditor : Editor
 					GUILayout.BeginHorizontal();
 					GUILayout.Label("Keyframe:");
 					instance.keyframes[i].name = GUILayout.TextField(instance.keyframes[i].name);
-					if(GUILayout.Button("Delete Keyframe"))
+					if (GUILayout.Button("Duplicate"))
+						keyframeToDuplicate = i;
+					if (GUILayout.Button("Delete"))
 						keyframeToDelete = i;
 					GUILayout.EndHorizontal();
 
@@ -295,8 +310,24 @@ public class AnimationEditor : Editor
 			}
 			instance.keyframes = newArray;
 		}
+		if(keyframeToDuplicate != -1)
+		{
+			Undo.RecordObject(instance, instance.name);
+			KeyframeDefinition[] newArray = new KeyframeDefinition[instance.keyframes.Length + 1];
+			for (int i = 0; i < instance.keyframes.Length + 1; i++)
+			{
+				if (i == keyframeToDuplicate + 1)
+				{
+					newArray[i] = instance.keyframes[keyframeToDuplicate].Clone();
+				}
+				else
+				{
+					newArray[i] = i > keyframeToDuplicate ? instance.keyframes[i - 1] : instance.keyframes[i];
+				}
+			}
+			instance.keyframes = newArray;
+		}
 	}
-
 	private void SequenceEditor(List<string> frameNames, FlanimationDefinition instance)
 	{
 		FlanStyles.BigHeader("Animation Sequence Editor");
@@ -317,13 +348,24 @@ public class AnimationEditor : Editor
 		}
 		GUILayout.EndHorizontal();
 		int sequenceToDelete = -1;
-		for(int i = 0; i < instance.sequences.Length; i++)
+		int sequenceToDuplicate = -1;
+		for (int i = 0; i < instance.sequences.Length; i++)
 		{
+			GUILayout.BeginHorizontal();
 			string sequence_id = $"{instance.name}_s_{i}";
 			bool bFoldout = EditorGUILayout.Foldout(IsFoldout(sequence_id), instance.sequences[i].name);
 			SetFoldout(sequence_id, bFoldout);
+			if (!bFoldout)
+			{
+				GUILayout.FlexibleSpace();
+				if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(QUICK_BUTTON_X)))
+					sequenceToDuplicate = i;
+				if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(QUICK_BUTTON_X)))
+					sequenceToDelete = i;
+			}
+			GUILayout.EndHorizontal();
 
-			if(bFoldout)
+			if (bFoldout)
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Box("", GUILayout.ExpandHeight(true), GUILayout.Width(16));
@@ -332,7 +374,9 @@ public class AnimationEditor : Editor
 					GUILayout.BeginHorizontal();
 					GUILayout.Label("Sequence:");
 					instance.sequences[i].name = GUILayout.TextField(instance.sequences[i].name, GUILayout.MinWidth(128));
-					if(GUILayout.Button("Delete Sequence"))
+					if (GUILayout.Button("Duplicate"))
+						sequenceToDuplicate = i; 
+					if (GUILayout.Button("Delete"))
 						sequenceToDelete = i;
 					GUILayout.EndHorizontal();
 
@@ -355,6 +399,7 @@ public class AnimationEditor : Editor
 					}
 					GUILayout.EndHorizontal();
 					int frameToDelete = -1;
+					int frameToDuplicate = -1;
 
 					for(int j = 0; j < instance.sequences[i].frames.Length; j++)
 					{
@@ -376,7 +421,11 @@ public class AnimationEditor : Editor
 						frameDef.exit = (ESmoothSetting)EditorGUILayout.EnumPopup(frameDef.exit, GUILayout.Width(64));
 						EditorGUI.EndDisabledGroup();
 						frameDef.tick = EditorGUILayout.IntField(frameDef.tick, GUILayout.Width(32));
-						if(GUILayout.Button("Delete", GUILayout.Width(48)))
+						if (GUILayout.Button(FlanStyles.DuplicateEntry, GUILayout.Width(QUICK_BUTTON_X)))
+						{
+							frameToDuplicate = j;
+						}
+						if (GUILayout.Button(FlanStyles.DeleteEntry, GUILayout.Width(QUICK_BUTTON_X)))
 						{
 							frameToDelete = j;
 						}
@@ -390,6 +439,23 @@ public class AnimationEditor : Editor
 						for(int j = 0; j < instance.sequences[i].frames.Length - 1; j++)
 						{
 							frames[j] = j < frameToDelete ? instance.sequences[i].frames[j] : instance.sequences[i].frames[j+1];
+						}
+						instance.sequences[i].frames = frames;
+					}
+					if (frameToDuplicate != -1)
+					{
+						Undo.RecordObject(instance, instance.name);
+						SequenceEntryDefinition[] frames = new SequenceEntryDefinition[instance.sequences[i].frames.Length + 1];
+						for (int j = 0; j < instance.sequences[i].frames.Length + 1; j++)
+						{
+							if (j == frameToDuplicate + 1)
+							{
+								frames[j] = instance.sequences[i].frames[frameToDuplicate].Clone();
+							}
+							else
+							{
+								frames[j] = j > frameToDuplicate ? instance.sequences[i].frames[j-1] : instance.sequences[i].frames[j];
+							}
 						}
 						instance.sequences[i].frames = frames;
 					}
@@ -410,8 +476,25 @@ public class AnimationEditor : Editor
 			}
 			instance.sequences = newArray;
 		}
+		if (sequenceToDuplicate != -1)
+		{
+			Undo.RecordObject(instance, instance.name);
+			SequenceDefinition[] newArray = new SequenceDefinition[instance.sequences.Length + 1];
+			for (int i = 0; i < instance.sequences.Length + 1; i++)
+			{
+				if (i == sequenceToDuplicate + 1)
+				{
+					newArray[i] = instance.sequences[sequenceToDuplicate].Clone();
+				}
+				else
+				{
+					newArray[i] = i > sequenceToDuplicate ? instance.sequences[i - 1] : instance.sequences[i];
+				}
+			}
+			instance.sequences = newArray;
+		}
 
-		for(int i = 0; i < instance.sequences.Length; i++)
+		for (int i = 0; i < instance.sequences.Length; i++)
 		{
 			instance.sequences[i].ticks = 0;
 			for(int j = 0; j < instance.sequences[i].frames.Length; j++)

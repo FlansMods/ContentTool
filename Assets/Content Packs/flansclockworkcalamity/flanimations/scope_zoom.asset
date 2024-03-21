@@ -1,0 +1,351 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3556314f70d394f8061f340162bfea, type: 3}
+  m_Name: scope_zoom
+  m_EditorClassIdentifier: 
+  LocalisedNames: []
+  LocalisedExtras: []
+  keyframes:
+  - name: idle
+    poses:
+    - applyTo: body
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: bouncePos1x
+    poses:
+    - applyTo: lens_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -0.25
+      rotation:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -10
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0.25
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 10
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: zoom1_5x
+    poses:
+    - applyTo: lens_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0.25
+      rotation:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 90
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -0.25
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -90
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: bouncePos2x
+    poses:
+    - applyTo: lens_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0.55
+      rotation:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 190
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -0.55
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -190
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  - name: zoom2x
+    poses:
+    - applyTo: lens_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0.5
+      rotation:
+        xOverride: 
+        xValue: -0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_near
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 180
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: -0.5
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      scale: {x: 1, y: 1, z: 1}
+    - applyTo: lens_cap_far
+      position:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 0
+      rotation:
+        xOverride: 
+        xValue: 0
+        yOverride: 
+        yValue: 0
+        zOverride: 
+        zValue: 180
+      scale: {x: 1, y: 1, z: 1}
+    parents: []
+  sequences:
+  - name: 1x_to_2x
+    ticks: 20
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: idle
+    - tick: 2
+      entry: 2
+      exit: 2
+      frame: bouncePos1x
+    - tick: 10
+      entry: 1
+      exit: 1
+      frame: zoom1_5x
+    - tick: 18
+      entry: 2
+      exit: 2
+      frame: bouncePos2x
+    - tick: 20
+      entry: 1
+      exit: 2
+      frame: zoom2x
+  - name: 2x_to_1x
+    ticks: 20
+    frames:
+    - tick: 0
+      entry: 1
+      exit: 1
+      frame: zoom2x
+    - tick: 2
+      entry: 2
+      exit: 2
+      frame: bouncePos2x
+    - tick: 10
+      entry: 1
+      exit: 1
+      frame: zoom1_5x
+    - tick: 18
+      entry: 2
+      exit: 2
+      frame: bouncePos1x
+    - tick: 20
+      entry: 1
+      exit: 2
+      frame: idle

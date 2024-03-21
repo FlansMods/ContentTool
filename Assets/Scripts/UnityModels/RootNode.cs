@@ -158,6 +158,88 @@ public abstract class RootNode : Node
 	#endregion
 	// -----------------------------------------------------------------------------------
 
+	// -----------------------------------------------------------------------------------
+	#region Animation Previews
+	// -----------------------------------------------------------------------------------
+	public Dictionary<string, PreviewAnimNode> RefreshAnimPreviewHeirarchy()
+	{
+		Dictionary<string, PreviewAnimNode> previewAnimNodes = new Dictionary<string, PreviewAnimNode>();
+		previewAnimNodes.Add("body", GetAnimPreviewFor("body"));
+		foreach (AttachPointNode apNode in GetAllDescendantNodes<AttachPointNode>())
+		{
+			PreviewAnimNode previewNode = GetAnimPreviewFor(apNode);
+			previewAnimNodes.Add(apNode.APName, previewNode);
+		}
+		return previewAnimNodes;
+	}
+	public void SetAnimPreviewEnabled(bool enable)
+	{
+		if (enable)
+		{
+			Dictionary<string, PreviewAnimNode> animPreviewNodes = RefreshAnimPreviewHeirarchy();
+			foreach (SectionNode section in Root.GetAllDescendantNodes<SectionNode>())
+			{
+				if (animPreviewNodes.TryGetValue(section.PartName, out PreviewAnimNode animNode))
+				{
+					section.transform.SetParentZero(animNode.transform);
+				}
+				else if (animPreviewNodes.TryGetValue("body", out PreviewAnimNode bodyNode))
+				{
+					section.transform.SetParentZero(bodyNode.transform);
+				}
+				else 
+				{
+					Debug.LogWarning($"Could not find animPreview node for {section.PartName}");
+					section.transform.SetParentZero(Root.transform);
+				}
+			}
+		}
+		else
+		{
+			foreach (SectionNode section in Root.GetAllDescendantNodes<SectionNode>())
+			{
+				if (Root.TryFindDescendant($"ap_{section.PartName}", out AttachPointNode result))
+				{
+					section.transform.SetParentZero(result.transform);
+				}
+				else
+				{
+					section.transform.SetParentZero(Root.transform);
+				}
+			}
+		}
+	}
+	public PreviewAnimNode GetAnimPreviewFor(string partName)
+	{
+		string nodeName = $"anim_{partName}";
+		PreviewAnimNode previewNode = FindDescendant<PreviewAnimNode>(nodeName);
+		if(previewNode == null)
+		{
+			GameObject go = new GameObject(nodeName);
+			previewNode = go.AddComponent<PreviewAnimNode>();
+			go.transform.SetParentZero(transform);
+		}
+		return previewNode;
+	}
+	public PreviewAnimNode GetAnimPreviewFor(AttachPointNode ap)
+	{
+		PreviewAnimNode node = GetAnimPreviewFor(ap.APName);
+		node.TargetAP = ap;
+		if (ap.ParentNode is AttachPointNode parentAP)
+		{
+			PreviewAnimNode parentNode = GetAnimPreviewFor(parentAP);
+			node.transform.SetParent(parentNode.transform);
+		}
+		else
+		{
+			PreviewAnimNode parentNode = GetAnimPreviewFor("body");
+			node.transform.SetParent(parentNode.transform);
+		}
+		return node;
+	}
+
+	#endregion
+	// -----------------------------------------------------------------------------------
 
 	public override void GetVerifications(List<Verification> verifications)
 	{
@@ -196,8 +278,28 @@ public abstract class RootNode : Node
 
 	}
 
+	protected override void EditorUpdate()
+	{
+		base.EditorUpdate();
+		List<Mesh> childMeshes = new List<Mesh>();
+		foreach (GeometryNode geom in GetAllDescendantNodes<GeometryNode>())
+		{
+			if (geom.TryGetComponent(out MeshFilter meshFilter))
+			{
+				if (meshFilter.sharedMesh != null)
+				{
+					if (!childMeshes.Contains(meshFilter.sharedMesh))
+						childMeshes.Add(meshFilter.sharedMesh);
+					else
+						meshFilter.sharedMesh = null;
+				}
+			}
 
-protected delegate void QuickFixFunction<T>(T _this);
+		}
+	}
+
+
+	protected delegate void QuickFixFunction<T>(T _this);
 	protected void ApplyQuickFix<T>(QuickFixFunction<T> quickFix)
 	{
 		if (this is T t)
