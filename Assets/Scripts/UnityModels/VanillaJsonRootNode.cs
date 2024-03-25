@@ -37,7 +37,7 @@ public class VanillaJsonRootNode : RootNode
 			JObject jObject = JObject.Parse(Json);
 			if(jObject != null)
 			{
-				Json = JsonExporter.WriteFormattedJson(jObject);
+				Json = JsonReadWriteUtils.WriteFormattedJson(jObject);
 			}
 		}
 

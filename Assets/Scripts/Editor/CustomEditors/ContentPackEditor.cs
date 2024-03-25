@@ -71,11 +71,7 @@ public class ContentPackEditor : Editor
 
 		if (GUILayout.Button("Export"))
 		{
-			ContentManager importExport = FindObjectOfType<ContentManager>();
-			if (importExport != null)
-			{
-				importExport.ExportPack(pack.name, false, ContentManager.GetFreshExportLogger($"Export {pack.name}"));
-			}
+			FlansModExport.ExportPack(pack, false);
 		}
 	}
 

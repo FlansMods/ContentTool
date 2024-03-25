@@ -14,6 +14,18 @@ public enum VerifyType
 	Fail,
 }
 
+public interface IVerificationLogger : IDisposable
+{
+	void Success(string msg);
+	void Neutral(string msg);
+	void Failure(string msg);
+	void Exception(Exception e);
+	void Exception(Exception e, string msg);
+
+	string GetOpName();
+	List<Verification> GetVerifications();
+}
+
 [System.Serializable]
 public class Verification
 {
@@ -308,7 +320,7 @@ public static class GUIVerify
 			return true;
 		}
 	}
-	public static bool VerificationsResultsPanel(bool expanded, string label,List<Verification> verifications)
+	public static bool VerificationsResultsPanel(bool expanded, string label, List<Verification> verifications)
 	{
 		FlanStyles.ThinLine();
 		FlanStyles.BigHeader($"Results ({label})");

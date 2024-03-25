@@ -312,6 +312,7 @@ public static class FlanStyles
 		if (node is AttachPointNode) return AttachPointNode;
 		if (node is SectionNode) return SectionNode;
 		if (node is GeometryNode) return GeometryNode;
+		if (node is ItemPoseNode) return PoseNode;
 
 		return UnknownNode;
 	}
@@ -321,6 +322,7 @@ public static class FlanStyles
 	public static readonly GUIContent AttachPointNode = Button("Grid.MoveTool", "Attach Point");
 	public static readonly GUIContent SectionNode = Button("Grid.BoxTool", "Model Section");
 	public static readonly GUIContent GeometryNode = Button("FilterByType", "Geometry");
+	public static readonly GUIContent PoseNode = Button("AvatarPivot", "Pose");
 	public static readonly GUIContent ExpandAllNodes = Button("Toolbar Plus", "Expand all nodes");
 	public static readonly GUIContent CollapseAllNodes = Button("Toolbar Minus", "Collapse all nodes");
 

@@ -343,12 +343,12 @@ public class ContentManagerEditor : Editor
 	public bool ExpandExportResults = false;
 	public void ExportTab(ContentManager instance, Action<ContentPack> viewDetailsFunc = null)
 	{ 
-		if (ContentManager.LastExportOperation != "None" && ContentManager.LastExportOperationResults.Count > 0)
+		if (FlansModExport.LastExportOperation != null)
 		{
 			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
 				ExpandExportResults,
-				ContentManager.LastExportOperation,
-				ContentManager.LastExportOperationResults);
+				FlansModExport.LastExportOperation.GetOpName(),
+				FlansModExport.LastExportOperation.GetVerifications());
 		}
 
 		if(GUILayout.Button("Force refresh verifications"))
@@ -377,11 +377,11 @@ public class ContentManagerEditor : Editor
 			{
 				if (GUILayout.Button(FlanStyles.ExportPackNewOnly, GUILayout.Width(32)))
 				{
-					instance.ExportPack(pack.ModName, false, ContentManager.GetFreshExportLogger($"Export {pack.ModName} (Skipping conflicts)"));
+					FlansModExport.ExportPack(pack, false);
 				}
 				if (GUILayout.Button(FlanStyles.ExportPackOverwrite, GUILayout.Width(32)))
 				{
-					instance.ExportPack(pack.ModName, true, ContentManager.GetFreshExportLogger($"Export {pack.ModName} (Overrwriting conflicts)"));
+					FlansModExport.ExportPack(pack, true);
 				}
 			}
 			else
@@ -448,7 +448,7 @@ public class ContentManagerEditor : Editor
 			int quickFixCount = Verification.CountQuickFixes(verifications);
 			string assetFoldoutPath = $"{foldoutPath}/{asset.name}";
 			bool assetFoldout = NestedFoldout(assetFoldoutPath, asset.name);
-			bool alreadyExported = instance.ExportedAssetAlreadyExists(pack.ModName, asset);
+			bool alreadyExported = FlansModExport.ExportedAssetAlreadyExists(pack.ModName, asset);
 			if (!assetFoldout)
 			{
 				GUILayout.FlexibleSpace();
@@ -472,13 +472,13 @@ public class ContentManagerEditor : Editor
 					EditorGUI.BeginDisabledGroup(alreadyExported);
 					if (GUILayout.Button(FlanStyles.ExportSingleAsset, GUILayout.Width(32)))
 					{
-						instance.ExportAsset(pack.ModName, asset);
+						FlansModExport.ExportSingleAsset(asset, false);
 					}
 					EditorGUI.EndDisabledGroup();
 					EditorGUI.BeginDisabledGroup(!alreadyExported);
 					if (GUILayout.Button(FlanStyles.ExportSingleAssetOverwrite, GUILayout.Width(32)))
 					{
-						instance.ExportAsset(pack.ModName, asset);
+						FlansModExport.ExportSingleAsset(asset, true);
 					}
 					EditorGUI.EndDisabledGroup();
 				}				
@@ -519,13 +519,13 @@ public class ContentManagerEditor : Editor
 						EditorGUI.BeginDisabledGroup(alreadyExported);
 						if (GUILayout.Button(FlanStyles.ExportSingleAsset, GUILayout.Width(32)))
 						{
-							instance.ExportAsset(pack.ModName, asset);
+							FlansModExport.ExportSingleAsset(asset, false);
 						}
 						EditorGUI.EndDisabledGroup();
 						EditorGUI.BeginDisabledGroup(!alreadyExported);
 						if (GUILayout.Button(FlanStyles.ExportSingleAssetOverwrite, GUILayout.Width(32)))
 						{
-							instance.ExportAsset(pack.ModName, asset);
+							FlansModExport.ExportSingleAsset(asset, true);
 						}
 						EditorGUI.EndDisabledGroup();
 					}

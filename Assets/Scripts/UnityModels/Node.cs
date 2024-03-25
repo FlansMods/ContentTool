@@ -259,6 +259,25 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 #endif
 
 	public RootNode Root { get { return GetParentOfType<RootNode>(); } }
+
+	public TNodeType GetOrCreateChild<TNodeType>() where TNodeType : Node
+	{
+		foreach (TNodeType existingChild in GetChildNodes<TNodeType>())
+			return existingChild;
+
+		// I guess there weren't any
+		GameObject newChild = new GameObject($"new_{typeof(TNodeType)}");
+		return newChild.AddComponent<TNodeType>();
+	}
+	public TNodeType GetOrCreateNamedChild<TNodeType>(string nameOfChild) where TNodeType : Node
+	{
+		if (TryFindChild(nameOfChild, out TNodeType resultNode))
+			return resultNode;
+		// I guess there weren't any
+		GameObject newChild = new GameObject(nameOfChild);
+		newChild.transform.SetParentZero(transform);
+		return newChild.AddComponent<TNodeType>();
+	}
 	public TNodeType GetParentOfType<TNodeType>() where TNodeType : Node
 	{
 		if (this is TNodeType tNode)
@@ -290,6 +309,25 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 			{
 				if (transform.GetChild(i).TryGetComponent(out Node childNode))
 					yield return childNode;
+			}
+		}
+	}
+	public IEnumerable<Node> SubNodesSkippingHidden
+	{
+		get
+		{
+			for (int i = transform.childCount - 1; i >= 0; i--)
+			{
+				if (transform.GetChild(i).TryGetComponent(out Node childNode))
+				{
+					if(childNode.HideInHeirarchy())
+					{
+						foreach (Node grandchild in childNode.SubNodesSkippingHidden)
+							yield return grandchild;
+					}
+					else
+						yield return childNode;
+				}
 			}
 		}
 	}

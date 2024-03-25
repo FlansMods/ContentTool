@@ -125,6 +125,15 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			return "block";
 		return "item";
 	}
+	public string GetLocalisationPrefix()
+	{
+		if (this is MagazineDefinition) return "magazine";
+		if (this is MaterialDefinition) return "material";
+		if (this is WorkbenchDefinition) return "block";
+		if (this is NpcDefinition) return "entity";
+		if (this is CraftingTraitDefinition) return "ability";
+		return "item";
+	}
 
 	// -------------------------------------------------------------------------------------------------------------
 	#region Verification

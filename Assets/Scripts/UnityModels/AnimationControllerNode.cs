@@ -2,12 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Animations;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class AnimationControllerNode : Node
 {
+
+	public override string GetFixedPrefix() { return "anim_preview_"; }
+
 	public FlanimationDefinition SelectedAnimation = null;
 	public bool ApplyAnimation = false; 
 	private DateTime LastEditorTick = DateTime.Now;
@@ -130,18 +137,33 @@ public class AnimationControllerNode : Node
 	}
 	public void PressPlay()
 	{
-		if (StepThrough)
-			AnimProgressSeconds += 1f / 20f;
-		else
-			Playing = true;
+		AnimationWindow animWindow = AnimationWindow.GetWindow<AnimationWindow>();
+		if (animWindow != null)
+		{
+			if (StepThrough)
+			{
+				animWindow.time += 1f / 20f;
+				animWindow.time %= animWindow.animationClip.length;
+			}
+			else
+				animWindow.playing = true;
+		}
 	}
 	public void PressPause()
 	{
-		Playing = false;
+		AnimationWindow animWindow = AnimationWindow.GetWindow<AnimationWindow>();
+		if (animWindow != null)
+		{
+			animWindow.playing = false;
+		}
 	}
 	public void PressBack()
 	{
-		AnimProgressSeconds = 0.0f;
+		AnimationWindow animWindow = AnimationWindow.GetWindow<AnimationWindow>();
+		if (animWindow != null)
+		{
+			animWindow.time = 0.0f;
+		}
 	}
 
 
@@ -165,7 +187,7 @@ public class AnimationControllerNode : Node
 			EditorUtility.SetDirty(this);
 		}
 	}
-	private void AnimationControlsGUI()
+	public void AnimationControlsGUI()
 	{
 		if (GUILayout.Button(FlanStyles.ResetToDefault))
 			PressBack();
@@ -383,6 +405,8 @@ public class AnimationControllerNode : Node
 	}
 	public void UpdateAnims()
 	{
+		return;
+
 		if (ApplyAnimation && SelectedAnimation != null && PreviewSequences.Count > 0)
 		{
 			if (Playing && !StepThrough)
@@ -485,12 +509,12 @@ public class AnimationControllerNode : Node
 
 	private void SetDefaultPose()
 	{
-		Root.SetAnimPreviewEnabled(false);
+		SetAnimPreviewEnabled(false);
 	}
 	private void ApplyPose(KeyframeDefinition from, KeyframeDefinition to, float parameter)
 	{
-		Root.SetAnimPreviewEnabled(true);
-		foreach (PreviewAnimNode previewNode in Root.GetAllDescendantNodes<PreviewAnimNode>())
+		SetAnimPreviewEnabled(true);
+		foreach (PreviewAnimNode previewNode in GetAllDescendantNodes<PreviewAnimNode>())
 		{
 			PoseDefinition fromPose = GetPose(from.name, previewNode.APName);
 			PoseDefinition toPose = GetPose(to.name, previewNode.APName);
@@ -502,10 +526,10 @@ public class AnimationControllerNode : Node
 	}
 	private void ApplyPose(KeyframeDefinition keyframe)
 	{
-		Root.SetAnimPreviewEnabled(true);
+		SetAnimPreviewEnabled(true);
 		foreach (PoseDefinition pose in keyframe.poses)
 		{
-			PreviewAnimNode previewNode = Root.GetAnimPreviewFor(pose.applyTo);
+			PreviewAnimNode previewNode = GetAnimPreviewFor(pose.applyTo);
 			if(previewNode != null)
 			{
 				Vector3 pos = Resolve(pose.position);
@@ -611,4 +635,285 @@ public class AnimationControllerNode : Node
 		base.EditorUpdate();
 		UpdateAnims();
 	}
+
+	// -----------------------------------------------------------------------------------------
+	#region Anim Preview Heriarchy
+	// To see the animation in scene view, we move the model nodes over from the AttachPointNodes
+	// to some PreviewAnimNodes
+	// -----------------------------------------------------------------------------------------
+	private const string ANIM_CACHE_FOLDER = "Assets/UnityAnimCache";
+	public AnimatorController UnityAnimController;
+	public Animator UnityAnimator;
+
+	public void RefreshAnimation()
+	{
+		if(SelectedAnimation != null)
+		{
+			if(UnityAnimator == null)
+			{
+				UnityAnimator = Root.GetComponent<Animator>();
+				if (UnityAnimator == null)
+					UnityAnimator = Root.gameObject.AddComponent<Animator>();
+			}
+
+			CreateController();
+
+
+			foreach (SequenceDefinition sequence in SelectedAnimation.sequences)
+			{
+				CreateClip(sequence);
+			}
+			
+		}
+	}
+
+
+	public string CreateAssetFolder()
+	{
+		string cachedAnimFolder = $"{ANIM_CACHE_FOLDER}/{Root.name}";
+		if (!Directory.Exists(cachedAnimFolder))
+			Directory.CreateDirectory(cachedAnimFolder);
+		return cachedAnimFolder;
+	}
+	public void CreateController()
+	{
+		if (UnityAnimController == null)
+		{
+			string cachedAnimFolder = CreateAssetFolder();
+			string cachedControllerLoc = $"{cachedAnimFolder}/controller.asset";
+			UnityAnimController = AssetDatabase.LoadAssetAtPath<AnimatorController>(cachedControllerLoc);
+			if(UnityAnimController == null)
+			{
+				UnityAnimController = AnimatorController.CreateAnimatorControllerAtPath(cachedControllerLoc);
+			}
+		}
+
+		UnityAnimator.runtimeAnimatorController = UnityAnimController;
+	}
+
+	public void CreateClip(SequenceDefinition sequence)
+	{
+		foreach(AnimationClip checkClip in UnityAnimController.animationClips)
+		{
+			if (checkClip.name == sequence.name)
+				return;
+		}
+
+		string cachedAnimFolder = CreateAssetFolder();
+		string cachedAnimLoc = $"{cachedAnimFolder}/{sequence.name}.asset";
+		AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(cachedAnimLoc);
+		if (clip == null)
+		{
+			clip = new AnimationClip();
+			AssetDatabase.CreateAsset(clip, cachedAnimLoc);
+			clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(cachedAnimLoc);
+		}
+		List<string> framesNeeded = sequence.GetKeyframesNeeded();
+		Dictionary<float, SequenceEntryDefinition> frameTimings = sequence.GetFrameTimings();
+
+
+		Dictionary<string, List<ElementExtensions.EBindingType>> bindings = new Dictionary<string, List<ElementExtensions.EBindingType>>();
+		foreach (KeyframeDefinition keyframe in SelectedAnimation.keyframes)
+		{
+			if (framesNeeded.Contains(keyframe.name))
+			{
+				keyframe.AppendBindingsNeeded(bindings);
+				//foreach (PoseDefinition pose in keyframe.poses)
+				//{
+				//	CreateAnimBindingFor(clip, pose);
+				//}
+			}
+		}
+
+		foreach (var kvp in bindings)
+		{
+			string partName = kvp.Key;
+			if (Root.TryFindDescendant($"ap_{partName}", out AttachPointNode apNode))
+			{
+				EditorCurveBinding[] curveBindings = AnimationUtility.GetAnimatableBindings(apNode.gameObject, Root.gameObject);
+				Bind(clip, partName, apNode.transform, kvp.Value, curveBindings, frameTimings);
+			}
+		}
+		UnityAnimController.AddMotion(clip);
+	}
+
+	private void Bind(AnimationClip clip, string partName, Transform apTransform, List<ElementExtensions.EBindingType> bindingsNeeed, EditorCurveBinding[] curveBindings, Dictionary<float, SequenceEntryDefinition> frameTimings)
+	{
+		foreach (EditorCurveBinding curveBinding in curveBindings)
+		{
+			ElementExtensions.EBindingType bindingType = GetBindingType(curveBinding);
+			if(bindingsNeeed.Contains(bindingType))
+			{
+				AnimationCurve curve = new AnimationCurve();
+				foreach(var kvp in frameTimings)
+				{
+					float time = kvp.Key;
+					SequenceEntryDefinition entry = kvp.Value;
+					if(SelectedAnimation.TryGetKeyframe(entry.frame, out KeyframeDefinition rootKeyframe))
+					{
+						// Get the pose, first by checking the keyframe, then by climbing the parent heirarchy
+						PoseDefinition pose = null;
+						if (rootKeyframe.TryGetPose(partName, out PoseDefinition rootPose))
+							pose = rootPose;
+						else
+						{
+							foreach (KeyframeDefinition parentKeyframe in SelectedAnimation.GetRecursiveParentsOf(rootKeyframe))
+							{
+								if (parentKeyframe.TryGetPose(partName, out PoseDefinition parentPose))
+								{
+									pose = parentPose;
+									break;
+								}
+							}
+						}
+
+						if (pose != null)
+						{
+							float defaultValue = 
+							curve.AddKey(new Keyframe() {
+								time = time,
+								value = (float)pose.GetBindingValue(bindingType) + GetDefaultValue(apTransform, curveBinding),
+								
+							});
+						}
+					}
+				}
+
+				AnimationUtility.SetEditorCurve(clip, curveBinding, curve);
+			}
+		}
+	}
+	private float GetDefaultValue(Transform target, EditorCurveBinding curveBinding)
+	{
+		switch (curveBinding.propertyName)
+		{
+			case "m_LocalPosition.x": return target.localPosition.x;
+			case "m_LocalPosition.y": return target.localPosition.y;
+			case "m_LocalPosition.z": return target.localPosition.z;
+			case "m_LocalRotation.x": return target.localRotation.x;
+			case "m_LocalRotation.y": return target.localRotation.y;
+			case "m_LocalRotation.z": return target.localRotation.z;
+			case "m_LocalRotation.w": return target.localRotation.z;
+			case "m_LocalScale.x": return target.localScale.x;
+			case "m_LocalScale.y": return target.localScale.y;
+			case "m_LocalScale.z": return target.localScale.z;
+			default: return 0f;
+		}
+	}
+	private ElementExtensions.EBindingType GetBindingType(EditorCurveBinding curveBinding)
+	{
+		switch (curveBinding.propertyName)
+		{
+			case "m_LocalPosition.x": return ElementExtensions.EBindingType.PosX;
+			case "m_LocalPosition.y": return ElementExtensions.EBindingType.PosY;
+			case "m_LocalPosition.z": return ElementExtensions.EBindingType.PosZ;
+			case "m_LocalRotation.x": return ElementExtensions.EBindingType.OriX;
+			case "m_LocalRotation.y": return ElementExtensions.EBindingType.OriY;
+			case "m_LocalRotation.z": return ElementExtensions.EBindingType.OriZ;
+			case "m_LocalRotation.w": return ElementExtensions.EBindingType.OriW;
+			case "m_LocalScale.x": return ElementExtensions.EBindingType.ScaleX;
+			case "m_LocalScale.y": return ElementExtensions.EBindingType.ScaleY;
+			case "m_LocalScale.z": return ElementExtensions.EBindingType.ScaleZ;
+			default: return ElementExtensions.EBindingType.None;
+		}
+	}
+	
+	public void SetAnimPreviewEnabled(bool enable)
+	{
+		if(PrefabUtility.IsPartOfPrefabInstance(this))
+		{
+			return;
+		}
+		RefreshAnimation();
+
+
+		//if (enable)
+		//{
+		//	Dictionary<string, PreviewAnimNode> animPreviewNodes = RefreshAnimPreviewHeirarchy();
+		//	foreach (SectionNode section in Root.GetAllDescendantNodes<SectionNode>())
+		//	{
+		//		if (animPreviewNodes.TryGetValue(section.PartName, out PreviewAnimNode animNode))
+		//		{
+		//			section.transform.SetParentZero(animNode.transform);
+		//		}
+		//		else if (animPreviewNodes.TryGetValue("body", out PreviewAnimNode bodyNode))
+		//		{
+		//			section.transform.SetParentZero(bodyNode.transform);
+		//		}
+		//		else
+		//		{
+		//			Debug.LogWarning($"Could not find animPreview node for {section.PartName}");
+		//			section.transform.SetParentZero(Root.transform);
+		//		}
+		//	}
+		//}
+		//else
+		//{
+		//	foreach (SectionNode section in Root.GetAllDescendantNodes<SectionNode>())
+		//	{
+		//		if (Root.TryFindDescendant($"ap_{section.PartName}", out AttachPointNode result))
+		//		{
+		//			section.transform.SetParentZero(result.transform);
+		//		}
+		//		else
+		//		{
+		//			section.transform.SetParentZero(Root.transform);
+		//		}
+		//	}
+		//}
+	}
+	public Dictionary<string, PreviewAnimNode> RefreshAnimPreviewHeirarchy()
+	{
+		// Setup should be ap_{name}/anim_{name}/{name}
+		// For example
+		//  - ap_body == IDENTITY
+		//    - anim_body
+		//      - body (section)
+		//      - ap_grip
+		//        - anim_grip
+		//          - grip (section)
+		//   
+
+
+
+		Dictionary<string, PreviewAnimNode> previewAnimNodes = new Dictionary<string, PreviewAnimNode>();
+		previewAnimNodes.Add("body", GetAnimPreviewFor("body"));
+		foreach (AttachPointNode apNode in GetAllDescendantNodes<AttachPointNode>())
+		{
+			PreviewAnimNode previewNode = GetAnimPreviewFor(apNode);
+			previewAnimNodes.Add(apNode.APName, previewNode);
+		}
+		return previewAnimNodes;
+	}
+	public PreviewAnimNode GetAnimPreviewFor(string partName)
+	{
+		string nodeName = $"anim_{partName}";
+		PreviewAnimNode previewNode = FindDescendant<PreviewAnimNode>(nodeName);
+		if (previewNode == null)
+		{
+			GameObject go = new GameObject(nodeName);
+			previewNode = go.AddComponent<PreviewAnimNode>();
+			go.transform.SetParentZero(transform);
+		}
+		return previewNode;
+	}
+	public PreviewAnimNode GetAnimPreviewFor(AttachPointNode ap)
+	{
+		PreviewAnimNode node = GetAnimPreviewFor(ap.APName);
+		node.TargetAP = ap;
+		if (ap.ParentNode is AttachPointNode parentAP)
+		{
+			PreviewAnimNode parentNode = GetAnimPreviewFor(parentAP);
+			node.transform.SetParent(parentNode.transform);
+		}
+		else
+		{
+			PreviewAnimNode parentNode = GetAnimPreviewFor("body");
+			node.transform.SetParent(parentNode.transform);
+		}
+		return node;
+	}
+	#endregion
+	// -----------------------------------------------------------------------------------------
+
 }

@@ -52,6 +52,7 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 {
 	private const float MODELLING_BUTTON_X = 32f;
 	private static FlanStyles.FoldoutTree Tree = new FlanStyles.FoldoutTree();
+	private int SelectedAnimationControllerIndex = 0;
 
 	public override void OnInspectorGUI()
 	{
@@ -68,6 +69,46 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 			GUILayout.Label("Rotation Snapping:");
 			Node.RotSnap = (RotationSnapSetting)GUILayout.Toolbar((int)Node.RotSnap, SnapSettings.RotSnapNames);
 			GUILayout.EndHorizontal();
+
+			// Animation toolbar
+			if(node.Root != null)
+			{
+				GUILayout.BeginHorizontal();
+				List<AnimationControllerNode> animControllers = new List<AnimationControllerNode>(node.Root.GetAllDescendantNodes<AnimationControllerNode>());
+				if(animControllers.Count == 0)
+				{
+					if(GUILayout.Button("Add Animation Preview"))
+					{
+						node.Root.GetOrCreateNamedChild<AnimationControllerNode>("anim_preview_1");
+					}
+				}
+				else
+				{
+					if(animControllers.Count == 1)
+					{
+						GUILayout.Label(animControllers[0].name);
+					}
+					else
+					{
+						List<string> names = new List<string>();
+						foreach (AnimationControllerNode ac in animControllers)
+							names.Add(ac.name);
+						SelectedAnimationControllerIndex = EditorGUILayout.Popup(SelectedAnimationControllerIndex, names.ToArray());
+					}
+
+					
+				}
+
+				AnimationControllerNode selectedAC = SelectedAnimationControllerIndex < animControllers.Count ? animControllers[SelectedAnimationControllerIndex] : null;
+				EditorGUI.BeginDisabledGroup(selectedAC == null);
+				if(selectedAC != null)
+				{						
+					selectedAC.AnimationControlsGUI();
+				}
+				EditorGUI.EndDisabledGroup();
+
+				GUILayout.EndHorizontal();
+			}
 
 			GUILayout.BeginHorizontal();
 			Node parent = node.ParentNode;
@@ -226,20 +267,10 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 			}
 			
 
-			foreach (Node child in node.ChildNodes)
+			foreach (Node child in node.SubNodesSkippingHidden)
 			{
-				
-
 				EditorGUI.indentLevel++;
-				if (child.HideInHeirarchy())
-				{
-					foreach (Node grandchild in child.ChildNodes)
-					{
-						DrawNodeGUI(grandchild, $"{path}/{child.name}/{grandchild.name}");
-					}
-				}
-				else
-					DrawNodeGUI(child, $"{path}/{child.name}");
+				DrawNodeGUI(child, $"{path}/{child.name}");
 				EditorGUI.indentLevel--;
 			}
 		}
