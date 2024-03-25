@@ -346,7 +346,7 @@ public static class ResourceLocationUtils
         if (TryGetLocation(asset, out ResourceLocation result))
             return result;
 
-		Debug.LogWarning($"Could not resolve the path to {asset} as a resource location");
+		Debug.LogWarning($"Could not resolve the path to {asset} as a resource location. Is it in a Content Pack?");
 		return new ResourceLocation();
     }
     public static bool TryGetLocation(this Object asset, out ResourceLocation location)
