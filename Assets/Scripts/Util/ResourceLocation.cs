@@ -176,31 +176,8 @@ public struct ResourceLocation
         return null;
     }
 
-    // Namespace caching
-	private static List<string> _Namespaces = null;
-    public const string NEW_NAMESPACE = "new ...";
-    public static List<string> Namespaces 
-    { 
-        get 
-        {
-			if (_Namespaces == null)
-			{
-				_Namespaces = new List<string>
-			    {
-				    "minecraft",
-				    "flansmod"
-			    };
-				ContentManager importer = Object.FindObjectOfType<ContentManager>();
-				if (importer != null)
-				{
-					foreach (ContentPack pack in importer.Packs)
-						_Namespaces.Add(pack.ModName);
-				}
-                _Namespaces.Add(NEW_NAMESPACE);
-			}
-            return _Namespaces;
-		} 
-    }
+    public const string NEW_NAMESPACE = ContentManager.NEW_NAMESPACE;
+	public static List<string> Namespaces { get { return ContentManager.inst.Namespaces; } }
 
     public void MatchToAsset(Object asset)
     {

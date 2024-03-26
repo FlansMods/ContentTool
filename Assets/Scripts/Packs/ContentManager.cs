@@ -449,6 +449,7 @@ public class ContentManager : MonoBehaviour
 		if (force || PreImportPacks == null || (DateTime.Now - LastContentCheck).TotalSeconds >= RefreshEveryT)
 		{
 			CachePreImportPacks();
+			CacheWorkingPacks();
 			LastContentCheck = DateTime.Now;
 		}
 	}
@@ -461,18 +462,54 @@ public class ContentManager : MonoBehaviour
 	// ---------------------------------------------------------------------------------------
 	public const float RefreshEveryT = 10;
 	private DateTime LastContentCheck = DateTime.Now;
+	public const string NEW_NAMESPACE = "new ...";
 	public List<ContentPack> Packs
 	{ 
 		get
 		{
+			Refresh();
 			for (int i = _Packs.Count - 1; i >= 0; i--)
 				if (_Packs[i] == null)
 					_Packs.RemoveAt(i);
 			return _Packs;
 		}
 	}
+	public List<string> Namespaces
+	{
+		get
+		{
+			Refresh();
+			List<string> results = new List<string>();
+			if (_ExtraNamespaces.Count == 0)
+			{
+				_ExtraNamespaces.Add("minecraft");
+				_ExtraNamespaces.Add("flansmod");
+			}
+			results.AddRange(_ExtraNamespaces);
+			foreach (ContentPack pack in Packs)
+				results.Add(pack.ModName);
+			results.Add(NEW_NAMESPACE);
+			return results;
+		}
+	}
 	[SerializeField, FormerlySerializedAs("Packs")]
 	private List<ContentPack> _Packs = new List<ContentPack>();
+	[SerializeField]
+	private List<string> _ExtraNamespaces = new List<string>();
+
+	public void CacheWorkingPacks()
+	{
+		_Packs.Clear();
+		foreach (string cpGUID in AssetDatabase.FindAssets("t:ContentPack"))
+		{
+			string cpPath = AssetDatabase.GUIDToAssetPath(cpGUID);
+			ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
+			if (loadedPack != null)
+			{
+				_Packs.Add(loadedPack);
+			}
+		}
+	}
 
 	public ContentPack FindContentPack(string packName, bool canSearchAssets = true)
 	{
@@ -485,12 +522,13 @@ public class ContentManager : MonoBehaviour
 		// Second, try to find it in the asset database
 		if (canSearchAssets)
 		{
-			foreach (string cpPath in AssetDatabase.FindAssets("t:ContentPack"))
+			foreach (string cpGUID in AssetDatabase.FindAssets("t:ContentPack"))
 			{
+				string cpPath = AssetDatabase.GUIDToAssetPath(cpGUID);
 				ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
 				if (loadedPack != null)
 				{
-					Packs.Add(loadedPack);
+					_Packs.Add(loadedPack);
 					return loadedPack;
 				}
 			}

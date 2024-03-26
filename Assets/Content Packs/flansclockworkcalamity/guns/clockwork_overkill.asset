@@ -17,29 +17,14 @@ MonoBehaviour:
     Name: Clockwork Creations Overkill
   LocalisedExtras: []
   itemSettings:
-    _tempArray:
-    - flansmod:gun
     maxStackSize: 1
     tags:
     - Namespace: flansmod
       ID: gun
+    _tags:
+    - 
   paints:
-    paintjobs:
-    - textureName: clockwork_overkill_candy
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_overkill_hard_metal
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_overkill_harvester
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_overkill_murica
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_overkill_rainbow
-      paintBucketsRequired: 1
-      entitlementKey: 
+    paintjobs: []
   inputHandlers:
   - inputType: 10
     nodes:
@@ -129,53 +114,15 @@ MonoBehaviour:
       duration: 0.015000001
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: vertical_recoil
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: spread
-        Filter: 
-        Add: 0
-        Multiply: 20
-        SetValue: 
-        ApplyFilters: []
-      - Stat: speed
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      - Stat: bullet_count
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: damage_to_target
-        Filter: 
-        Add: 0
-        Multiply: 2
-        SetValue: 
-        ApplyFilters: []
-      - Stat: knockback
-        Filter: 
-        Add: 0
-        Multiply: 0.5
-        SetValue: 
-        ApplyFilters: []
-      fovFactor: 1
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 5
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:minigun_shoot
+      - sound:
+          Namespace: flansmodernweapons
+          ID: minigun_shoot
+        _sound: flansmodernweapons:minigun_shoot
         length: 0
         minPitchMultiplier: 0.8333333
         maxPitchMultiplier: 1.25
@@ -184,24 +131,15 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 2
       duration: 0.1
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: shoot
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: ads
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -214,6 +152,7 @@ MonoBehaviour:
     loudness: 150
     autoCancelIfNotInMode: 
     actions: []
+    modifiers: []
   - key: look
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -230,13 +169,9 @@ MonoBehaviour:
       duration: 2.5
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: look_at
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_start
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -253,17 +188,15 @@ MonoBehaviour:
       duration: 1.25
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_start
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:browning_reload
+      - sound:
+          Namespace: flansmodernweapons
+          ID: browning_reload
+        _sound: flansmodernweapons:browning_reload
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -272,13 +205,9 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_eject
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -295,13 +224,9 @@ MonoBehaviour:
       duration: 1.25
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_eject
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_load_one
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -318,13 +243,9 @@ MonoBehaviour:
       duration: 1.25
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_load_one
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_end
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -341,13 +262,9 @@ MonoBehaviour:
       duration: 1.25
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_end
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   magazines:
   - key: primary
     matchByNames:
@@ -356,6 +273,7 @@ MonoBehaviour:
     - minigun_portable_ammo
     matchByTags: []
     baseCostToSwap: 0
+  staticAbilities: []
   reloads:
   - key: primary_fire
     manualReloadAllowed: 1

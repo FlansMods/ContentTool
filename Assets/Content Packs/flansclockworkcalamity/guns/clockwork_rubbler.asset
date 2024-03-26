@@ -15,28 +15,28 @@ MonoBehaviour:
   LocalisedNames:
   - Lang: 0
     Name: Clockwork Creations Rubbler
-  LocalisedExtras: []
+  LocalisedExtras:
+  - Unlocalised: paintjob.flansclockworkcalamity.clockwork_rubbler_forg
+    Lang: 0
+    Localised: clockwork rubbler forg
+  - Unlocalised: paintjob.flansclockworkcalamity.clockwork_rubbler_lurid
+    Lang: 0
+    Localised: clockwork rubbler lurid
+  - Unlocalised: paintjob.flansclockworkcalamity.clockwork_rubbler_newspaper
+    Lang: 0
+    Localised: clockwork rubbler newspaper
+  - Unlocalised: paintjob.flansclockworkcalamity.clockwork_rubbler_yellow
+    Lang: 0
+    Localised: clockwork rubbler yellow
   itemSettings:
-    _tempArray:
-    - flansmod:gun
     maxStackSize: 1
     tags:
     - Namespace: flansmod
       ID: gun
+    _tags:
+    - 
   paints:
-    paintjobs:
-    - textureName: clockwork_rubbler_forg
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_rubbler_lurid
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_rubbler_newspaper
-      paintBucketsRequired: 1
-      entitlementKey: 
-    - textureName: clockwork_rubbler_yellow
-      paintBucketsRequired: 1
-      entitlementKey: 
+    paintjobs: []
   inputHandlers:
   - inputType: 10
     nodes:
@@ -126,53 +126,15 @@ MonoBehaviour:
       duration: 0.05
       sounds: []
       itemStack: 
-      modifiers:
-      - Stat: vertical_recoil
-        Filter: 
-        Add: 0
-        Multiply: 10
-        SetValue: 
-        ApplyFilters: []
-      - Stat: spread
-        Filter: 
-        Add: 0
-        Multiply: 30
-        SetValue: 
-        ApplyFilters: []
-      - Stat: speed
-        Filter: 
-        Add: 0
-        Multiply: 2.5
-        SetValue: 
-        ApplyFilters: []
-      - Stat: bullet_count
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: damage_to_target
-        Filter: 
-        Add: 0
-        Multiply: 1
-        SetValue: 
-        ApplyFilters: []
-      - Stat: knockback
-        Filter: 
-        Add: 0
-        Multiply: 0
-        SetValue: 
-        ApplyFilters: []
-      fovFactor: 1
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 5
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:grenade_launcher_shoot
+      - sound:
+          Namespace: flansmodernweapons
+          ID: grenade_launcher_shoot
+        _sound: flansmodernweapons:grenade_launcher_shoot
         length: 0
         minPitchMultiplier: 0.8333333
         maxPitchMultiplier: 1.25
@@ -181,24 +143,15 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 2
       duration: 0.1
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: shoot
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: ads
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -215,24 +168,22 @@ MonoBehaviour:
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 2
       duration: 0
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: aim_down_sights
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.25
+        multiplyPer: 
+      setValue: 
   - key: look
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -249,13 +200,9 @@ MonoBehaviour:
       duration: 2.5
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: look_at
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_start
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -272,17 +219,15 @@ MonoBehaviour:
       duration: 0.6
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_start
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
     - actionType: 1
       duration: 0
       sounds:
-      - sound: flansmodernweapons:gl6reload
+      - sound:
+          Namespace: flansmodernweapons
+          ID: gl6reload
+        _sound: flansmodernweapons:gl6reload
         length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
@@ -291,13 +236,9 @@ MonoBehaviour:
         maxRange: 100
         LODs: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: 
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_eject
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -314,13 +255,9 @@ MonoBehaviour:
       duration: 0.6
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_eject
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_load_one
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -337,13 +274,9 @@ MonoBehaviour:
       duration: 0.2
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_load_one
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   - key: reload_primary_end
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
@@ -360,19 +293,16 @@ MonoBehaviour:
       duration: 0.6
       sounds: []
       itemStack: 
-      modifiers: []
-      fovFactor: 1.25
       scopeOverlay: 
       anim: reload_end
-      toolLevel: 1
-      harvestSpeed: 1
-      reach: 1
+    modifiers: []
   magazines:
   - key: primary
     matchByNames:
     - gl6_internal_mag_6
     matchByTags: []
     baseCostToSwap: 0
+  staticAbilities: []
   reloads:
   - key: primary_fire
     manualReloadAllowed: 1

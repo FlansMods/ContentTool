@@ -5,6 +5,8 @@ using System.Data;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
+using UnityEditor.Animations;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContainer
@@ -132,29 +134,46 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 					if (assetPath.EndsWith($"{name}.asset"))
 						continue;
 
-					Definition def = AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
-					if (def != null)
-						Content.Add(def);
-					else
+					Type assetType = AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+
+					if (typeof(Definition).IsAssignableFrom(assetType))
+					{
+						Definition def = AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
+						if (def != null)
+							Content.Add(def);
+					}
+					else if (typeof(SoundEventList).IsAssignableFrom(assetType))
 					{
 						SoundEventList soundList = AssetDatabase.LoadAssetAtPath<SoundEventList>(assetPath);
 						if (soundList != null)
 						{
 							Sounds.Add(soundList);
 						}
-						else
+					}
+					else if (typeof(ScriptableObject).IsAssignableFrom(assetType))
+					{
+						ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+						if (asset != null)
 						{
-							ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
-							if (asset != null)
-							{
-								OutdatedContent.Add(asset);
-								Debug.LogWarning($"Outdated asset type ({asset.GetType()}) at '{assetPath}' in pack '{name}'");
-							}
-							else
-							{
-								Debug.LogError($"Unknown asset type at '{assetPath}' in pack '{name}'");
-							}
+							OutdatedContent.Add(asset);
+							Debug.LogWarning($"Outdated asset type ({asset.GetType()}) at '{assetPath}' in pack '{name}'");
 						}
+					}
+					else if (typeof(AnimatorController).IsAssignableFrom(assetType))
+					{
+						AnimatorController animController = AssetDatabase.LoadAssetAtPath<AnimatorController>(assetPath);
+						if (animController != null)
+						{
+							// TODO: List of UnityAnims
+						}
+					}
+					else if (typeof(AnimationClip).IsAssignableFrom(assetType))
+					{
+						// TODO: UnityAnimationClip
+					}
+					else
+					{
+						Debug.LogError($"Unknown asset type at '{assetPath}' in pack '{name}'");
 					}
 				}
 				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.png", SearchOption.AllDirectories))

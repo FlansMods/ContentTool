@@ -790,7 +790,7 @@ Transform:
   - {fileID: 8621172166576258132}
   - {fileID: 8331585728997790952}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &620058837873627845
 MonoBehaviour:
@@ -806,13 +806,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Textures:
     List:
-    - Key: blaster_compensator
+    - Key: default
       Location:
         Namespace: flansclockworkcalamity
         ID: textures/skins/blaster_compensator
       Texture: {fileID: 2800000, guid: 3f6bb57cfdb90334d92c7794e54e8354, type: 3}
   Icons:
-    List: []
+    List:
+    - Key: default
+      Location:
+        Namespace: flansclockworkcalamity
+        ID: textures/items/blaster_compensator
+      Texture: {fileID: 0}
   FlanimationDef: {fileID: 0}
   UnityAnimController: {fileID: 0}
   UnityAnimator: {fileID: 0}

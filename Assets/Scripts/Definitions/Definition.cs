@@ -243,13 +243,19 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
 			if (rootNode == null)
 				verifications.Add(Verification.Failure(
-					$"Definition {def.name} does not have a matching model at {modelPath}",
+					$"Definition {def.name} does not have a matching model at {modelPath} (QFix will make an Icon model)",
 					() =>
 					{
-						rootNode = ConvertToNodes.CreateEmpty(def.name);
-						rootNode.AddDefaultTransforms();
-						PrefabUtility.SaveAsPrefabAsset(rootNode.gameObject, modelPath);
-						DestroyImmediate(rootNode.gameObject);
+						GameObject go = new GameObject(def.name);
+						VanillaIconRootNode iconRootNode = go.AddComponent<VanillaIconRootNode>();
+						iconRootNode.AddDefaultTransforms();
+						iconRootNode.Icons.Add(new NamedTexture()
+						{
+							Key = "default",
+							Location = new ResourceLocation(resLoc.Namespace, $"textures/item/{resLoc.IDWithoutPrefixes()}")
+						});
+						PrefabUtility.SaveAsPrefabAsset(iconRootNode.gameObject, modelPath);
+						DestroyImmediate(iconRootNode.gameObject);
 						return def;
 					}));
 			else

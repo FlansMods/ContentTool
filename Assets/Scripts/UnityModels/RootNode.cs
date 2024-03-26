@@ -15,6 +15,7 @@ public abstract class RootNode : Node
 	public TextureList Textures = new TextureList();
 	public TextureList Icons = new TextureList();
 
+	protected virtual bool NeedsSkin() { return true; }
 	protected virtual bool NeedsIcon() { return true; }
 
 	public Texture2D GetTextureOrDefault(string key)
@@ -182,9 +183,10 @@ public abstract class RootNode : Node
 		base.GetVerifications(verifications);
 
 		// Textures
-		if (Textures == null || Textures.Count == 0)
+		if(NeedsSkin() && (Textures == null || Textures.Count == 0))
 			verifications.Add(Verification.Neutral($"No skins present"));
-		else if (Textures[0].Key != "default")
+
+		if (Textures != null && Textures.Count > 0 && Textures[0].Key != "default")
 			verifications.Add(Verification.Failure($"Default texture is named incorrectly as {Textures[0].Key}",
 			() =>
 			{

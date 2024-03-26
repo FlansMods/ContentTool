@@ -42,7 +42,7 @@ public class TextureList : ModifiableList<NamedTexture>
 			if (changedTextureLocation != entry.Location)
 			{
 				entry.Location = changedTextureLocation;
-				entry.Texture = changedTextureLocation.Load<Texture2D>();
+				entry.Texture = changedTextureLocation.Load<Texture2D>(folderHint);
 				anyChange = true;
 			}
 			GUILayout.BeginHorizontal();

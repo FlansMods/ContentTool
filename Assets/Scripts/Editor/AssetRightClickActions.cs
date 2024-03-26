@@ -85,7 +85,7 @@ public class AssetRightClickActions
 	[MenuItem("CONTEXT/SectionNode/Add ShapeboxGeometryNode")]
 	private static bool CreateShapeboxNode(UnityEditor.MenuCommand menuCommand) { return Create<ShapeboxGeometryNode>(menuCommand); }
 
-	[MenuItem("GameObject/Flan's Mod/TurboRootNode")]
+	[MenuItem("GameObject/Create New Flan's Turbo Rig")]
 	private static bool CreateTurboRootNode(UnityEditor.MenuCommand menuCommand) { return Create<TurboRootNode>(menuCommand); }
 
 	private static bool Create<TNodeType>(UnityEditor.MenuCommand menuCommand) where TNodeType : Node
