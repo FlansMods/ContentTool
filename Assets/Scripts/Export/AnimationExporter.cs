@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using static ElementExtensions;
+using UnityEngine.UIElements;
 
 public class UnityAnimationExporter : DuplicatedJsonExporter
 {
@@ -41,6 +43,166 @@ public class UnityAnimationExporter : DuplicatedJsonExporter
 		public Vector3 pos;
 		public Quaternion ori;
 		public Vector3 scale;
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	#region Flanimation -> UnityAnim
+	// -----------------------------------------------------------------------------------------------------------------
+	public AnimatorController ConvertToUnityAnim(FlanimationDefinition flanimation, TurboRootNode referenceModel = null)
+	{
+		string flanimationPath = AssetDatabase.GetAssetPath(flanimation);
+		string controllerPath = referenceModel != null
+			? flanimationPath.Replace(".asset", $"_{referenceModel.name}_controller.asset")
+			: flanimationPath.Replace(".asset", "_controller.asset");
+
+
+		AnimatorController animController = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
+		foreach(SequenceDefinition sequence in flanimation.sequences)
+		{
+			string clipPath = controllerPath.Replace("controller.asset", $"{sequence.name}.asset");
+			AnimationClip clip = CreateClip(flanimation, sequence, clipPath, referenceModel);
+			animController.AddMotion(clip);
+		}
+
+		EditorUtility.SetDirty(animController);
+		return animController;
+	}
+	public AnimationClip CreateClip(FlanimationDefinition flanimation, SequenceDefinition sequence, string path, TurboRootNode referenceModel = null)
+	{
+		AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+		if (clip == null)
+		{
+			clip = new AnimationClip();
+			AssetDatabase.CreateAsset(clip, path);
+			clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+		}
+		
+		List<string> framesNeeded = sequence.GetKeyframesNeeded();
+		Dictionary<float, SequenceEntryDefinition> frameTimings = sequence.GetFrameTimings();
+		Dictionary<string, List<ElementExtensions.EBindingType>> bindings = new Dictionary<string, List<ElementExtensions.EBindingType>>();
+		foreach (KeyframeDefinition keyframe in flanimation.keyframes)
+		{
+			if (framesNeeded.Contains(keyframe.name))
+			{
+				keyframe.AppendBindingsNeeded(bindings);
+			}
+		}
+
+		foreach (var kvp in bindings)
+		{
+			string partName = kvp.Key;
+
+			if (referenceModel != null)
+			{
+				if (referenceModel.TryFindDescendant($"ap_{partName}", out AttachPointNode apNode))
+				{
+					EditorCurveBinding[] curveBindings = AnimationUtility.GetAnimatableBindings(apNode.gameObject, referenceModel.gameObject);
+					Bind(flanimation, clip, partName, kvp.Value, curveBindings, frameTimings, apNode.transform);
+				}
+			}
+			else
+			{
+				// TODO: Default anim export with no reference model chosen
+
+			}
+		}
+		EditorUtility.SetDirty(clip);
+		return clip;
+	}
+	private void Bind(FlanimationDefinition flanimation, AnimationClip clip, string partName, List<EBindingType> bindingsNeeed, EditorCurveBinding[] curveBindings, Dictionary<float, SequenceEntryDefinition> frameTimings, Transform referenceModelAP = null)
+	{
+		foreach (EditorCurveBinding curveBinding in curveBindings)
+		{
+			EBindingType bindingType = GetBindingType(curveBinding);
+			if (bindingsNeeed.Contains(bindingType))
+			{
+				AnimationCurve curve = CreateCurveFor(flanimation, partName, bindingType, frameTimings, referenceModelAP);
+				AnimationUtility.SetEditorCurve(clip, curveBinding, curve);
+			}
+		}
+	}
+	public AnimationCurve CreateCurveFor(FlanimationDefinition flanimation, string partName, EBindingType bindingType, Dictionary<float, SequenceEntryDefinition> frameTimings, Transform referenceModelAP = null)
+	{
+		AnimationCurve curve = new AnimationCurve();
+		foreach (var kvp in frameTimings)
+		{
+			float time = kvp.Key;
+			SequenceEntryDefinition entry = kvp.Value;
+			if (flanimation.TryGetKeyframe(entry.frame, out KeyframeDefinition rootKeyframe))
+			{
+				// Get the pose, first by checking the keyframe, then by climbing the parent heirarchy
+				PoseDefinition pose = null;
+				if (rootKeyframe.TryGetPose(partName, out PoseDefinition rootPose))
+					pose = rootPose;
+				else
+				{
+					foreach (KeyframeDefinition parentKeyframe in flanimation.GetRecursiveParentsOf(rootKeyframe))
+					{
+						if (parentKeyframe.TryGetPose(partName, out PoseDefinition parentPose))
+						{
+							pose = parentPose;
+							break;
+						}
+					}
+				}
+
+				if (pose != null)
+				{
+					float defaultValue =
+					curve.AddKey(new Keyframe()
+					{
+						time = time,
+						value = (float)pose.GetBindingValue(bindingType) + GetDefaultValue(referenceModelAP, bindingType),
+					});
+				}
+			}
+		}
+		return curve;
+	}
+	private float GetDefaultValue(Transform target, EBindingType bindingType)
+	{
+		if (target != null)
+		{
+			switch (bindingType)
+			{
+				case EBindingType.PosX:			return target.localPosition.x;
+				case EBindingType.PosY:			return target.localPosition.y;
+				case EBindingType.PosZ:			return target.localPosition.z;
+				case EBindingType.OriX:			return target.localRotation.x;
+				case EBindingType.OriY:			return target.localRotation.y;
+				case EBindingType.OriZ:			return target.localRotation.z;
+				case EBindingType.OriW:			return target.localRotation.z;
+				case EBindingType.ScaleX:		return target.localScale.x;
+				case EBindingType.ScaleY:		return target.localScale.y;
+				case EBindingType.ScaleZ:		return target.localScale.z;
+			}
+		}
+		return 0f;
+	}
+	private EBindingType GetBindingType(EditorCurveBinding curveBinding)
+	{
+		switch (curveBinding.propertyName)
+		{
+			case "m_LocalPosition.x": return EBindingType.PosX;
+			case "m_LocalPosition.y": return EBindingType.PosY;
+			case "m_LocalPosition.z": return EBindingType.PosZ;
+			case "m_LocalRotation.x": return EBindingType.OriX;
+			case "m_LocalRotation.y": return EBindingType.OriY;
+			case "m_LocalRotation.z": return EBindingType.OriZ;
+			case "m_LocalRotation.w": return EBindingType.OriW;
+			case "m_LocalScale.x": return EBindingType.ScaleX;
+			case "m_LocalScale.y": return EBindingType.ScaleY;
+			case "m_LocalScale.z": return EBindingType.ScaleZ;
+			default: return EBindingType.None;
+		}
+	}
+	#endregion
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	public void ConvertToFlanimation(AnimatorController controller)
+	{
+		
 	}
 
 	// Creates a FlanimationDefinition

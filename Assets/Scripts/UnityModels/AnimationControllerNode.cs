@@ -641,180 +641,31 @@ public class AnimationControllerNode : Node
 	// To see the animation in scene view, we move the model nodes over from the AttachPointNodes
 	// to some PreviewAnimNodes
 	// -----------------------------------------------------------------------------------------
-	private const string ANIM_CACHE_FOLDER = "Assets/UnityAnimCache";
 	public AnimatorController UnityAnimController;
 	public Animator UnityAnimator;
 
 	public void RefreshAnimation()
 	{
-		if(SelectedAnimation != null)
+		CheckInitUnityAnimator();
+	}
+
+	private void CheckInitUnityAnimator()
+	{
+		if (SelectedAnimation != null)
 		{
-			if(UnityAnimator == null)
+			// The "Animator" component on our root to preview the anims
+			if (UnityAnimator == null)
 			{
 				UnityAnimator = Root.GetComponent<Animator>();
 				if (UnityAnimator == null)
 					UnityAnimator = Root.gameObject.AddComponent<Animator>();
 			}
-
-			CreateController();
-
-
-			foreach (SequenceDefinition sequence in SelectedAnimation.sequences)
+			// Then if we don't have an "AnimatorController" asset, create one
+			if (UnityAnimController == null)
 			{
-				CreateClip(sequence);
+				UnityAnimController = UnityAnimationExporter.INST.ConvertToUnityAnim(SelectedAnimation, Root as TurboRootNode);
+				UnityAnimator.runtimeAnimatorController = UnityAnimController;
 			}
-			
-		}
-	}
-
-
-	public string CreateAssetFolder()
-	{
-		string cachedAnimFolder = $"{ANIM_CACHE_FOLDER}/{Root.name}";
-		if (!Directory.Exists(cachedAnimFolder))
-			Directory.CreateDirectory(cachedAnimFolder);
-		return cachedAnimFolder;
-	}
-	public void CreateController()
-	{
-		if (UnityAnimController == null)
-		{
-			string cachedAnimFolder = CreateAssetFolder();
-			string cachedControllerLoc = $"{cachedAnimFolder}/controller.asset";
-			UnityAnimController = AssetDatabase.LoadAssetAtPath<AnimatorController>(cachedControllerLoc);
-			if(UnityAnimController == null)
-			{
-				UnityAnimController = AnimatorController.CreateAnimatorControllerAtPath(cachedControllerLoc);
-			}
-		}
-
-		UnityAnimator.runtimeAnimatorController = UnityAnimController;
-	}
-
-	public void CreateClip(SequenceDefinition sequence)
-	{
-		foreach(AnimationClip checkClip in UnityAnimController.animationClips)
-		{
-			if (checkClip.name == sequence.name)
-				return;
-		}
-
-		string cachedAnimFolder = CreateAssetFolder();
-		string cachedAnimLoc = $"{cachedAnimFolder}/{sequence.name}.asset";
-		AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(cachedAnimLoc);
-		if (clip == null)
-		{
-			clip = new AnimationClip();
-			AssetDatabase.CreateAsset(clip, cachedAnimLoc);
-			clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(cachedAnimLoc);
-		}
-		List<string> framesNeeded = sequence.GetKeyframesNeeded();
-		Dictionary<float, SequenceEntryDefinition> frameTimings = sequence.GetFrameTimings();
-
-
-		Dictionary<string, List<ElementExtensions.EBindingType>> bindings = new Dictionary<string, List<ElementExtensions.EBindingType>>();
-		foreach (KeyframeDefinition keyframe in SelectedAnimation.keyframes)
-		{
-			if (framesNeeded.Contains(keyframe.name))
-			{
-				keyframe.AppendBindingsNeeded(bindings);
-				//foreach (PoseDefinition pose in keyframe.poses)
-				//{
-				//	CreateAnimBindingFor(clip, pose);
-				//}
-			}
-		}
-
-		foreach (var kvp in bindings)
-		{
-			string partName = kvp.Key;
-			if (Root.TryFindDescendant($"ap_{partName}", out AttachPointNode apNode))
-			{
-				EditorCurveBinding[] curveBindings = AnimationUtility.GetAnimatableBindings(apNode.gameObject, Root.gameObject);
-				Bind(clip, partName, apNode.transform, kvp.Value, curveBindings, frameTimings);
-			}
-		}
-		UnityAnimController.AddMotion(clip);
-	}
-
-	private void Bind(AnimationClip clip, string partName, Transform apTransform, List<ElementExtensions.EBindingType> bindingsNeeed, EditorCurveBinding[] curveBindings, Dictionary<float, SequenceEntryDefinition> frameTimings)
-	{
-		foreach (EditorCurveBinding curveBinding in curveBindings)
-		{
-			ElementExtensions.EBindingType bindingType = GetBindingType(curveBinding);
-			if(bindingsNeeed.Contains(bindingType))
-			{
-				AnimationCurve curve = new AnimationCurve();
-				foreach(var kvp in frameTimings)
-				{
-					float time = kvp.Key;
-					SequenceEntryDefinition entry = kvp.Value;
-					if(SelectedAnimation.TryGetKeyframe(entry.frame, out KeyframeDefinition rootKeyframe))
-					{
-						// Get the pose, first by checking the keyframe, then by climbing the parent heirarchy
-						PoseDefinition pose = null;
-						if (rootKeyframe.TryGetPose(partName, out PoseDefinition rootPose))
-							pose = rootPose;
-						else
-						{
-							foreach (KeyframeDefinition parentKeyframe in SelectedAnimation.GetRecursiveParentsOf(rootKeyframe))
-							{
-								if (parentKeyframe.TryGetPose(partName, out PoseDefinition parentPose))
-								{
-									pose = parentPose;
-									break;
-								}
-							}
-						}
-
-						if (pose != null)
-						{
-							float defaultValue = 
-							curve.AddKey(new Keyframe() {
-								time = time,
-								value = (float)pose.GetBindingValue(bindingType) + GetDefaultValue(apTransform, curveBinding),
-								
-							});
-						}
-					}
-				}
-
-				AnimationUtility.SetEditorCurve(clip, curveBinding, curve);
-			}
-		}
-	}
-	private float GetDefaultValue(Transform target, EditorCurveBinding curveBinding)
-	{
-		switch (curveBinding.propertyName)
-		{
-			case "m_LocalPosition.x": return target.localPosition.x;
-			case "m_LocalPosition.y": return target.localPosition.y;
-			case "m_LocalPosition.z": return target.localPosition.z;
-			case "m_LocalRotation.x": return target.localRotation.x;
-			case "m_LocalRotation.y": return target.localRotation.y;
-			case "m_LocalRotation.z": return target.localRotation.z;
-			case "m_LocalRotation.w": return target.localRotation.z;
-			case "m_LocalScale.x": return target.localScale.x;
-			case "m_LocalScale.y": return target.localScale.y;
-			case "m_LocalScale.z": return target.localScale.z;
-			default: return 0f;
-		}
-	}
-	private ElementExtensions.EBindingType GetBindingType(EditorCurveBinding curveBinding)
-	{
-		switch (curveBinding.propertyName)
-		{
-			case "m_LocalPosition.x": return ElementExtensions.EBindingType.PosX;
-			case "m_LocalPosition.y": return ElementExtensions.EBindingType.PosY;
-			case "m_LocalPosition.z": return ElementExtensions.EBindingType.PosZ;
-			case "m_LocalRotation.x": return ElementExtensions.EBindingType.OriX;
-			case "m_LocalRotation.y": return ElementExtensions.EBindingType.OriY;
-			case "m_LocalRotation.z": return ElementExtensions.EBindingType.OriZ;
-			case "m_LocalRotation.w": return ElementExtensions.EBindingType.OriW;
-			case "m_LocalScale.x": return ElementExtensions.EBindingType.ScaleX;
-			case "m_LocalScale.y": return ElementExtensions.EBindingType.ScaleY;
-			case "m_LocalScale.z": return ElementExtensions.EBindingType.ScaleZ;
-			default: return ElementExtensions.EBindingType.None;
 		}
 	}
 	

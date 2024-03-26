@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -32,6 +33,24 @@ public abstract class RootNode : Node
 			if (Textures[i].Key == keyB)
 				Textures[i].Key = keyA;
 		}
+	}
+	#endregion
+	// -----------------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------------
+	#region Animations
+	// -----------------------------------------------------------------------------------
+	public FlanimationDefinition FlanimationDef;
+	public AnimatorController UnityAnimController;
+	public Animator UnityAnimator;
+
+	public void SetAnimation(FlanimationDefinition flanimation)
+	{
+		
+	}
+	public void SetAnimation(AnimatorController unityAnim)
+	{
+		
 	}
 	#endregion
 	// -----------------------------------------------------------------------------------
