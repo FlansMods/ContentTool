@@ -22,6 +22,9 @@ public class ExportLogger : IVerificationLogger
 	public void Success(string msg) { Verifications.Add(Verification.Success(msg)); }
 	public void Neutral(string msg) { Verifications.Add(Verification.Neutral(msg)); }
 	public void Failure(string msg) { Verifications.Add(Verification.Failure(msg)); }
+	public void Success(string msg, Verification.QuickFixFunc func) { Verifications.Add(Verification.Success(msg, func)); }
+	public void Neutral(string msg, Verification.QuickFixFunc func) { Verifications.Add(Verification.Neutral(msg, func)); }
+	public void Failure(string msg, Verification.QuickFixFunc func) { Verifications.Add(Verification.Failure(msg, func)); }
 	public void Exception(Exception e) { Verifications.Add(Verification.Exception(e)); }
 	public void Exception(Exception e, string msg) { Verifications.Add(Verification.Exception(e, msg)); }
 

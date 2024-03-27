@@ -62,12 +62,12 @@ public static class JavaModelImporter
 	}
 
 	private static UVMap TempUVStorage = null;
-	public static TurboRootNode ImportJavaModel(string javaPath, List<Verification> verifications)
+	public static TurboRootNode ImportJavaModel(string javaPath, IVerificationLogger logger = null)
 	{
 		GameObject go = new GameObject($"Temp: Importing {javaPath}");
 		TurboRootNode rootNode = go.AddComponent<TurboRootNode>();
 		// TODO: rootNode.AddDefaultTransforms();
-		TempUVStorage = new UVMap();
+		TempUVStorage = new UVMap(); 
 
 		try
 		{
@@ -93,7 +93,7 @@ public static class JavaModelImporter
 					{
 						if(reader.EndOfStream)
 						{
-							verifications.Add(Verification.Failure($"Found a multi-line without a semicolon '{line}' in {javaPath}"));
+							logger?.Failure($"Found a multi-line without a semicolon '{line}' in {javaPath}");
 							break;
 						}
 						// Get a new line, strip it, skip comments
@@ -119,14 +119,16 @@ public static class JavaModelImporter
 								|| MatchArrayInitializerTurbo(line);
 					if(!matched)
 					{
-						verifications.Add(Verification.Neutral($"Could not match line '{line}' when importing '{javaPath}'"));
+						logger?.Neutral($"Could not match line '{line}' when importing '{javaPath}'");
 					}
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			verifications.Add(Verification.Failure($"Failed to find Java model {javaPath} because of {e.Message}"));
+			logger?.Failure($"Failed to find Java model {javaPath} because of {e.Message}");
+            UnityEngine.Object.DestroyImmediate(go);
+			return null;
 		}
 
 		// ----------------------------------------------------------------------------
@@ -141,7 +143,7 @@ public static class JavaModelImporter
 				if (placement != null)
 					geomNode.BakedUV = placement.Bounds;
 				else
-					verifications.Add(Verification.Failure($"Failed to match a UV patch for {geomNode.name}"));
+					logger?.Failure($"Failed to match a UV patch for {geomNode.name}");
 
 				if (geomNode.transform.parent != null && geomNode.ParentNode is EmptyNode emptyNode)
 					nodesWithTempParents.Add(geomNode);
@@ -160,7 +162,7 @@ public static class JavaModelImporter
 			if(tempParent.childCount == 0)
                 UnityEngine.Object.DestroyImmediate(tempParent.gameObject);
 			else
-				verifications.Add(Verification.Failure($"{tempParent} temporary object has multiple children?"));
+				logger?.Failure($"{tempParent} temporary object has multiple children?");
 		}
 
 		// #3 Attach our Sections to our AttachPoints
@@ -602,9 +604,9 @@ public static class JavaModelImporter
 	{
 		if (rootNode.SupportsMirror())
 		{
-			GameObject.Instantiate(rootNode).name = "Pre-FlipAll";
+			//GameObject.Instantiate(rootNode).name = "Pre-FlipAll";
 			rootNode.Mirror(false, true, true);
-			GameObject.Instantiate(rootNode).name = "Post-FlipAll";
+			//GameObject.Instantiate(rootNode).name = "Post-FlipAll";
 			return true;
 		}
 		return false;

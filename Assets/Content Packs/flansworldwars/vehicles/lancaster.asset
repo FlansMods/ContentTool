@@ -1,0 +1,470 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beea92bb404a0674c8ec1ef68b9595d2, type: 3}
+  m_Name: lancaster
+  m_EditorClassIdentifier: 
+  LocalisedNames: []
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: vehicle
+    _tags: []
+  seats:
+  - attachedTo: core
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: -89
+    maxPitch: 89
+    gyroStabilised: 0
+    inputs:
+    - key: 0
+      articulations: []
+      guns: []
+      driving:
+      - control: 0
+        force: 2
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 1
+      articulations: []
+      guns: []
+      driving:
+      - control: 1
+        force: 0
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 2
+      articulations: []
+      guns: []
+      driving:
+      - control: 4
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 3
+      articulations: []
+      guns: []
+      driving:
+      - control: 5
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 16
+      articulations: []
+      guns: []
+      driving:
+      - control: 3
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 6
+      articulations: []
+      guns: []
+      driving:
+      - control: 8
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 7
+      articulations: []
+      guns: []
+      driving:
+      - control: 9
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 8
+      articulations: []
+      guns: []
+      driving:
+      - control: 6
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 9
+      articulations: []
+      guns: []
+      driving:
+      - control: 7
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 20
+      articulations: []
+      guns: []
+      driving:
+      - control: 13
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+    - key: 21
+      articulations: []
+      guns: []
+      driving:
+      - control: 14
+        force: 1
+        toggle: 0
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  - attachedTo: nose
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -30
+    maxYaw: 30
+    minPitch: -25
+    maxPitch: 25
+    gyroStabilised: 0
+    inputs:
+    - key: 10
+      articulations: []
+      guns:
+      - gunName: seat_1_gun
+        toggle: 0
+      driving: []
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  - attachedTo: core
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: -89
+    maxPitch: 89
+    gyroStabilised: 0
+    inputs: []
+  - attachedTo: core
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: -89
+    maxPitch: 89
+    gyroStabilised: 0
+    inputs: []
+  - attachedTo: tail
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: 0
+    maxPitch: 45
+    gyroStabilised: 0
+    inputs:
+    - key: 10
+      articulations: []
+      guns:
+      - gunName: seat_4_gun
+        toggle: 0
+      driving: []
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  - attachedTo: tail
+    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
+    minYaw: 135
+    maxYaw: 225
+    minPitch: -30
+    maxPitch: 30
+    gyroStabilised: 0
+    inputs:
+    - key: 10
+      articulations: []
+      guns:
+      - gunName: seat_5_gun
+        toggle: 0
+      driving: []
+      arms: []
+      alternateInputs: 0
+      switchVehicleMode: 
+  articulatedParts: []
+  guns:
+  - name: seat_1_gun
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds:
+      - sound:
+          Namespace: 
+          ID: browning_shoot
+        _sound: 
+        length: 0
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: nose
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: -30
+    maxYaw: 30
+    minPitch: -25
+    maxPitch: 25
+    aimingSpeed: 1
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: seat_4_gun
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds:
+      - sound:
+          Namespace: 
+          ID: browning_shoot
+        _sound: 
+        length: 0
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: tail
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: -360
+    maxYaw: 360
+    minPitch: 0
+    maxPitch: 45
+    aimingSpeed: 1
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: seat_5_gun
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds:
+      - sound:
+          Namespace: 
+          ID: browning_shoot
+        _sound: 
+        length: 0
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: tail
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 135
+    maxYaw: 225
+    minPitch: -30
+    maxPitch: 30
+    aimingSpeed: 1
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound:
+        Namespace: 
+        ID: 
+      _sound: 
+      length: 0
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  - name: pilot_gun_secondary_0
+    primaryActions:
+    - actionType: 3
+      duration: 0
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: FireMissile
+    recoil: {x: 0, y: 0, z: 0}
+    attachedTo: body
+    shootPointOffset: {x: 0, y: 0, z: 0}
+    minYaw: 0
+    maxYaw: 0
+    minPitch: 0
+    maxPitch: 0
+    aimingSpeed: 0
+    lockSeatToGunAngles: 0
+    traveseIndependently: 0
+    yawSound:
+      sound:
+        Namespace: flansworldwars
+        ID: null
+      _sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+    pitchSound:
+      sound:
+        Namespace: flansworldwars
+        ID: null
+      _sound: 
+      length: 1
+      minPitchMultiplier: 1
+      maxPitchMultiplier: 1
+      minVolume: 1
+      maxVolume: 1
+      maxRange: 100
+      LODs: []
+  movementModes:
+  - name: plane
+    type: 0
+    wheels:
+    - attachedTo: coreWheel
+      visualOffset: {x: 5, y: -1, z: -3.25}
+      physicsOffset: {x: 5, y: -1, z: -3.25}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: 5, y: -1, z: 3.25}
+      physicsOffset: {x: 5, y: -1, z: 3.25}
+      springStrength: 0.125
+      stepHeight: 1
+    - attachedTo: coreWheel
+      visualOffset: {x: -5.75, y: 0, z: 0}
+      physicsOffset: {x: -5.75, y: 0, z: 0}
+      springStrength: 0.125
+      stepHeight: 1
+    propellers:
+    - attachedTo: leftWing
+      visualOffset: {x: 7.125, y: 1, z: -3.25}
+      forceOffset: {x: 0, y: 0, z: 0}
+    - attachedTo: rightWing
+      visualOffset: {x: 7.125, y: 1, z: 3.25}
+      forceOffset: {x: 0, y: 0, z: 0}
+    - attachedTo: leftWing
+      visualOffset: {x: 6.125, y: 1, z: -7.25}
+      forceOffset: {x: 0, y: 0, z: 0}
+    - attachedTo: rightWing
+      visualOffset: {x: 6.125, y: 1, z: 7.25}
+      forceOffset: {x: 0, y: 0, z: 0}
+    legs: []
+    arms: []
+    maxAcceleration: 1
+    maxDecceleration: -1
+    maxSpeed: 100
+    liftForce: 10
+  restingEulerAngles: {x: 0, y: 0, z: 0}
+  defaultEngine:
+    maxAcceleration: 1
+    maxDeceleration: 1
+    maxSpeed: 1
+    fuelType: 0
+    fuelConsumptionRate: 1
+    solidFuelSlots: 0
+    liquidFuelCapacity: 1000
+    batterySlots: 0
+    FECapacity: 0
+  useAABBCollisionOnly: 0
+  aabbSize: {x: 0, y: 0, z: 0}
+  CargoSlots: 0
+  CanAccessMenusWhileMoving: 1

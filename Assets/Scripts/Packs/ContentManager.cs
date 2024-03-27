@@ -518,22 +518,6 @@ public class ContentManager : MonoBehaviour
 			if (pack != null)
 				if (pack.name == packName)
 					return pack;
-
-		// Second, try to find it in the asset database
-		if (canSearchAssets)
-		{
-			foreach (string cpGUID in AssetDatabase.FindAssets("t:ContentPack"))
-			{
-				string cpPath = AssetDatabase.GUIDToAssetPath(cpGUID);
-				ContentPack loadedPack = AssetDatabase.LoadAssetAtPath<ContentPack>(cpPath);
-				if (loadedPack != null)
-				{
-					_Packs.Add(loadedPack);
-					return loadedPack;
-				}
-			}
-		}
-
 		return null;
 	}
 	#endregion
@@ -545,13 +529,11 @@ public class ContentManager : MonoBehaviour
 	// TODO: Can we not use the TYPE_LOOKUP? Do InfoTypes need to reference each other during import?
 	//
 	public static Dictionary<string, InfoType>[] TYPE_LOOKUP;
-	public static List<Verification> LastImportOperationResults = new List<Verification>();
-	public static string LastImportOperation = "None";
-	public static List<Verification> GetFreshImportLogger(string opName) 
+	public static IVerificationLogger LastImportOperation = null;
+	public static IVerificationLogger GetFreshImportLogger(string opName)
 	{
-		LastImportOperation = opName;
-		LastImportOperationResults.Clear(); 
-		return LastImportOperationResults; 
+		LastImportOperation = new ExportLogger(opName);
+		return LastImportOperation;
 	}
 	public static bool TryGetType<T>(EDefinitionType type, string key, out T infoType) where T : InfoType
 	{
@@ -578,23 +560,23 @@ public class ContentManager : MonoBehaviour
 	}
 	// --- TYPE_LOOKUP ---
 
-	public bool ImportPack(string packName, List<Verification> errors, bool overwrite = false)
+	public bool ImportPack(string packName, bool overwrite = false, IVerificationLogger logger = null)
 	{
 		// Check our name
 		if(packName == null || packName.Length == 0)
 		{
-			errors.Add(Verification.Failure($"Pack name '{packName}' is invalid"));
+			logger?.Failure($"Pack name '{packName}' is invalid");
 			return false;
 		}
 		string sanitisedName = Utils.ToLowerWithUnderscores(packName);
 		if(sanitisedName != packName)
 		{
-			errors.Add(Verification.Failure($"Pack name '{packName}' is not in Minecraft format. Try '{sanitisedName}'.",
+			logger?.Failure($"Pack name '{packName}' is not in Minecraft format. Try '{sanitisedName}'.",
 			() => { 
 				Debug.Log($"Copied '{sanitisedName}' to the clipboard"); 
 				GUIUtility.systemCopyBuffer = sanitisedName;
 				return null;
-			}));
+			});
 			return false;
 		}
 
@@ -602,7 +584,7 @@ public class ContentManager : MonoBehaviour
 		ForceRefresh();
 		if (!TryGetPreImportPack(packName, out PreImportPack inputPack))
 		{
-			errors.Add(Verification.Failure($"Pack name '{packName}' was not found in the Import folder"));
+			logger?.Failure($"Pack name '{packName}' was not found in the Import folder");
 			return false;
 		}
 
@@ -620,34 +602,40 @@ public class ContentManager : MonoBehaviour
 		// Hmmmm
 		TYPE_LOOKUP = new Dictionary<string, InfoType>[DefinitionTypes.NUM_TYPES];
 
-		GenerateFullImportMap(packName);
-		for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
+		try
 		{
-			
-			EDefinitionType defType = (EDefinitionType)i;
-			EditorUtility.DisplayProgressBar($"Importing Content", $"Importing {defType}", (float)(i+1) / DefinitionTypes.NUM_TYPES);
-			TYPE_LOOKUP[i] = new Dictionary<string, InfoType>();
-			foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
+			GenerateFullImportMap(packName);
+			for (int i = 0; i < DefinitionTypes.NUM_TYPES; i++)
 			{
-				ImportContent_Internal(inputPack, outputPack, defType, fileName, errors, overwrite);
+
+				EDefinitionType defType = (EDefinitionType)i;
+				EditorUtility.DisplayProgressBar($"Importing Content", $"Importing {defType}", (float)(i + 1) / DefinitionTypes.NUM_TYPES);
+				TYPE_LOOKUP[i] = new Dictionary<string, InfoType>();
+				foreach (string fileName in inputPack.GetAssetNamesInFolder(defType))
+				{
+					ImportContent_Internal(inputPack, outputPack, defType, fileName, overwrite, logger);
+				}
 			}
+
+			// Release the InfoType objects now we are done
+			TYPE_LOOKUP = null;
+
+			ImportLangFiles_Internal(packName, logger);
+			ImportSounds_Internal(packName, outputPack, logger);
+			EditorUtility.ClearProgressBar();
+
+			outputPack.ForceRefreshAssets();
+			AssetDatabase.Refresh();
 		}
-
-		// Release the InfoType objects now we are done
-		TYPE_LOOKUP = null;
-
-		ImportLangFiles_Internal(packName);
-		ImportSounds_Internal(packName, outputPack);
-		EditorUtility.ClearProgressBar();
-
-		outputPack.ForceRefreshAssets();
-		AssetDatabase.Refresh();
-
+		finally
+		{
+			EditorUtility.ClearProgressBar();
+		}
 
 		return true;
 	}
 
-	private void ImportContent_Internal(PreImportPack fromPack, ContentPack toPack, EDefinitionType defType, string fileName, List<Verification> errors, bool overwrite)
+	private void ImportContent_Internal(PreImportPack fromPack, ContentPack toPack, EDefinitionType defType, string fileName, bool overwrite = false, IVerificationLogger logger = null)
 	{
 		if (fromPack == null || toPack == null)
 			return;
@@ -669,10 +657,10 @@ public class ContentManager : MonoBehaviour
 
 		// We are okay to do the import
 		// Step 1. Import InfoType, our old format
-		InfoType imported = ImportType_Internal(toPack, defType, fileName.Split(".")[0]);
+		InfoType imported = ImportType_Internal(toPack, defType, fileName.Split(".")[0], logger);
 		if (imported == null)
 		{
-			errors.Add(Verification.Failure($"Failed to import {fileName} as InfoType"));
+			logger?.Failure($"Failed to import {fileName} as InfoType");
 			return;
 		}
 		TYPE_LOOKUP[(int)defType].Add(imported.shortName, imported);
@@ -681,7 +669,7 @@ public class ContentManager : MonoBehaviour
 		Definition def = ConvertDefinition_Internal(toPack.ModName, defType, imported.shortName, imported);
 		if (def == null)
 		{
-			errors.Add(Verification.Failure($"Failed to convert {imported.shortName} from InfoType to Definition"));
+			logger?.Failure($"Failed to convert {imported.shortName} from InfoType to Definition");
 			return;
 		}
 
@@ -699,95 +687,103 @@ public class ContentManager : MonoBehaviour
 					outputPaths.RemoveAt(i);
 			}
 		}
-		AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, outputPaths, errors);
-
+		AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, outputPaths, logger);
 	}
 
-	private InfoType ImportType_Internal(ContentPack pack, EDefinitionType type, string fileName)
+	private InfoType ImportType_Internal(ContentPack pack, EDefinitionType type, string fileName, IVerificationLogger logger = null)
 	{
 		Debug.Log($"Importing {pack.name}:{type}/{fileName}");
 		string importFilePath = $"{IMPORT_ROOT}/{pack.name}/{type.Folder()}/{fileName}.txt";
 
 		// Read the .txt file
 		TypeFile file = new TypeFile(fileName);
-		string[] lines = File.ReadAllLines(importFilePath);
-		foreach (string line in lines)
+		try
 		{
-			file.addLine(line);
-		}
-
-		// -------
-		// This is hacky, meh
-		if (type == EDefinitionType.gun)
-		{
-			string modelFolder = "";
-			string modelName = "";
+			string[] lines = File.ReadAllLines(importFilePath);
 			foreach (string line in lines)
 			{
-				if(line.StartsWith("Model"))	
-				{
-					string modelPath = line.Split(' ')[1];
-					if (modelPath.Contains('.'))
-					{
-						modelFolder = modelPath.Split('.')[0];
-						modelName = modelPath.Split('.')[1];
-					}
-					else modelName = modelPath;
-					break;
-				}
+				file.addLine(line);
 			}
-			// Load the model and hunt for 5 specific lines.
-			string modelFilePath = $"{MODEL_IMPORT_ROOT}/{modelFolder}/Model{modelName}.java";
-			if (File.Exists(modelFilePath))
+		
+			// -------
+			// This is hacky, meh
+			if (type == EDefinitionType.gun)
 			{
-				string[] modelLines = File.ReadAllLines(modelFilePath);
-				foreach (string line in modelLines)
+				string modelFolder = "";
+				string modelName = "";
+				foreach (string line in lines)
 				{
-					if (line.Contains("="))
+					if(line.StartsWith("Model"))	
 					{
-						if (line.Contains("animationType"))
+						string modelPath = line.Split(' ')[1];
+						if (modelPath.Contains('.'))
 						{
-							for (int i = 0; i < AnimationTypes.NUM_TYPES; i++)
+							modelFolder = modelPath.Split('.')[0];
+							modelName = modelPath.Split('.')[1];
+						}
+						else modelName = modelPath;
+						break;
+					}
+				}
+				// Load the model and hunt for 5 specific lines.
+				string modelFilePath = $"{MODEL_IMPORT_ROOT}/{modelFolder}/Model{modelName}.java";
+				if (File.Exists(modelFilePath))
+				{
+					string[] modelLines = File.ReadAllLines(modelFilePath);
+					foreach (string line in modelLines)
+					{
+						if (line.Contains("="))
+						{
+							if (line.Contains("animationType"))
 							{
-								if (line.Contains($"{(EAnimationType)i}"))
+								for (int i = 0; i < AnimationTypes.NUM_TYPES; i++)
 								{
-									GunConverter.OldAnimType = (EAnimationType)i;
-									break;
+									if (line.Contains($"{(EAnimationType)i}"))
+									{
+										GunConverter.OldAnimType = (EAnimationType)i;
+										break;
+									}
 								}
 							}
-						}
-						else if (line.Contains("tiltGunTime"))
-						{
-							if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
-								GunConverter.TiltTime = time;
-						}
-						else if (line.Contains("untiltGunTime"))
-						{
-							if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
-								GunConverter.UntiltTime = time;
-						}
-						else if (line.Contains("loadClipTime"))
-						{
-							if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
-								GunConverter.LoadTime = time;
-						}
-						else if (line.Contains("unloadClipTime"))
-						{
-							if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
-								GunConverter.UnloadTime = time;
+							else if (line.Contains("tiltGunTime"))
+							{
+								if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
+									GunConverter.TiltTime = time;
+							}
+							else if (line.Contains("untiltGunTime"))
+							{
+								if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
+									GunConverter.UntiltTime = time;
+							}
+							else if (line.Contains("loadClipTime"))
+							{
+								if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
+									GunConverter.LoadTime = time;
+							}
+							else if (line.Contains("unloadClipTime"))
+							{
+								if (JavaModelImporter.MatchSetFloatParameter(line, out string parameter, out float time))
+									GunConverter.UnloadTime = time;
+							}
 						}
 					}
 				}
 			}
-		}
-		// ---
+			// ---
 
-		// Load it into a legacy InfoType
-		InfoType infoType = TxtImport.Import(file, type);
-		return infoType;
+			// Load it into a legacy InfoType
+			InfoType infoType = TxtImport.Import(file, type);
+			return infoType;
+
+		}
+		catch (Exception e)
+		{
+			logger?.Exception(e);
+			return null;
+		}
 	}
 
-	private Definition ConvertDefinition_Internal(string packName, EDefinitionType type, string shortName, InfoType infoType, List<Verification> verifications = null)
+	private Definition ConvertDefinition_Internal(string packName, EDefinitionType type, string shortName, InfoType infoType, IVerificationLogger logger = null)
 	{
 		// All clear, let's import it
 		Definition def = type.CreateInstance();
@@ -800,12 +796,11 @@ public class ContentManager : MonoBehaviour
 
 		string assetPath = $"{ASSET_ROOT}/{packName}/{type.OutputFolder()}/{Utils.ToLowerWithUnderscores(shortName)}.asset";
 		CreateUnityAsset(def, assetPath);
-		if (verifications != null)
-			verifications.Add(Verification.Success($"Saved {def} to {assetPath}"));
+		logger?.Success($"Saved {def} to {assetPath}");
 		return AssetDatabase.LoadAssetAtPath<Definition>(assetPath);
 	}
 
-	private void ImportLangFiles_Internal(string packName, List<Verification> verifications = null)
+	private void ImportLangFiles_Internal(string packName, IVerificationLogger logger = null)
 	{
 		DirectoryInfo langFolder = new DirectoryInfo($"{IMPORT_ROOT}/{packName}/assets/flansmod/lang/");
 		string itemNamePrefix = $"item.{packName}.";
@@ -852,16 +847,15 @@ public class ContentManager : MonoBehaviour
 								stringsImported++;
 							}
 						}
-						Debug.Log($"Imported {stringsImported} strings from {langFile.FullName}");
+						logger?.Success($"Imported {stringsImported} strings from {langFile.FullName}");
 					}
-					else Debug.LogError($"Could not match {langName} to a known language");
+					else logger?.Failure($"Could not match {langName} to a known language");
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			if (verifications != null)
-				verifications.Add(Verification.Exception(e));
+			logger?.Exception(e);
 		}
 	}
 
@@ -883,7 +877,7 @@ public class ContentManager : MonoBehaviour
 		return false;
 	}
 
-	private void ImportSounds_Internal(string packName, ContentPack pack)
+	private void ImportSounds_Internal(string packName, ContentPack pack, IVerificationLogger logger = null)
 	{
 		string soundJson = $"{IMPORT_ROOT}/{packName}/assets/flansmod/sounds.json";
 		if (File.Exists(soundJson))
@@ -908,7 +902,7 @@ public class ContentManager : MonoBehaviour
 					{
 						string soundName = entry.ToString();
 						soundName = soundName.Replace("flansmod:", "");
-						AudioClip clip = ImportSound(packName, soundName.ToLower(), Utils.ToLowerWithUnderscores(soundName));
+						AudioClip clip = ImportSound(packName, soundName.ToLower(), Utils.ToLowerWithUnderscores(soundName), logger);
 						//if (pack != null && clip != null)
 						//	pack.Sounds.Add(clip);
 
@@ -927,13 +921,13 @@ public class ContentManager : MonoBehaviour
 				{
 					jsonWriter.Formatting = Formatting.Indented;
 					soundCopy.WriteTo(jsonWriter);
-					Debug.Log($"Wrote new sounds.json at {soundJsonOutput}");
+					logger?.Success($"Wrote new sounds.json at {soundJsonOutput}");
 				}
 			}
 		}
 	}
 
-	private AudioClip ImportSound(string packName, string soundName, string outputSoundName)
+	private AudioClip ImportSound(string packName, string soundName, string outputSoundName, IVerificationLogger logger = null)
 	{
 		string soundsDir = $"{ASSET_ROOT}/{packName}/sounds/";
 		if (!Directory.Exists(soundsDir))
@@ -945,7 +939,7 @@ public class ContentManager : MonoBehaviour
 			string outputPath = $"{ASSET_ROOT}/{packName}/sounds/{outputSoundName}.ogg";
 			if (File.Exists(path))
 			{
-				Debug.Log($"Copying ogg sound from {path} to {outputPath}");
+				logger?.Success($"Copying ogg sound from {path} to {outputPath}");
 				File.Copy(path, outputPath, true);
 				return AssetDatabase.LoadAssetAtPath<AudioClip>(outputPath);
 			}
@@ -955,7 +949,7 @@ public class ContentManager : MonoBehaviour
 				outputPath = $"{ASSET_ROOT}/{packName}/sounds/{outputSoundName}.mp3";
 				if (File.Exists(path))
 				{
-					Debug.Log($"Copying mp3 sound from {path} to {outputPath}");
+					logger?.Success($"Copying mp3 sound from {path} to {outputPath}");
 					File.Copy(path, outputPath, true);
 					return AssetDatabase.LoadAssetAtPath<AudioClip>(outputPath);
 				}

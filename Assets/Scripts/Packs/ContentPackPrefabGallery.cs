@@ -27,7 +27,7 @@ public class ContentPackPrefabGallery : MonoBehaviour
 			{
 				if(!SpawnedInstances.ContainsKey(modelNode))
 				{
-					// Step 1: See if we have already spawned one
+					// Step 1: See if we have already spawned one 
 					GameObject[] matchingPrefabs = PrefabUtility.FindAllInstancesOfPrefab(modelNode.gameObject);
 					if (matchingPrefabs.Length > 0)
 					{

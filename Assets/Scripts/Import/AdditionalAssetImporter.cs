@@ -87,9 +87,9 @@ public static class AdditionalAssetImporter
 
 	public static void ImportAssets(
 		string srcPackName,
-		InfoType inputType, 
+		InfoType inputType,
 		List<string> allowedOutputs,
-		List<Verification> errors)
+		IVerificationLogger logger = null)
 	{
 		string dstPackName = Utils.ToLowerWithUnderscores(srcPackName);
 		string dstShortName = Utils.ToLowerWithUnderscores(inputType.shortName);
@@ -113,10 +113,10 @@ public static class AdditionalAssetImporter
 					{
 						CopyTexture_Internal($"{IMPORT_ROOT}/{srcPackName}/assets/flansmod/textures/items/{paintjob.iconName}.png",
 									 $"{ASSET_ROOT}/{dstPackName}/textures/item/{Utils.ToLowerWithUnderscores(paintjob.iconName)}.png",
-									 allowedOutputs, errors);
+									 allowedOutputs, logger);
 						CopyTexture_Internal($"{IMPORT_ROOT}/{srcPackName}/assets/flansmod/skins/{paintjob.textureName}.png",
 									$"{ASSET_ROOT}/{dstPackName}/textures/skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png",
-									allowedOutputs, errors);
+									allowedOutputs, logger);
 					}
 				}				
 				break;
@@ -151,13 +151,13 @@ public static class AdditionalAssetImporter
 		{
 			CopyTexture_Internal($"{IMPORT_ROOT}/{srcPackName}/assets/flansmod/textures/items/{inputType.iconPath}.png",
 									 $"{ASSET_ROOT}/{dstPackName}/textures/item/{dstShortName}.png",
-									 allowedOutputs, errors);
+									 allowedOutputs, logger);
 		}
 		if (exportSkin)
 		{
 			CopyTexture_Internal($"{IMPORT_ROOT}/{srcPackName}/assets/flansmod/skins/{inputType.texture}.png",
 									 $"{ASSET_ROOT}/{dstPackName}/textures/skins/{dstShortName}.png",
-									 allowedOutputs, errors);
+									 allowedOutputs, logger);
 		}
 		// --------------------------------------------------------------
 		// Model Imports
@@ -193,8 +193,8 @@ public static class AdditionalAssetImporter
 										$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
 										skins,
 										icons,
-										allowedOutputs, 
-										errors);
+										allowedOutputs,
+										logger);
 
 					exportBasicItemModel = false;
 				}
@@ -240,20 +240,20 @@ public static class AdditionalAssetImporter
 		}
 	}
 
-	public static void ImportTurboRootNode(string from, string to, List<NamedTexture> skins, List<NamedTexture> icons, List<string> allowedOutputs, List<Verification> errors)
+	public static void ImportTurboRootNode(string from, string to, List<NamedTexture> skins, List<NamedTexture> icons, List<string> allowedOutputs, IVerificationLogger logger = null)
 	{
 		if (!allowedOutputs.Contains(to))
 			return;
 
 		// Step 1: Import the Java as a RootNode
-		List<Verification> importVerification = new List<Verification>();
+		VerificationList importVerification = new VerificationList($"Import Model '{from}'");
 		TurboRootNode rootNode = JavaModelImporter.ImportJavaModel(from, importVerification);
 		VerifyType result = Verification.GetWorstState(importVerification);
 
 		if (result == VerifyType.Fail)
 		{
-			errors.Add(Verification.Failure($"Failed to import {from} as a RootNode model"));
-			errors.AddRange(importVerification);
+			logger?.Failure($"Failed to import {from} as a RootNode model");
+			logger?.GetVerifications().AddRange(importVerification.GetVerifications());
 			return;
 		}
 
@@ -274,17 +274,17 @@ public static class AdditionalAssetImporter
 		}
 		catch(Exception e)
 		{
-			errors.Add(Verification.Exception(e));
+			logger?.Exception(e);
 			return;
 		}
 
 		if (result == VerifyType.Neutral)
-			errors.Add(Verification.Neutral($"Imported {from} as RootNode model with some warnings"));
+			logger?.Neutral($"Imported {from} as RootNode model with some warnings");
 		else
-			errors.Add(Verification.Success($"Imported {from} as RootNode successfully"));
+			logger?.Success($"Imported {from} as RootNode successfully");
 	}
 
-	private static void CreateIconModel_Internal(ResourceLocation iconLocation, string location, List<string> allowedOutputs, List<Verification> errors)
+	private static void CreateIconModel_Internal(ResourceLocation iconLocation, string location, List<string> allowedOutputs, IVerificationLogger logger = null)
 	{
 		if (!allowedOutputs.Contains(location))
 			return;
@@ -293,11 +293,11 @@ public static class AdditionalAssetImporter
 		VanillaIconRootNode iconNode = go.AddComponent<VanillaIconRootNode>();
 		iconNode.AddDefaultTransforms();
 		iconNode.Icons.Add(new NamedTexture("default", iconLocation));
-		SaveAsPrefab(go, location, true, errors);
-		errors.Add(Verification.Success($"Created ItemModel at '{location}'"));
+		SaveAsPrefab(go, location, true, logger);
+		logger?.Success($"Created ItemModel at '{location}'");
 	}
 
-	private static void SaveAsPrefab(GameObject go, string path, bool destroyInstance = true, List<Verification> verifications = null)
+	private static void SaveAsPrefab(GameObject go, string path, bool destroyInstance = true, IVerificationLogger logger = null)
 	{
 		try
 		{
@@ -311,12 +311,12 @@ public static class AdditionalAssetImporter
 		}
 		catch (Exception e)
 		{
-			verifications?.Add(Verification.Exception(e));
+			logger?.Exception(e);
 			return;
 		}
 	}
 
-	private static void CopyTexture_Internal(string from, string to, List<string> allowedOutputs, List<Verification> errors)
+	private static void CopyTexture_Internal(string from, string to, List<string> allowedOutputs, IVerificationLogger logger = null)
 	{
 		if (!allowedOutputs.Contains(to))
 			return;
@@ -325,7 +325,7 @@ public static class AdditionalAssetImporter
 		{
 			if (!File.Exists(from))
 			{
-				errors.Add(Verification.Failure($"Failed to import {from} - FileNotFound"));
+				logger?.Failure($"Failed to import {from} - FileNotFound");
 				return;
 			}
 
@@ -334,11 +334,11 @@ public static class AdditionalAssetImporter
 				Directory.CreateDirectory(folderPath);
 
 			File.Copy(from, to, true);
-			errors.Add(Verification.Success($"Copied file from '{from}' to '{to}'"));
+			logger?.Success($"Copied file from '{from}' to '{to}'");
 		}
 		catch(Exception e)
 		{
-			errors.Add(Verification.Exception(e));
+			logger?.Exception(e);
 		}
 	}
 }

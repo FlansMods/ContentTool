@@ -14,11 +14,40 @@ public enum VerifyType
 	Fail,
 }
 
+public class VerificationList : IVerificationLogger
+{
+	private string OpName;
+	private List<Verification> Log = new List<Verification>();
+	public VerificationList(string opName)
+	{
+		OpName = opName;
+	}
+	public void Dispose()
+	{
+		
+	}
+
+	public void Success(string msg) { Log.Add(Verification.Success(msg)); }
+	public void Neutral(string msg) { Log.Add(Verification.Neutral(msg)); }
+	public void Failure(string msg) { Log.Add(Verification.Failure(msg)); }
+	public void Success(string msg, Verification.QuickFixFunc func) { Log.Add(Verification.Success(msg, func)); }
+	public void Neutral(string msg, Verification.QuickFixFunc func) { Log.Add(Verification.Neutral(msg, func)); }
+	public void Failure(string msg, Verification.QuickFixFunc func) { Log.Add(Verification.Failure(msg, func)); }
+	public void Exception(Exception e) { Log.Add(Verification.Exception(e)); }
+	public void Exception(Exception e, string msg) { Log.Add(Verification.Exception(e, msg)); }
+
+	public string GetOpName() { return OpName; }
+	public List<Verification> GetVerifications() { return Log; }
+}
+
 public interface IVerificationLogger : IDisposable
 {
 	void Success(string msg);
 	void Neutral(string msg);
 	void Failure(string msg);
+	void Success(string msg, Verification.QuickFixFunc func);
+	void Neutral(string msg, Verification.QuickFixFunc func);
+	void Failure(string msg, Verification.QuickFixFunc func);
 	void Exception(Exception e);
 	void Exception(Exception e, string msg);
 
@@ -94,6 +123,11 @@ public class Verification
 			}
 		}
 		return result;
+	}
+
+	public static VerifyType GetWorstState(IVerificationLogger logger)
+	{
+		return GetWorstState(logger.GetVerifications());
 	}
 
 	public static VerifyType GetWorstState(List<Verification> verifications)

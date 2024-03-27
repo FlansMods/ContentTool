@@ -1,0 +1,282 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27ec686460bc704a8cb5e5fbbe82450, type: 3}
+  m_Name: panzerschreck
+  m_EditorClassIdentifier: 
+  LocalisedNames: []
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 1
+    tags:
+    - Namespace: flansmod
+      ID: gun
+    _tags: []
+  paints:
+    paintjobs: []
+  inputHandlers: []
+  actionGroups:
+  - key: default
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 1
+    repeatMode: 1
+    repeatDelay: 0.25
+    repeatCount: 3
+    spinUpDuration: 1.5
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions:
+    - actionType: 3
+      duration: 0.25
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound:
+          Namespace: 
+          ID: bazooka_shoot
+        _sound: 
+        length: 0
+        minPitchMultiplier: 0.8333333
+        maxPitchMultiplier: 1.25
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    - actionType: 2
+      duration: 0.25
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: shoot
+    modifiers:
+    - stat: vertical_recoil
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 4
+        multiplyPer: 
+      setValue: 
+    - stat: horizontal_recoil
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 4
+        multiplyPer: 
+      setValue: 
+    - stat: spread
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 5
+        multiplyPer: 
+      setValue: 
+    - stat: speed
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 0
+        multiplyPer: 
+      setValue: 
+    - stat: bullet_count
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1
+        multiplyPer: 
+      setValue: 
+    - stat: impact_damage
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1
+        multiplyPer: 
+      setValue: 
+    - stat: knockback
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 0
+        multiplyPer: 
+      setValue: 
+  - key: default
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 1
+    twoHanded: 1
+    repeatMode: 1
+    repeatDelay: 0.25
+    repeatCount: 3
+    spinUpDuration: 1.5
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions:
+    - actionType: 4
+      duration: 0
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    - actionType: 2
+      duration: 0
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: aim_down_sights
+    modifiers:
+    - stat: fov_factor
+      matchGroupPaths: []
+      accumulators:
+      - operation: 0
+        value: 1.5
+        multiplyPer: 
+      setValue: 
+  - key: default
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions:
+    - actionType: 2
+      duration: 2.5
+      sounds: []
+      itemStack: 
+      scopeOverlay: 
+      anim: look_at
+    modifiers: []
+  - key: primary_reload_start
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions:
+    - actionType: 1
+      duration: 0
+      sounds:
+      - sound:
+          Namespace: 
+          ID: bazooka_reload
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      itemStack: 
+      scopeOverlay: 
+      anim: 
+    modifiers: []
+  - key: primary_reload_eject
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions: []
+    modifiers: []
+  - key: primary_reload_load_one
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions: []
+    modifiers: []
+  - key: primary_reload_end
+    canActUnderwater: 1
+    canActUnderOtherLiquid: 0
+    canBeOverriden: 0
+    twoHanded: 0
+    repeatMode: 1
+    repeatDelay: 0
+    repeatCount: 0
+    spinUpDuration: 1
+    loudness: 150
+    autoCancelIfNotInMode: 
+    actions: []
+    modifiers: []
+  magazines:
+  - key: primary
+    matchByNames:
+    - panzerschreck_ammo
+    matchByTags: []
+    baseCostToSwap: 0
+  staticAbilities: []
+  reloads:
+  - key: primary
+    manualReloadAllowed: 1
+    autoReloadWhenEmpty: 1
+    startActionKey: primary_reload_start
+    ejectActionKey: primary_reload_eject
+    loadOneActionKey: primary_reload_load_one
+    endActionKey: primary_reload_end
+  modes: []
+  loopingSounds: []
+  barrelAttachments:
+    matchNames: []
+    matchTags: []
+    numAttachmentSlots: 0
+    hideDefaultMesh: 1
+  gripAttachments:
+    matchNames: []
+    matchTags: []
+    numAttachmentSlots: 0
+    hideDefaultMesh: 1
+  stockAttachments:
+    matchNames: []
+    matchTags: []
+    numAttachmentSlots: 0
+    hideDefaultMesh: 1
+  scopeAttachments:
+    matchNames: []
+    matchTags: []
+    numAttachmentSlots: 0
+    hideDefaultMesh: 1
+  genericAttachments:
+    matchNames: []
+    matchTags: []
+    numAttachmentSlots: 0
+    hideDefaultMesh: 1
+  modelParts: []
+  animationSet: flansmod:bolt_action_rifle
+  particleCount: 1

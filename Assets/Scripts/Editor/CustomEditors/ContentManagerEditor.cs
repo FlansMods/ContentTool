@@ -53,12 +53,12 @@ public class ContentManagerEditor : Editor
 	public ImportSubTab SelectedImportTab = ImportSubTab.ImportPacks;
 	public void ImportTab(ContentManager instance)
 	{
-		if (ContentManager.LastImportOperation != "None" && ContentManager.LastImportOperationResults.Count > 0)
+		if (ContentManager.LastImportOperation != null)
 		{
-			ExpandImportResults = GUIVerify.VerificationsResultsPanel(
-				ExpandImportResults,
-				ContentManager.LastImportOperation,
-				ContentManager.LastImportOperationResults);
+			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
+				ExpandExportResults,
+				ContentManager.LastImportOperation.GetOpName(),
+				ContentManager.LastImportOperation.GetVerifications());
 		}
 
 		SelectedImportTab = (ImportSubTab)GUILayout.Toolbar((int)SelectedImportTab, ImportSubTabTitles);
@@ -216,12 +216,12 @@ public class ContentManagerEditor : Editor
 			// --- Import (New Only) Button! ---
 			if (GUILayout.Button(FlanStyles.ImportPackNewOnly, GUILayout.Width(32)))
 			{
-				instance.ImportPack(sourcePack, ContentManager.GetFreshImportLogger($"Import new assets only for {sourcePack}"), false);
+				instance.ImportPack(sourcePack, false, ContentManager.GetFreshImportLogger($"Import new assets only for {sourcePack}"));
 			}
 			// --- Import Button! ---
 			if (GUILayout.Button(FlanStyles.ImportPackOverwrite, GUILayout.Width(32)))
 			{
-				instance.ImportPack(sourcePack, ContentManager.GetFreshImportLogger($"Import ALL assets for {sourcePack}"), true);
+				instance.ImportPack(sourcePack, true, ContentManager.GetFreshImportLogger($"Import ALL assets for {sourcePack}"));
 			}
 			GUILayout.EndHorizontal();
 
