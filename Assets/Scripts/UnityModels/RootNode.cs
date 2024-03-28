@@ -15,7 +15,7 @@ public abstract class RootNode : Node
 	public TextureList Textures = new TextureList();
 	public TextureList Icons = new TextureList();
 
-	protected virtual bool NeedsSkin() { return true; }
+	public bool NeedsSkin() { return this is SkinnableRootNode; }
 	protected virtual bool NeedsIcon() { return true; }
 
 	public Texture2D GetTextureOrDefault(string key)
@@ -116,86 +116,9 @@ public abstract class RootNode : Node
 	#endregion
 	// -----------------------------------------------------------------------------------
 
-	// -----------------------------------------------------------------------------------
-	#region Material caching
-	// Not to be exported to Minecraft, but useful to have inside the prefab in Unity
-	// -----------------------------------------------------------------------------------
-	public List<Material> UnityMaterialCache = new List<Material>();
-	public Material GetMaterial(string key, ETurboRenderMaterial renderType)
-	{
-		string fullKey = $"{key}_{renderType}";
-		foreach (Material mat in UnityMaterialCache)
-			if (mat != null)
-				if (mat.name == fullKey)
-					return mat;
-
-		Texture2D tex = GetTextureOrDefault(key);
-		Material newMat = new Material(renderType.GetShader());
-		newMat.name = fullKey;
-		newMat.SetTexture("_MainTex", tex);
-		newMat.EnableKeyword("_NORMALMAP");
-		newMat.EnableKeyword("_DETAIL_MULX2");
-		newMat.SetOverrideTag("RenderType", "Cutout");
-
-#if UNITY_EDITOR
-		// If this is inside a prefab, place the material in a subfolder adjacent
-		string assetFolder = "Assets/UnityMaterialCache";
-		if (!Directory.Exists(assetFolder))
-			Directory.CreateDirectory(assetFolder);
-		string matPath = $"{assetFolder}/{name}_{fullKey}.mat";
-		AssetDatabase.CreateAsset(newMat, matPath);
-		// Now re-load from disk and link that verison of the material
-		newMat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
-#endif
-
-		UnityMaterialCache.Add(newMat);
-		return newMat;
-	}
-
-
-	public void SelectTexture(string key)
-	{
-		Texture2D tex = GetTextureOrDefault(key);
-
-		foreach (ETurboRenderMaterial renderType in TurboRenderMaterials.Values)
-		{
-			List<Node> nodesForThisRenderType = new List<Node>();
-			foreach (Node node in AllDescendantNodes)
-			{
-				if (node.NeedsMaterialType(renderType))
-					nodesForThisRenderType.Add(node);
-			}
-			if (nodesForThisRenderType.Count > 0)
-			{
-				Material mat = GetMaterial(key, renderType);
-				foreach (Node node in nodesForThisRenderType)
-				{
-					node.ApplyMaterial(renderType, mat);
-				}
-			}
-		}
-	}
-	#endregion
-	// -----------------------------------------------------------------------------------
-
 	public override void GetVerifications(List<Verification> verifications)
 	{
 		base.GetVerifications(verifications);
-
-		// Textures
-		if(NeedsSkin() && (Textures == null || Textures.Count == 0))
-			verifications.Add(Verification.Neutral($"No skins present"));
-
-		if (Textures != null && Textures.Count > 0 && Textures[0].Key != "default")
-			verifications.Add(Verification.Failure($"Default texture is named incorrectly as {Textures[0].Key}",
-			() =>
-			{
-				ApplyQuickFix((TurboRootNode _this) =>
-				{
-					_this.Textures[0].Key = "default";
-				});
-				return this;
-			}));
 
 		// Icons
 		if (NeedsIcon())
@@ -232,10 +155,8 @@ public abstract class RootNode : Node
 						meshFilter.sharedMesh = null;
 				}
 			}
-
 		}
 	}
-
 
 	protected delegate void QuickFixFunction<T>(T _this);
 	protected void ApplyQuickFix<T>(QuickFixFunction<T> quickFix)

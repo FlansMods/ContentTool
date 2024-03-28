@@ -45,7 +45,9 @@ public class ShapeboxCornersTool : MinecraftModelEditorTool<ShapeboxGeometryNode
 		if (shapebox == null)
 			return;
 
-		_Handle.SetOriginAndDims(shapebox.LocalOrigin, shapebox.Dim);
+		Vector3 toolOrigin = ToolStartedAtLocalPos.Value;
+
+		_Handle.SetOriginAndDims(shapebox.LocalOrigin - toolOrigin, shapebox.Dim);
 		for (int i = 0; i < shapebox.Offsets.Length; i++)
 			_Handle.Offsets[i] = shapebox.Offsets[i];
 	}

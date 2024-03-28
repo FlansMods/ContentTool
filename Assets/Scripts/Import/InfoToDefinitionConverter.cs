@@ -11,7 +11,7 @@ public static class InfoToDefinitionConverter
 		switch(type)
 		{
 			case EDefinitionType.part: 			PartConverter.inst.CastConvert(input, output); break;
-			case EDefinitionType.bullet: 		BulletConverter.inst.CastConvert(input, output); break;
+			case EDefinitionType.bullet: 		MagazineConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.attachment:	AttachmentConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.grenade:		GrenadeConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.gun: 			GunConverter.inst.CastConvert(input, output); break;
@@ -515,19 +515,15 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition()
 		{
-			canActUnderwater = inf.canShootUnderwater,
-			canActUnderOtherLiquid = false,
+			canActUnderwater = true,
+			canActUnderOtherLiquid = true,
 			canBeOverriden = true,
-			twoHanded = !inf.oneHanded,
 
-			repeatMode = inf.mode,
-			repeatCount = inf.numBurstRounds,
-			repeatDelay = inf.shootDelay / 20f,
-			spinUpDuration = inf.minigunStartSpeed / 10f,
+			repeatMode = ERepeatMode.Toggle,
+			repeatDelay = 0.05f,
 
 			actions = secondaryActions.ToArray(),
 			modifiers = mods.ToArray(),
-			
 		};
 	}
 }
@@ -578,7 +574,22 @@ public class MagazineConverter : Converter<BulletType, MagazineDefinition>
 	protected override void DoConversion(BulletType input, MagazineDefinition output)
 	{
 		output.allRoundsMustBeIdentical = false;
-		
+		output.numRounds = input.roundsPerItem;
+		output.matchingBullets = new ItemCollectionDefinition()
+		{
+			itemTagFilters = new LocationFilterDefinition[] {
+				new LocationFilterDefinition()
+				{
+					filterType = EFilterType.Allow,
+					matchResourceLocations = new ResourceLocation[] {
+						new ResourceLocation("flansmod", "default_bullet"),
+					}
+				}
+			}
+		};
+		output.upgradeCost = 0;
+		output.ammoLoadMode = EAmmoLoadMode.FullMag;
+		output.ammoConsumeMode = EAmmoConsumeMode.FirstNonEmpty;
 	}
 
 }

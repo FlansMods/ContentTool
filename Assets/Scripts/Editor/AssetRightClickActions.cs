@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel.Design;
+using System.Runtime.Remoting.Messaging;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -84,6 +85,22 @@ public class AssetRightClickActions
 	private static bool CreateBoxNode(UnityEditor.MenuCommand menuCommand) { return Create<BoxGeometryNode>(menuCommand); }
 	[MenuItem("CONTEXT/SectionNode/Add ShapeboxGeometryNode")]
 	private static bool CreateShapeboxNode(UnityEditor.MenuCommand menuCommand) { return Create<ShapeboxGeometryNode>(menuCommand); }
+	[MenuItem("CONTEXT/BoxGeometryNode/Convert To Shapebox")]
+	private static bool ConvertToShapebox(UnityEditor.MenuCommand menuCommand)
+	{
+		if(menuCommand.context is BoxGeometryNode box)
+		{
+			box.enabled = false;
+			ShapeboxGeometryNode shapebox = box.gameObject.AddComponent<ShapeboxGeometryNode>();
+			shapebox.Dim = box.Dim;
+			shapebox.BakedUV = box.BakedUV;
+			UnityEngine.Object.DestroyImmediate(box);
+			return true;
+		}
+		return false;
+	}
+
+
 
 	[MenuItem("GameObject/Create New Flan's Turbo Rig")]
 	private static bool CreateTurboRootNode(UnityEditor.MenuCommand menuCommand) { return Create<TurboRootNode>(menuCommand); }

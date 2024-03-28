@@ -12,6 +12,7 @@ public class ContentPackEditor : Editor
 
 	public enum Tab
 	{
+		Import,
 		Verification,
 		Balancing,
 		Debug,

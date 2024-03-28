@@ -9,19 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 363fe2168a610e945a193f55158b98f5, type: 3}
   m_Name: mg42ammo50
   m_EditorClassIdentifier: 
   LocalisedNames: []
   LocalisedExtras: []
-  itemSettings:
-    maxStackSize: 3
-    tags:
-    - Namespace: flansmod
-      ID: bullet
-    _tags: []
-  roundsPerItem: 50
-  hitscans: []
-  projectiles: []
-  triggers: []
-  actionGroups: []
+  tags: []
+  modifiers: []
+  ammoLoadMode: 2
+  ammoConsumeMode: 2
+  upgradeCost: 0
+  numRounds: 50
+  allRoundsMustBeIdentical: 0
+  matchingBullets:
+    itemIDFilters: []
+    itemTagFilters:
+    - filterType: 0
+      matchResourceLocations:
+      - Namespace: flansmod
+        ID: default_bullet
+    materialFilters: []

@@ -692,7 +692,7 @@ public class ContentManager : MonoBehaviour
 
 	private InfoType ImportType_Internal(ContentPack pack, EDefinitionType type, string fileName, IVerificationLogger logger = null)
 	{
-		Debug.Log($"Importing {pack.name}:{type}/{fileName}");
+		//Debug.Log($"Importing {pack.name}:{type}/{fileName}");
 		string importFilePath = $"{IMPORT_ROOT}/{pack.name}/{type.Folder()}/{fileName}.txt";
 
 		// Read the .txt file
@@ -818,7 +818,7 @@ public class ContentManager : MonoBehaviour
 					string langName = langFile.Name;
 					if (langName.Contains('.'))
 						langName = langName.Substring(0, langName.IndexOf('.'));
-					if (Enum.TryParse(langName, out Definition.ELang lang))
+					if (Enum.TryParse(langName.ToLower(), out ELang lang))
 					{
 						int stringsImported = 0;
 						using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
@@ -829,7 +829,7 @@ public class ContentManager : MonoBehaviour
 							{
 								if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 								{ }
-								else if(TryImportLocalisationLine(blockNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+								else if (TryImportLocalisationLine(blockNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 								{ }
 								else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 								{ }

@@ -14,7 +14,7 @@ using static UnityEditor.PlayerSettings;
 
 public abstract class ShapeboxHandle : MinecraftBoundsHandle
 {
-	public const float HANDLE_SIZE = 0.25f;
+	public const float HANDLE_SIZE = 0.1f;
 
 	// Definitions
 	public Vector3 Max {

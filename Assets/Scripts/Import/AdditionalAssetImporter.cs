@@ -104,7 +104,6 @@ public static class AdditionalAssetImporter
 			case EDefinitionType.vehicle:
 			case EDefinitionType.mecha:
 			case EDefinitionType.plane:
-			case EDefinitionType.bullet:
 			case EDefinitionType.grenade:
 			case EDefinitionType.attachment:
 				if(inputType is PaintableType paintable)
@@ -120,7 +119,11 @@ public static class AdditionalAssetImporter
 					}
 				}				
 				break;
-			
+
+			case EDefinitionType.bullet:
+				exportSkin = false;
+				break;
+
 			case EDefinitionType.armourBox:
 			case EDefinitionType.box:
 			case EDefinitionType.itemHolder:
@@ -189,14 +192,17 @@ public static class AdditionalAssetImporter
 					}
 
 					// Create the 3D model
-					ImportTurboRootNode($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
-										$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
-										skins,
-										icons,
-										allowedOutputs,
-										logger);
+					if (inputType.modelString != null && inputType.modelString.Length > 0)
+					{
+						ImportTurboRootNode($"{MODEL_IMPORT_ROOT}/{inputType.modelFolder}/Model{inputType.modelString}.java",
+											$"{ASSET_ROOT}/{dstPackName}/models/item/{dstShortName}.prefab",
+											skins,
+											icons,
+											allowedOutputs,
+											logger);
+						exportBasicItemModel = false;
+					}
 
-					exportBasicItemModel = false;
 				}
 				break;
 			case EDefinitionType.vehicle:
@@ -261,6 +267,10 @@ public static class AdditionalAssetImporter
 		rootNode.Icons.AddRange(icons);
 		rootNode.Textures.AddRange(skins);
 		rootNode.AddDefaultTransforms();
+		string nodeName = to.Substring(to.LastIndexOfAny(Utils.SLASHES)+1);
+		nodeName = nodeName.Substring(0, nodeName.LastIndexOf('.'));
+		rootNode.name = nodeName;
+		rootNode.SelectTexture("default");
 
 		// Step 3: Save that as a prefab
 		try
@@ -325,7 +335,7 @@ public static class AdditionalAssetImporter
 		{
 			if (!File.Exists(from))
 			{
-				logger?.Failure($"Failed to import {from} - FileNotFound");
+				logger?.Neutral($"Failed to import {from} - FileNotFound");
 				return;
 			}
 

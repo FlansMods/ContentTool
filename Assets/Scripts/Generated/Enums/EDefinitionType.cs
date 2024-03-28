@@ -108,7 +108,7 @@ public static class DefinitionTypes
 		switch(defType)
 		{
 			case EDefinitionType.part: return ScriptableObject.CreateInstance<PartDefinition>();
-			case EDefinitionType.bullet: return ScriptableObject.CreateInstance<BulletDefinition>();
+			case EDefinitionType.bullet: return ScriptableObject.CreateInstance<MagazineDefinition>();
 			case EDefinitionType.attachment: return ScriptableObject.CreateInstance<AttachmentDefinition>();
 			case EDefinitionType.grenade: return ScriptableObject.CreateInstance<GrenadeDefinition>();
 			case EDefinitionType.gun: return ScriptableObject.CreateInstance<GunDefinition>();

@@ -183,6 +183,8 @@ public static class JavaModelImporter
 				sectionNode.transform.TranslateButNotChildren(-sectionNode.LocalOrigin);
 		}
 
+		rootNode.Rotate(new Vector3(0f, 90f, 0f));
+
 		// ----------------------------------------------------------------------------
 
 		return rootNode;

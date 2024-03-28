@@ -6,9 +6,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class TurboRootNode : RootNode
+public class TurboRootNode : SkinnableRootNode
 {
-	public Vector2Int UVMapSize = Vector2Int.zero;
 	public List<AnimationParameter> AnimationParameters = new List<AnimationParameter>();
 	public FlanimationDefinition AnimationSet = null;
 
@@ -22,86 +21,6 @@ public class TurboRootNode : RootNode
 		GetOrCreateItemTransform(ItemDisplayContext.GROUND, new Vector3(0f, 0.15f, 0f), new Vector3(0f, -90f, 0f), Vector3.one * 0.625f);
 		GetOrCreateItemTransform(ItemDisplayContext.FIXED, new Vector3(6f, 6f, 6f), new Vector3(0f, -90f, 45f));
 		GetOrCreateItemTransform(ItemDisplayContext.GUI, new Vector3(-0.001f, -0.02f, -0.001f), new Vector3(0f, 45f, 90f), Vector3.one * 1.185f);
-	}
-
-	public bool HasUVMap() { return UVMapSize != Vector2Int.zero; }
-	public bool NeedsUVRemap() 
-	{
-		if (!HasUVMap())
-			return true;
-		foreach(GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
-		{
-			if (!geomNode.IsUVMapCurrent())
-				return true;
-		}
-		return false;
-	}
-	public void NumUVsToRemap(out int numToRemap, out int totalNum)
-	{
-		numToRemap = 0;
-		totalNum = 0;
-		foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
-		{
-			totalNum++;
-			if (!HasUVMap() || !geomNode.IsUVMapCurrent())
-				numToRemap++;
-		}
-	}
-	public UVMap ToMap()
-	{
-		UVMap map = new UVMap();
-		foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
-		{
-			if (!HasUVMap() || !geomNode.IsUVMapCurrent())
-				map.AddPatchForPlacement(geomNode.UVRequirements);
-			else
-				map.AddExistingPatchPlacement(geomNode.BakedUV.min, geomNode.UVRequirements);
-		}
-		return map;
-	}
-	public void ApplyAutoUV()
-	{
-		if (NeedsUVRemap())
-		{
-			UVMap map = ToMap();
-
-			// Run the Auto-UV algorithm
-			map.AutoPlacePatches();
-
-			foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
-			{
-				BoxUVPlacement placement = map.GetPlacedPatch(geomNode.UniqueName);
-				if (placement.Valid)
-				{
-					geomNode.BakedUV = placement.Bounds;
-				}
-			}
-			UVMapSize = map.MaxSize;
-			Debug.Log("Applied auto UV map");
-			EditorUtility.SetDirty(this);
-		}
-	}
-	public NamedTexture CreateNewDefaultSkin()
-	{
-		Texture2D newSkinTexture = new Texture2D(UVMapSize.x, UVMapSize.y);
-		ResourceLocation modelLocation = this.GetLocation();				
-		string newSkinName = name;
-		while (File.Exists($"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png"))
-		{
-			if (newSkinName.Contains("_new"))
-				newSkinName += "_";
-			else
-				newSkinName += "_new";
-		}
-		string fullPath = $"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png";
-
-		newSkinTexture.name = newSkinName;
-		ApplyAutoUV();
-		SkinGenerator.CreateDefaultTexture(ToMap(), newSkinTexture);
-		File.WriteAllBytes(fullPath, newSkinTexture.EncodeToPNG());
-		AssetDatabase.Refresh();
-		newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
-		return new NamedTexture(newSkinName, newSkinTexture);
 	}
 	public NamedTexture CreateNewDefaultIcon()
 	{
@@ -154,7 +73,7 @@ public class TurboRootNode : RootNode
 			GUILayout.Label($"{numToRemap}/{totalNum} UVs need remapping");
 			if(GUILayout.Button("Auto"))
 			{
-				ApplyAutoUV();
+				ApplyAutoUV(out UVMap discard);
 			}
 		}
 		GUILayout.EndHorizontal();
@@ -205,17 +124,17 @@ public class TurboRootNode : RootNode
 			{
 				verifications.Add(Verification.Failure("UV map has not been calculated",
 					() => { 
-						ApplyAutoUV();
+						ApplyAutoUV(out UVMap ignore);
 						return this;
 					}));
 			}
 			else
 			{
 				verifications.Add(Verification.Failure($"UV map has {numToRemap} missing pieces",
-						() => { 
-							ApplyAutoUV();
-							return this;
-						}));
+					() => { 
+						ApplyAutoUV(out UVMap ignore);
+						return this;
+					}));
 			}
 		}
 

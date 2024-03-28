@@ -19,7 +19,6 @@ public class VanillaIconRootNode : RootNode
 	#endregion
 	// -----------------------------------------------------------------------------------
 
-	protected override bool NeedsSkin() { return false; }
 	public override void AddDefaultTransforms()
 	{
 		GetOrCreateItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, new Vector3(0f, 1.25f, -2.5f), new Vector3(0f, 90f, -35f), Vector3.one * 0.85f);
