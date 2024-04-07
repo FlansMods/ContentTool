@@ -181,9 +181,12 @@ public static class JavaModelImporter
 
 			if (!sectionNode.LocalOrigin.Approximately(Vector3.zero))
 				sectionNode.transform.TranslateButNotChildren(-sectionNode.LocalOrigin);
+
+			sectionNode.Rotate(new Vector3(0f, 90f, 0f));
 		}
 
-		rootNode.Rotate(new Vector3(0f, 90f, 0f));
+		rootNode.BakeOutSectionTransforms();
+
 
 		// ----------------------------------------------------------------------------
 
@@ -743,9 +746,11 @@ public static class JavaModelImporter
 					break;
 				case "barrelAttachPoint":
 					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "barrel").LocalOrigin = pos;
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "shoot_origin").LocalOrigin = pos;
 					break;
 				case "scopeAttachPoint":
 					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "sights").LocalOrigin = pos;
+					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "eye_line").LocalOrigin = pos + new Vector3(0, 2, 0);
 					break;
 				case "gripAttachPoint":
 					ConvertToNodes.GetOrCreateAttachPointNode(rootNode, "grip").LocalOrigin = pos;

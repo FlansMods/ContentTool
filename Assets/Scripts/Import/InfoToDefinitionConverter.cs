@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public static class InfoToDefinitionConverter
@@ -31,7 +32,36 @@ public static class InfoToDefinitionConverter
 			case EDefinitionType.loadout: 		LoadoutConverter.inst.CastConvert(input, output); break;
 		}
 	}
+
+	public static void GetAdditionalImports(EDefinitionType type, InfoType input, List<AdditionalImportOperation> operations)
+	{
+		switch (type)
+		{
+			case EDefinitionType.part:			PartConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.bullet:		MagazineConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.attachment:	AttachmentConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.grenade:		GrenadeConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.gun:			GunConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.aa:			AAGunConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.vehicle:		VehicleConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.plane:			PlaneConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.mechaItem:		MechaItemConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.mecha:			MechaConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.tool:			ToolConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.armour:		ArmourConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.armourBox:		ArmourBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.box:			GunBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.playerClass:	PlayerClassConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.team:			TeamConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.itemHolder:	ItemHolderConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.rewardBox:		RewardBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.loadout:		LoadoutConverter.inst.CastGetAdditionalOperations(input, operations); break;
+		}
+	}
 }
+
+
+
 
 public abstract class Converter<TInfo, TDefinition> 
 	where TInfo : InfoType 
@@ -119,6 +149,34 @@ public abstract class Converter<TInfo, TDefinition>
 	}
 
 	protected abstract void DoConversion(TInfo input, TDefinition output);
+
+	public void CastGetAdditionalOperations(InfoType input, List<AdditionalImportOperation> operations)
+	{
+		try
+		{
+			GetAdditionalOperations((TInfo)input, operations);
+		}
+		catch (Exception)
+		{
+			Debug.LogError($"Type {input} was not of the expected type {typeof(TInfo)}");
+		}
+	}
+	public abstract void GetAdditionalOperations(TInfo input, List<AdditionalImportOperation> operations);
+
+	protected void AddDefaultIconOperations(TInfo inf, List<AdditionalImportOperation> operations)
+	{
+		operations.Add(new CopyImportOperation($"/assets/flansmod/textures/items/{inf.iconPath}.png",
+											   $"/textures/item/{inf.ConvertedName}.png"));
+		operations.Add(new IconModelOperation($"",
+											  $"/models/item/{inf.ConvertedName}.prefab",
+											  inf.ConvertedName));
+	}
+	protected void AddDefaultSkinOperation(TInfo inf, List<AdditionalImportOperation> operations)
+	{
+		operations.Add(new CopyImportOperation($"/assets/flansmod/skins/{inf.texture}.png",
+											   $"/textures/skins/{inf.ConvertedName}.png"));
+
+	}
 }
 
 public class PaintableConverter // : Converter<PaintableType, PaintableDefinition>
@@ -127,12 +185,24 @@ public class PaintableConverter // : Converter<PaintableType, PaintableDefinitio
 	public void DoConversion(PaintableType inf, PaintableDefinition def)
 	{
 		def.paintjobs = new PaintjobDefinition[inf.paintjobs.Count];
-		for(int i = 0; i < inf.paintjobs.Count; i++)
+		for (int i = 0; i < inf.paintjobs.Count; i++)
 		{
 			def.paintjobs[i] = new PaintjobDefinition()
 			{
 				textureName = Utils.ToLowerWithUnderscores(inf.paintjobs[i].iconName),
 			};
+		}
+	}
+	public void GetAdditionalOperations(PaintableType inf, List<AdditionalImportOperation> operations)
+	{
+		foreach (Paintjob paintjob in inf.paintjobs)
+		{
+			operations.Add(new CopyImportOperation(
+				$"assets/flansmod/textures/items/{paintjob.iconName}.png",
+				$"textures/item/{Utils.ToLowerWithUnderscores(paintjob.iconName)}.png"));
+			operations.Add(new CopyImportOperation(
+				$"assets/flansmod/skins/{paintjob.textureName}.png",
+				$"textures/skins/{Utils.ToLowerWithUnderscores(paintjob.textureName)}.png"));
 		}
 	}
 }
@@ -526,6 +596,31 @@ public class GunConverter : Converter<GunType, GunDefinition>
 			modifiers = mods.ToArray(),
 		};
 	}
+
+	public override void GetAdditionalOperations(GunType inf, List<AdditionalImportOperation> operations)
+	{
+		PaintableConverter.inst.GetAdditionalOperations(inf, operations);
+
+		if (inf.modelString != null && inf.modelString.Length > 0)
+		{
+			List<string> skinNames = new List<string>();
+			List<string> iconNames = new List<string>();
+			skinNames.Add(inf.texture);
+			iconNames.Add(inf.iconPath);
+			foreach (Paintjob paintjob in inf.paintjobs)
+			{
+				skinNames.Add(paintjob.textureName);
+				iconNames.Add(paintjob.iconName);
+			}
+			operations.Add(new TurboImportOperation(
+				$"{inf.modelFolder}/Model{inf.modelString}.java",
+				$"/models/item/{Utils.ToLowerWithUnderscores(inf.shortName)}.prefab",
+				skinNames,
+				iconNames
+			));
+		}
+	}
+
 }
 
 public class PartConverter : Converter<PartType, PartDefinition>
@@ -566,6 +661,11 @@ public class PartConverter : Converter<PartType, PartDefinition>
 			tags.Add(new ResourceLocation("flansmod:apocalypse_trigger"));
 		return tags.ToArray();
 	}
+
+	public override void GetAdditionalOperations(PartType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+	}
 }
 
 public class MagazineConverter : Converter<BulletType, MagazineDefinition>
@@ -592,6 +692,11 @@ public class MagazineConverter : Converter<BulletType, MagazineDefinition>
 		output.ammoConsumeMode = EAmmoConsumeMode.FirstNonEmpty;
 	}
 
+	public override void GetAdditionalOperations(BulletType inf, List<AdditionalImportOperation> operations)
+	{
+		operations.Add(new CopyImportOperation($"/assets/flansmod/textures/items/{inf.iconPath}.png",
+											   $"/textures/mags/{inf.ConvertedName}.png"));
+	}
 }
 
 public class BulletConverter : Converter<BulletType, BulletDefinition>
@@ -714,6 +819,11 @@ public class BulletConverter : Converter<BulletType, BulletDefinition>
 			tags.Add(new ResourceLocation("flansmod", "explosive"));
 		return tags.ToArray();
 	}
+
+	public override void GetAdditionalOperations(BulletType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+	}
 }
 
 public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinition>
@@ -795,7 +905,8 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 						},
 						modifiers = new ModifierDefinition[] {
 							BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, Mathf.Approximately(input.FOVZoomLevel, 1.0f) ? input.zoomLevel : input.FOVZoomLevel)
-						}
+						},
+						repeatMode = ERepeatMode.Toggle,
 					}
 				};
 			}
@@ -830,7 +941,8 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 						},
 						modifiers = new ModifierDefinition[] {
 							BaseStat(Constants.STAT_ZOOM_FOV_FACTOR, input.FOVZoomLevel)
-						}
+						},
+						repeatMode = ERepeatMode.Toggle,
 					}
 				};
 			}
@@ -845,6 +957,11 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 		tags.Add(new ResourceLocation("flansmod:bullet"));
 		tags.Add(new ResourceLocation($"flansmod:{input.type.ToString().ToLower()}"));
 		return tags.ToArray();
+	}
+
+	public override void GetAdditionalOperations(AttachmentType inf, List<AdditionalImportOperation> operations)
+	{
+		PaintableConverter.inst.GetAdditionalOperations(inf, operations);
 	}
 }
 
@@ -938,6 +1055,11 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 		List<ResourceLocation> tags = new List<ResourceLocation>();
 		tags.Add(new ResourceLocation("flansmod:grenade"));
 		return tags.ToArray();
+	}
+
+	public override void GetAdditionalOperations(GrenadeType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
 	}
 }
 
@@ -1197,6 +1319,11 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 
 		return wheelDefs;
 	}
+
+	public override void GetAdditionalOperations(DriveableType inf, List<AdditionalImportOperation> operations)
+	{
+		PaintableConverter.inst.GetAdditionalOperations(inf, operations);
+	}
 }
 
 public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
@@ -1302,6 +1429,12 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 			};
 		}
 		return defs;
+	}
+
+	public override void GetAdditionalOperations(AAGunType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+		//DriveableConverter.inst.GetAdditionalOperations(inf, operations);
 	}
 }
 
@@ -1413,6 +1546,11 @@ public class VehicleConverter : Converter<VehicleType, VehicleDefinition>
 		};
 
 		
+	}
+
+	public override void GetAdditionalOperations(VehicleType inf, List<AdditionalImportOperation> operations)
+	{
+		DriveableConverter.inst.GetAdditionalOperations(inf, operations);
 	}
 }
 
@@ -1626,6 +1764,11 @@ public class PlaneConverter : Converter<PlaneType, VehicleDefinition>
 		}
 		return propDefs;
 	}
+
+	public override void GetAdditionalOperations(PlaneType inf, List<AdditionalImportOperation> operations)
+	{
+		DriveableConverter.inst.GetAdditionalOperations(inf, operations);
+	}
 }
 
 public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
@@ -1806,6 +1949,11 @@ public class MechaItemConverter : Converter<MechaItemType, AttachmentDefinition>
 			effects.Add(EMechaEffect.floater);
 		output.mechaEffects = effects.ToArray();
 	}
+
+	public override void GetAdditionalOperations(MechaItemType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+	}
 }
 
 public class MechaConverter : Converter<MechaType, VehicleDefinition>
@@ -1874,6 +2022,11 @@ public class MechaConverter : Converter<MechaType, VehicleDefinition>
 			}
 		};
 	}
+
+	public override void GetAdditionalOperations(MechaType inf, List<AdditionalImportOperation> operations)
+	{
+		DriveableConverter.inst.GetAdditionalOperations(inf, operations);
+	}
 }
 
 public class ToolConverter : Converter<ToolType, ToolDefinition>
@@ -1928,6 +2081,11 @@ public class ToolConverter : Converter<ToolType, ToolDefinition>
 
 		return secondaryActions.ToArray();
 	}
+
+	public override void GetAdditionalOperations(ToolType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+	}
 }
 
 public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
@@ -1964,7 +2122,31 @@ public class ArmourConverter : Converter<ArmourType, ArmourDefinition>
 		tags.Add(new ResourceLocation("flansmod:armour"));
 		return tags.ToArray();
 	}
+
+	public override void GetAdditionalOperations(ArmourType inf, List<AdditionalImportOperation> operations)
+	{
+		AddDefaultIconOperations(inf, operations);
+	}
 }
+
+public class BoxConverter
+{
+	public static BoxConverter inst = new BoxConverter();
+	protected void DoConversion(BoxType input, WorkbenchDefinition output)
+	{
+
+	}
+	public void GetAdditionalOperations(BoxType inf, List<AdditionalImportOperation> operations)
+	{
+		operations.Add(new CubeModelOperation("",
+											  $"models/block/{inf.ConvertedName}.prefab",
+											  inf.ConvertedName,
+											  inf.topTexturePath,
+											  inf.sideTexturePath,
+											  inf.bottomTexturePath));
+	}
+}
+
 
 public class ArmourBoxConverter : Converter<ArmourBoxType, WorkbenchDefinition>
 {
@@ -1994,6 +2176,11 @@ public class ArmourBoxConverter : Converter<ArmourBoxType, WorkbenchDefinition>
 
 		// TODO: Also output the recipes
 	}
+
+	public override void GetAdditionalOperations(ArmourBoxType inf, List<AdditionalImportOperation> operations)
+	{
+		BoxConverter.inst.GetAdditionalOperations(inf, operations);
+	}
 }
 
 public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
@@ -2022,6 +2209,11 @@ public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
 
 		// TODO: Export to .json recipes
 	}
+
+	public override void GetAdditionalOperations(GunBoxType inf, List<AdditionalImportOperation> operations)
+	{
+		BoxConverter.inst.GetAdditionalOperations(inf, operations);
+	}
 }
 
 public class PlayerClassConverter : Converter<PlayerClass, ClassDefinition>
@@ -2040,6 +2232,9 @@ public class PlayerClassConverter : Converter<PlayerClass, ClassDefinition>
 		{
 			output.startingItems[i] = ImportStack(input.startingItemStrings[i][0]);
 		}
+	}
+	public override void GetAdditionalOperations(PlayerClass inf, List<AdditionalImportOperation> operations)
+	{
 	}
 }
 
@@ -2060,6 +2255,16 @@ public class TeamConverter : Converter<Team, TeamDefinition>
 		output.chest = ImportStack(input.chest);
 		output.legs = ImportStack(input.legs);
 		output.shoes = ImportStack(input.shoes);
+
+		// Guess this wasn't localised before now
+		output.LocalisedNames.Add(new Definition.LocalisedName()
+		{
+			Lang = Definition.ELang.en_us,
+			Name = input.longName,
+		});
+	}
+	public override void GetAdditionalOperations(Team inf, List<AdditionalImportOperation> operations)
+	{
 	}
 }
 
@@ -2077,6 +2282,9 @@ public class ItemHolderConverter : Converter<ItemHolderType, WorkbenchDefinition
 			}
 		};
 		output.itemHolding.maxStackSize = 1;
+	}
+	public override void GetAdditionalOperations(ItemHolderType inf, List<AdditionalImportOperation> operations)
+	{
 	}
 }
 
@@ -2098,6 +2306,9 @@ public class RewardBoxConverter : Converter<RewardBox, RewardBoxDefinition>
 				name = input.paintjobs[i],
 			};
 		}
+	}
+	public override void GetAdditionalOperations(RewardBox inf, List<AdditionalImportOperation> operations)
+	{
 	}
 }
 
@@ -2145,6 +2356,9 @@ public class LoadoutConverter : Converter<LoadoutPool, LoadoutPoolDefinition>
 			};
 		}
 		output.availableRewardBoxes = input.rewardBoxes;
+	}
+	public override void GetAdditionalOperations(LoadoutPool inf, List<AdditionalImportOperation> operations)
+	{
 	}
 }
 

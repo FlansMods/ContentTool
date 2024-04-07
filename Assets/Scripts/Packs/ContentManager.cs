@@ -619,6 +619,7 @@ public class ContentManager : MonoBehaviour
 
 			// Release the InfoType objects now we are done
 			TYPE_LOOKUP = null;
+			outputPack.ForceRefreshAssets();
 
 			ImportLangFiles_Internal(packName, logger);
 			ImportSounds_Internal(packName, outputPack, logger);
@@ -677,17 +678,25 @@ public class ContentManager : MonoBehaviour
 		EditorUtility.SetDirty(def);
 		AssetDatabase.SaveAssetIfDirty(def);
 
-		// Step 3. Import all additional assets
-		List<string> outputPaths = AdditionalAssetImporter.GetOutputPaths(fromPack.PackName, imported);
-		if (!overwrite)
+		List<AdditionalImportOperation> operations = new List<AdditionalImportOperation>();
+		InfoToDefinitionConverter.GetAdditionalImports(defType, imported, operations);
+
+		foreach(AdditionalImportOperation op in operations)
 		{
-			for (int i = outputPaths.Count - 1; i >= 0; i--)
-			{
-				if (File.Exists(outputPaths[i]))
-					outputPaths.RemoveAt(i);
-			}
+			op.Do(fromPack.PackName, new CarefulFileAccess(true, overwrite), logger);
 		}
-		AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, outputPaths, logger);
+
+		// Step 3. Import all additional assets
+		//List<string> outputPaths = AdditionalAssetImporter.GetOutputPaths(fromPack.PackName, imported);
+		//if (!overwrite)
+		//{
+		//	for (int i = outputPaths.Count - 1; i >= 0; i--)
+		//	{
+		//		if (File.Exists(outputPaths[i]))
+		//			outputPaths.RemoveAt(i);
+		//	}
+		//}
+		//AdditionalAssetImporter.ImportAssets(fromPack.PackName, imported, new AllowListFileAccess(outputPaths), logger);
 	}
 
 	private InfoType ImportType_Internal(ContentPack pack, EDefinitionType type, string fileName, IVerificationLogger logger = null)
@@ -821,33 +830,92 @@ public class ContentManager : MonoBehaviour
 					if (Enum.TryParse(langName.ToLower(), out ELang lang))
 					{
 						int stringsImported = 0;
-						using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
-						using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
+						int otherStringsImported = 0;
+						try
 						{
-							JObject translations = JObject.Load(jsonReader);
-							foreach (var kvp in translations)
+							using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
+							using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
 							{
-								if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-								{ }
-								else if (TryImportLocalisationLine(blockNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-								{ }
-								else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-								{ }
-								else if (TryImportLocalisationLine(materialNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
-								{ }
-								else // Had no matching prefix. Let's add it to the generic extras
+								JObject translations = JObject.Load(jsonReader);
+								foreach (var kvp in translations)
 								{
-									pack.ExtraLocalisation.Add(new LocalisedExtra()
+									if (TryImportLocalisationLine(itemNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
 									{
-										Lang = lang,
-										Unlocalised = kvp.Key,
-										Localised = kvp.Value.ToString(),
-									});
+										stringsImported++;
+									}
+									else if (TryImportLocalisationLine(blockNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+									{
+										stringsImported++;
+									}
+									else if (TryImportLocalisationLine(magNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+									{
+										stringsImported++;
+									}
+									else if (TryImportLocalisationLine(materialNamePrefix, lang, kvp.Key, kvp.Value.ToString(), pack))
+									{
+										stringsImported++;
+									}
+									else // Had no matching prefix. Let's add it to the generic extras
+									{
+										pack.ExtraLocalisation.Add(new LocalisedExtra()
+										{
+											Lang = lang,
+											Unlocalised = kvp.Key,
+											Localised = kvp.Value.ToString(),
+										});
+										otherStringsImported++;
+									}
+									
 								}
-								stringsImported++;
+								logger?.Success($"Imported {stringsImported} names and {otherStringsImported} other strings from JSON {langFile.FullName}");
 							}
 						}
-						logger?.Success($"Imported {stringsImported} strings from {langFile.FullName}");
+						catch (Exception e)
+						{
+							using (StringReader stringReader = new StringReader(File.ReadAllText(langFile.FullName)))
+							{
+								// It's not JSON format, must be the old format
+								string line = stringReader.ReadLine();
+								while (line != null)
+								{
+									string[] split = line.Split('=');
+									if (split.Length == 2)
+									{
+										Match match = OldLangRegex.Match(split[0]);
+										if (match.Success)
+										{
+											string itemPrefix = match.Groups[1].Value;
+											string itemName = Minecraft.SanitiseID(match.Groups[2].Value);
+											if(itemPrefix == "tile" && pack.TryGetContent(itemName, out WorkbenchDefinition workbench))
+											{
+												workbench.LocalisedNames.Add(new LocalisedName()
+												{
+													Lang = lang,
+													Name = split[1]
+												});
+												stringsImported++;
+											}
+											else if (pack.TryGetContent(itemName, out Definition def))
+											{
+												def.LocalisedNames.Add(new LocalisedName()
+												{
+													Lang = lang,
+													Name = split[1]
+												});
+												stringsImported++;
+											}
+											else
+											{
+												pack.AddExtraLocalisation(split[0], split[1], lang);
+												otherStringsImported++;
+											}
+										}
+									}
+									line = stringReader.ReadLine();
+								}
+								logger?.Success($"Imported {stringsImported} names and {otherStringsImported} other strings from old .lang file {langFile.FullName}");
+							}
+						}
 					}
 					else logger?.Failure($"Could not match {langName} to a known language");
 				}
@@ -855,9 +923,11 @@ public class ContentManager : MonoBehaviour
 		}
 		catch(Exception e)
 		{
-			logger?.Exception(e);
+			logger?.Exception(e, $"Failed to import lang file in pack '{packName}'");
 		}
 	}
+
+	private static Regex OldLangRegex = new Regex("(tile|item|block).([a-zA-Z0-9]*).name");
 
 	private bool TryImportLocalisationLine(string prefix, ELang lang, string key, string value, ContentPack pack)
 	{

@@ -109,6 +109,20 @@ public class TurboRootNode : SkinnableRootNode
 	}
 #endif
 
+	public void BakeOutSectionTransforms()
+	{
+		List<SectionNode> sectionsWithTransforms = new List<SectionNode>();
+		foreach (SectionNode section in GetComponentsInChildren<SectionNode>())
+		{
+			if (!section.IsIdentity)
+				sectionsWithTransforms.Add(section);
+		}
+		foreach (SectionNode section in sectionsWithTransforms)
+		{
+			section.transform.ZeroTransformButNotChildren();
+		}
+	}
+
 
 	public override void GetVerifications(List<Verification> verifications)
 	{
@@ -182,16 +196,7 @@ public class TurboRootNode : SkinnableRootNode
 					GameObject root = editingScope.prefabContentsRoot;
 
 					// We need to rebuild this list inside the prefab editing scope
-					sectionsWithTransforms.Clear();
-					foreach (SectionNode section in root.GetComponentsInChildren<SectionNode>())
-					{
-						if (!section.IsIdentity)
-							sectionsWithTransforms.Add(section);
-					}
-					foreach(SectionNode section in sectionsWithTransforms)
-					{
-						section.transform.ZeroTransformButNotChildren();
-					}
+					root.GetComponent<TurboRootNode>().BakeOutSectionTransforms();
 				}
 				return this;
 			}));

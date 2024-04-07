@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class VanillaCubeRootNode : RootNode
 {
-   
+	protected override bool NeedsIcon() { return false; }
 }

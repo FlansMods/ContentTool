@@ -45,7 +45,7 @@ public class AttachPointNode : Node
 				EditorUtility.SetDirty(gameObject);
 			}
 		}
-		else base.Translate(deltaEuler);
+		else base.Rotate(deltaEuler);
 	}
 
 	public override bool HasCompactEditorGUI() { return true; }

@@ -170,7 +170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2298398243416824218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -2.75, z: -2}
+  m_LocalPosition: {x: -0.75, y: -2.75, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -190,9 +190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
-    y: 2
-    width: 4
+    x: 18
+    y: 0
+    width: 6
     height: 2
   _MR: {fileID: 7645066889607935383}
   _MF: {fileID: 2922738068712683057}
@@ -234,7 +234,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -283,7 +283,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4338388029062714336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -1.75, z: -2}
+  m_LocalPosition: {x: -0.75, y: -1.75, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -303,9 +303,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
+    x: 12
     y: 2
-    width: 4
+    width: 6
     height: 2
   _MR: {fileID: 7989240856203410981}
   _MF: {fileID: 8755993008187967060}
@@ -347,7 +347,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -396,7 +396,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4638703522286710464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -3.75, z: -1.75}
+  m_LocalPosition: {x: -0.75, y: -3.75, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -416,9 +416,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
-    y: 2
-    width: 4
+    x: 12
+    y: 0
+    width: 6
     height: 2
   _MR: {fileID: 3949783949389200929}
   _MF: {fileID: 1931483914204566921}
@@ -460,7 +460,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -599,7 +599,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5200414277018975758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -3.75, z: -1}
+  m_LocalPosition: {x: -0.75, y: -3.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -634,7 +634,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52fdd3dd4e20ee24c8040c1532e4de70, type: 2}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -669,9 +669,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 8
+    x: 24
     y: 0
-    width: 8
+    width: 6
     height: 4
   _MR: {fileID: 4520022383380655971}
   _MF: {fileID: 7145631186093256594}
@@ -722,7 +722,6 @@ Transform:
   - {fileID: 7434045127916471532}
   - {fileID: 5401724888685847612}
   - {fileID: 8621172166576258132}
-  - {fileID: 8331585728997790952}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -740,11 +739,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Textures:
     List:
-    - Key: default
+    - Key: knuckle_grip
       Location:
         Namespace: flansclockworkcalamity
-        ID: textures/skins/blaster_compensator
-      Texture: {fileID: 2800000, guid: 3f6bb57cfdb90334d92c7794e54e8354, type: 3}
+        ID: textures/skins/knuckle_grip
+      Texture: {fileID: 2800000, guid: 0e1554045870eef47b9564c95814f7ed, type: 3}
   Icons:
     List:
     - Key: default
@@ -755,9 +754,10 @@ MonoBehaviour:
   FlanimationDef: {fileID: 0}
   UnityAnimController: {fileID: 0}
   UnityAnimator: {fileID: 0}
+  UVMapSize: {x: 32, y: 8}
   UnityMaterialCache:
   - {fileID: 2100000, guid: 52fdd3dd4e20ee24c8040c1532e4de70, type: 2}
-  UVMapSize: {x: 16, y: 8}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   AnimationParameters: []
   AnimationSet: {fileID: 0}
 --- !u!1 &5989893418768679861
@@ -832,7 +832,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6597743291266882387}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -3.75, z: -2.25}
+  m_LocalPosition: {x: -0.75, y: -3.75, z: -1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -852,9 +852,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
+    x: 0
     y: 2
-    width: 4
+    width: 6
     height: 2
   _MR: {fileID: 4251349172187747472}
   _MF: {fileID: 6982925260429314227}
@@ -896,7 +896,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -963,50 +963,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TransformType: 8
---- !u!1 &6732743880426065752
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8331585728997790952}
-  - component: {fileID: 5906867307604130861}
-  m_Layer: 0
-  m_Name: ap_shoot_origin
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8331585728997790952
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6732743880426065752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7724767193202269042}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5906867307604130861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6732743880426065752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29bc4607e9fa3a84a9a6f9a3dd837781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7085247941958901171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +990,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7085247941958901171}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -2.75, z: -2.5}
+  m_LocalPosition: {x: -0.75, y: -2.75, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1054,10 +1010,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
-    y: 2
-    width: 4
-    height: 2
+    x: 6
+    y: 0
+    width: 6
+    height: 3
   _MR: {fileID: 8736310974055844056}
   _MF: {fileID: 2467736039235252727}
   Dim: {x: 1.5, y: 1.5, z: 0.5}
@@ -1098,7 +1054,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1147,7 +1103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7644013015771650051}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -0.75, z: -2}
+  m_LocalPosition: {x: -0.75, y: -0.75, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1169,8 +1125,8 @@ MonoBehaviour:
   BakedUV:
     x: 0
     y: 4
-    width: 4
-    height: 2
+    width: 8
+    height: 3
   _MR: {fileID: 635202599089727765}
   _MF: {fileID: 6668723104911205901}
   Dim: {x: 1.5, y: 0.75, z: 2}
@@ -1202,7 +1158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52fdd3dd4e20ee24c8040c1532e4de70, type: 2}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1296,7 +1252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9046716166086923991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -1.25, z: -2.25}
+  m_LocalPosition: {x: -0.75, y: -1.25, z: -1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1316,9 +1272,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BakedUV:
-    x: 4
-    y: 2
-    width: 4
+    x: 0
+    y: 0
+    width: 6
     height: 2
   _MR: {fileID: 7842398237311473239}
   _MF: {fileID: 9122426451154009704}
@@ -1360,7 +1316,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4939806552781540bbf5f1d512aaf91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -24,4 +24,6 @@ public class InfoType
 		if(texture != null && texture.Length > 0)
 			textureNames.Add($"skins/{texture}.png");
 	}
+
+	public string ConvertedName { get { return Utils.ToLowerWithUnderscores(shortName); } }
 }

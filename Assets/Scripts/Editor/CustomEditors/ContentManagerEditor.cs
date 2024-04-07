@@ -75,6 +75,7 @@ public class ContentManagerEditor : Editor
 	}
 
 	public FlanStyles.FoldoutTree ModelFoldout = new FlanStyles.FoldoutTree();
+	private GUILayoutOption EntryHeight = GUILayout.MinHeight(20);
 	public void ImportTab_Models(ContentManager instance)
 	{
 		foreach(var kvp in instance.GetPreImportModelList())
@@ -110,7 +111,7 @@ public class ContentManagerEditor : Editor
 				// Column 1 - Model Name
 				GUILayout.BeginVertical();
 				foreach (string modelName in kvp.Value.Models)
-					GUILayout.Label(modelName);
+					GUILayout.Label(modelName, EntryHeight);
 				GUILayout.EndVertical();
 
 				GUILayout.FlexibleSpace();
@@ -128,11 +129,11 @@ public class ContentManagerEditor : Editor
 					bool doImport = false;
 
 					EditorGUI.BeginDisabledGroup(!outputExists);
-					if (GUILayout.Button(FlanStyles.ImportSingleAssetOverwrite))
+					if (GUILayout.Button(FlanStyles.ImportSingleAssetOverwrite, EntryHeight))
 						doImport = true;
 					EditorGUI.EndDisabledGroup();
 					EditorGUI.BeginDisabledGroup(outputExists);
-					if (GUILayout.Button(FlanStyles.ImportSingleAssetNewOnly))
+					if (GUILayout.Button(FlanStyles.ImportSingleAssetNewOnly, EntryHeight))
 						doImport = true;
 					EditorGUI.EndDisabledGroup();
 
@@ -159,12 +160,12 @@ public class ContentManagerEditor : Editor
 					{
 						bool fileExists = File.Exists(modelImportMapping.Value);
 						if (fileExists)
-							GUILayout.Label($"maps to {modelImportMapping.Value} (already exists)", FlanStyles.RedLabel);
+							GUILayout.Label($"maps to {modelImportMapping.Value} (already exists)", FlanStyles.RedLabel, EntryHeight);
 						else
-							GUILayout.Label($"maps to {modelImportMapping.Value}");
+							GUILayout.Label($"maps to {modelImportMapping.Value}", EntryHeight);
 					}
 					else
-						GUILayout.Label($"<Select an export folder>");
+						GUILayout.Label($"<Select an export folder>", EntryHeight);
 				}
 				GUILayout.EndVertical();
 

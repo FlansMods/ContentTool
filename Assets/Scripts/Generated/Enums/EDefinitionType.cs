@@ -218,7 +218,7 @@ public static class DefinitionTypes
 		switch(defType)
 		{
 			case EDefinitionType.part: return "parts";
-			case EDefinitionType.bullet: return "bullets";
+			case EDefinitionType.bullet: return "magazines";
 			case EDefinitionType.attachment: return "attachments";
 			case EDefinitionType.grenade: return "grenades";
 			case EDefinitionType.gun: return "guns";

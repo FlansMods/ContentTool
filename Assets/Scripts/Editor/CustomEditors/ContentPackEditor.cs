@@ -19,6 +19,7 @@ public class ContentPackEditor : Editor
 	}
 
 	public static readonly string[] TabNames = new string[] {
+		"Import",
 		"Verification and Export",
 		"Balancing and .CSV Sheets",
 		"Debug View"
@@ -33,6 +34,10 @@ public class ContentPackEditor : Editor
 			CurrentTab = (Tab)GUILayout.Toolbar((int)CurrentTab, TabNames);
 			switch (CurrentTab)
 			{
+				case Tab.Import:
+					//ImportTab();
+					break;
+
 				case Tab.Verification:
 					VerificationTab(pack);
 					break;

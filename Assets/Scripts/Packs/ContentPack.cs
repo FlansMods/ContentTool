@@ -261,6 +261,19 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 				yield return tDef;
 		}
 	}
+	public bool TryGetContent<TDefType>(string shortName, out TDefType result) where TDefType : Definition
+	{
+		shortName = Utils.ToLowerWithUnderscores(shortName);
+		if (Content != null)
+			foreach (Definition def in Content)
+				if (def is TDefType typedDef && typedDef.name == shortName)
+				{
+					result = typedDef;
+					return true;
+				}
+		result = null;
+		return false;
+	}
 
 	public bool TryGetContent(string shortName, out Definition result)
 	{
@@ -280,6 +293,31 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 	public bool HasContent(string shortName)
 	{
 		return TryGetContent(shortName, out Definition ignore);
+	}
+
+	// Return whether a change was made
+	public bool AddExtraLocalisation(string unloc, string loc, Definition.ELang lang)
+	{
+		foreach(Definition.LocalisedExtra extraLoc in ExtraLocalisation)
+		{
+			if (extraLoc.Unlocalised == unloc && extraLoc.Lang == lang)
+			{
+				if (extraLoc.Localised != loc)
+				{
+					extraLoc.Localised = loc;
+					return true;
+				}
+				else return false;
+			}
+		}
+
+		ExtraLocalisation.Add(new Definition.LocalisedExtra()
+		{
+			Unlocalised = unloc,
+			Localised = loc,
+			Lang = lang,
+		});
+		return true;
 	}
 
 	public virtual void GetVerifications(List<Verification> verifications)

@@ -22,7 +22,20 @@ public abstract class RootNode : Node
 	{
 		foreach (NamedTexture tex in Textures)
 			if (tex.Key == key)
-				return tex.Texture;
+			{
+				if (tex.Texture != null)
+				{
+					return tex.Texture;
+				}
+				if(tex.Location != null)
+				{
+					if(tex.Location.TryLoad(out Texture2D texture, "textures/skins"))
+					{
+						tex.Texture = texture;
+						return texture;
+					}
+				}
+			}
 		return Texture2D.whiteTexture;
 	}
 	public void SwapTextureKeys(string keyA, string keyB)
