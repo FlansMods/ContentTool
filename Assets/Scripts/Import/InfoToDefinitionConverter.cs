@@ -256,6 +256,95 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		actionGroups.Add(CreateEndReloadActions(inf));
 		def.actionGroups = actionGroups.ToArray();
 
+		def.inputHandlers = new HandlerDefinition[]
+		{
+			// Primary - Fire if we can, or start a reload
+			new HandlerDefinition() {
+				inputType = EPlayerInput.Fire1,
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "primary_fire",
+					},
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "reload_primary_start",
+					},
+				},
+			},
+			// Secondary - If we have a sight attachment, try that. Then check our grip for Fire2. Then apply our default ads action
+			new HandlerDefinition() {
+				inputType = EPlayerInput.Fire2,
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Sights,
+						attachmentIndex = 0,
+					},
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Grip,
+						attachmentIndex = 0,
+					},
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "ads",
+						canTriggerWhileReloading = true,
+					},
+				},
+			},
+			// Look at, simple enough
+			new HandlerDefinition() {
+				inputType = EPlayerInput.SpecialKey1,
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "look_at",
+					},
+				},
+			},
+			// Manual reload. We might have a barrel launcher, so check there first
+			new HandlerDefinition() {
+				inputType = EPlayerInput.Reload1,
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Grip,
+						attachmentIndex = 0,
+					},
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "reload_primary_start",
+					},
+				},
+			},
+			// Gadget toggle - doesn't do anything by default, but good to have it assigned so attachments can toggle modes
+			new HandlerDefinition() {
+				inputType = EPlayerInput.SpecialKey2,
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Barrel,
+						attachmentIndex = 0,
+						andContinueEvaluating = true,
+					},
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Sights,
+						attachmentIndex = 0,
+						andContinueEvaluating = true,
+					},
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Stock,
+						attachmentIndex = 0,
+						andContinueEvaluating = true,
+					},
+					new HandlerNodeDefinition() {
+						deferToAttachment = true,
+						attachmentType = EAttachmentType.Grip,
+						attachmentIndex = 0,
+						andContinueEvaluating = true,
+					},
+				}
+			}
+		};
+
 		//def.idleSound = inf.idleSound;
 		//def.idleSoundLength = inf.idleSoundLength;
 		//def.showAttachments = inf.showAttachments;
@@ -350,7 +439,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition() 
 		{
-			key = "primary_reload_start",
+			key = "reload_primary_start",
 			actions = reloadActions.ToArray()
 		};
 	}
@@ -370,7 +459,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition()
 		{
-			key = "primary_reload_eject",
+			key = "reload_primary_eject",
 			actions = reloadActions.ToArray()
 		};
 	}
@@ -389,7 +478,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition()
 		{
-			key = "primary_reload_load_one",
+			key = "reload_primary_load_one",
 			actions = reloadActions.ToArray()
 		};
 	}
@@ -409,7 +498,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition()
 		{
-			key = "primary_reload_end",
+			key = "reload_primary_end",
 			actions = reloadActions.ToArray()
 		};
 	}
@@ -427,6 +516,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 
 		return new ActionGroupDefinition() 
 		{
+			key = "look_at",
 			actions = lookAtActions.ToArray(),
 		};
 	}
@@ -515,6 +605,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 
 		return new ActionGroupDefinition()
 		{
+			key = "primary_fire",
 			canActUnderwater = inf.canShootUnderwater,
 			canActUnderOtherLiquid = false,
 			canBeOverriden = true,
@@ -585,6 +676,7 @@ public class GunConverter : Converter<GunType, GunDefinition>
 		}
 		return new ActionGroupDefinition()
 		{
+			key = "ads",
 			canActUnderwater = true,
 			canActUnderOtherLiquid = true,
 			canBeOverriden = true,

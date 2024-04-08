@@ -138,7 +138,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	// -------------------------------------------------------------------------------------------------------------
 	#region Verification
 	// -------------------------------------------------------------------------------------------------------------
-	public virtual void GetVerifications(List<Verification> verifications)
+	public virtual void GetVerifications(IVerificationLogger verifications)
 	{
 		try
 		{
@@ -157,32 +157,31 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		}
 		catch (Exception e)
 		{
-			verifications?.Add(Verification.Exception(e, () => 
+			verifications.Exception(e, () => 
 			{ 
 				Selection.activeObject = this;
 				return null;
-			}));
+			});
 		}
 	}
 
-	private static void VerifyNames(ResourceLocation resLoc, Definition def, List<Verification> verifications)
+	private static void VerifyNames(ResourceLocation resLoc, Definition def, IVerificationLogger verifications)
 	{
 		if (def.LocalisedNames.Count < 1 && def.NeedsName())
-			verifications.Add(Verification.Failure($"{def.name} has no localised name in any language"));
+			verifications.Failure($"{def.name} has no localised name in any language");
 		if (def.name != Utils.ToLowerWithUnderscores(def.name))
 		{
-			verifications.Add(Verification.Failure(
+			verifications.Failure(
 				$"Definition {def.name} does not have a Minecraft-compliant name",
 				() =>
 				{
 					def.name = Utils.ToLowerWithUnderscores(def.name);
 					return def;
-				})
-			);
+				});
 		}
 	}
 
-	private static void VerifyAttachment(ResourceLocation resLoc, AttachmentDefinition attachment, List<Verification> verifications)
+	private static void VerifyAttachment(ResourceLocation resLoc, AttachmentDefinition attachment, IVerificationLogger verifications)
 	{
 		foreach (ActionGroupDefinition group in attachment.actionOverrides)
 			VerifyActionGroup(resLoc, attachment, group, verifications);
@@ -191,18 +190,38 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			VerifyModifier(resLoc, mod, verifications);
 	}
 
-	private static void VerifyMagazine(ResourceLocation resLoc, MagazineDefinition mag, List<Verification> verifications)
+	private static void VerifyMagazine(ResourceLocation resLoc, MagazineDefinition mag, IVerificationLogger verifications)
 	{
 		foreach (ModifierDefinition mod in mag.modifiers)
 			VerifyModifier(resLoc, mod, verifications);
 	}
 
-	private static void VerifyGun(ResourceLocation resLoc, GunDefinition gunDef, List<Verification> verifications)
+	private static void VerifyGun(ResourceLocation resLoc, GunDefinition gunDef, IVerificationLogger verifications)
 	{
-		foreach (ActionGroupDefinition group in gunDef.actionGroups)
+		if (gunDef.actionGroups.Length == 0)
 		{
-			VerifyActionGroup(resLoc, gunDef, group, verifications);
+			verifications.Neutral($"Gun has no action groups");
 		}
+		else
+		{
+			foreach (ActionGroupDefinition group in gunDef.actionGroups)
+			{
+				VerifyActionGroup(resLoc, gunDef, group, verifications);
+			}
+
+			if (gunDef.inputHandlers.Length == 0)
+			{
+				verifications.Failure($"Gun {gunDef} has {gunDef.actionGroups.Length} action groups, but no input handlers");
+			}
+			else
+			{
+				foreach(HandlerDefinition handler in gunDef.inputHandlers)
+				{
+					VerifyInputHandler(resLoc, gunDef, handler, gunDef.actionGroups, verifications);
+				}
+			}
+		}
+		
 
 		for (int i = 0; i < gunDef.paints.paintjobs.Length; i++)
 		{
@@ -218,7 +237,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			}
 			if (!hasLoc)
 			{
-				verifications.Add(Verification.Neutral(
+				verifications.Neutral(
 					$"Paintjob with key {paintjob.textureName} in paintable def {gunDef.name}, has no localised name",
 				() =>
 				{
@@ -229,12 +248,12 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 						Lang = ELang.en_us,
 					});
 					return gunDef;
-				}));
+				});
 			}
 		}
 	}
 
-	private static void VerifyModel(ResourceLocation resLoc, Definition def, List<Verification> verifications)
+	private static void VerifyModel(ResourceLocation resLoc, Definition def, IVerificationLogger verifications)
 	{
 		if (def.ExpectsModel())
 		{
@@ -242,7 +261,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{def.GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
 			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
 			if (rootNode == null)
-				verifications.Add(Verification.Failure(
+				verifications.Failure(
 					$"Definition {def.name} does not have a matching model at {modelPath} (QFix will make an Icon model)",
 					() =>
 					{
@@ -257,7 +276,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 						PrefabUtility.SaveAsPrefabAsset(iconRootNode.gameObject, modelPath);
 						DestroyImmediate(iconRootNode.gameObject);
 						return def;
-					}));
+					});
 			else
 			{
 				if (def is GunDefinition gun)
@@ -275,7 +294,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 
 							if (!existsInDef)
 							{
-								verifications.Add(Verification.Neutral(
+								verifications.Neutral(
 									$"Found icon {iconTexture.Key} in model {modelPath}, not referenced in paintable def {gun.name}",
 									() =>
 									{
@@ -287,7 +306,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 										});
 										gun.paints.paintjobs = paintjobs.ToArray();
 										return def;
-									}));
+									});
 							}
 						}
 					}
@@ -309,7 +328,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 						if (!existsInModel)
 						{
 							int index = i;
-							verifications.Add(Verification.Neutral(
+							verifications.Neutral(
 									$"Found icon {paintjob.textureName} in paintable def {gun.name}, not referenced in model {rootNode.name}",
 									() =>
 									{
@@ -317,7 +336,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 										paintjobs.RemoveAt(index);
 										gun.paints.paintjobs = paintjobs.ToArray();
 										return def;
-									}));
+									});
 						}
 					}
 				}
@@ -334,7 +353,7 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		}
 	}
 
-	private static void VerifyItemSettings(ResourceLocation resLoc, Definition def, List<Verification> verifications)
+	private static void VerifyItemSettings(ResourceLocation resLoc, Definition def, IVerificationLogger verifications)
 	{
 		ItemDefinition itemSettings = def.GetItemSettings();
 		if (itemSettings != null)
@@ -345,11 +364,11 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 				ResourceLocation tagLoc = itemSettings.tags[i];
 				if (tagLoc.Namespace.Length == 0)
 				{
-					verifications.Add(Verification.Failure($"Tag {tagLoc} has no namespace set"));
+					verifications.Failure($"Tag {tagLoc} has no namespace set");
 				}
 				else if (tagLoc.ID.Length == 0)
 				{
-					verifications.Add(Verification.Failure($"Tag {tagLoc} has no ID set"));
+					verifications.Failure($"Tag {tagLoc} has no ID set");
 				}
 				else
 				{
@@ -361,59 +380,59 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 					else if (prefixes.StartsWith("blocks") || prefixes.StartsWith("items"))
 					{
 						
-						verifications.Add(Verification.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
+						verifications.Failure($"Tag {tagLoc} has an automatically inferred prefix attached",
 						() =>
 						{
 							ResourceLocation innerTagLoc = itemSettings.tags[index];
 							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.IDWithSpecificPrefixesStripped("blocks", "items")}");
 							return def;
-						}));
+						});
 					}
 					else if(prefixes == "ingot")
 					{
-						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'ingot' instead of Forge tag 'ingots'",
+						verifications.Failure($"Tag {tagLoc} uses 'ingot' instead of Forge tag 'ingots'",
 						() => 
 						{
 							ResourceLocation innerTagLoc = itemSettings.tags[index];
 							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("ingot", "ingots")}");
 							return def;
-						}));
+						});
 					}
 					else if (prefixes == "nugget")
 					{
-						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'nugget' instead of Forge tag 'nuggets'",
+						verifications.Failure($"Tag {tagLoc} uses 'nugget' instead of Forge tag 'nuggets'",
 						() =>
 						{
 							ResourceLocation innerTagLoc = itemSettings.tags[index];
 							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("nugget", "nuggets")}");
 							return def;
-						}));
+						});
 					}
 					else if (prefixes == "plate")
 					{
-						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'plate' instead of Forge tag 'plates'",
+						verifications.Failure($"Tag {tagLoc} uses 'plate' instead of Forge tag 'plates'",
 						() =>
 						{
 							ResourceLocation innerTagLoc = itemSettings.tags[index];
 							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("plate", "plates")}");
 							return def;
-						}));
+						});
 					}
 					else if (prefixes == "storage_block")
 					{
-						verifications.Add(Verification.Failure($"Tag {tagLoc} uses 'storage_block' instead of Forge tag 'storage_blocks'",
+						verifications.Failure($"Tag {tagLoc} uses 'storage_block' instead of Forge tag 'storage_blocks'",
 						() =>
 						{
 							ResourceLocation innerTagLoc = itemSettings.tags[index];
 							itemSettings.tags[index] = new ResourceLocation($"{innerTagLoc.Namespace}:{innerTagLoc.ID.Replace("storage_block", "storage_blocks")}");
 							return def;
-						}));
+						});
 					}
 				}
 			}
 		}
 	}
-	public static void VerifyActionGroup(ResourceLocation resLoc, Definition def, ActionGroupDefinition actionGroup, List<Verification> verifications)
+	public static void VerifyActionGroup(ResourceLocation resLoc, Definition def, ActionGroupDefinition actionGroup, IVerificationLogger verifications)
 	{	
 		bool hasADSAction = false;
 		Dictionary<string, Func<ModifierDefinition>> expected = new Dictionary<string, Func<ModifierDefinition>>();
@@ -434,14 +453,13 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 		}
 		if (hasADSAction && actionGroup.repeatMode != ERepeatMode.Toggle)
 		{
-			verifications.Add(Verification.Neutral(
+			verifications.Neutral(
 				$"Aim down sights action is not a toggle",
 				() =>
 				{
 					actionGroup.repeatMode = ERepeatMode.Toggle;
 					return def;
-				})
-			);
+				});
 		}
 
 		foreach (ModifierDefinition modifier in actionGroup.modifiers)
@@ -453,18 +471,46 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 
 		foreach(var kvp in expected)
 		{
-			verifications.Add(Verification.Neutral($"Expected an entry for {kvp.Key} stat in ActionGroup {actionGroup.key}", () => {
+			verifications.Neutral($"Expected an entry for {kvp.Key} stat in ActionGroup {actionGroup.key}", () => {
 				List<ModifierDefinition> list = new List<ModifierDefinition>(actionGroup.modifiers);
 				list.Add(kvp.Value.Invoke());
 				actionGroup.modifiers = list.ToArray();
 				return def;
-			}));
+			});
 		}
 	}
-	public static void VerifyModifier(ResourceLocation resLoc, ModifierDefinition modDef, List<Verification> verifications)
+	public static void VerifyInputHandler(ResourceLocation resLoc, Definition def, HandlerDefinition handler, ActionGroupDefinition[] withActionGroups, IVerificationLogger verifications)
+	{
+		foreach(HandlerNodeDefinition node in handler.nodes)
+		{
+			VerifyInputHandlerNode(resLoc, def, handler, node, withActionGroups, verifications);
+		}
+	}
+	public static void VerifyInputHandlerNode(ResourceLocation resLoc, Definition def, HandlerDefinition handler, HandlerNodeDefinition node, ActionGroupDefinition[] withActionGroups, IVerificationLogger verifications)
+	{
+		if (!node.deferToAttachment)
+		{
+			bool foundAG = false;
+			foreach (ActionGroupDefinition actionGroup in withActionGroups)
+			{
+				if (actionGroup.key == node.actionGroupToTrigger)
+				{
+					foundAG = true;
+					break;
+				}
+			}
+
+			if (!foundAG)
+			{
+				verifications.Neutral($"Input Handler on {handler.inputType} has node referencing action group {node.actionGroupToTrigger} which does not exist on this gun");
+			}
+		}
+	}
+
+	public static void VerifyModifier(ResourceLocation resLoc, ModifierDefinition modDef, IVerificationLogger verifications)
 	{
 		if (!Constants.STAT_SUGGESTIONS.Contains(modDef.stat))
-			verifications.Add(Verification.Neutral($"{resLoc} has unknown modifier {modDef.stat}"));
+			verifications.Neutral($"{resLoc} has unknown modifier {modDef.stat}");
 	}
 	#endregion
 	// -------------------------------------------------------------------------------------------------------------

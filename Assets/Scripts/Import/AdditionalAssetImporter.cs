@@ -161,7 +161,7 @@ public static class AdditionalAssetImporter
 		if (result == VerifyType.Fail)
 		{
 			logger?.Failure($"Failed to import {from} as a RootNode model");
-			logger?.GetVerifications().AddRange(importVerification.GetVerifications());
+			logger?.AsList().AddRange(importVerification.AsList());
 			return;
 		}
 

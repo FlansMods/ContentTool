@@ -18,7 +18,7 @@ public class ExportLogger : IVerificationLogger
 	}
 
 	public string GetOpName() { return OpName; }
-	public List<Verification> GetVerifications() { return Verifications; }
+	public List<Verification> AsList() { return Verifications; }
 	public void Success(string msg) { Verifications.Add(Verification.Success(msg)); }
 	public void Neutral(string msg) { Verifications.Add(Verification.Neutral(msg)); }
 	public void Failure(string msg) { Verifications.Add(Verification.Failure(msg)); }
@@ -27,6 +27,8 @@ public class ExportLogger : IVerificationLogger
 	public void Failure(string msg, Verification.QuickFixFunc func) { Verifications.Add(Verification.Failure(msg, func)); }
 	public void Exception(Exception e) { Verifications.Add(Verification.Exception(e)); }
 	public void Exception(Exception e, string msg) { Verifications.Add(Verification.Exception(e, msg)); }
+	public void Exception(Exception e, Verification.QuickFixFunc func) { Verifications.Add(Verification.Exception(e, func)); }
+	public void Exception(Exception e, string msg, Verification.QuickFixFunc func) { Verifications.Add(Verification.Exception(e, msg, func)); }
 
 	public void Dispose()
 	{

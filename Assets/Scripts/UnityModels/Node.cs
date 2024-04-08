@@ -460,10 +460,10 @@ public abstract class Node : MonoBehaviour, IVerifiableAsset, IVerifiableContain
 	#region Verifications
 	// ---------------------------------------------------------------------------
 	public UnityEngine.Object GetUnityObject() { return this; }
-	public virtual void GetVerifications(List<Verification> verifications)
+	public virtual void GetVerifications(IVerificationLogger verifications)
 	{
 		if (Root == null)
-			verifications.Add(Verification.Failure("Node without a RootNode"));
+			verifications.Failure("Node without a RootNode");
 	}
 	public virtual IEnumerable<IVerifiableAsset> GetAssets()
 	{

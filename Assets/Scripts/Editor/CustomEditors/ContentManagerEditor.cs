@@ -58,7 +58,7 @@ public class ContentManagerEditor : Editor
 			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
 				ExpandExportResults,
 				ContentManager.LastImportOperation.GetOpName(),
-				ContentManager.LastImportOperation.GetVerifications());
+				ContentManager.LastImportOperation.AsList());
 		}
 
 		SelectedImportTab = (ImportSubTab)GUILayout.Toolbar((int)SelectedImportTab, ImportSubTabTitles);
@@ -349,7 +349,7 @@ public class ContentManagerEditor : Editor
 			ExpandExportResults = GUIVerify.VerificationsResultsPanel(
 				ExpandExportResults,
 				FlansModExport.LastExportOperation.GetOpName(),
-				FlansModExport.LastExportOperation.GetVerifications());
+				FlansModExport.LastExportOperation.AsList());
 		}
 
 		if(GUILayout.Button("Force refresh verifications"))
@@ -438,7 +438,7 @@ public class ContentManagerEditor : Editor
 	{
 		foreach (UnityEngine.Object asset in assets)
 		{
-			List<Verification> verifications = new List<Verification>();
+			IVerificationLogger verifications = new VerificationList($"Verify asset {asset}");
 			if (asset is IVerifiableAsset verifiable)
 			{
 				verifiable.GetVerifications(verifications);

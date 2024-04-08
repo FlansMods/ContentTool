@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -35,9 +36,11 @@ public class VerificationList : IVerificationLogger
 	public void Failure(string msg, Verification.QuickFixFunc func) { Log.Add(Verification.Failure(msg, func)); }
 	public void Exception(Exception e) { Log.Add(Verification.Exception(e)); }
 	public void Exception(Exception e, string msg) { Log.Add(Verification.Exception(e, msg)); }
+	public void Exception(Exception e, Verification.QuickFixFunc func) { Log.Add(Verification.Exception(e, func)); }
+	public void Exception(Exception e, string msg, Verification.QuickFixFunc func) { Log.Add(Verification.Exception(e, msg, func)); }
 
 	public string GetOpName() { return OpName; }
-	public List<Verification> GetVerifications() { return Log; }
+	public List<Verification> AsList() { return Log; }
 }
 
 public interface IVerificationLogger : IDisposable
@@ -50,9 +53,11 @@ public interface IVerificationLogger : IDisposable
 	void Failure(string msg, Verification.QuickFixFunc func);
 	void Exception(Exception e);
 	void Exception(Exception e, string msg);
+	void Exception(Exception e, Verification.QuickFixFunc func);
+	void Exception(Exception e, string msg, Verification.QuickFixFunc func);
 
 	string GetOpName();
-	List<Verification> GetVerifications();
+	List<Verification> AsList();
 }
 
 [System.Serializable]
@@ -62,6 +67,15 @@ public class Verification
 	public QuickFixFunc Func = null;
     public string Message;
     public VerifyType Type;
+
+	public static VerifyType GetWorstState(IVerificationLogger v) { return GetWorstState(v.AsList()); }
+	public static int CountSuccesses(IVerificationLogger v) { return CountSuccesses(v.AsList()); }
+	public static int CountNeutrals(IVerificationLogger v) { return CountNeutrals(v.AsList()); }
+	public static int CountFailures(IVerificationLogger v) { return CountFailures(v.AsList()); }
+	public static int CountType(IVerificationLogger v, VerifyType type) { return CountType(v.AsList(), type); }
+	public static int CountQuickFixes(IVerificationLogger v) { return CountQuickFixes(v.AsList()); }
+	public static void ApplyAllQuickFixes(IVerificationLogger v) { ApplyAllQuickFixes(v.AsList()); }
+
 
 	public static Verification Success(string msg, QuickFixFunc func = null)
 	{
@@ -124,12 +138,6 @@ public class Verification
 		}
 		return result;
 	}
-
-	public static VerifyType GetWorstState(IVerificationLogger logger)
-	{
-		return GetWorstState(logger.GetVerifications());
-	}
-
 	public static VerifyType GetWorstState(List<Verification> verifications)
 	{
 		VerifyType result = VerifyType.Pass;
@@ -211,7 +219,7 @@ public interface IVerifiableContainer
 
 public interface IVerifiableAsset
 {
-	void GetVerifications(List<Verification> verifications);
+	void GetVerifications(IVerificationLogger verifications);
 }
 
 public static class GUIVerify
@@ -229,16 +237,16 @@ public static class GUIVerify
 	public static GUILayoutOption[] DESCRIPTION_OPTIONS { get { return new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width - 128 - 16 - 96 - 8) }; } }
 	public static GUILayoutOption[] QUICK_FIX_BUTTON_OPTIONS = new GUILayoutOption[] { GUILayout.Width(96) };
 
-	private static Dictionary<IVerifiableAsset, List<Verification>> CachedVerifications = new Dictionary<IVerifiableAsset, List<Verification>>();
+	private static Dictionary<IVerifiableAsset, IVerificationLogger> CachedVerifications = new Dictionary<IVerifiableAsset, IVerificationLogger>();
 	private static Dictionary<IVerifiableContainer, List<IVerifiableAsset>> CachedContainers = new Dictionary<IVerifiableContainer, List<IVerifiableAsset>>();
-	private static List<Verification> GetCachedVerifications(IVerifiableAsset asset, bool forceRefresh)
+	private static IVerificationLogger GetCachedVerifications(IVerifiableAsset asset, bool forceRefresh)
 	{
 		if (asset == null)
-			return new List<Verification>();
+			return new VerificationList($"Error - Asset null");
 
-		if (forceRefresh || !CachedVerifications.TryGetValue(asset, out List<Verification> verifications))
+		if (forceRefresh || !CachedVerifications.TryGetValue(asset, out IVerificationLogger verifications))
 		{
-			verifications = new List<Verification>();
+			verifications = new VerificationList($"Verify {asset}");
 			asset.GetVerifications(verifications);
 			CachedVerifications.Add(asset, verifications);
 		}
@@ -258,13 +266,13 @@ public static class GUIVerify
 		}
 		return assets;
 	}
-	private static List<Verification> GetCachedVerifications(IVerifiableContainer container, bool forceRefresh)
+	private static IVerificationLogger GetCachedVerifications(IVerifiableContainer container, bool forceRefresh)
 	{
-		List<Verification> verifications = new List<Verification>();
+		IVerificationLogger verifications = new VerificationList($"Verify pack {container}");
 		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
-			verifications.AddRange(GetCachedVerifications(asset, forceRefresh));
+			verifications.AsList().AddRange(GetCachedVerifications(asset, forceRefresh).AsList());
 		if (container is IVerifiableAsset containerAsset)
-			verifications.AddRange(GetCachedVerifications(containerAsset, forceRefresh));
+			verifications.AsList().AddRange(GetCachedVerifications(containerAsset, forceRefresh).AsList());
 		return verifications;
 	}
 	public static void InvalidateCaches()
@@ -279,7 +287,7 @@ public static class GUIVerify
 	// For IVerifiableContainers
 	public static bool CachedVerificationHeader(IVerifiableContainer container, bool forceRefresh = false)
 	{
-		return VerificationHeader(GetCachedVerifications(container, forceRefresh));		
+		return VerificationHeader(GetCachedVerifications(container, forceRefresh).AsList());		
 	}
 	public static bool CachedVerificationsBox(IVerifiableContainer container, bool forceRefresh = false)
 	{
@@ -287,9 +295,9 @@ public static class GUIVerify
 		foreach (IVerifiableAsset asset in GetCachedAssetList(container, forceRefresh))
 		{
 			if (asset is UnityEngine.Object childUnityObject)
-				multiVerify[childUnityObject] = GetCachedVerifications(asset, forceRefresh);
+				multiVerify[childUnityObject] = GetCachedVerifications(asset, forceRefresh).AsList();
 			else
-				multiVerify[container.GetUnityObject()] = GetCachedVerifications(asset, forceRefresh);
+				multiVerify[container.GetUnityObject()] = GetCachedVerifications(asset, forceRefresh).AsList();
 		}
 
 		return VerificationsBox(multiVerify);
@@ -326,6 +334,14 @@ public static class GUIVerify
 	// ----------------------------------------------------------------------------------------------
 	#region Directly draw a verification box with a list of verifications
 	// ----------------------------------------------------------------------------------------------
+
+	public static bool VerificationHeader(IVerificationLogger v)	{ return VerificationHeader(v.AsList()); }
+	public static bool VerificationsResultsPanel(bool expanded, string label, IVerificationLogger v) { 
+		return VerificationsResultsPanel(expanded, label, v.AsList()); 
+	}
+	public static bool VerificationsBox(IVerificationLogger v)		{ return VerificationsBox(v.AsList()); }
+	public static void VerificationIcon(IVerificationLogger v)		{ VerificationIcon(v.AsList()); }
+
 	// An in-line header, best for using on the same line as a foldout
 	public static bool VerificationHeader(List<Verification> verifications)
 	{
@@ -369,13 +385,6 @@ public static class GUIVerify
 		}
 		FlanStyles.ThinLine();
 		return expanded;
-	}
-
-	// Deprecated
-	public static bool VerificationsBox(IVerifiableAsset asset, List<Verification> verifications)
-	{
-		asset.GetVerifications(verifications);
-		return VerificationsBox(verifications);
 	}
 	public static bool VerificationsBox(List<Verification> verifications)
 	{

@@ -129,7 +129,7 @@ public abstract class RootNode : Node
 	#endregion
 	// -----------------------------------------------------------------------------------
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 
@@ -137,9 +137,9 @@ public abstract class RootNode : Node
 		if (NeedsIcon())
 		{
 			if (Icons == null || Icons.Count == 0)
-				verifications.Add(Verification.Neutral($"No icons present"));
+				verifications.Neutral($"No icons present");
 			else if (Icons[0].Key != "default")
-				verifications.Add(Verification.Failure($"Default icon is named incorrectly as {Icons[0].Key}",
+				verifications.Failure($"Default icon is named incorrectly as {Icons[0].Key}",
 				() =>
 				{
 					ApplyQuickFix((TurboRootNode _this) =>
@@ -147,7 +147,7 @@ public abstract class RootNode : Node
 						_this.Icons[0].Key = "default";
 					});
 					return this;
-				}));
+				});
 		}
 
 	}

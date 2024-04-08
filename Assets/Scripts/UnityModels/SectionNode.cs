@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SectionNode : Node
 {
@@ -21,27 +19,27 @@ public class SectionNode : Node
 		base.EditorUpdate();
 	}
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 		if(ParentNode is AttachPointNode apParent)
 		{
 			if (name != apParent.APName)
-				verifications.Add(Verification.Failure($"Section {name} is attached to AP {apParent.name}, which does not match",
+				verifications.Failure($"Section {name} is attached to AP {apParent.name}, which does not match",
 					() =>
 					{
 						name = apParent.APName;
 						return this;
-					}));
+					});
 		}
 		else if(ParentNode is TurboRootNode rootParent)
 		{
 			if (name != "body")
-				verifications.Add(Verification.Neutral($"Section {name} is attached to the RootNode, but is not called 'body'"));
+				verifications.Neutral($"Section {name} is attached to the RootNode, but is not called 'body'");
 		}
 		else
 		{
-			verifications.Add(Verification.Failure($"Section {name} is not attached to an AP or Root node"));
+			verifications.Failure($"Section {name} is not attached to an AP or Root node");
 		}
 	}
 }

@@ -124,7 +124,7 @@ public class TurboRootNode : SkinnableRootNode
 	}
 
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 		if (!HasUVMap())
@@ -132,30 +132,31 @@ public class TurboRootNode : SkinnableRootNode
 			NumUVsToRemap(out int numToRemap, out int totalNum);
 			if (totalNum == 0)
 			{
-				verifications.Add(Verification.Success("No UV map needed"));
+				verifications.Success("No UV map needed");
 			}
 			else if(numToRemap == totalNum)
 			{
-				verifications.Add(Verification.Failure("UV map has not been calculated",
-					() => { 
+				verifications.Failure("UV map has not been calculated",
+					() =>
+					{
 						ApplyAutoUV(out UVMap ignore);
 						return this;
-					}));
+					});
 			}
 			else
 			{
-				verifications.Add(Verification.Failure($"UV map has {numToRemap} missing pieces",
+				verifications.Failure($"UV map has {numToRemap} missing pieces",
 					() => { 
 						ApplyAutoUV(out UVMap ignore);
 						return this;
-					}));
+					});
 			}
 		}
 
 		List<EmptyNode> emptyNodes = new List<EmptyNode>(GetAllDescendantNodes<EmptyNode>());
 		if(emptyNodes.Count > 0)
 		{
-			verifications.Add(Verification.Failure($"{emptyNodes.Count} EmptyNodes present in heirarchy", () => {
+			verifications.Failure($"{emptyNodes.Count} EmptyNodes present in heirarchy", () => {
 
 				string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
 				using(var editingScope = new PrefabUtility.EditPrefabContentsScope(prefabPath))
@@ -178,7 +179,7 @@ public class TurboRootNode : SkinnableRootNode
 					}
 				}
 				return this;
-			}));
+			});
 		}
 
 		List<SectionNode> sectionsWithTransforms = new List<SectionNode>();
@@ -188,7 +189,7 @@ public class TurboRootNode : SkinnableRootNode
 
 		if(sectionsWithTransforms.Count > 0)
 		{
-			verifications.Add(Verification.Failure($"{sectionsWithTransforms.Count} SectionNodes with non-Identity transformations", () => {
+			verifications.Failure($"{sectionsWithTransforms.Count} SectionNodes with non-Identity transformations", () => {
 
 				string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
 				using (var editingScope = new PrefabUtility.EditPrefabContentsScope(prefabPath))
@@ -199,7 +200,7 @@ public class TurboRootNode : SkinnableRootNode
 					root.GetComponent<TurboRootNode>().BakeOutSectionTransforms();
 				}
 				return this;
-			}));
+			});
 		}
 
 

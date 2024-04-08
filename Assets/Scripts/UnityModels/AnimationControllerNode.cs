@@ -374,7 +374,7 @@ public class AnimationControllerNode : Node
 	// --------------------------------------------------------------------------------------------------------
 
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 

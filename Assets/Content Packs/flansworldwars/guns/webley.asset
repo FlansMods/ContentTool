@@ -22,9 +22,103 @@ MonoBehaviour:
     _tags: []
   paints:
     paintjobs: []
-  inputHandlers: []
+  inputHandlers:
+  - inputType: 10
+    nodes:
+    - actionGroupToTrigger: primary_fire
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 11
+    nodes:
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: ads
+      modalCheck: 
+      canTriggerWhileReloading: 1
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 18
+    nodes:
+    - actionGroupToTrigger: look_at
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 13
+    nodes:
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+    - actionGroupToTrigger: reload_primary_start
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 0
+      attachmentType: 4
+      attachmentIndex: 0
+      andContinueEvaluating: 0
+  - inputType: 19
+    nodes:
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 0
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 1
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 2
+      attachmentIndex: 0
+      andContinueEvaluating: 1
+    - actionGroupToTrigger: 
+      modalCheck: 
+      canTriggerWhileReloading: 0
+      deferToAttachment: 1
+      attachmentType: 3
+      attachmentIndex: 0
+      andContinueEvaluating: 1
   actionGroups:
-  - key: default
+  - key: primary_fire
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 1
@@ -115,7 +209,7 @@ MonoBehaviour:
         value: 0
         multiplyPer: 
       setValue: 
-  - key: default
+  - key: ads
     canActUnderwater: 1
     canActUnderOtherLiquid: 1
     canBeOverriden: 1
@@ -147,7 +241,7 @@ MonoBehaviour:
         value: 1.25
         multiplyPer: 
       setValue: 
-  - key: default
+  - key: look_at
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -166,7 +260,7 @@ MonoBehaviour:
       scopeOverlay: 
       anim: look_at
     modifiers: []
-  - key: primary_reload_start
+  - key: reload_primary_start
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -196,7 +290,7 @@ MonoBehaviour:
       scopeOverlay: 
       anim: 
     modifiers: []
-  - key: primary_reload_eject
+  - key: reload_primary_eject
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -209,7 +303,7 @@ MonoBehaviour:
     autoCancelIfNotInMode: 
     actions: []
     modifiers: []
-  - key: primary_reload_load_one
+  - key: reload_primary_load_one
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0
@@ -222,7 +316,7 @@ MonoBehaviour:
     autoCancelIfNotInMode: 
     actions: []
     modifiers: []
-  - key: primary_reload_end
+  - key: reload_primary_end
     canActUnderwater: 1
     canActUnderOtherLiquid: 0
     canBeOverriden: 0

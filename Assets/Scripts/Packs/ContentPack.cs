@@ -320,18 +320,17 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		return true;
 	}
 
-	public virtual void GetVerifications(List<Verification> verifications)
+	public virtual void GetVerifications(IVerificationLogger verifications)
 	{
 		if(ModName != Utils.ToLowerWithUnderscores(ModName))
 		{
-			verifications.Add(Verification.Failure(
+			verifications.Failure(
 				$"Pack {ModName} does not have a Minecraft-compliant name",
 				() => 
 				{ 
 					name = Utils.ToLowerWithUnderscores(name);
 					return this;
-				})
-			);
+				});
 		}
 
 		List<string> referencedNamespaces = new List<string>();
@@ -339,19 +338,19 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 		{
 			ResourceLocation resLoc = def.GetLocation();
 			if (resLoc.Namespace != ModName)
-				verifications.Add(Verification.Failure($"Definition {def} is in {resLoc.Namespace} namespace, but referenced by mod {ModName}"));
+				verifications.Failure($"Definition {def} is in {resLoc.Namespace} namespace, but referenced by mod {ModName}");
 
 			if (!referencedNamespaces.Contains(resLoc.Namespace))
 				referencedNamespaces.Add(resLoc.Namespace);
 		}
 
 		if (referencedNamespaces.Count == 1)
-			verifications.Add(Verification.Success("Pack has no dependencies"));
+			verifications.Success("Pack has no dependencies");
 		else
 		{
 			foreach (string ns in referencedNamespaces)
 				if (ns != ModName)
-					verifications.Add(Verification.Neutral($"This pack depends on another pack: {ns}"));
+					verifications.Neutral($"This pack depends on another pack: {ns}");
 		}
 	}
 

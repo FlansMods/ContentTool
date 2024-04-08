@@ -35,20 +35,20 @@ public class NamedTexture : IVerifiableAsset, IModifyable, ICloneable<NamedTextu
 		};
 	}
 
-	public void GetVerifications(List<Verification> verifications)
+	public void GetVerifications(IVerificationLogger verifications)
 	{
 		if (Texture == null)
-			verifications.Add(Verification.Failure("Texture is null"));
+			verifications.Failure("Texture is null");
 		if (Key == null || Key.Length == 0)
-			verifications.Add(Verification.Failure("Key is empty"));
+			verifications.Failure("Key is empty");
 		if (Key != "default")
 			if (Key != Location.IDWithoutPrefixes())
 			{
-				verifications.Add(Verification.Neutral($"Key for skin does not match the skin name",
+				verifications.Neutral($"Key for skin does not match the skin name",
 				() => {
 					Key = Location.IDWithoutPrefixes();
 					return null;
-				}));
+				});
 			}
 
 	}

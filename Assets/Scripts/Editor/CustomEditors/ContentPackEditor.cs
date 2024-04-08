@@ -54,24 +54,24 @@ public class ContentPackEditor : Editor
 	public void VerificationTab(ContentPack pack)
 	{
 		Dictionary<Object, List<Verification>> multiVerify = new Dictionary<Object, List<Verification>>();
-		List<Verification> packIssues = new List<Verification>();
+		IVerificationLogger packIssues = new VerificationList($"Verify Tab {pack}");
 		pack.GetVerifications(packIssues);
-		multiVerify.Add(pack, packIssues);
+		multiVerify.Add(pack, packIssues.AsList());
 		foreach (Definition def in pack.AllContent)
 		{
-			List<Verification> verifications = new List<Verification>();
+			IVerificationLogger verifications = new VerificationList($"Verify Content {def} in Pack {pack}");
 			def.GetVerifications(verifications);
-			if (verifications.Count == 0)
-				verifications.Add(Verification.Success($"{def.name} has no outstanding issues."));
-			multiVerify.Add(def, verifications);
+			if (verifications.AsList().Count == 0)
+				verifications.Success($"{def.name} has no outstanding issues.");
+			multiVerify.Add(def, verifications.AsList());
 		}
 		foreach (RootNode model in pack.AllModels)
 		{
-			List<Verification> verifications = new List<Verification>();
+			IVerificationLogger verifications = new VerificationList($"Verify Model {model} in Pack {pack}");
 			model.GetVerifications(verifications);
-			if (verifications.Count == 0)
-				verifications.Add(Verification.Success($"Model {model.name} has no outstanding issues."));
-			multiVerify.Add(model, verifications);
+			if (verifications.AsList().Count == 0)
+				verifications.Success($"Model {model.name} has no outstanding issues.");
+			multiVerify.Add(model, verifications.AsList());
 		}
 		GUIVerify.VerificationsBox(multiVerify);
 

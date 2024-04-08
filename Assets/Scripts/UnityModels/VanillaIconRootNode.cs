@@ -52,13 +52,13 @@ public class VanillaIconRootNode : RootNode
 		return new NamedTexture("default", newIconTexture);
 	}
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 
 		if (Icons.Count == 0)
 		{
-			verifications.Add(Verification.Failure($"VanillaIconRootNode ({name}) does not have any icons!",
+			verifications.Failure($"VanillaIconRootNode ({name}) does not have any icons!",
 				() =>
 				{
 					ApplyQuickFix((VanillaIconRootNode _this) =>
@@ -66,11 +66,11 @@ public class VanillaIconRootNode : RootNode
 						_this.Icons.Add(new NamedTexture("default"));
 					});
 					return this;
-				}));
+				});
 		}
 		else if (Icons.Count > 1)
 		{
-			verifications.Add(Verification.Failure($"VanillaIconRootNode ({name}) has multiple icons. Switching is not supported!",
+			verifications.Failure($"VanillaIconRootNode ({name}) has multiple icons. Switching is not supported!",
 				() =>
 				{
 					ApplyQuickFix((VanillaIconRootNode _this) =>
@@ -79,13 +79,13 @@ public class VanillaIconRootNode : RootNode
 							_this.Icons.RemoveAt(1);
 					});
 					return this;
-				}));
+				});
 		}
 		// So you have exactly one icon, what's up with it
 		else
 		{
 			if (Icons[0].Key != "default")
-				verifications.Add(Verification.Failure($"VanillaIconRootNode ({name}) icon is not keyed as 'default'",
+				verifications.Failure($"VanillaIconRootNode ({name}) icon is not keyed as 'default'",
 					() =>
 					{
 						ApplyQuickFix((VanillaIconRootNode _this) =>
@@ -93,14 +93,14 @@ public class VanillaIconRootNode : RootNode
 							_this.Icons[0].Key = "default";
 						});
 						return this;
-					}));
+					});
 
 			if (Icons[0].Location == ResourceLocation.InvalidLocation)
 			{
 				// See if we can find a good replacement
 				if (this.GetLocation().TryLoad(out Texture2D match, "textures/item"))
 				{
-					verifications.Add(Verification.Neutral($"VanillaIconRootNode ({name}) icon is unset, but a match was found",
+					verifications.Neutral($"VanillaIconRootNode ({name}) icon is unset, but a match was found",
 						() =>
 						{
 							ApplyQuickFix((VanillaIconRootNode _this) =>
@@ -108,11 +108,11 @@ public class VanillaIconRootNode : RootNode
 								_this.Icons[0] = new NamedTexture("default", match);
 							});
 							return this;
-						}));
+						});
 				}
 				// Otherwise, we don't know what to do, so just warn about it
 				else
-					verifications.Add(Verification.Neutral($"VanillaIconRootNode ({name}) icon is unset"));
+					verifications.Neutral($"VanillaIconRootNode ({name}) icon is unset");
 			}
 
 		}

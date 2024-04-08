@@ -228,16 +228,16 @@ public abstract class SkinnableRootNode : RootNode
 		}
 	}
 
-	public override void GetVerifications(List<Verification> verifications)
+	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
 
 		// Textures
 		if (Textures == null || Textures.Count == 0)
-			verifications.Add(Verification.Neutral($"No skins present"));
+			verifications.Neutral($"No skins present");
 
 		if (Textures != null && Textures.Count > 0 && Textures[0].Key != "default")
-			verifications.Add(Verification.Failure($"Default texture is named incorrectly as {Textures[0].Key}",
+			verifications.Failure($"Default texture is named incorrectly as {Textures[0].Key}",
 			() =>
 			{
 				ApplyQuickFix((TurboRootNode _this) =>
@@ -245,7 +245,7 @@ public abstract class SkinnableRootNode : RootNode
 					_this.Textures[0].Key = "default";
 				});
 				return this;
-			}));
+			});
 
 
 	}
