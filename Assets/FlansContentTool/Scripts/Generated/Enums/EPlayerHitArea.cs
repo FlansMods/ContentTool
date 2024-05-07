@@ -1,0 +1,11 @@
+public enum EPlayerHitArea
+{
+	BODY,
+	HEAD,
+	LEFTLEG,
+	RIGHTLEG,
+	LEFTARM,
+	RIGHTARM,
+	LEFTITEM,
+	RIGHTITEM,
+}

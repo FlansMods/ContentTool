@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Editor/Resources/flan-styles.uss?fileID=7433441132597879392&amp;guid=ec756012207b9d04bb2544d7fa157eb3&amp;type=3#flan-styles" />
+    <ui:VisualElement class="custom-unity-field-container">
+        <ui:Label tabindex="1" text="Name:" display-tooltip-when-elided="true" name="Label" class="custom-unity-field-label" />
+        <ui:VisualElement name="VisualElement" class="custom-unity-field-value" style="flex-direction: row; background-color: rgba(0, 0, 0, 0);">
+            <ui:TextField picking-mode="Ignore" value="filler text" name="NamespaceEntry" />
+            <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="NamespaceDropdown" />
+            <ui:TextField picking-mode="Ignore" value="filler text" name="IDEntry" style="flex-grow: 1;" />
+            <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="IDDropdown" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

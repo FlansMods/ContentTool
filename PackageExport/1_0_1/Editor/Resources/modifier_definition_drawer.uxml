@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Editor/Resources/flan-styles.uss?fileID=7433441132597879392&amp;guid=ec756012207b9d04bb2544d7fa157eb3&amp;type=3#flan-styles" />
+    <ui:VisualElement name="Outer" class="custom-unity-field-container" style="flex-direction: column;">
+        <ui:VisualElement name="Header" class="custom-unity-field-value" style="flex-direction: row; background-color: rgba(0, 0, 0, 0);">
+            <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="StatDropdown" />
+            <ui:TextField picking-mode="Ignore" value="filler text" name="StatEntry" />
+            <ui:Label tabindex="-1" text="-&gt; Set" display-tooltip-when-elided="true" />
+            <ui:TextField picking-mode="Ignore" name="SetValueEntry" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:ListView focusable="true" name="Accumulators" show-add-remove-footer="true" />
+    </ui:VisualElement>
+</ui:UXML>
