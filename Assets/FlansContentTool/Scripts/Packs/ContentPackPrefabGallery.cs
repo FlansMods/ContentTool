@@ -8,6 +8,8 @@ public class ContentPackPrefabGallery : MonoBehaviour
 {
 	public ContentPack Target;
 	public Vector3 Separation = new Vector3(10, 0, 0);
+	public List<ENewDefinitionType> Types = new List<ENewDefinitionType>();
+
 	private Dictionary<RootNode, RootNode> SpawnedInstances = new Dictionary<RootNode, RootNode>();
 
 	protected void OnEnable()

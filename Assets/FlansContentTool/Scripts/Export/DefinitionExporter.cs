@@ -29,7 +29,8 @@ public class DefinitionExporter : DuplicatedJsonExporter
 	public static DefinitionExporter TOOLS = new DefinitionExporter("tools", typeof(ToolDefinition));
 	public static DefinitionExporter VEHICLES = new DefinitionExporter("vehicles", typeof(VehicleDefinition));
 	public static DefinitionExporter WORKBENCHES = new DefinitionExporter("workbenches", typeof(WorkbenchDefinition));
-	
+	public static DefinitionExporter CONTROL_SCHEMES = new DefinitionExporter("control_schemes", typeof(ControlSchemeDefinition));
+
 
 	private System.Type TYPE_TO_MATCH;
 	public override bool MatchesAssetType(System.Type type) { return TYPE_TO_MATCH.IsAssignableFrom(type); }

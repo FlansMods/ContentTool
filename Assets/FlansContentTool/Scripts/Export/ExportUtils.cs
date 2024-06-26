@@ -79,6 +79,28 @@ public static class ExportUtils
 			return false;
 		}
 	}
+	public static bool SaveScriptableObject(this IFileAccess fileAccess,
+		ScriptableObject scriptableObject, string path, IVerificationLogger logger = null)
+	{
+		if (!fileAccess.CanExport(path))
+			return false;
+
+		try
+		{
+			string folderPath = path.Substring(0, path.LastIndexOfAny(Utils.SLASHES));
+			if (!Directory.Exists(folderPath))
+				Directory.CreateDirectory(folderPath);
+
+			AssetDatabase.CreateAsset(scriptableObject, path);
+
+			return true;
+		}
+		catch (Exception e)
+		{
+			logger?.Exception(e);
+			return false;
+		}
+	}
 
 	public delegate GameObject PrefabCreateFunc();
 	public static bool TryCreatePrefab(this IFileAccess fileAccess, PrefabCreateFunc createFunc,
@@ -88,6 +110,17 @@ public static class ExportUtils
 		{
 			GameObject go = createFunc();
 			return fileAccess.SaveAsPrefab(go, path, destroyInstance, logger);
+		}
+		return false;
+	}
+
+	public static bool TryCreateScriptableObject<T>(this IFileAccess fileAccess, string path, Action<T> initFunc, IVerificationLogger logger = null) where T : ScriptableObject
+	{
+		if (fileAccess.CanExport(path))
+		{
+			T newInstance = ScriptableObject.CreateInstance<T>();
+			initFunc(newInstance);
+			return fileAccess.SaveScriptableObject(newInstance, path, logger);
 		}
 		return false;
 	}

@@ -274,7 +274,9 @@ public struct ResourceLocation
                 return $"{subfolder}/{possibleIDs[selectedIndex]}";
             return possibleIDs[selectedIndex];
         }
-		return GUILayout.TextField(id).ToLower().Replace(" ", "_");
+        if(id != null)
+		    return GUILayout.TextField(id).ToLower().Replace(" ", "_");
+        return id;
 	}
 
 	public static ResourceLocation EditorObjectField<T>(ResourceLocation src, T currentObject, string subfolder = "") where T : Object

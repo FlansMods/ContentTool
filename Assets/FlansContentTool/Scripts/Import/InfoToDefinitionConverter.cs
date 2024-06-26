@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public static class InfoToDefinitionConverter
 {
@@ -1156,100 +1159,188 @@ public class GrenadeConverter : Converter<GrenadeType, GrenadeDefinition>
 	}
 }
 
+public class VehiclePartBuilder
+{
+	private Dictionary<string, VehiclePartDefinition> Parts = new Dictionary<string, VehiclePartDefinition>();
+
+	public VehiclePartBuilder()
+	{
+		Parts.Add("body", new VehiclePartDefinition()
+		{
+			partName = "body",
+			attachedTo = "",
+			localPosition = Vector3.zero,
+			localEulerAngles = Vector3.zero,
+		});
+	}
+
+	public VehiclePartDefinition GetPart(string partName)
+	{
+		if (!Parts.ContainsKey(partName))
+		{
+			Parts[partName] = new VehiclePartDefinition()
+			{
+				partName = partName,
+				attachedTo = "body",
+			};
+		}
+		return Parts[partName];
+	}
+
+	public VehiclePartDefinition[] Build()
+	{
+		// This step ensures we have a complete hierarchy, by adding missing parents as children of "body"
+		List<VehiclePartDefinition> parts = new List<VehiclePartDefinition>(Parts.Values);
+		foreach(VehiclePartDefinition part in parts)
+		{
+			GetPart(part.attachedTo);
+		}
+
+		return Parts.Values.ToArray();
+	}
+}
+
 public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 {
 	public static DriveableConverter inst = new DriveableConverter();
 	protected override void DoConversion(DriveableType input, VehicleDefinition output)
 	{
+		string definitionID = Minecraft.SanitiseID(input.shortName);
 		output.itemSettings.maxStackSize = 1;
 		output.itemSettings.tags = GetTags(input);
 
-		//PaintableConverter.inst.DoConversion(input, output.paints);
-		if(input.seats != null)
-		{
-			output.seats = new SeatDefinition[input.seats.Length];
-			for(int i = 0; i < input.seats.Length; i++)
-			{
-				if(input.seats[i] == null)
-				{
-					Debug.LogWarning($"Imported seat {i} in {input.shortName} was null");
-					continue;
-				}
+		VehiclePartBuilder builder = new VehiclePartBuilder();
 
-				List<InputDefinition> inputDefs = new List<InputDefinition>();
-				if(input.seats[i].gunType != null && input.seats[i].gunType.Length > 0)
+		// Add health boxes
+		foreach(var kvp in input.health)
+		{
+			string partName = kvp.Key;
+			CollisionBox box = kvp.Value;
+			builder.GetPart(Minecraft.ConvertPartName(partName)).damage.hitboxCenter = box.getCentre();
+			builder.GetPart(Minecraft.ConvertPartName(partName)).damage.hitboxHalfExtents = new Vector3(box.w / 2f, box.h / 2f, box.d / 2f);
+			builder.GetPart(Minecraft.ConvertPartName(partName)).damage.maxHealth = box.health;
+		}
+
+		if (input.seats != null)
+		{
+			foreach(Seat seat in input.seats)
+			{
+				VehiclePartDefinition parentDef = builder.GetPart(Minecraft.ConvertPartName(seat.part));
+				SeatDefinition seatDef = new SeatDefinition()
 				{
-					inputDefs.Add(new InputDefinition()
-					{
-						key = EPlayerInput.Fire1,
-						guns = new MountedGunInputDefinition[] {
-							new MountedGunInputDefinition()
-							{
-								gunName = $"seat_{i}_gun",
-								toggle = false,
+					maxYaw = seat.maxYaw,
+					minYaw = seat.minYaw,
+					maxPitch = seat.maxPitch,
+					minPitch = seat.minPitch,
+					gyroStabilised = false,
+					offsetFromAttachPoint = new Vector3(seat.x, seat.y, seat.z),
+				};
+				if (seat.gunType != null && seat.gunType.Length > 0)
+				{
+					seatDef.inputs = new InputDefinition[] {
+						new InputDefinition() {
+							key = EPlayerInput.Fire1,
+							guns = new MountedGunInputDefinition[] {
+								new MountedGunInputDefinition() {
+									gunName = $"gun_{seat.id}",
+									toggle = false,
+								}
 							}
 						}
-					});
+					};
+					VehiclePartDefinition gunYawPartDef = new VehiclePartDefinition()
+					{
+						partName = $"gun_{seat.id}_yaw",
+						attachedTo = seat.part,
+						articulation = new ArticulatedPartDefinition()
+						{
+							active = true,
+							minYaw = seat.minYaw,
+							maxYaw = seat.maxYaw,
+							minParameter = -180f,
+							maxParameter = 180f,
+							cyclic = true,
+						},
+					};
+					VehiclePartDefinition gunPitchPartDef = new VehiclePartDefinition()
+					{
+						partName = $"gun_{seat.id}_pitch",
+						attachedTo = $"gun_{seat.id}_yaw",
+						articulation = new ArticulatedPartDefinition()
+						{
+							active = true,
+							minPitch = seat.minPitch,
+							maxPitch = seat.maxPitch,
+							minParameter = -90f,
+							maxParameter = 90f,
+							cyclic = false,
+						},
+						guns = new MountedGunDefinition[] {
+							new MountedGunDefinition()
+							{
+								//shootPointOffset
+								gun = new ResourceLocation($"{definitionID}_seat_gun_{seat.id}"),
+							}
+						}
+					};
 				}
 
-				output.seats[i] = new SeatDefinition()
-				{
-					attachedTo = input.seats[i].part,
-					offsetFromAttachPoint = input.seats[i].rotatedOffset,
-					minYaw = input.seats[i].minYaw,
-					maxYaw = input.seats[i].maxYaw,
-					minPitch = input.seats[i].minPitch,
-					maxPitch = input.seats[i].maxPitch,
-					gyroStabilised = false,
-					inputs = inputDefs.ToArray(),
-				};
+				List<SeatDefinition> seats = new List<SeatDefinition>(parentDef.seats);
+				seats.Add(seatDef);
+				parentDef.seats = seats.ToArray();
 			}
 		}
 
-		List<MountedGunDefinition> mountedGuns = new List<MountedGunDefinition>();
-		mountedGuns.AddRange(DriveableConverter.inst.CreatePassengerMountedGunDefs(input));
+		//PaintableConverter.inst.DoConversion(input, output.paints);
+
+		for (int i = 0; i < input.wheelPositions.Length; i++)
+		{
+			VehiclePartDefinition wheelPart = builder.GetPart(Minecraft.ConvertPartName(input.wheelPositions[i].part));
+			wheelPart.attachedTo = "body";
+			wheelPart.localPosition = input.wheelPositions[i].position;
+			wheelPart.wheels = new WheelDefinition[] {
+				new WheelDefinition() {
+					controlHints = GetDefaultWheelHints(i),
+					visualOffset = Vector3.zero,
+					gravityScale = 1.0f,
+					buoyancy = input.buoyancy,
+					floatOnWater = input.floatOnWater,
+					springStrength = input.wheelSpringStrength,
+					stepHeight = input.wheelStepHeight,
+					mass = 1.0f,
+					maxForwardTorque = input.maxThrottle,
+					maxReverseTorque = input.maxNegativeThrottle,
+					radius = input.wheelStepHeight * 0.5f,
+					torqueResponsiveness = 1.0f,
+					yawResponsiveness = 1.0f,
+				}
+			};
+		}
+
 		for(int i = 0; i < input.shootPointsPrimary.Count; i++)
 		{
+			VehiclePartDefinition partDef = builder.GetPart($"pilot_gun_primary_{i}");
 			ShootPoint point = input.shootPointsPrimary[i];
-			var kvp = CreateGunActions(input, input.primary, input.alternatePrimary,
-					input.shootDelayPrimary, input.modePrimary, input.damageModifierPrimary, point,
-					input.primary == EWeaponType.GUN ? input.pilotGuns[i] : null);
-			mountedGuns.Add(new MountedGunDefinition()
-			{
-				name = $"pilot_gun_primary_{i}",
-				primaryActions = kvp.Key,
-				// modifiers = kvp.Value // TODO: Shouldn't we embed a GunDef? Wasn't that the whole point?
-				attachedTo = "body", // Tanks should be on the turret
-				shootPointOffset = point.offPos,
-				minYaw = 0f,
-				maxYaw = 0f,
-				minPitch = 0f,
-				maxPitch = 0f,
-				aimingSpeed = 0f,
-			});
+			partDef.localPosition = point.rootPos.position;
+			partDef.guns = new MountedGunDefinition[] {
+				new MountedGunDefinition() {
+					gun = new ResourceLocation($"{definitionID}_pilot_gun_primary"),
+				}
+			};
 		}
 		for(int i = 0; i < input.shootPointsSecondary.Count; i++)
 		{
+			VehiclePartDefinition partDef = builder.GetPart($"pilot_gun_secondary_{i}");
 			ShootPoint point = input.shootPointsSecondary[i];
-			var kvp = CreateGunActions(input, input.secondary, input.alternateSecondary,
-					input.shootDelaySecondary, input.modeSecondary, input.damageModifierSecondary, point,
-					input.secondary == EWeaponType.GUN ? input.pilotGuns[i] : null);
-			mountedGuns.Add(new MountedGunDefinition()
-			{
-				name = $"pilot_gun_secondary_{i}",
-				primaryActions = kvp.Key,
-				// modifiers = kvp.Value // TODO: Shouldn't we embed a GunDef? Wasn't that the whole point?
-				attachedTo = "body", // Tanks should be on the turret
-				shootPointOffset = point.offPos,
-				minYaw = 0f,
-				maxYaw = 0f,
-				minPitch = 0f,
-				maxPitch = 0f,
-				aimingSpeed = 0f,
-			});
+			partDef.localPosition = point.rootPos.position;
+			partDef.guns = new MountedGunDefinition[] {
+				new MountedGunDefinition() {
+					gun = new ResourceLocation($"{definitionID}_pilot_gun_secondary"),
+				}
+			};
 		}
-		output.guns = mountedGuns.ToArray();
-	
+
+		output.parts = builder.Build();
 	}
 
 	private ResourceLocation[] GetTags(DriveableType input)
@@ -1258,164 +1349,256 @@ public class DriveableConverter : Converter<DriveableType, VehicleDefinition>
 		tags.Add(new ResourceLocation("flansmod:vehicle"));
 		return tags.ToArray();
 	}
-
-	public List<MountedGunDefinition> CreatePassengerMountedGunDefs(DriveableType input)
+	public static VehiclePartDefinition GetPart(VehicleDefinition output, string partName)
 	{
-		List<MountedGunDefinition> gunDefs = new List<MountedGunDefinition>();
-
-		if(input.seats != null)
-		{
-			for(int i = 0; i < input.seats.Length; i++)
-			{
-				if(input.seats[i] == null)
-				{
-					Debug.LogWarning($"Imported seat {i} in {input.shortName} was null");
-					continue;
-				}
-
-				if(input.seats[i].gunType != null && input.seats[i].gunType.Length > 0)
-				{
-					var kvp = CreateGunActions(input.seats[i]);
-					gunDefs.Add(new MountedGunDefinition()
-					{
-						name = $"seat_{i}_gun",
-						attachedTo = input.seats[i].part,
-						recoil = Vector3.zero,
-						shootPointOffset = input.seats[i].rotatedOffset,
-						minYaw = input.seats[i].minYaw,
-						minPitch = input.seats[i].minPitch,
-						maxYaw = input.seats[i].maxYaw,
-						maxPitch = input.seats[i].maxPitch,
-						aimingSpeed = input.seats[i].aimingSpeed.x,
-						lockSeatToGunAngles = false,
-						traveseIndependently = input.seats[i].yawBeforePitch,
-						yawSound = new SoundDefinition()
-						{ 
-							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(input.seats[i].yawSound)),
-							length = input.seats[i].yawSoundLength
-						},
-						pitchSound = new SoundDefinition()
-						{ 
-							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(input.seats[i].pitchSound)),
-							length = input.seats[i].pitchSoundLength,
-						},
-						primaryActions = kvp.Key,
-						// mods = kvp.Value TODO:
-					});
-				}
-			}
-		}
-
-		return gunDefs;
+		foreach (VehiclePartDefinition partDef in output.parts)
+			if (partDef.partName == partName)
+				return partDef;
+		return null;
 	}
 
-	private KeyValuePair<ActionDefinition[], ModifierDefinition[]> CreateGunActions(DriveableType input, EWeaponType weaponType, bool alternate,
-		int shootDelay, ERepeatMode fireMode, int damageModifier, ShootPoint shootPoint, PilotGun gun)
+	private string GetAmmoTag(EWeaponType weaponType)
 	{
-		List<ActionDefinition> actions = new List<ActionDefinition>();
-		List<ModifierDefinition> mods = new List<ModifierDefinition>();
 		switch(weaponType)
 		{
-			// This is a reference to a GunType and its corresponding stats
-			// We are going to in-line them for simplicity
-			case EWeaponType.GUN:
-			{
-				if(gun.type != null && gun.type.Length > 0 && ContentManager.TryGetType<GunType>(EDefinitionType.gun, gun.type, out GunType gunType))
-				{
-					actions.Add(new ActionDefinition()
-					{
-						actionType = EActionType.Shoot,
-						sounds = new SoundDefinition[] {
-							new SoundDefinition()
-							{
-								sound = new ResourceLocation(Utils.ToLowerWithUnderscores(gunType.shootSound)),
-								length = gunType.shootSoundLength,
-								minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
-								maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
-							},
-						},
-						
-					});
-					mods.AddRange(GunConverter.inst.CreateShotModifiers(gunType));
-				}
-				else Debug.LogError($"Could not find gun {gun.type}");
-				
-				break;
-			}
-	
-			// These weapon types are all "custom" made, and just use a BulletType for their stat block
+			case EWeaponType.MISSILE: return "flansmod:missile";
+			case EWeaponType.BOMB: return "flansmod:bomb";
+			case EWeaponType.SHELL: return "flansmod:shell";
+			case EWeaponType.MINE: return "flansmod:mine";
+			default: return "";
+		}
+	}
+	public void ExportPrimaryGun(DriveableType input, GunDefinition output)
+	{
+		switch(input.primary)
+		{
 			case EWeaponType.SHELL:
-			case EWeaponType.MINE:
 			case EWeaponType.MISSILE:
 			case EWeaponType.BOMB:
-			{
-				actions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Shoot,
-				});
-				actions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Animation,
-					anim = "FireMissile",
-				});
-				break;
-			}
-		}
-
-		return new KeyValuePair<ActionDefinition[], ModifierDefinition[]>(actions.ToArray(), mods.ToArray());
-	}
-
-	private KeyValuePair<ActionDefinition[], ModifierDefinition[]> CreateGunActions(Seat seat)
-	{
-		List<ActionDefinition> primaryActions = new List<ActionDefinition>();
-		List<ModifierDefinition> mods = new List<ModifierDefinition>();
-
-		if(seat.gunType != null && seat.gunType.Length > 0)
-		{
-			if(ContentManager.TryGetType<GunType>(EDefinitionType.gun, seat.gunType, out GunType gunType))
-			{
-				primaryActions.Add(new ActionDefinition()
-				{
-					actionType = EActionType.Shoot,
-					sounds = new SoundDefinition[] {
-						new SoundDefinition()
-						{
-							sound = new ResourceLocation(Utils.ToLowerWithUnderscores(gunType.shootSound)),
-							length = gunType.shootSoundLength,
-							minPitchMultiplier = gunType.distortSound ? 1.0f / 1.2f : 1.0f,
-							maxPitchMultiplier = gunType.distortSound ? 1.0f / 0.8f : 1.0f,
+			case EWeaponType.MINE:
+				output.actionGroups = new ActionGroupDefinition[] {
+					new ActionGroupDefinition() {
+						key = "primary_fire",
+						actions = new ActionDefinition[] {
+							new ActionDefinition() {
+								actionType = EActionType.Shoot,
+								sounds = new SoundDefinition[] {
+									new SoundDefinition() {
+										sound = new ResourceLocation(Minecraft.SanitiseID(input.shootSoundPrimary)),
+										length = input.shootDelayPrimary,
+										minPitchMultiplier = 1.0f / 1.2f,
+										maxPitchMultiplier = 1.0f / 0.8f,
+									}
+								},
+							},
+							new ActionDefinition() {
+								actionType = EActionType.Animation,
+								anim = "FireMissile",
+							}
 						},
+						repeatMode = input.modePrimary,
+						repeatDelay = input.shootDelayPrimary,
 					},
-					
-				});
-				mods.AddRange(GunConverter.inst.CreateShotModifiers(gunType));
-			}
+					new ActionGroupDefinition() {
+						key = "primary_reload_start",
+						actions = new ActionDefinition[] {
+							new ActionDefinition() {
+								actionType = EActionType.PlaySound,
+								sounds = new SoundDefinition[] {
+									new SoundDefinition() {
+										sound = new ResourceLocation(Minecraft.SanitiseID(input.reloadSoundPrimary)),
+									}
+								}
+							}
+						},
+						repeatDelay = input.reloadTimePrimary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "primary_reload_eject",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimePrimary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "primary_reload_load_one",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimePrimary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "primary_reload_end",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimePrimary * 0.25f,
+					},
+				};
+				output.reloads = new ReloadDefinition[] {
+					new ReloadDefinition() {
+						key = "primary",
+						startActionKey = "primary_reload_start",
+						ejectActionKey = "primary_reload_eject",
+						loadOneActionKey = "primary_reload_load_one",
+						endActionKey = "primary_reload_end",
+					},
+				};
+				output.magazines = new MagazineSlotSettingsDefinition[] {
+					new MagazineSlotSettingsDefinition() {
+						key = "primary",
+						matchByNames = input.ammo.ToArray(),
+						matchByTags = input.acceptAllAmmo ? new string[] { GetAmmoTag(input.primary) } : new string[0],
+					}
+				};
+				break;
+			default:
+				
+				break;
 		}
-		return new KeyValuePair<ActionDefinition[], ModifierDefinition[]>(primaryActions.ToArray(), mods.ToArray());
 	}
-
-	public WheelDefinition[] CreateWheelDefs(DriveableType input)
+	public void ExportSecondaryGun(DriveableType input, GunDefinition output)
 	{
-		WheelDefinition[] wheelDefs = new WheelDefinition[input.wheelPositions.Length];
-
-		for(int i = 0; i < input.wheelPositions.Length; i++)
+		switch (input.secondary)
 		{
-			wheelDefs[i] = new WheelDefinition()
-			{
-				attachedTo = input.wheelPositions[i].part,
-				physicsOffset = input.wheelPositions[i].position,
-				visualOffset = input.wheelPositions[i].position,
-				springStrength = input.wheelSpringStrength,
-				stepHeight = input.wheelStepHeight,
-			};
-		}
+			case EWeaponType.SHELL:
+			case EWeaponType.MISSILE:
+			case EWeaponType.BOMB:
+			case EWeaponType.MINE:
+				output.actionGroups = new ActionGroupDefinition[] {
+					new ActionGroupDefinition() {
+						key = "secondary_fire",
+						actions = new ActionDefinition[] {
+							new ActionDefinition() {
+								actionType = EActionType.Shoot,
+								sounds = new SoundDefinition[] {
+									new SoundDefinition() {
+										sound = new ResourceLocation(Minecraft.SanitiseID(input.shootSoundSecondary)),
+										length = input.shootDelaySecondary,
+										minPitchMultiplier = 1.0f / 1.2f,
+										maxPitchMultiplier = 1.0f / 0.8f,
+									}
+								},
+							},
+							new ActionDefinition() {
+								actionType = EActionType.Animation,
+								anim = "FireMissile",
+							}
+						},
+						repeatMode = input.modeSecondary,
+						repeatDelay = input.shootDelaySecondary,
+					},
+					new ActionGroupDefinition() {
+						key = "secondary_reload_start",
+						actions = new ActionDefinition[] {
+							new ActionDefinition() {
+								actionType = EActionType.PlaySound,
+								sounds = new SoundDefinition[] {
+									new SoundDefinition() {
+										sound = new ResourceLocation(Minecraft.SanitiseID(input.reloadSoundSecondary)),
+									}
+								}
+							}
+						},
+						repeatDelay = input.reloadTimeSecondary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "secondary_reload_eject",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimeSecondary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "secondary_reload_load_one",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimeSecondary * 0.25f,
+					},
+					new ActionGroupDefinition() {
+						key = "secondary_reload_end",
+						actions = new ActionDefinition[0],
+						repeatDelay = input.reloadTimeSecondary * 0.25f,
+					},
+				};
+				output.reloads = new ReloadDefinition[] {
+					new ReloadDefinition() {
+						key = "secondary",
+						startActionKey = "secondary_reload_start",
+						ejectActionKey = "secondary_reload_eject",
+						loadOneActionKey = "secondary_reload_load_one",
+						endActionKey = "secondary_reload_end",
+					},
+				};
+				output.magazines = new MagazineSlotSettingsDefinition[] {
+					new MagazineSlotSettingsDefinition() {
+						key = "secondary",
+						matchByNames = input.ammo.ToArray(),
+						matchByTags = input.acceptAllAmmo ? new string[] { GetAmmoTag(input.secondary) } : new string[0],
+					}
+				};
+				break;
+			default:
 
-		return wheelDefs;
+				break;
+		}
+	}
+	private EControlLogicHint[] GetDefaultWheelHints(int wheelIndex)
+	{
+		switch (wheelIndex)
+		{
+			case 0:
+			case 1:
+				return new EControlLogicHint[] { EControlLogicHint.Rear, EControlLogicHint.Drive };
+			case 2:
+			case 3:
+				return new EControlLogicHint[] { EControlLogicHint.Front, EControlLogicHint.Steering };
+			default:
+				return new EControlLogicHint[] { EControlLogicHint.Fixed };
+		}
 	}
 
+	public delegate void GunExportFunc(DriveableType input, GunDefinition output);
+	public Dictionary<string, GunExportFunc> GetGunExportNames(DriveableType input)
+	{
+		string id = Minecraft.SanitiseID(input.shortName);
+		Dictionary<string, GunExportFunc> exporters = new Dictionary<string, GunExportFunc>();
+		if (input.primary != EWeaponType.GUN && input.primary != EWeaponType.NONE)
+			exporters.Add($"{id}_pilot_gun_primary", (i, o) => { ExportPrimaryGun(i, o); });
+		if (input.secondary != EWeaponType.GUN && input.secondary != EWeaponType.NONE)
+			exporters.Add($"{id}_pilot_gun_secondary", (i, o) => { ExportSecondaryGun(i, o); });
+
+		return exporters;
+	}
 	public override void GetAdditionalOperations(DriveableType inf, List<AdditionalImportOperation> operations)
 	{
+		string definitionID = Minecraft.SanitiseID(inf.shortName);
+		if (inf.primary != EWeaponType.GUN && inf.primary != EWeaponType.NONE)
+		{
+			operations.Add(new AdditionalDefinitionOperation<GunDefinition>(
+				inf.shortName,
+				$"{definitionID}_pilot_gun_primary",
+				(gunDef) => { ExportPrimaryGun(inf, gunDef); }));
+		}
+		if (inf.secondary != EWeaponType.GUN && inf.secondary != EWeaponType.NONE)
+		{
+			operations.Add(new AdditionalDefinitionOperation<GunDefinition>(
+				inf.shortName,
+				$"{definitionID}_pilot_gun_secondary",
+				(gunDef) => { ExportSecondaryGun(inf, gunDef); }));
+		}
+
 		PaintableConverter.inst.GetAdditionalOperations(inf, operations);
+
+		if (inf.modelString != null && inf.modelString.Length > 0)
+		{
+			List<string> skinNames = new List<string>();
+			List<string> iconNames = new List<string>();
+			skinNames.Add(inf.texture);
+			iconNames.Add(inf.iconPath);
+			foreach (Paintjob paintjob in inf.paintjobs)
+			{
+				skinNames.Add(paintjob.textureName);
+				iconNames.Add(paintjob.iconName);
+			}
+			operations.Add(new TurboImportOperation(
+				$"{inf.modelFolder}/Model{inf.modelString}.java",
+				$"/models/item/{definitionID}.prefab",
+				skinNames,
+				iconNames
+			));
+		}
 	}
 }
 
@@ -1424,53 +1607,24 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 	public static AAGunConverter inst = new AAGunConverter();
 	protected override void DoConversion(AAGunType input, VehicleDefinition output)
 	{
-		output.articulatedParts = new ArticulatedPartDefinition[]
+		string definitionID = Minecraft.SanitiseID(input.shortName);
+		VehiclePartBuilder builder = new VehiclePartBuilder();
+
+		VehiclePartDefinition yawPart = builder.GetPart("yaw_platform");
+		yawPart.articulation = new ArticulatedPartDefinition()
 		{
-			new ArticulatedPartDefinition()
-			{
-				partName = "yawPlatform",
-			},
-			new ArticulatedPartDefinition()
-			{
-				partName = "barrelPivotPoint",
-			}
+			active = true,
+			minYaw = -180f,
+			maxYaw = 180f,
+			minParameter = -1f,
+			startParameter = 0f,
+			maxParameter = 1f,
+			cyclic = true,
+			traveseIndependently = true,
 		};
-		List<MountedGunDefinition> guns = new List<MountedGunDefinition>();
-		for(int i = 0; i < input.numBarrels; i++)
-		{
-			guns.Add(new MountedGunDefinition()
-			{
-				name = $"aa_gun_{i}",
-				primaryActions = new ActionDefinition[]
-				{
-					new ActionDefinition()
-					{
-						actionType = EActionType.Shoot,
-					}
-				},
-				recoil = new Vector3(input.recoil, 0f, 0f),
-				attachedTo = "barrelPivotPoint",
-				shootPointOffset = new Vector3(input.barrelX[i], input.barrelY[i], input.barrelZ[i]),
-				minYaw = -360f,
-				maxYaw = 360f,
-				minPitch = input.bottomViewLimit,
-				maxPitch = input.topViewLimit,
-				aimingSpeed = 1.0f,
-				lockSeatToGunAngles = false,
-				traveseIndependently = true,
-			});
-		}
-		output.guns = guns.ToArray();
-		output.seats = new SeatDefinition[] 
-		{
-			new SeatDefinition()
-			{
-				attachedTo = "yawPlatform",
+		yawPart.seats = new SeatDefinition[] {
+			new SeatDefinition() {
 				offsetFromAttachPoint = new Vector3(input.gunnerX, input.gunnerY, input.gunnerZ) / 16f,
-				minYaw = -360f,
-				maxYaw = 360f,
-				minPitch = input.bottomViewLimit,
-				maxPitch = input.topViewLimit,
 				gyroStabilised = true,
 				inputs = new InputDefinition[]
 				{
@@ -1509,6 +1663,34 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 				}
 			}
 		};
+
+		VehiclePartDefinition pitchPart = builder.GetPart("pitch_barrel");
+		pitchPart.attachedTo = yawPart.partName;
+		pitchPart.articulation = new ArticulatedPartDefinition()
+		{
+			active = true,
+			minPitch = input.bottomViewLimit,
+			maxPitch = input.topViewLimit,
+			minParameter = -1f,
+			startParameter = 0f,
+			maxParameter = 1f,
+			traveseIndependently = true,
+		};
+		pitchPart.guns = GetMountedGuns(definitionID, input);
+	}
+
+	private MountedGunDefinition[] GetMountedGuns(string definitionID, AAGunType input)
+	{
+		MountedGunDefinition[] guns = new MountedGunDefinition[input.numBarrels];
+		for (int i = 0; i < input.numBarrels; i++)
+		{
+			guns[i] = new MountedGunDefinition()
+			{
+				shootPointOffset = new Vector3(input.barrelX[i], input.barrelY[i], input.barrelZ[i]),
+				gun = new ResourceLocation($"{definitionID}_gun"),
+			};
+		}
+		return guns;
 	}
 
 	private MountedGunInputDefinition[] GetMountedGunInputs(AAGunType input)
@@ -1526,8 +1708,102 @@ public class AAGunConverter : Converter<AAGunType, VehicleDefinition>
 
 	public override void GetAdditionalOperations(AAGunType inf, List<AdditionalImportOperation> operations)
 	{
+		string definitionID = Minecraft.SanitiseID(inf.shortName);
+
 		AddDefaultIconOperations(inf, operations);
 		//DriveableConverter.inst.GetAdditionalOperations(inf, operations);
+
+		operations.Add(new AdditionalDefinitionOperation<GunDefinition>(
+			inf.shortName,
+			$"{definitionID}_gun",
+			(gunDef) => { ExportGunDef(inf, gunDef); }));
+	}
+
+	public void ExportGunDef(AAGunType input, GunDefinition output)
+	{
+		output.actionGroups = new ActionGroupDefinition[] {
+			new ActionGroupDefinition() {
+				key = "primary",
+				repeatMode = ERepeatMode.FullAuto,
+				repeatDelay = input.shootDelay,
+				actions = new ActionDefinition[] {
+					new ActionDefinition() {
+						actionType = EActionType.Shoot,
+						sounds = new SoundDefinition[] {
+							new SoundDefinition() {
+								sound = new ResourceLocation(input.shootSound),
+							}
+						}
+					},
+					new ActionDefinition() {
+						actionType = EActionType.Animation,
+						anim = "shoot",
+					}
+				},
+				modifiers = new ModifierDefinition[] {
+					//BaseStat(Constants.STAT_SHOT_HORIZONTAL_RECOIL, input.recoil),
+					BaseStat(Constants.STAT_SHOT_VERTICAL_RECOIL, input.recoil),
+					BaseStat(Constants.STAT_SHOT_SPREAD, input.accuracy),
+					BaseStat(Constants.STAT_IMPACT_DAMAGE, input.damage),
+				}
+			},
+			new ActionGroupDefinition() {
+				key = "primary_reload_start",
+				repeatDelay = input.reloadTime * 0.25f,
+				actions = new ActionDefinition[] {
+					new ActionDefinition() {
+						actionType = EActionType.PlaySound,
+						sounds = new SoundDefinition[] {
+							new SoundDefinition() {
+								sound = new ResourceLocation(input.reloadSound),
+							}
+						}
+					}
+				}
+			},
+			new ActionGroupDefinition() {
+				key = "primary_reload_eject",
+				repeatDelay = input.reloadTime * 0.25f,
+			},
+			new ActionGroupDefinition() {
+				key = "primary_reload_load_one",
+				repeatDelay = input.reloadTime * 0.25f,
+			},
+			new ActionGroupDefinition() {
+				key = "primary_reload_end",
+				repeatDelay = input.reloadTime * 0.25f,
+			},
+
+		};
+		output.reloads = new ReloadDefinition[] {
+			new ReloadDefinition() {
+				key = "primary",
+				startActionKey = "primary_reload_start",
+				ejectActionKey = "primary_reload_eject",
+				loadOneActionKey = "primary_reload_load_one",
+				endActionKey = "primary_reload_end",
+				autoReloadWhenEmpty = true,
+				manualReloadAllowed = true,
+			}
+		};
+		output.magazines = new MagazineSlotSettingsDefinition[] {
+			new MagazineSlotSettingsDefinition() {
+				key = "primary",
+				matchByNames = input.ammo.ToArray(),
+			}			 
+		};
+		output.inputHandlers = new HandlerDefinition[] {
+			new HandlerDefinition() {
+				nodes = new HandlerNodeDefinition[] {
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "primary_fire",
+					},
+					new HandlerNodeDefinition() {
+						actionGroupToTrigger = "primary_reload_start",
+					}
+				}
+			}
+		};
 	}
 }
 
@@ -1538,96 +1814,40 @@ public class VehicleConverter : Converter<VehicleType, VehicleDefinition>
 	{
 		DriveableConverter.inst.Convert(input, output);
 
-		if(output.seats.Length > 0)
+		List<InputDefinition> driverInputs = new List<InputDefinition>();
+		if (input.hasDoor)
 		{
-			List<InputDefinition> driverInputs = new List<InputDefinition>();
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveForward,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Accelerate,
-			//			force = input.maxThrottle, // TODO: What is this?
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveBackward,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Decelerate,
-			//			force = input.maxNegativeThrottle, // TODO: What is this?
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.YawLeft,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.YawLeft,
-			//			force = input.turnLeftModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.YawRight,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.YawRight,
-			//			force = input.turnRightModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.Jump,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Handbrake,
-			//			force = 1.0f,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-
-			if(input.hasDoor)
-			{		
-				driverInputs.Add(new InputDefinition()
-				{
-					key = EPlayerInput.SpecialKey1,
-					articulations = new ArticulationInputDefinition[] {
-						new ArticulationInputDefinition()
-						{
-							partName = "door",
-							type = EArticulationInputType.CycleKeyframes,
-						}
+			driverInputs.Add(new InputDefinition()
+			{
+				key = EPlayerInput.SpecialKey1,
+				articulations = new ArticulationInputDefinition[] {
+					new ArticulationInputDefinition() {
+						partName = "door",
+						type = EArticulationInputType.CycleKeyframes,
 					}
-				});
-			}
-
-			output.seats[0].inputs = driverInputs.ToArray();
+				}
+			});
 		}
 
-		output.physics.wheels = DriveableConverter.inst.CreateWheelDefs(input);
-		output.controllers = new VehicleControlOptionDefinition[]
+		foreach (VehiclePartDefinition partDef in output.parts)
 		{
-			new VehicleControlOptionDefinition() {
-				key = "default",
-				controlScheme = new ResourceLocation("flansmod", input.tank ? "tank_default" : "car_default"),
+			if(partDef.partName == "body")
+			{
+				if(partDef.seats.Length > 0)
+				{
+					SeatDefinition driverSeat = partDef.seats[0];
+					driverSeat.inputs = driverInputs.ToArray();
+					driverSeat.controllerOptions = new VehicleControlOptionDefinition[] {
+						new VehicleControlOptionDefinition()
+						{
+							key = "default",
+							controlScheme = new ResourceLocation("flansmod", input.tank ? "legacy_tank" : "legacy_car"),
+						}
+					};
+				}
 			}
-		};		
+		}
+		// TODO: Move seats onto the turret?
 	}
 
 	public override void GetAdditionalOperations(VehicleType inf, List<AdditionalImportOperation> operations)
@@ -1643,229 +1863,93 @@ public class PlaneConverter : Converter<PlaneType, VehicleDefinition>
 	{
 		DriveableConverter.inst.Convert(input, output);
 
-		if(output.seats.Length > 0)
-		{
-			List<InputDefinition> driverInputs = new List<InputDefinition>();
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveForward,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Accelerate,
-			//			force = input.maxThrottle, // TODO: What is this?
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveBackward,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Decelerate,
-			//			force = input.maxNegativeThrottle, // TODO: What is this?
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveLeft,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.YawLeft,
-			//			force = input.turnLeftModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.MoveRight,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.YawRight,
-			//			force = input.turnRightModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.Jump,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.Handbrake,
-			//			force = 1.0f,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.RollLeft,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.RollLeft,
-			//			force = input.rollLeftModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.RollRight,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.RollRight,
-			//			force = input.rollRightModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.PitchUp,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.PitchUp,
-			//			force = input.lookUpModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.PitchDown,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.PitchDown,
-			//			force = input.lookDownModifier,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.GearUp,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.GearUp,
-			//			force = 1.0f,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-			//driverInputs.Add(new InputDefinition()
-			//{
-			//	key = EPlayerInput.GearDown,
-			//	driving = new DrivingInputDefinition[] {
-			//		new DrivingInputDefinition()
-			//		{
-			//			control = EDrivingControl.GearDown,
-			//			force = 1.0f,
-			//			toggle = false,
-			//		}
-			//	}
-			//});
-
-			if(input.hasDoor)
-			{		
-				driverInputs.Add(new InputDefinition()
-				{
-					key = EPlayerInput.SpecialKey1,
-					articulations = new ArticulationInputDefinition[] {
-						new ArticulationInputDefinition()
-						{
-							partName = "door",
-							type = EArticulationInputType.CycleKeyframes,
-						}
+		List<InputDefinition> driverInputs = new List<InputDefinition>();
+		if(input.hasDoor)
+		{		
+			driverInputs.Add(new InputDefinition()
+			{
+				key = EPlayerInput.SpecialKey1,
+				articulations = new ArticulationInputDefinition[] {
+					new ArticulationInputDefinition()
+					{
+						partName = "door",
+						type = EArticulationInputType.CycleKeyframes,
 					}
-				});
-			}
-
-			output.seats[0].inputs = driverInputs.ToArray();
+				}
+			});
 		}
-
-		output.physics.wheels = DriveableConverter.inst.CreateWheelDefs(input);
-		
-
-
 		List<VehicleControlOptionDefinition> moveModes = new List<VehicleControlOptionDefinition>();
 		List<String> inputModeKeys = new List<string>();
 		switch(input.mode)
 		{
 			case EPlaneMode.PLANE:
-				output.physics.propellers = CreatePropellers(input, input.propellers).ToArray();
+				CreatePropellers(input, input.propellers, output);
 				moveModes.Add(new VehicleControlOptionDefinition()
 				{
 					key = "default",
-					controlScheme = new ResourceLocation("flansmod", "plane_default")
+					controlScheme = new ResourceLocation("flansmod", "legacy_plane")
 				});
 				inputModeKeys.Add("default");
 				break;
 			case EPlaneMode.VTOL:
-				List<PropellerDefinition> propDefs = new List<PropellerDefinition>();
-				CreatePropellers(input, input.propellers, propDefs);
-				CreatePropellers(input, input.heliPropellers, propDefs);
-				CreatePropellers(input, input.heliTailPropellers, propDefs);
-				output.physics.propellers = propDefs.ToArray();
+				CreatePropellers(input, input.propellers, output);
+				CreatePropellers(input, input.heliPropellers, output);
+				CreatePropellers(input, input.heliTailPropellers, output);
 				moveModes.Add(new VehicleControlOptionDefinition()
 				{
 					key = "plane",
-					controlScheme = new ResourceLocation("flansmod", "plane_default"),
+					controlScheme = new ResourceLocation("flansmod", "legacy_plane"),
 					modalCheck = "vtol:plane",
 				});
 				moveModes.Add(new VehicleControlOptionDefinition()
 				{
 					key = "heli",
-					controlScheme = new ResourceLocation("flansmod", "heli_default"),
+					controlScheme = new ResourceLocation("flansmod", "legacy_helicopter"),
 					modalCheck = "vtol:heli",
 				});
 				inputModeKeys.Add("plane");
 				inputModeKeys.Add("heli");
 				break;
 			case EPlaneMode.HELI:
-				List<PropellerDefinition> propDefs2 = new List<PropellerDefinition>();
-				CreatePropellers(input, input.heliPropellers, propDefs2);
-				CreatePropellers(input, input.heliTailPropellers, propDefs2);
-				output.physics.propellers = propDefs2.ToArray();
+				CreatePropellers(input, input.heliPropellers, output);
+				CreatePropellers(input, input.heliTailPropellers, output);
 				moveModes.Add(new VehicleControlOptionDefinition()
 				{
 					key = "default",
-					controlScheme = new ResourceLocation("flansmod", "heli_default"),
+					controlScheme = new ResourceLocation("flansmod", "legacy_helicopter"),
 				});
 				inputModeKeys.Add("default");
 				break;
 		}
-		output.seats[0].controllerOptions = moveModes.ToArray();
+
+		foreach (VehiclePartDefinition partDef in output.parts)
+		{
+			if (partDef.partName == "body")
+			{
+				if (partDef.seats.Length > 0)
+				{
+					SeatDefinition driverSeat = partDef.seats[0];
+					driverSeat.inputs = driverInputs.ToArray();
+					driverSeat.controllerOptions = moveModes.ToArray();
+				}
+			}
+		}
 	}
-	private List<PropellerDefinition> CreatePropellers(PlaneType input, List<Propeller> props)
-	{
-		List<PropellerDefinition> outDefs = new List<PropellerDefinition>();
-		CreatePropellers(input, props, outDefs);
-		return outDefs;
-	}
-	private void CreatePropellers(PlaneType input, List<Propeller> props, List<PropellerDefinition> outDefs)
+	private void CreatePropellers(PlaneType input, List<Propeller> props, VehicleDefinition output)
 	{
 		for (int i = 0; i < props.Count; i++)
 		{
-			outDefs.Add(new PropellerDefinition()
+			VehiclePartDefinition partDef = DriveableConverter.GetPart(output, props[i].planePart);
+			if(partDef != null)
 			{
-				attachedTo = props[i].planePart,
-				visualOffset = props[i].getPosition(),
-				forceOffset = Vector3.zero,
-			});
+				List<PropellerDefinition> propDefs = new List<PropellerDefinition>(partDef.propellers);
+				propDefs.Add(new PropellerDefinition()
+				{
+					visualOffset = props[i].getPosition(),
+					forceOffset = Vector3.zero,
+				});
+				partDef.propellers = propDefs.ToArray();
+			}
 		}
 	}
 	public override void GetAdditionalOperations(PlaneType inf, List<AdditionalImportOperation> operations)
@@ -2066,64 +2150,69 @@ public class MechaConverter : Converter<MechaType, VehicleDefinition>
 	{
 		DriveableConverter.inst.Convert(input, output);
 
-		output.physics.legs = new LegsDefinition[]
+		VehiclePartDefinition partDef = DriveableConverter.GetPart(output, "body");
+		if (partDef != null)
 		{
-			new LegsDefinition()
+			partDef.legs = new LegsDefinition[]
 			{
-				attachedTo = "body",
-				visualOffset = new Vector3(),
-				physicsOffset = new Vector3(),
-				stepHeight = input.stepHeight,
-				jumpHeight = input.jumpHeight,
-				jumpVelocity = input.jumpVelocity,
-				rotateSpeed = input.rotateSpeed,
-				bodyMinYaw = input.limitHeadTurn ? -input.limitHeadTurnValue : -360f,
-				bodyMaxYaw = input.limitHeadTurn ? input.limitHeadTurnValue : 360f,
-				legLength = input.legLength,
-				negateFallDamageRatio = input.takeFallDamage ? 1.0f - input.fallDamageMultiplier : 0f,
-				transferFallDamageIntoEnvironmentRatio = input.damageBlocksFromFalling ? input.blockDamageFromFalling : 0f,
-			}
-		};
-
-		output.physics.arms = new ArmDefinition[]
-		{
-			new ArmDefinition()
+				new LegsDefinition()
+				{
+					attachedTo = "body",
+					visualOffset = new Vector3(),
+					physicsOffset = new Vector3(),
+					stepHeight = input.stepHeight,
+					jumpHeight = input.jumpHeight,
+					jumpVelocity = input.jumpVelocity,
+					rotateSpeed = input.rotateSpeed,
+					bodyMinYaw = input.limitHeadTurn ? -input.limitHeadTurnValue : -360f,
+					bodyMaxYaw = input.limitHeadTurn ? input.limitHeadTurnValue : 360f,
+					legLength = input.legLength,
+					negateFallDamageRatio = input.takeFallDamage ? 1.0f - input.fallDamageMultiplier : 0f,
+					transferFallDamageIntoEnvironmentRatio = input.damageBlocksFromFalling ? input.blockDamageFromFalling : 0f,
+				}
+			};
+			partDef.arms = new ArmDefinition[]
 			{
-				name = "right",
-				attachedTo = "body",
-				right = true,
-				origin = input.rightArmOrigin,
-				armLength = input.armLength,
-				hasHoldingSlot = true,
-				numUpgradeSlots = 1,
-				canFireGuns = true,
-				canUseMechaTools = true,
-				heldItemScale = input.heldItemScale,
-				reach = input.reach
-			},
-			new ArmDefinition()
+				new ArmDefinition()
+				{
+					name = "right",
+					attachedTo = "body",
+					right = true,
+					origin = input.rightArmOrigin,
+					armLength = input.armLength,
+					hasHoldingSlot = true,
+					numUpgradeSlots = 1,
+					canFireGuns = true,
+					canUseMechaTools = true,
+					heldItemScale = input.heldItemScale,
+					reach = input.reach
+				},
+				new ArmDefinition()
+				{
+					name = "left",
+					attachedTo = "body",
+					right = false,
+					origin = input.leftArmOrigin,
+					armLength = input.armLength,
+					hasHoldingSlot = true,
+					numUpgradeSlots = 1,
+					canFireGuns = true,
+					canUseMechaTools = true,
+					heldItemScale = input.heldItemScale,
+					reach = input.reach
+				}
+			};
+			if (partDef.seats.Length > 0)
 			{
-				name = "left",
-				attachedTo = "body",
-				right = false,
-				origin = input.leftArmOrigin,
-				armLength = input.armLength,
-				hasHoldingSlot = true,
-				numUpgradeSlots = 1,
-				canFireGuns = true,
-				canUseMechaTools = true,
-				heldItemScale = input.heldItemScale,
-				reach = input.reach
+				partDef.seats[0].controllerOptions = new VehicleControlOptionDefinition[]
+				{
+					new VehicleControlOptionDefinition() {
+						key = "default",
+						controlScheme = new ResourceLocation("flansmod", "mecha_default"),
+					}
+				};
 			}
-		};
-
-		output.controllers = new VehicleControlOptionDefinition[]
-		{
-			new VehicleControlOptionDefinition() {
-				key = "default",
-				controlScheme = new ResourceLocation("flansmod", "mecha_default"),
-			}
-		};
+		}
 	}
 
 	public override void GetAdditionalOperations(MechaType inf, List<AdditionalImportOperation> operations)

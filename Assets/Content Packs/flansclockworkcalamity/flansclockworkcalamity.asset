@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: flansclockworkcalamity
   m_EditorClassIdentifier: 
   Content:
+  - {fileID: 11400000, guid: 10b04ade7a8b3984984a26aa5fe717f7, type: 2}
   - {fileID: 11400000, guid: d018e004bd0017d439f386ee1c75a63d, type: 2}
   - {fileID: 11400000, guid: ef1e84c41b92e154290e4140cb63c76f, type: 2}
   - {fileID: 11400000, guid: 403f60d92603607419c60d7282e07ecc, type: 2}
@@ -43,10 +44,11 @@ MonoBehaviour:
   - {fileID: 8404348302811711327, guid: efc1e3100ba76d6419d5f50ee72b8e95, type: 3}
   - {fileID: 3483324852945555221, guid: 6426352778b2d2b42997fb32c40072f5, type: 3}
   - {fileID: 7594033522251448595, guid: e002accf218e41141aa9216bf9ce37c2, type: 3}
-  - {fileID: 7965806764451829460, guid: 694ac0c39c8637f409a8b9fdb6dbbff9, type: 3}
+  - {fileID: 8530539147428557132, guid: 2ad24bc68e442a94cad0b5ef83e8af18, type: 3}
   - {fileID: 2983594747029815847, guid: ca7746c39471f15458fad0567ff58e2d, type: 3}
   - {fileID: 620058837873627845, guid: 3bdb8e46cbfc1814aa84ef1626d84279, type: 3}
   - {fileID: 620058837873627845, guid: fca5e379b7bce9541a9aec3358b84574, type: 3}
+  - {fileID: 644132387007550016, guid: 89d41bf3bc4fbd94f80225d38b1f3d26, type: 3}
   Textures:
   - {fileID: 2800000, guid: 802c21994770a84428df79b6711fa8bd, type: 3}
   - {fileID: 2800000, guid: 5e0907d980c3baa48ab337d1848f2419, type: 3}
@@ -83,7 +85,10 @@ MonoBehaviour:
   - {fileID: 2800000, guid: c1e63f818d983b546b24b89b0d24b1ec, type: 3}
   - {fileID: 2800000, guid: bab0be319bab67a499b2694f59b41f58, type: 3}
   - {fileID: 2800000, guid: 1b93777d7643e664eafcede3b984c7cc, type: 3}
+  - {fileID: 2800000, guid: c538958642a28a64f8a5ac8ea00fd8f5, type: 3}
   - {fileID: 2800000, guid: a3eae9d2b60c1ff4baa5a252dc37b0c0, type: 3}
+  - {fileID: 2800000, guid: 036d390180e75544e98fdd366a0e79c6, type: 3}
+  - {fileID: 2800000, guid: 8a686f50c46ef714b9ce1686a73b6023, type: 3}
   - {fileID: 2800000, guid: ec4c4d8d43998a543bc4f5ac278b3e92, type: 3}
   - {fileID: 2800000, guid: 46965084466366c4ab64465010536ad0, type: 3}
   - {fileID: 2800000, guid: 32d63f4202a3add4a9ad19efbfedd286, type: 3}
@@ -100,14 +105,18 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a1efe40c228b58e45936b21155b3d405, type: 3}
   - {fileID: 2800000, guid: 77000d41bd0af9746b1cc1297701e157, type: 3}
   - {fileID: 2800000, guid: 27b98d493cfc452478cc2f6a5b2ac474, type: 3}
-  - {fileID: 2800000, guid: 96c274a67450731459ec2b40a56149de, type: 3}
+  - {fileID: 2800000, guid: f07c04bd78879e049b84096309b88da2, type: 3}
   - {fileID: 2800000, guid: 691bef25e2b183f47a8075f78713c44c, type: 3}
   - {fileID: 2800000, guid: 7931c960a4d8c7a488cbc40557e85d7a, type: 3}
+  - {fileID: 2800000, guid: d72ad39e88cf04e4ca3a75c0d2d770bf, type: 3}
   - {fileID: 2800000, guid: c4aae31c81a42294d86b33db14a96736, type: 3}
+  - {fileID: 2800000, guid: 96c274a67450731459ec2b40a56149de, type: 3}
   - {fileID: 2800000, guid: 1a3e5e6e144a7204ba5853d12320e683, type: 3}
   - {fileID: 2800000, guid: 0e1554045870eef47b9564c95814f7ed, type: 3}
   - {fileID: 2800000, guid: 40b945251ac66c54c8f0b3d0177985ad, type: 3}
+  - {fileID: 2800000, guid: 21531504fcd701440ae54803b4b39d85, type: 3}
   IDs:
+  - bullets/projectile_grenade_spawn_frog
   - flanimations/scope_zoom_old
   - guns/clockwork_overkill
   - guns/clockwork_rubbler
@@ -159,7 +168,10 @@ MonoBehaviour:
   - textures/item/multishine_module
   - textures/item/opticular_sight
   - textures/item/pick_and_choose_sight
+  - textures/item/projectile_grenade_spawn_frog
   - textures/item/rgb_refractor
+  - textures/item/slug_pickaxe
+  - textures/item/slug_saw
   - textures/item/triple_flip_stock
   - textures/item/trumpet_barrel
   - textures/mags/clockwork_arc_cannon_battery_100
@@ -179,10 +191,13 @@ MonoBehaviour:
   - textures/skins/clockwork_rubbler
   - textures/skins/clockwork_rubbler_forg
   - textures/skins/clockwork_rubbler_lurid
+  - textures/skins/clockwork_rubbler_new
   - textures/skins/clockwork_rubbler_newspaper
+  - textures/skins/clockwork_rubbler_old
   - textures/skins/clockwork_rubbler_yellow
   - textures/skins/knuckle_grip
   - textures/skins/multishine_module
+  - textures/skins/projectile_grenade_spawn_frog
   - models/item/adjustable_scope
   - models/item/blaster_compensator
   - models/item/brass_armour
@@ -200,6 +215,7 @@ MonoBehaviour:
   - models/item/jury
   - models/item/knuckle_grip
   - models/item/multishine_module
+  - models/item/projectile_grenade_spawn_frog
   OutdatedContent: []
   Sounds: []
   ExtraLocalisation: []

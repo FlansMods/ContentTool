@@ -116,6 +116,7 @@ public abstract class AssetToJsonExporter<TExportType> : MultiAssetExporter<TExp
 	{
 		try
 		{
+			FlansModExport.CreateDirectories(exportPath);
 			File.WriteAllText(exportPath, jsonString);
 			verifications?.Success($"Exported Json to '{exportPath}'");
 		}
@@ -150,7 +151,7 @@ public abstract class DuplicatedJsonExporter : AssetToJsonExporter<EDuplicatedAs
 	{
 		if (asset.TryGetLocation(out ResourceLocation loc))
 		{
-			return LocationToExportPath(loc, true);
+			return LocationToExportPath(loc, false);
 		}
 		Debug.LogError($"Could not resolve location of {asset}");
 		return "";

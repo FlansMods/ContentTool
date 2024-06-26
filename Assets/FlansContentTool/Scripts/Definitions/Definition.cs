@@ -155,6 +155,8 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 				VerifyAttachment(resLoc, attachment, verifications);
 			else if (this is MagazineDefinition mag)
 				VerifyMagazine(resLoc, mag, verifications);
+			else if (this is VehicleDefinition vehicle)
+				VerifyVehicle(resLoc, vehicle, verifications);
 		}
 		catch (Exception e)
 		{
@@ -195,6 +197,24 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	{
 		foreach (ModifierDefinition mod in mag.modifiers)
 			VerifyModifier(resLoc, mod, verifications);
+	}
+
+	private static void VerifyVehicle(ResourceLocation resLoc, VehicleDefinition vehicle, IVerificationLogger verifications)
+	{
+		VerifyDuplicates(vehicle.parts, (part) => part.partName, "Found {0} duplicate parts {1}", verifications);
+	}
+
+	private static void VerifyDuplicates<T>(T[] values, Func<T, string> func, string msg, IVerificationLogger verifications)
+	{
+		Dictionary<string, int> duplicateCount = new Dictionary<string, int>();
+		foreach (T def in values)
+		{
+			string key = func(def);
+			duplicateCount[key] = duplicateCount.TryGetValue(key, out int prev) ? prev + 1 : 1;
+		}
+		foreach (var kvp in duplicateCount)
+			if (kvp.Value > 1)
+				verifications.Failure(string.Format(msg, kvp.Value, kvp.Key));
 	}
 
 	private static void VerifyGun(ResourceLocation resLoc, GunDefinition gunDef, IVerificationLogger verifications)

@@ -39,6 +39,7 @@ public static class Minecraft
 			// The root of a model is always called "body" now
 			case "gun":
 			case "plane":
+			case "core":
 				return "body";
 
 			case "pump": return "pump";
@@ -49,7 +50,7 @@ public static class Minecraft
 			case "defaultStock": return "stock";
 			case "revolverBarrel": return "revolver";
 			case "breakAction": return "break_action";
-			default: return partName;
+			default: return SanitiseID(partName);
 		}
 	}
 }

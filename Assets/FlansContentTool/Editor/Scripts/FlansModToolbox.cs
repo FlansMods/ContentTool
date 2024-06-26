@@ -6,6 +6,9 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Net;
+using System.IO.Compression;
+using System.Diagnostics;
 
 public class FlansModToolbox : EditorWindow
 {
@@ -14,6 +17,69 @@ public class FlansModToolbox : EditorWindow
 	{
         GetWindow(typeof(FlansModToolbox));
     }
+
+	[MenuItem("Flan's Mod/Install Development Environment")]
+	public static void InstallDevEnv()
+	{
+		if (!Directory.Exists("Java"))
+		{
+			Directory.CreateDirectory("Java");
+		}
+
+		string installerLoc = "Java/forge-installer.zip";
+		if (!File.Exists(installerLoc))
+		{
+			if (EditorUtility.DisplayDialog("Download Minecraft Forge Installer?",
+				"The ContentTool will now download Minecraft Forge 47.2.0. This may take several minutes.",
+				"Ok", "Cancel"))
+			{
+				using (var client = new WebClient())
+				{
+					client.DownloadFile("https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.2.0/forge-1.20.1-47.2.0-mdk.zip", installerLoc);
+				}
+			}
+		}
+
+		string extractedLoc = "Java/forge-installer-extracted/";
+		if (File.Exists(installerLoc) && !Directory.Exists(extractedLoc))
+		{
+			if (!Directory.Exists(extractedLoc))
+				Directory.CreateDirectory(extractedLoc);
+			ZipArchive zip = ZipFile.Open(installerLoc, ZipArchiveMode.Read);
+			if (zip != null)
+			{
+				zip.ExtractToDirectory(extractedLoc);
+			}
+		}
+
+		if (!EditorUtility.DisplayDialog("Begin Installation of Forge?",
+			"Forge download and extraction completed successfully. Do you want to run the Forge installer?",
+			"Ok", "Cancel"))
+		{
+			return;
+		}
+
+		ProcessStartInfo processStart = new ProcessStartInfo();
+		processStart.WorkingDirectory = extractedLoc;
+		processStart.FileName = ".\\gradlew";
+		processStart.Arguments = "setupDecompWorkspace--refresh - dependencies";
+		Process.Start(processStart);
+	}
+
+	[MenuItem("Flan's Mod/Open Dev. Env. (Intellij)")]
+	public static void OpenDevEnvIntellij()
+	{
+		string ideaLocation = EditorUtility.OpenFilePanel("Browse to Intellij (idea64.exe)", "", "exe");
+		if(File.Exists(ideaLocation))
+		{
+			string extractedLoc = "Java/forge-installer-extracted/";
+			ProcessStartInfo processStart = new ProcessStartInfo();
+			processStart.WorkingDirectory = extractedLoc;
+			processStart.FileName = ideaLocation;
+			//processStart.Arguments = $"";
+			Process.Start(processStart);
+		}
+	}
 
 	[MenuItem("Flan's Mod/Export .unitypackage")]
 	public static void ExportUnityPackage()
@@ -53,7 +119,7 @@ public class FlansModToolbox : EditorWindow
 			}
 			catch(Exception e)
 			{
-				Debug.LogError($"Could not export {filePath} to package tmp dir {tempDir} because of {e}");
+				UnityEngine.Debug.LogError($"Could not export {filePath} to package tmp dir {tempDir} because of {e}");
 			}
 		}
 

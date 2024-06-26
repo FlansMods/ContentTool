@@ -140,6 +140,26 @@ public class TurboImportOperation : AdditionalImportOperation
 			logger);
 	}
 }
+public class AdditionalDefinitionOperation<TDefType> : AdditionalImportOperation where TDefType : Definition
+{
+	private Action<TDefType> InitFunc;
+
+	public AdditionalDefinitionOperation(string input, string output, Action<TDefType> initFunc) : base(input, output)
+	{
+		InitFunc = initFunc;
+	}
+
+	public override void Do(string srcPackName, IFileAccess fileAccess, IVerificationLogger logger = null)
+	{
+		if(fileAccess.TryCreateScriptableObject(
+			OutputPath(srcPackName),
+			InitFunc,
+			logger))
+		{
+			logger?.Success($"Created extra Definition ({typeof(TDefType)}) at '{OutputPath(srcPackName)}'");
+		}
+	}
+}
 
 public static class AdditionalAssetImporter
 {

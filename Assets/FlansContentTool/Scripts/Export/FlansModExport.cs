@@ -48,6 +48,12 @@ public static class FlansModExport
 		};
 	}
 
+	public static void CreateDirectories(string filePath)
+	{
+		string folderName = filePath.Substring(0, filePath.LastIndexOfAny(SLASHES));
+		if (!Directory.Exists(folderName))
+			Directory.CreateDirectory(folderName);
+	}
 
 	public static bool ExportedAssetAlreadyExists(string packName, UnityEngine.Object asset)
 	{
@@ -63,6 +69,9 @@ public static class FlansModExport
 		TextureExporter.ITEMS,
 		TextureExporter.BLOCKS,
 		TextureExporter.SKINS,
+		TextureExporter.MAGS,
+		TextureExporter.ENTITY,
+		TextureExporter.GUI,
 
 		SoundExporter.INST,
 
@@ -96,6 +105,8 @@ public static class FlansModExport
 		DefinitionExporter.TOOLS,
 		DefinitionExporter.VEHICLES,
 		DefinitionExporter.WORKBENCHES,
+		DefinitionExporter.CONTROL_SCHEMES,
+
 		// A fallback that will probably not put the definition where you want it
 		DefinitionExporter.DEFAULT,
 

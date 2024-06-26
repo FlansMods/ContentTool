@@ -6,11 +6,7 @@ using UnityEngine.Serialization;
 public class WheelDefinition : Element
 {
 	[JsonField]
-	public string attachedTo = "body";
-	[JsonField]
 	public Vector3 visualOffset = Vector3.zero;
-	[JsonField]
-	public Vector3 physicsOffset = Vector3.zero;
 	[JsonField]
 	public float springStrength = 1.0f;
 	[JsonField]
@@ -27,6 +23,8 @@ public class WheelDefinition : Element
 	public bool floatOnWater = false;
 	[JsonField]
 	public float buoyancy = 1.0f;
+	[JsonField]
+	public float mass = 1.0f;
 	[JsonField]
 	[Tooltip("Roughly how many seconds it takes for player changes to torque to be applied")]
 	public float torqueResponsiveness = 0.1f;

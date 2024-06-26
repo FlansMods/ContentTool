@@ -6,8 +6,6 @@ using UnityEngine.Serialization;
 public class DamageablePartDefinition : Element
 {
 	[JsonField]
-	public string partName = "body";
-	[JsonField]
 	public float maxHealth = 100;
 	[JsonField]
 	public float armourToughness = 1;

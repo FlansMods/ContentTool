@@ -6,9 +6,7 @@ using UnityEngine.Serialization;
 public class ArticulatedPartDefinition : Element
 {
 	[JsonField]
-	public string partName = "";
-	[JsonField]
-	public string attachedToPart = "body";
+	public bool active = false;
 	[JsonField]
 	public float minParameter = 0f;
 	[JsonField]
@@ -33,6 +31,16 @@ public class ArticulatedPartDefinition : Element
 	public Vector3 minOffset = Vector3.zero;
 	[JsonField]
 	public Vector3 maxOffset = Vector3.zero;
+	[JsonField]
+	public SoundDefinition traverseSound = new SoundDefinition();
+	[JsonField]
+	[Tooltip("If set true, this turret has to line up its yaw, then its pitch, one at a time")]
+	public bool traveseIndependently = false;
+	[JsonField]
+	[Tooltip("If non-empty, the turret will try to align itself to this seat's look vector")]
+	public string followSeatAtPath = "";
+	[JsonField]
+	public bool lockSeatToGunAngles = false;
 	[JsonField]
 	[Tooltip("How fast does the part turn? Set to 0 or negative to make it move at player look speed.")]
 	public float rotateSpeed = 1.0f;

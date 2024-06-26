@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 
 public class SectionNode : Node
 {
@@ -17,6 +18,13 @@ public class SectionNode : Node
 	protected override void EditorUpdate()
 	{
 		base.EditorUpdate();
+	}
+
+	public override void CompactEditorGUI()
+	{
+		base.CompactEditorGUI();
+		Material = (ETurboRenderMaterial)EditorGUILayout.EnumPopup("Material Type:", Material);
+
 	}
 
 	public override void GetVerifications(IVerificationLogger verifications)

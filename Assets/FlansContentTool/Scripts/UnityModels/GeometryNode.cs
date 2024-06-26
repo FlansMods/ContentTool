@@ -99,11 +99,22 @@ public abstract class GeometryNode : Node
 		base.EditorUpdate();
 		if (Root != null && Root is TurboRootNode turboRoot && EditorUtility.IsDirty(this))
 		{
-			GenerateBakedGeometry(turboRoot.UVMapSize);
-			if (MR == null)
-				Debug.Log("MeshRenderer null");
-			Mesh.RecalculateBounds();
+			if (Mesh.vertexCount == 0 || IsSelectedInEditor())
+			{
+				GenerateBakedGeometry(turboRoot.UVMapSize);
+				Mesh.RecalculateBounds();
+			}
 		}
+	}
+
+	private bool IsSelectedInEditor()
+	{
+#if UNITY_EDITOR
+		foreach (GameObject go in Selection.gameObjects)
+			if (transform.IsChildOf(go.transform))
+				return true;
+#endif
+		return false;
 	}
 
 
@@ -118,6 +129,7 @@ public abstract class GeometryNode : Node
 	{
 		GenerateGeometry(texSize, BakedUV.min);
 	}
+
 	public abstract void GenerateGeometry(Vector2Int texSize, Vector2Int withUV);
 	public abstract JObject ExportGeometryNode(Vector2Int texSize, Vector2Int withUV);
 	#endregion

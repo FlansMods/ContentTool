@@ -6,8 +6,6 @@ using UnityEngine.Serialization;
 public class SeatDefinition : Element
 {
 	[JsonField]
-	public string attachedTo = "body";
-	[JsonField]
 	public Vector3 offsetFromAttachPoint = Vector3.zero;
 	[JsonField]
 	public float minYaw = -360f;

@@ -20,317 +20,765 @@ MonoBehaviour:
     - Namespace: flansmod
       ID: vehicle
     _tags: []
-  seats:
-  - attachedTo: core
-    offsetFromAttachPoint: {x: 0, y: 0, z: 0}
-    minYaw: -360
-    maxYaw: 360
-    minPitch: -89
-    maxPitch: 89
-    gyroStabilised: 0
-    inputs:
-    - key: 0
-      articulations: []
-      guns: []
-      driving:
-      - control: 0
-        force: 5
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 1
-      articulations: []
-      guns: []
-      driving:
-      - control: 1
-        force: 0
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 2
-      articulations: []
-      guns: []
-      driving:
-      - control: 4
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 3
-      articulations: []
-      guns: []
-      driving:
-      - control: 5
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 16
-      articulations: []
-      guns: []
-      driving:
-      - control: 3
-        force: 1
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 6
-      articulations: []
-      guns: []
-      driving:
-      - control: 8
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 7
-      articulations: []
-      guns: []
-      driving:
-      - control: 9
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 8
-      articulations: []
-      guns: []
-      driving:
-      - control: 6
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 9
-      articulations: []
-      guns: []
-      driving:
-      - control: 7
-        force: 2
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 20
-      articulations: []
-      guns: []
-      driving:
-      - control: 13
-        force: 1
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-    - key: 21
-      articulations: []
-      guns: []
-      driving:
-      - control: 14
-        force: 1
-        toggle: 0
-      arms: []
-      alternateInputs: 0
-      switchVehicleMode: 
-  articulatedParts: []
-  guns:
-  - name: pilot_gun_primary_0
-    primaryActions:
-    - actionType: 3
-      duration: 0
-      sounds:
-      - sound:
-          Namespace: 
-          ID: mg42shoot
+  parts:
+  - partName: body
+    attachedTo: 
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 200
+      armourToughness: 1
+      hitboxCenter: {x: -0.4375, y: 0.3125, z: 0}
+      hitboxHalfExtents: {x: 0.625, y: 0.75, z: 0.625}
+    seats:
+    - offsetFromAttachPoint: {x: -4, y: -4, z: 0}
+      minYaw: -360
+      maxYaw: 360
+      minPitch: -89
+      maxPitch: 89
+      gyroStabilised: 0
+      controllerOptions:
+      - key: default
+        controlScheme:
+          Namespace: flansmod
+          ID: legacy_plane
+        modalCheck: 
+      inputs: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
         _sound: 
-        length: 0
+        length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
         minVolume: 1
         maxVolume: 1
         maxRange: 100
         LODs: []
-      itemStack: 
-      scopeOverlay: 
-      anim: 
-    recoil: {x: 0, y: 0, z: 0}
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: core_wheel
     attachedTo: body
-    shootPointOffset: {x: 0, y: 0, z: 0}
-    minYaw: 0
-    maxYaw: 0
-    minPitch: 0
-    maxPitch: 0
-    aimingSpeed: 0
-    lockSeatToGunAngles: 0
-    traveseIndependently: 0
-    yawSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-    pitchSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-  - name: pilot_gun_primary_1
-    primaryActions:
-    - actionType: 3
-      duration: 0
-      sounds:
-      - sound:
-          Namespace: 
-          ID: mg42shoot
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 50
+      armourToughness: 1
+      hitboxCenter: {x: 0.1875, y: -0.84375, z: 0}
+      hitboxHalfExtents: {x: 0.1875, y: 0.40625, z: 0.5}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
         _sound: 
-        length: 0
+        length: 1
         minPitchMultiplier: 1
         maxPitchMultiplier: 1
         minVolume: 1
         maxVolume: 1
         maxRange: 100
         LODs: []
-      itemStack: 
-      scopeOverlay: 
-      anim: 
-    recoil: {x: 0, y: 0, z: 0}
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: nose
     attachedTo: body
-    shootPointOffset: {x: 0, y: 0, z: 0}
-    minYaw: 0
-    maxYaw: 0
-    minPitch: 0
-    maxPitch: 0
-    aimingSpeed: 0
-    lockSeatToGunAngles: 0
-    traveseIndependently: 0
-    yawSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-    pitchSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-  - name: pilot_gun_secondary_0
-    primaryActions:
-    - actionType: 3
-      duration: 0
-      sounds: []
-      itemStack: 
-      scopeOverlay: 
-      anim: 
-    - actionType: 2
-      duration: 0
-      sounds: []
-      itemStack: 
-      scopeOverlay: 
-      anim: FireMissile
-    recoil: {x: 0, y: 0, z: 0}
-    attachedTo: body
-    shootPointOffset: {x: 0, y: 0, z: 0}
-    minYaw: 0
-    maxYaw: 0
-    minPitch: 0
-    maxPitch: 0
-    aimingSpeed: 0
-    lockSeatToGunAngles: 0
-    traveseIndependently: 0
-    yawSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-    pitchSound:
-      sound:
-        Namespace: flansworldwars
-        ID: null
-      _sound: 
-      length: 1
-      minPitchMultiplier: 1
-      maxPitchMultiplier: 1
-      minVolume: 1
-      maxVolume: 1
-      maxRange: 100
-      LODs: []
-  movementModes:
-  - name: plane
-    type: 0
-    wheels:
-    - attachedTo: coreWheel
-      visualOffset: {x: 0.1875, y: -1.0625, z: -0.4375}
-      physicsOffset: {x: 0.1875, y: -1.0625, z: -0.4375}
-      springStrength: 0.125
-      stepHeight: 1
-    - attachedTo: coreWheel
-      visualOffset: {x: 0.1875, y: -1.0625, z: 0.4375}
-      physicsOffset: {x: 0.1875, y: -1.0625, z: 0.4375}
-      springStrength: 0.125
-      stepHeight: 1
-    - attachedTo: coreWheel
-      visualOffset: {x: -5.125, y: -0.5625, z: 0}
-      physicsOffset: {x: -5.125, y: -0.5625, z: 0}
-      springStrength: 0.125
-      stepHeight: 1
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 1.6875, y: 0.125, z: 0}
+      hitboxHalfExtents: {x: 1.5, y: 0.5625, z: 0.625}
+    seats: []
+    guns: []
+    wheels: []
     propellers:
-    - attachedTo: nose
+    - attachedTo: body
       visualOffset: {x: 3.375, y: 0.125, z: 0}
       forceOffset: {x: 0, y: 0, z: 0}
     legs: []
     arms: []
-    maxAcceleration: 1
-    maxDecceleration: -1
-    maxSpeed: 100
-    liftForce: 10
-  restingEulerAngles: {x: 0, y: 0, z: 0}
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: right_wing
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0.5625, y: -0.25, z: 3.0625}
+      hitboxHalfExtents: {x: 1, y: 0.0625, z: 2.4375}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: left_wing
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0.5625, y: -0.25, z: -3.0625}
+      hitboxHalfExtents: {x: 1, y: 0.0625, z: 2.4375}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: bay
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 200
+      armourToughness: 1
+      hitboxCenter: {x: -2.71875, y: 0.125, z: 0}
+      hitboxHalfExtents: {x: 1.65625, y: 0.5625, z: 0.625}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: tail
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: -5.09375, y: 0.125, z: 0}
+      hitboxHalfExtents: {x: 0.71875, y: 0.4375, z: 0.5}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: tail_wheel
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 50
+      armourToughness: 1
+      hitboxCenter: {x: -5.125, y: -0.53125, z: 0}
+      hitboxHalfExtents: {x: 0.1875, y: 0.21875, z: 0.125}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: core_wheel_0
+    attachedTo: body
+    localPosition: {x: 0.1875, y: -1.0625, z: -0.4375}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns: []
+    wheels:
+    - visualOffset: {x: 0, y: 0, z: 0}
+      springStrength: 0.125
+      stepHeight: 1
+      gravityScale: 1
+      maxForwardTorque: 5
+      maxReverseTorque: 0
+      radius: 0.5
+      floatOnWater: 0
+      buoyancy: 0.0165
+      mass: 1
+      torqueResponsiveness: 1
+      yawResponsiveness: 1
+      controlHints: 0100000006000000
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: core_wheel_1
+    attachedTo: body
+    localPosition: {x: 0.1875, y: -1.0625, z: 0.4375}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns: []
+    wheels:
+    - visualOffset: {x: 0, y: 0, z: 0}
+      springStrength: 0.125
+      stepHeight: 1
+      gravityScale: 1
+      maxForwardTorque: 5
+      maxReverseTorque: 0
+      radius: 0.5
+      floatOnWater: 0
+      buoyancy: 0.0165
+      mass: 1
+      torqueResponsiveness: 1
+      yawResponsiveness: 1
+      controlHints: 0100000006000000
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: core_wheel_2
+    attachedTo: body
+    localPosition: {x: -5.125, y: -0.5625, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns: []
+    wheels:
+    - visualOffset: {x: 0, y: 0, z: 0}
+      springStrength: 0.125
+      stepHeight: 1
+      gravityScale: 1
+      maxForwardTorque: 5
+      maxReverseTorque: 0
+      radius: 0.5
+      floatOnWater: 0
+      buoyancy: 0.0165
+      mass: 1
+      torqueResponsiveness: 1
+      yawResponsiveness: 1
+      controlHints: 0000000004000000
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: pilot_gun_primary_0
+    attachedTo: body
+    localPosition: {x: 3.75, y: 0.1875, z: 0.3125}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns:
+    - shootPointOffset: {x: 0, y: 0, z: 0}
+      gun:
+        Namespace: 
+        ID: bf109_pilot_gun_primary
+      _gun: 
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: pilot_gun_primary_1
+    attachedTo: body
+    localPosition: {x: 3.75, y: 0.1875, z: -0.3125}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns:
+    - shootPointOffset: {x: 0, y: 0, z: 0}
+      gun:
+        Namespace: 
+        ID: bf109_pilot_gun_primary
+      _gun: 
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: pilot_gun_secondary_0
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns:
+    - shootPointOffset: {x: 0, y: 0, z: 0}
+      gun:
+        Namespace: 
+        ID: bf109_pilot_gun_secondary
+      _gun: 
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  - partName: 
+    attachedTo: body
+    localPosition: {x: 0, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    damage:
+      maxHealth: 100
+      armourToughness: 1
+      hitboxCenter: {x: 0, y: 0, z: 0}
+      hitboxHalfExtents: {x: 1, y: 1, z: 1}
+    seats: []
+    guns: []
+    wheels: []
+    propellers: []
+    legs: []
+    arms: []
+    articulation:
+      active: 0
+      minParameter: 0
+      maxParameter: 1
+      startParameter: 0
+      cyclic: 0
+      minYaw: 0
+      maxYaw: 0
+      minPitch: 0
+      maxPitch: 0
+      minRoll: 0
+      maxRoll: 0
+      minOffset: {x: 0, y: 0, z: 0}
+      maxOffset: {x: 0, y: 0, z: 0}
+      traverseSound:
+        sound:
+          Namespace: flansworldwars
+          ID: null
+        _sound: 
+        length: 1
+        minPitchMultiplier: 1
+        maxPitchMultiplier: 1
+        minVolume: 1
+        maxVolume: 1
+        maxRange: 100
+        LODs: []
+      traveseIndependently: 0
+      followSeatAtPath: 
+      lockSeatToGunAngles: 0
+      rotateSpeed: 1
+  physics:
+    restingEulerAngles: {x: 0, y: 0, z: 0}
+    drag: 0.05
+    mass: 10
+    maxThrottle: 1
+    collisionPoints: []
   defaultEngine:
     maxAcceleration: 1
     maxDeceleration: 1
     maxSpeed: 1
     fuelType: 0
-    fuelConsumptionRate: 1
+    fuelConsumptionIdle: 0
+    fuelConsumptionFull: 1
     solidFuelSlots: 0
     liquidFuelCapacity: 1000
     batterySlots: 0
