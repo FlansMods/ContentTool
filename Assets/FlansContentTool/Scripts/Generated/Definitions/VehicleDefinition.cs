@@ -15,6 +15,8 @@ public class VehicleDefinition : Definition
 	[JsonField]
 	public EngineDefinition defaultEngine = new EngineDefinition();
 	[JsonField]
+	public ResourceLocation defaultControlScheme = InvalidLocation;
+	[JsonField]
 	public bool useAABBCollisionOnly = false;
 	[JsonField]
 	public Vector3 aabbSize = Vector3.zero;

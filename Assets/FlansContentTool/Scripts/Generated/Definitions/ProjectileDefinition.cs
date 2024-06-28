@@ -21,7 +21,11 @@ public class ProjectileDefinition : Element
 	[Tooltip("How much does gravity affect this? 0=Not at all, 1=Regular")]
 	public float gravityFactor = 1.0f;
 	[JsonField]
-	public bool sticky = false;
+	public EProjectileResponseType responseToBlock = EProjectileResponseType.Bounce;
+	[JsonField]
+	public EProjectileResponseType responseToEntity = EProjectileResponseType.Detonate;
+	[JsonField]
+	public EProjectileResponseType responseToVehicle = EProjectileResponseType.Detonate;
 	[JsonField]
 	[Tooltip("If set to a non-zero amount, this projectile will have a fuse timer, in seconds")]
 	public float fuseTime = 0.0f;

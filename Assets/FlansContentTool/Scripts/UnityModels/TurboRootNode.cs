@@ -202,7 +202,18 @@ public class TurboRootNode : SkinnableRootNode
 			});
 		}
 
-
+		if (!TryGetItemTransform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, out ItemPoseNode first)
+		 || !TryGetItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, out ItemPoseNode third))
+		{
+			verifications.Failure($"TurboRootNode ({name}) is missing some or all poses",
+				() =>
+				{
+					ApplyQuickFix((TurboRootNode _this) => {
+						_this.AddDefaultTransforms();
+					});
+					return this;
+				});
+		}
 
 
 		// TODO: Suggested content lookups

@@ -56,6 +56,19 @@ public class VanillaIconRootNode : RootNode
 	{
 		base.GetVerifications(verifications);
 
+		if (!TryGetItemTransform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, out ItemPoseNode first)
+		|| !TryGetItemTransform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, out ItemPoseNode third))
+		{
+			verifications.Failure($"VanillaIconRootNode ({name}) does not have poses",
+				() =>
+				{
+					ApplyQuickFix((VanillaIconRootNode _this) => {
+						_this.AddDefaultTransforms();
+					});
+					return this;
+				});
+			}
+
 		if (Icons.Count == 0)
 		{
 			verifications.Failure($"VanillaIconRootNode ({name}) does not have any icons!",

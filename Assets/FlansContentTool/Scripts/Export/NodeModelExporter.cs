@@ -200,21 +200,21 @@ public class VanillaIconExporter : NodeModelExporter
 				{
 					["layer0"] = icon.GetLocation().ExportAsModelPath(),
 				},
-				["display"] = new JObject
-				{
-					["thirdperson_righthand"] = new JObject
-					{
-						["rotation"] = new JArray(270f, 0f, 0f),
-						["translation"] = new JArray(0f, 1f, -3f),
-						["scale"] = new JArray(0.55f, 0.55f, 0.55f),
-					},
-					["firstperson_righthand"] = new JObject
-					{
-						["rotation"] = new JArray(0f, 225f, 25f),
-						["translation"] = new JArray(0f, 4f, 2f),
-						["scale"] = new JArray(1.7f, 1.7f, 1.7f),
-					}
-				}
+				//["display"] = new JObject
+				//{
+				//	["thirdperson_righthand"] = new JObject
+				//	{
+				//		["rotation"] = new JArray(270f, 0f, 0f),
+				//		["translation"] = new JArray(0f, 1f, -3f),
+				//		["scale"] = new JArray(0.55f, 0.55f, 0.55f),
+				//	},
+				//	["firstperson_righthand"] = new JObject
+				//	{
+				//		["rotation"] = new JArray(0f, 225f, 25f),
+				//		["translation"] = new JArray(0f, 4f, 2f),
+				//		["scale"] = new JArray(1.7f, 1.7f, 1.7f),
+				//	}
+				//}
 			};
 		}
 		verifications?.Failure("Could not export VanillaIconRootNode");

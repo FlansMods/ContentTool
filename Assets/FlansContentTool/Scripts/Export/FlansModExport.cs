@@ -281,7 +281,7 @@ public static class FlansModExport
 			{
 				foreach (ResourceLocation tag in itemSettings.tags)
 				{
-					string tagExportName = tag.ResolveWithSubdir(def.GetTagExportFolder()); ;
+					string tagExportName = tag.ResolveWithSubdir(def.GetTagExportFolder());
 					if (!tags.ContainsKey(tagExportName))
 						tags.Add(tagExportName, new List<string>());
 					tags[tagExportName].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");

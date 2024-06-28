@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TextureExporter : AssetCopyExporter
 {
-	public static TextureExporter ITEMS = new TextureExporter("items", "textures/item");
-	public static TextureExporter BLOCKS = new TextureExporter("blocks", "textures/block");
+	public static TextureExporter ITEMS = new TextureExporter("item", "textures/item");
+	public static TextureExporter BLOCKS = new TextureExporter("block", "textures/block");
 	public static TextureExporter SKINS = new TextureExporter("skins", "textures/skins");
 	public static TextureExporter MAGS = new TextureExporter("mags", "textures/mags");
 	public static TextureExporter GUI = new TextureExporter("gui", "textures/gui");

@@ -1,3 +1,4 @@
+using Codice.CM.Common;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -102,6 +103,7 @@ public abstract class RootNode : Node
 		poseGO.transform.localEulerAngles = withEuler;
 		poseGO.transform.localScale = withScale;
 		ItemPoseNode poseNode = poseGO.AddComponent<ItemPoseNode>();
+		poseNode.TransformType = transformType;
 		return poseNode;
 	}
 	public ItemPoseNode GetOrCreateItemTransform(ItemDisplayContext transformType)
@@ -113,6 +115,7 @@ public abstract class RootNode : Node
 		GameObject poseGO = new GameObject($"pose_{transformType}");
 		poseGO.transform.SetParentZero(transform);
 		ItemPoseNode poseNode = poseGO.AddComponent<ItemPoseNode>();
+		poseNode.TransformType = transformType;
 		return poseNode;
 	}
 	public bool TryGetItemTransform(ItemDisplayContext transformType, out ItemPoseNode node)
@@ -129,9 +132,48 @@ public abstract class RootNode : Node
 	#endregion
 	// -----------------------------------------------------------------------------------
 
+	private void RemoveDuplicateTransforms()
+	{
+
+		List<ItemDisplayContext> poses = new List<ItemDisplayContext>();
+		List<ItemPoseNode> toRemove = new List<ItemPoseNode>();
+		foreach (ItemPoseNode itemPoseNode in GetChildNodes<ItemPoseNode>())
+		{
+			if (!poses.Contains(itemPoseNode.TransformType))
+			{
+				poses.Add(itemPoseNode.TransformType);
+			}
+			else
+			{
+				toRemove.Add(itemPoseNode);
+			}
+		}
+		foreach (ItemPoseNode poseNode in toRemove)
+			DestroyImmediate(poseNode.gameObject);
+	}
+
 	public override void GetVerifications(IVerificationLogger verifications)
 	{
 		base.GetVerifications(verifications);
+
+		List<ItemDisplayContext> poses = new List<ItemDisplayContext>();
+		foreach (ItemPoseNode itemPoseNode in GetChildNodes<ItemPoseNode>())
+		{
+			if (!poses.Contains(itemPoseNode.TransformType))
+			{
+				poses.Add(itemPoseNode.TransformType);
+			}
+			else
+			{
+				verifications.Failure($"Duplicate pose of type {itemPoseNode.TransformType}", () => {
+					ApplyQuickFix((RootNode _this) =>
+					{
+						_this.RemoveDuplicateTransforms();
+					});
+					return this;
+				});
+			}
+		}
 
 		// Icons
 		if (NeedsIcon())
@@ -142,7 +184,7 @@ public abstract class RootNode : Node
 				verifications.Failure($"Default icon is named incorrectly as {Icons[0].Key}",
 				() =>
 				{
-					ApplyQuickFix((TurboRootNode _this) =>
+					ApplyQuickFix((RootNode _this) =>
 					{
 						_this.Icons[0].Key = "default";
 					});
