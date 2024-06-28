@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [CustomEditor(typeof(BoxGeometryNode))]
@@ -57,6 +58,15 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 	public override void OnInspectorGUI()
 	{
 		EditorGUI.BeginChangeCheck();
+		bool isPrefab = PrefabUtility.IsPartOfPrefabInstance(target);
+		if (isPrefab)
+		{
+			if(GUILayout.Button("Open Prefab"))
+				PrefabStageUtility.OpenPrefab(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(target));
+		}
+
+		EditorGUI.BeginDisabledGroup(isPrefab);
+
 
 		if (target is TNodeType node)
 		{
@@ -175,6 +185,7 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 			
 		}
 
+		EditorGUI.EndDisabledGroup();
 		if(EditorGUI.EndChangeCheck() && !EditorUtility.IsDirty(target))
 		{
 			EditorUtility.SetDirty(target);

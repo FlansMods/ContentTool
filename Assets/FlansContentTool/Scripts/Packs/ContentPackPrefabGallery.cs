@@ -27,6 +27,8 @@ public class ContentPackPrefabGallery : MonoBehaviour
 			List<RootNode> allModels = new List<RootNode>(Target.AllModels);
 			foreach(RootNode modelNode in allModels)
 			{
+				if (!(modelNode is TurboRootNode))
+					continue;
 				if(!SpawnedInstances.ContainsKey(modelNode))
 				{
 					// Step 1: See if we have already spawned one 
@@ -57,7 +59,7 @@ public class ContentPackPrefabGallery : MonoBehaviour
 			bool needReshuffle = false;
 			foreach (var kvp in SpawnedInstances)
 			{
-				RootNode instance = kvp.Value;
+				RootNode instance = kvp.Value; 
 				if (instance != null)
 				{
 					if (instance.transform.parent != transform)
