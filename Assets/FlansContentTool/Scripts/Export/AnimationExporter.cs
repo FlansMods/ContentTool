@@ -214,6 +214,8 @@ public class UnityAnimationExporter : DuplicatedJsonExporter
 		{
 			SequenceDefinition sequence = new SequenceDefinition();
 			sequence.name = clip.name;
+			if (sequence.name.StartsWith(controller.name+"_"))
+				sequence.name = sequence.name.Substring(controller.name.Length + 1);
 			sequence.ticks = 20;
 
 			// First pass, convert curves with keyframes into "ProtoPoseDef" structures

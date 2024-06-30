@@ -58,6 +58,8 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 	public override void OnInspectorGUI()
 	{
 		EditorGUI.BeginChangeCheck();
+
+
 		bool isPrefab = PrefabUtility.IsPartOfPrefabInstance(target);
 		if (isPrefab)
 		{

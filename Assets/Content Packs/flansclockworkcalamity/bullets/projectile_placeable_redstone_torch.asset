@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc33a246ffc57c4fb148eeac040a8e2, type: 3}
+  m_Name: projectile_placeable_redstone_torch
+  m_EditorClassIdentifier: 
+  LocalisedNames:
+  - Lang: 0
+    Name: Launchable Redstone Torch
+  LocalisedExtras: []
+  itemSettings:
+    maxStackSize: 64
+    tags:
+    - Namespace: flansmod
+      ID: bullet
+    - Namespace: flansmod
+      ID: placeable
+    _tags:
+    - 
+    - 
+  roundsPerItem: 1
+  hitscans: []
+  projectiles:
+  - shotCount: 1
+    splashRadius: 0
+    impacts:
+    - targetType: 6
+      impactEffects:
+      - effectType: 16
+        modifiers:
+        - stat: block_id
+          matchGroupPaths: []
+          accumulators:
+          - operation: 0
+            value: 3
+            multiplyPer: 
+          setValue: minecraft:redstone_torch
+    launchSpeed: 6
+    gravityFactor: 1
+    responseToBlock: 1
+    responseToEntity: 0
+    responseToVehicle: 0
+    fuseTime: 0
+    turnRate: 0
+    dragInAir: 0
+    airParticles: 
+    dragInWater: 0
+    waterParticles: 
+    timeBetweenTrailParticles: 0
+  triggers: []
+  actionGroups: []

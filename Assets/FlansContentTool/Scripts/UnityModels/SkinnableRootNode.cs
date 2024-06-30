@@ -86,11 +86,10 @@ public abstract class SkinnableRootNode : RootNode
 		}
 		string fullPath = $"Assets/Content Packs/{modelLocation.Namespace}/textures/skins/{newSkinName}.png";
 
-		newSkinTexture.name = newSkinName;
-		if (ApplyAutoUV(out UVMap resultMap))
-		{
-			SkinGenerator.CreateDefaultTexture(ToMap(), newSkinTexture);
-		}
+		newSkinTexture.name = Textures.Count == 0 ? "default" : newSkinName;
+		ApplyAutoUV(out UVMap resultMap);
+		SkinGenerator.CreateDefaultTexture(ToMap(), newSkinTexture);
+		
 		File.WriteAllBytes(fullPath, newSkinTexture.EncodeToPNG());
 		AssetDatabase.Refresh();
 		newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
