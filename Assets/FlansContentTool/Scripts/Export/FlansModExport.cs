@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -72,6 +73,7 @@ public static class FlansModExport
 		TextureExporter.MAGS,
 		TextureExporter.ENTITY,
 		TextureExporter.GUI,
+		TextureExporter.MOB_EFFECT,
 
 		SoundExporter.INST,
 
@@ -274,6 +276,52 @@ public static class FlansModExport
 	public static void ExportItemTags(ContentPack pack, IVerificationLogger verifications = null)
 	{
 		Dictionary<string, List<string>> tags = new Dictionary<string, List<string>>();
+
+		// Compile "Extra" tags, tags we couldn't set up as attached to a Definition for whatever reason
+		foreach(TextAsset text in pack.AllExtraTags)
+		{
+			string fullPath = AssetDatabase.GetAssetPath(text);
+			int idx = fullPath.LastIndexOf("tags");
+			if(idx != -1)
+			{
+				string tagPath = fullPath.Substring(idx + "tags/".Length);
+				tagPath = tagPath.Substring(0, tagPath.LastIndexOf("."));
+				int firstSlash = tagPath.IndexOfAny(Utils.SLASHES);
+				if (firstSlash != -1)
+				{
+					string modID = tagPath.Substring(0, firstSlash);
+					tagPath = tagPath.Substring(firstSlash + 1);
+					string modKeyTag = $"{modID}:{tagPath}";
+
+					if (!tags.ContainsKey(modKeyTag))
+					{
+						tags.Add(modKeyTag, new List<string>());
+					}
+
+					using (StringReader stringReader = new StringReader(text.text))
+					using (JsonReader jReader = new JsonTextReader(stringReader))
+					{
+						JObject root = JObject.Load(jReader);
+						if (root.ContainsKey("values"))
+						{
+							if (root["values"] is JArray array)
+							{
+								foreach (JToken entry in array)
+								{
+									string tagEntry = entry.ToString();
+									if (!tags[modKeyTag].Contains(tagEntry))
+										tags[modKeyTag].Add(tagEntry);
+								}
+								verifications.Success($"Copied {array.Count} tags from existing Tag File '{modKeyTag}'");
+							}
+						}
+					}
+				}
+					
+			}
+		}
+
+
 		foreach (Definition def in pack.AllContent)
 		{
 			ItemDefinition itemSettings = def.GetItemSettings();
@@ -284,7 +332,9 @@ public static class FlansModExport
 					string tagExportName = tag.ResolveWithSubdir(def.GetTagExportFolder());
 					if (!tags.ContainsKey(tagExportName))
 						tags.Add(tagExportName, new List<string>());
-					tags[tagExportName].Add($"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}");
+					string tagEntry = $"{pack.ModName}:{def.GetLocation().IDWithoutPrefixes()}";
+					if(!tags[tagExportName].Contains(tagEntry))
+						tags[tagExportName].Add(tagEntry);
 				}
 			}
 		}

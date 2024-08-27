@@ -535,4 +535,67 @@ public abstract class Definition : ScriptableObject, IVerifiableAsset
 	}
 	#endregion
 	// -------------------------------------------------------------------------------------------------------------
+
+
+	public Texture2D RenderStaticPreview()
+	{
+		if (ExpectsModel())
+		{
+			ResourceLocation resLoc = this.GetLocation();
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
+			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
+			if (rootNode != null)
+			{
+				Texture2D preview = AssetPreview.GetAssetPreview(rootNode.gameObject);
+				if (preview != null)
+					return preview;
+			}
+		}
+
+		Texture2D icon = FindDefaultIcon();
+		if (icon != null)
+		{
+			Texture2D iconCopy = new Texture2D(16, 16, TextureFormat.RGBA32, false);
+			Graphics.CopyTexture(icon, 0, 0, iconCopy, 0, 0);
+			return iconCopy;
+		}
+
+		return null;
+	}
+
+	public Texture2D FindDefaultIcon()
+	{
+		if (ExpectsModel())
+		{
+			ResourceLocation resLoc = this.GetLocation();
+			string modelPath = $"Assets/Content Packs/{resLoc.Namespace}/models/{GetModelFolder()}/{resLoc.IDWithoutPrefixes()}.prefab";
+			RootNode rootNode = AssetDatabase.LoadAssetAtPath<RootNode>(modelPath);
+			if (rootNode != null)
+			{
+				if (rootNode is TurboRootNode turboRoot && turboRoot.Icons.Count > 0)
+				{
+					if (turboRoot.Icons.List[0].Texture != null)
+						return turboRoot.Icons.List[0].Texture;
+				}
+				else if (rootNode is VanillaIconRootNode iconRoot && iconRoot.Icons.Count > 0)
+				{
+					if (iconRoot.Icons.List[0].Texture != null)
+						return iconRoot.Icons.List[0].Texture;
+				}
+				else
+				{
+
+				}
+			}
+		}
+		if(this is MagazineDefinition magDef)
+		{
+			ResourceLocation resLoc = this.GetLocation();
+			string iconPath = $"Assets/Content Packs/{resLoc.Namespace}/textures/mags/{resLoc.IDWithoutPrefixes()}.png";
+			Texture2D icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
+			return icon;
+		}
+
+		return null;
+	}
 }

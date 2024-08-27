@@ -2,6 +2,7 @@ using log4net.Util;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Transactions;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -287,5 +288,26 @@ public abstract class NodeEditor<TNodeType> : Editor where TNodeType : Node
 				EditorGUI.indentLevel--;
 			}
 		}
+	}
+
+	private Texture2D _PreviewTexture = null;
+	public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+	{
+		return base.RenderStaticPreview(assetPath, subAssets, width, height);
+		//if (_PreviewTexture == null)
+		//{
+		//
+		//	Node node = ((Node)serializedObject.targetObject);
+		//	if (node != null)
+		//	{
+		//		RootNode root = node.Root;
+		//		if (root != null)
+		//		{
+		//			
+		//		}
+		//	}
+		//	_PreviewTexture = def.RenderStaticPreview();
+		//}
+		//return _PreviewTexture;
 	}
 }

@@ -26,8 +26,13 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 	[SerializeField]
 	private List<ScriptableObject> OutdatedContent = new List<ScriptableObject>();
 	[SerializeField]
+	private List<TextAsset> ExtraTags = new List<TextAsset>();
+
+	[SerializeField]
 	private List<SoundEventList> Sounds = new List<SoundEventList>();
 	public List<Definition.LocalisedExtra> ExtraLocalisation = new List<Definition.LocalisedExtra>();
+
+
 	public string ModName { get { return name; } }
 
 	public void ForceRefreshAssets() 
@@ -79,6 +84,17 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 						yield return entry;
 		}
 	}
+	public int ExtraTagCount { get { Refresh(); return ExtraTags.Count; } }
+	public IEnumerable<TextAsset> AllExtraTags
+	{
+		get 
+		{
+			Refresh();
+			foreach (TextAsset tex in ExtraTags)
+				if (tex != null)
+					yield return tex;
+		}
+	}
 	public IEnumerable<string> AllIDs
 	{
 		get
@@ -111,12 +127,13 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 
 	private void Refresh(bool force = false)
 	{
-		if (Content == null || Models == null || Textures == null || Sounds == null)
+		if (Content == null || Models == null || Textures == null || Sounds == null || ExtraTags == null)
 		{
 			Content = new List<Definition>();
 			Models = new List<RootNode>();
 			Textures = new List<Texture2D>();
 			Sounds = new List<SoundEventList>();
+			ExtraTags = new List<TextAsset>();
 			force = true;
 		}
 			
@@ -128,6 +145,7 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 			Models.Clear();
 			Textures.Clear();
 			Sounds.Clear();
+			ExtraTags.Clear();
 			if (Directory.Exists($"Assets/Content Packs/{name}/"))
 			{
 				foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.asset", SearchOption.AllDirectories))
@@ -198,24 +216,35 @@ public class ContentPack : ScriptableObject, IVerifiableAsset, IVerifiableContai
 					}
 
 				}
-
-					//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
-					//{
-					//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-					//	if (clip != null)
-					//		Sounds.Add(clip);
-					//	else
-					//		Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
-					//}
-					//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
-					//{
-					//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
-					//	if (clip != null)
-					//		Sounds.Add(clip);
-					//	else
-					//		Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
-					//}
+				if (Directory.Exists($"Assets/Content Packs/{name}/tags"))
+				{
+					foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/tags", "*.json", SearchOption.AllDirectories))
+					{
+						TextAsset text = AssetDatabase.LoadAssetAtPath<TextAsset>(assetPath);
+						if (text != null)
+						{
+							ExtraTags.Add(text);
+						}
+					}
 				}
+
+				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.ogg", SearchOption.AllDirectories))
+				//{
+				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				//	if (clip != null)
+				//		Sounds.Add(clip);
+				//	else
+				//		Debug.LogError($"Unable to load .ogg at {assetPath} in pack {name}");
+				//}
+				//foreach (string assetPath in Directory.EnumerateFiles($"Assets/Content Packs/{name}/", "*.mp3", SearchOption.AllDirectories))
+				//{
+				//	AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
+				//	if (clip != null)
+				//		Sounds.Add(clip);
+				//	else
+				//		Debug.LogError($"Unable to load .mp3 at {assetPath} in pack {name}");
+				//}
+			}
 
 			if (count != Content.Count + Models.Count + Textures.Count)
 			{

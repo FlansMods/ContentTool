@@ -12,6 +12,21 @@ using UnityEngine.UIElements;
 [CustomPropertyDrawer(typeof(ResourceLocation))]
 public class ResourceLocationPropertyDrawer : PropertyDrawer
 {
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	{
+		//base.OnGUI(position, property, label);
+
+		GUILayout.BeginHorizontal();
+		if(property.boxedValue is ResourceLocation resLoc)
+		{
+			GUILayout.Label(label);
+			GUILayout.TextField(resLoc.Namespace);
+			GUILayout.TextField(resLoc.ID);
+
+		}
+		GUILayout.EndHorizontal();
+	}
+
 	public override VisualElement CreatePropertyGUI(SerializedProperty property)
 	{
 		// Load from Resources
@@ -34,7 +49,7 @@ public class ResourceLocationPropertyDrawer : PropertyDrawer
 					assetPathHint = jsonFieldAttrib.AssetPathHint;
 			}
 		}
-
+		 
 		drawer.Q<Label>().text = property.displayName;
 
 		drawer.Q<TextField>("NamespaceEntry")?.BindProperty(namespaceProp);

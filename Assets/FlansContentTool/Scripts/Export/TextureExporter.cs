@@ -9,6 +9,7 @@ public class TextureExporter : AssetCopyExporter
 	public static TextureExporter SKINS = new TextureExporter("skins", "textures/skins");
 	public static TextureExporter MAGS = new TextureExporter("mags", "textures/mags");
 	public static TextureExporter GUI = new TextureExporter("gui", "textures/gui");
+	public static TextureExporter MOB_EFFECT = new TextureExporter("mob_effect", "textures/mob_effect");
 	public static TextureExporter ENTITY = new TextureExporter("entity", "textures/entity");
 
 	public override string GetAssetExtension() { return "png"; }
