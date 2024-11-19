@@ -233,6 +233,10 @@ public class TurboModelExporter : NodeModelExporter
 	{
 		if(asset is TurboRootNode root)
 		{
+			Vector2Int texSize = root.Textures.Count > 0
+				? new Vector2Int(root.Textures[0].Texture.width, root.Textures[0].Texture.height)
+				: new Vector2Int(16, 16);
+
 			return new JObject
 			{
 				["loader"] = "flansmod:turborig",
@@ -242,7 +246,8 @@ public class TurboModelExporter : NodeModelExporter
 				["animations"] = ExportAnimations(root),
 				["parts"] = ExportSections(root),
 				["attachPoints"] = ExportAttachPoints(root),
-			};
+				["textureSize"] = texSize.ToJson(),
+            };
 		}
 
 		verifications?.Failure("Could not export definition");

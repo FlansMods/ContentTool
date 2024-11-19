@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -161,7 +162,28 @@ public class ShapeboxGeometryNode : BoxGeometryNode
 	}
 #endif
 
-	public override Vector3[] GenerateVertsNoUV()
+	public override JObject ExportGeometryNode(Vector2Int texSize, Vector2Int withUV)
+	{
+        JArray jOffsets = new JArray();
+        foreach (Vector3 v in Offsets)
+            jOffsets.Add(v.ToJson());
+
+        return new JObject
+		{
+            ["eulerRotations"] = ExportEuler.ToJson(),
+            ["rotationOrigin"] = ExportOrigin.ToJson(),
+            ["shapebox"] = new JObject
+			{
+				["origin"] = Vector3.zero.ToJson(),
+				["dimensions"] = Dim.ToJson(),
+				["uv"] = withUV.ToJson(),
+				["offsets"] = jOffsets,
+            }
+		};
+	}
+
+
+    public override Vector3[] GenerateVertsNoUV()
 	{
 		Vector3[] verts = new Vector3[8];
 		for (int x = 0; x < 2; x++)
