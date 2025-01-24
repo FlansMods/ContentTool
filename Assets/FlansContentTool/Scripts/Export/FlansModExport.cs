@@ -586,10 +586,12 @@ public static class FlansModExport
 				}
 			}
 		}
-	}	
-	#endregion
-	// ----------------------------------------------------------------------------------------------------
+	}
+    #endregion
+    // ----------------------------------------------------------------------------------------------------
 
 
-	public static JArray ToJson(this Vector3 v) { return new JArray() { v.x, v.y, v.z }; }
+    public static JArray ToJson(this Vector3 v) { return new JArray() { v.x, v.y, v.z }; }
+    public static JArray ToJson(this Vector2 v) { return new JArray() { v.x, v.y }; }
+    public static JArray ToJson(this Vector2Int v) { return new JArray() { v.x, v.y }; }
 }

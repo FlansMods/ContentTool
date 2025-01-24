@@ -100,26 +100,38 @@ public class BoxGeometryNode : GeometryNode
 
 	public override JObject ExportGeometryNode(Vector2Int texSize, Vector2Int withUV)
 	{
-		JArray jVerts = new JArray();
-		foreach (Vector3 v in GenerateVertsNoUV())
-			jVerts.Add(v.ToJson());
-		return new JObject()
+		return new JObject
 		{
-			["verts"] = jVerts,
-			["eulerRotations"] = ExportEuler.ToJson(),
-			["rotationOrigin"] = ExportOrigin.ToJson(),
-			["faces"] = new JObject()
-			{
-				["north"] = ExportFaceUV(texSize, withUV, EFace.north),
-				["east"] = ExportFaceUV(texSize, withUV, EFace.east),
-				["south"] = ExportFaceUV(texSize, withUV, EFace.south),
-				["west"] = ExportFaceUV(texSize, withUV, EFace.west),
-				["up"] = ExportFaceUV(texSize, withUV, EFace.up),
-				["down"] = ExportFaceUV(texSize, withUV, EFace.down),
-
-			},
+            ["eulerRotations"] = ExportEuler.ToJson(),
+            ["rotationOrigin"] = ExportOrigin.ToJson(),
+            ["box"] = new JObject
+            {
+                ["origin"] = Vector3.zero.ToJson(),
+				["dimensions"] = Dim.ToJson(),
+				["uv"] = withUV.ToJson(),
+			}
 		};
-	}
+
+        //JArray jVerts = new JArray();
+        //foreach (Vector3 v in GenerateVertsNoUV())
+        //    jVerts.Add(v.ToJson());
+        //return new JObject()
+        //{
+        //	["verts"] = jVerts,
+        //	["eulerRotations"] = ExportEuler.ToJson(),
+        //	["rotationOrigin"] = ExportOrigin.ToJson(),
+        //	["faces"] = new JObject()
+        //	{
+        //		["north"] = ExportFaceUV(texSize, withUV, EFace.north),
+        //		["east"] = ExportFaceUV(texSize, withUV, EFace.east),
+        //		["south"] = ExportFaceUV(texSize, withUV, EFace.south),
+        //		["west"] = ExportFaceUV(texSize, withUV, EFace.west),
+        //		["up"] = ExportFaceUV(texSize, withUV, EFace.up),
+        //		["down"] = ExportFaceUV(texSize, withUV, EFace.down),
+        //
+        //	},
+        //};
+    }
 	private JObject ExportFaceUV(Vector2Int texSize, Vector2Int withUV, EFace face)
 	{
 		Vector2[] uvs = GenerateUVsForFace(face, withUV.x, withUV.y, texSize.x, texSize.y);
