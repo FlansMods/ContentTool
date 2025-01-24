@@ -13,6 +13,9 @@ public class VehiclePhysicsDefinition : Element
 	[JsonField]
 	public float mass = 10.0f;
 	[JsonField]
+	[Tooltip("Leave as zero to auto-calculate")]
+	public Vector3 momentOfInertia = Vector3.zero;
+	[JsonField]
 	[Tooltip("Legacy only, use new axis bindings")]
 	public float maxThrottle = 1.0f;
 	[JsonField]

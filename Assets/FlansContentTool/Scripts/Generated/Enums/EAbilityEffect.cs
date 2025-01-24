@@ -24,4 +24,5 @@ public enum EAbilityEffect
 	SetFire,
 	Explode,
 	ApplyDecal,
+	ApplyEnchantment,
 }

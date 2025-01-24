@@ -4,26 +4,26 @@ using UnityEngine;
 
 public enum Direction
 {
-    north, south, east, west, up, down
+    NORTH, SOUTH, EAST, WEST, UP, DOWN
 }
 
 public static class Directions 
 {
 	public static Direction[] VALUES = new Direction[]
 	{
-		Direction.north, Direction.south, Direction.east, Direction.west, Direction.up, Direction.down
+		Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.DOWN
 	};
 
 	public static Vector3 UAxis(this Direction dir)
 	{
 		switch (dir)
 		{
-			case Direction.north: return Vector3.right;
-			case Direction.south: return Vector3.right;
-			case Direction.east: return Vector3.forward;
-			case Direction.west: return Vector3.forward;
-			case Direction.up: return Vector3.right;
-			case Direction.down: return Vector3.right;
+			case Direction.NORTH: return Vector3.right;
+			case Direction.SOUTH: return Vector3.right;
+			case Direction.EAST: return Vector3.forward;
+			case Direction.WEST: return Vector3.forward;
+			case Direction.UP: return Vector3.right;
+			case Direction.DOWN: return Vector3.right;
 			default: return Vector3.zero;
 		}
 	}
@@ -32,12 +32,12 @@ public static class Directions
 	{
 		switch (dir)
 		{
-			case Direction.north: return Vector3.up;
-			case Direction.south: return Vector3.up;
-			case Direction.east: return Vector3.up;
-			case Direction.west: return Vector3.up;
-			case Direction.up: return Vector3.forward;
-			case Direction.down: return Vector3.forward;
+			case Direction.NORTH: return Vector3.up;
+			case Direction.SOUTH: return Vector3.up;
+			case Direction.EAST: return Vector3.up;
+			case Direction.WEST: return Vector3.up;
+			case Direction.UP: return Vector3.forward;
+			case Direction.DOWN: return Vector3.forward;
 			default: return Vector3.zero;
 		}
 	}
@@ -46,12 +46,12 @@ public static class Directions
     {
         switch(dir)
         {
-            case Direction.north: return Vector3.back;
-            case Direction.south: return Vector3.forward;
-            case Direction.east: return Vector3.right;
-            case Direction.west: return Vector3.left;
-            case Direction.up: return Vector3.up;
-            case Direction.down: return Vector3.down;
+            case Direction.NORTH: return Vector3.back;
+            case Direction.SOUTH: return Vector3.forward;
+            case Direction.EAST: return Vector3.right;
+            case Direction.WEST: return Vector3.left;
+            case Direction.UP: return Vector3.up;
+            case Direction.DOWN: return Vector3.down;
             default: return Vector3.zero;
         }
     }

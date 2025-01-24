@@ -26,6 +26,9 @@ public class WheelDefinition : Element
 	[JsonField]
 	public float mass = 1.0f;
 	[JsonField]
+	[Tooltip("Leave as zero to auto-calculate")]
+	public Vector3 momentOfInertia = Vector3.zero;
+	[JsonField]
 	[Tooltip("Roughly how many seconds it takes for player changes to torque to be applied")]
 	public float torqueResponsiveness = 0.1f;
 	[JsonField]

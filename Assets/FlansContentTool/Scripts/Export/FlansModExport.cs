@@ -93,7 +93,7 @@ public static class FlansModExport
 		DefinitionExporter.ARMOURS,
 		DefinitionExporter.ATTACHMENTS,
 		DefinitionExporter.BULLETS,
-		DefinitionExporter.CLASSES,
+		DefinitionExporter.LOADOUTS,
 		DefinitionExporter.TRAITS,
 		DefinitionExporter.GRENADES,
 		DefinitionExporter.GUNS,

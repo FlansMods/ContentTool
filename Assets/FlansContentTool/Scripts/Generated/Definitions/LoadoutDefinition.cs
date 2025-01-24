@@ -3,8 +3,28 @@ using static ResourceLocation;
 using UnityEngine.Serialization;
 
 [System.Serializable]
-public class LoadoutDefinition : Element
+[CreateAssetMenu(menuName = "Flans Mod/LoadoutDefinition")]
+public class LoadoutDefinition : Definition
 {
 	[JsonField]
-	public string[] slots = new string[0];
+	[Tooltip("These will be inserted into the inventory in order. You could add stacks of air if you want to space things out")]
+	public ItemStackDefinition[] startingItems = new ItemStackDefinition[0];
+	[JsonField]
+	[Tooltip("Leave empty for no spawning. Use standard minecraft entity tag formatting")]
+	public string spawnOnEntity = "";
+	[JsonField]
+	[Tooltip("Leave blank to disable. Renders the player with this skin instead of their own")]
+	public ResourceLocation playerSkinOverride = InvalidLocation;
+	[JsonField]
+	[Tooltip("Leave this as empty to take from the team settings")]
+	public ItemStackDefinition hat = new ItemStackDefinition();
+	[JsonField]
+	[Tooltip("Leave this as empty to take from the team settings")]
+	public ItemStackDefinition chest = new ItemStackDefinition();
+	[JsonField]
+	[Tooltip("Leave this as empty to take from the team settings")]
+	public ItemStackDefinition legs = new ItemStackDefinition();
+	[JsonField]
+	[Tooltip("Leave this as empty to take from the team settings")]
+	public ItemStackDefinition shoes = new ItemStackDefinition();
 }

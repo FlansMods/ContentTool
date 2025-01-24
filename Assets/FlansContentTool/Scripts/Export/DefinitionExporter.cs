@@ -14,7 +14,7 @@ public class DefinitionExporter : DuplicatedJsonExporter
 	public static DefinitionExporter ARMOURS = new DefinitionExporter("armours", typeof(ArmourDefinition));
 	public static DefinitionExporter ATTACHMENTS = new DefinitionExporter("attachments", typeof(AttachmentDefinition));
 	public static DefinitionExporter BULLETS = new DefinitionExporter("bullets", typeof(BulletDefinition));
-	public static DefinitionExporter CLASSES = new DefinitionExporter("classes", typeof(ClassDefinition));
+	public static DefinitionExporter LOADOUTS = new DefinitionExporter("loadouts", typeof(LoadoutDefinition));
 	public static DefinitionExporter TRAITS = new DefinitionExporter("traits", typeof(CraftingTraitDefinition));
 	public static DefinitionExporter FLANIMATIONS = new DefinitionExporter("flanimations", typeof(FlanimationDefinition));
 	public static DefinitionExporter GRENADES = new DefinitionExporter("grenades", typeof(GrenadeDefinition));

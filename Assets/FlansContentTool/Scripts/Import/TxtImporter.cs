@@ -549,7 +549,7 @@ public class DriveableTypeImporter : TxtImporter<DriveableType>
 	public DriveableTypeImporter()
 	{
 		parsers = new Dictionary<string, ParseFunc>();
-	// BASICS /////////////////////////////////////////////////////////////////////////////
+		// BASICS /////////////////////////////////////////////////////////////////////////////
 		parsers.Add("MaxThrottle", (split, d) => d.maxThrottle = float.Parse(split[1]));
 		parsers.Add("MaxNegativeThrottle", (split, d) => d.maxNegativeThrottle = float.Parse(split[1]));
 		parsers.Add("Drag", (split, d) => d.drag = float.Parse(split[1]));

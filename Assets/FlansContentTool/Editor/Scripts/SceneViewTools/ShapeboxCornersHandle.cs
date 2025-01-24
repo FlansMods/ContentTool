@@ -74,12 +74,12 @@ public class ShapeboxCornersHandle : ShapeboxHandle
 		SetVertexPosWithSnap(1, 1, 1, modified);
 
 		Handles.color = Color.green;
-		HandleFace(Direction.north);
-		HandleFace(Direction.south);
-		HandleFace(Direction.east);
-		HandleFace(Direction.west);
-		HandleFace(Direction.up);
-		HandleFace(Direction.down);
+		HandleFace(Direction.NORTH);
+		HandleFace(Direction.SOUTH);
+		HandleFace(Direction.EAST);
+		HandleFace(Direction.WEST);
+		HandleFace(Direction.UP);
+		HandleFace(Direction.DOWN);
 
 
 	}

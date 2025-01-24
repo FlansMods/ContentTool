@@ -28,11 +28,11 @@ public static class InfoToDefinitionConverter
 			case EDefinitionType.armour: 		ArmourConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.armourBox: 	ArmourBoxConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.box: 			GunBoxConverter.inst.CastConvert(input, output); break;
-			case EDefinitionType.playerClass: 	PlayerClassConverter.inst.CastConvert(input, output); break;
+			case EDefinitionType.playerClass:   LoadoutConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.team: 			TeamConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.itemHolder: 	ItemHolderConverter.inst.CastConvert(input, output); break;
 			case EDefinitionType.rewardBox: 	RewardBoxConverter.inst.CastConvert(input, output); break;
-			case EDefinitionType.loadout: 		LoadoutConverter.inst.CastConvert(input, output); break;
+			case EDefinitionType.loadout: 		LoadoutPoolConverter.inst.CastConvert(input, output); break;
 		}
 	}
 
@@ -54,11 +54,11 @@ public static class InfoToDefinitionConverter
 			case EDefinitionType.armour:		ArmourConverter.inst.CastGetAdditionalOperations(input, operations); break;
 			case EDefinitionType.armourBox:		ArmourBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
 			case EDefinitionType.box:			GunBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
-			case EDefinitionType.playerClass:	PlayerClassConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.playerClass:   LoadoutConverter.inst.CastGetAdditionalOperations(input, operations); break;
 			case EDefinitionType.team:			TeamConverter.inst.CastGetAdditionalOperations(input, operations); break;
 			case EDefinitionType.itemHolder:	ItemHolderConverter.inst.CastGetAdditionalOperations(input, operations); break;
 			case EDefinitionType.rewardBox:		RewardBoxConverter.inst.CastGetAdditionalOperations(input, operations); break;
-			case EDefinitionType.loadout:		LoadoutConverter.inst.CastGetAdditionalOperations(input, operations); break;
+			case EDefinitionType.loadout:		LoadoutPoolConverter.inst.CastGetAdditionalOperations(input, operations); break;
 		}
 	}
 }
@@ -1050,7 +1050,7 @@ public class AttachmentConverter : Converter<AttachmentType, AttachmentDefinitio
 	private ResourceLocation[] GetTags(AttachmentType input)
 	{
 		List<ResourceLocation> tags = new List<ResourceLocation>();
-		tags.Add(new ResourceLocation("flansmod:bullet"));
+		tags.Add(new ResourceLocation("flansmod:attachment"));
 		tags.Add(new ResourceLocation($"flansmod:{input.type.ToString().ToLower()}"));
 		return tags.ToArray();
 	}
@@ -2413,16 +2413,16 @@ public class GunBoxConverter : Converter<GunBoxType, WorkbenchDefinition>
 	}
 }
 
-public class PlayerClassConverter : Converter<PlayerClass, ClassDefinition>
+public class LoadoutConverter : Converter<PlayerClass, LoadoutDefinition>
 {
-	public static PlayerClassConverter inst = new PlayerClassConverter();
-	protected override void DoConversion(PlayerClass input, ClassDefinition output)
+	public static LoadoutConverter inst = new LoadoutConverter();
+	protected override void DoConversion(PlayerClass input, LoadoutDefinition output)
 	{
 		output.hat = ImportStack(input.hat);
 		output.chest = ImportStack(input.chest);
 		output.legs = ImportStack(input.legs);
 		output.shoes = ImportStack(input.shoes);
-		output.playerSkinOverride = input.playerSkinOverride;
+		output.playerSkinOverride = new ResourceLocation(input.playerSkinOverride);
 		output.spawnOnEntity = input.horse ? "minecraft:horse" : "";
 		output.startingItems = new ItemStackDefinition[input.startingItemStrings.Count];
 		for(int i = 0; i < input.startingItemStrings.Count; i++)
@@ -2440,7 +2440,11 @@ public class TeamConverter : Converter<Team, TeamDefinition>
 	public static TeamConverter inst = new TeamConverter();
 	protected override void DoConversion(Team input, TeamDefinition output)
 	{
-		output.classes = input.classes.ToArray();
+		output.loadouts = new ResourceLocation[input.classes.Count];
+		for(int i = 0; i < input.classes.Count; i++)
+		{
+			output.loadouts[i] = new ResourceLocation(input.classes[i]);
+		}
 		output.flagColour = new ColourDefinition()
 		{
 			red = ((input.teamColour >> 16) & 0xff) / 255f,
@@ -2509,23 +2513,23 @@ public class RewardBoxConverter : Converter<RewardBox, RewardBoxDefinition>
 	}
 }
 
-public class LoadoutConverter : Converter<LoadoutPool, LoadoutPoolDefinition>
+public class LoadoutPoolConverter : Converter<LoadoutPool, LoadoutPoolDefinition>
 {
-	public static LoadoutConverter inst = new LoadoutConverter();
+	public static LoadoutPoolConverter inst = new LoadoutPoolConverter();
 	protected override void DoConversion(LoadoutPool input, LoadoutPoolDefinition output)
 	{
 		output.maxLevel = input.maxLevel;
 		output.xpForKill = input.XPForKill;
 		output.xpForDeath = input.XPForDeath;
 		output.xpForKillstreakBonus = input.XPForKillstreakBonus;
-		output.defaultLoadouts = new LoadoutDefinition[input.defaultLoadouts.Length];
-		for(int i = 0; i < input.defaultLoadouts.Length; i++)
-		{
-			output.defaultLoadouts[i] = new LoadoutDefinition()
-			{
-				slots = input.defaultLoadouts[i].slots,	
-			};
-		}
+		//output.defaultLoadouts = new LoadoutDefinition[input.defaultLoadouts.Length];
+		//for(int i = 0; i < input.defaultLoadouts.Length; i++)
+		//{
+		//	output.defaultLoadouts[i] = new LoadoutDefinition()
+		//	{
+		//		slots = input.defaultLoadouts[i].slots,	
+		//	};
+		//}
 		output.levelUps = new LevelUpDefinition[input.maxLevel];
 		for(int i = 0; i < input.maxLevel; i++)
 		{
