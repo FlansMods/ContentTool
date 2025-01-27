@@ -64,18 +64,34 @@ public class TurboRootNode : SkinnableRootNode
 	{
 		base.CompactEditorGUI();
 
-		GUILayout.BeginHorizontal();
 		GUILayout.Label($"UV Size:[{UVMapSize.x},{UVMapSize.y}]");
 		if(NeedsUVRemap())
 		{
-			NumUVsToRemap(out int numToRemap, out int totalNum);
-			GUILayout.Label($"{numToRemap}/{totalNum} UVs need remapping");
-			if(GUILayout.Button("Auto"))
+			NumUVsToRemap(out int numToRemap, out int numPossiblySet, out int totalNum);
+
+			GUILayout.BeginHorizontal();
+			GUILayout.Label($"{numToRemap + numPossiblySet}/{totalNum} UVs need remapping");
+			if (GUILayout.Button("Auto"))
 			{
 				ApplyAutoUV(out UVMap discard);
 			}
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
+			if (numPossiblySet > 0)
+			{
+				GUILayout.Label($"{numPossiblySet} UVs are positioned without bounds, this might be fine.");
+				if (GUILayout.Button("Try using suspected coords"))
+				{
+					foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
+					{
+						geomNode.BakedUV = new RectInt(geomNode.BakedUV.position, geomNode.BoxUVBounds);
+					}
+				}
+			}
+			GUILayout.EndHorizontal();
+			
 		}
-		GUILayout.EndHorizontal();
 
 		FlanimationDefinition changedAnimSet = (FlanimationDefinition)EditorGUILayout.ObjectField(AnimationSet, typeof(FlanimationDefinition), true);
 		if(changedAnimSet != AnimationSet)
@@ -128,12 +144,12 @@ public class TurboRootNode : SkinnableRootNode
 		base.GetVerifications(verifications);
 		if (!HasUVMap())
 		{
-			NumUVsToRemap(out int numToRemap, out int totalNum);
+			NumUVsToRemap(out int numToRemap, out int numSus, out int totalNum);
 			if (totalNum == 0)
 			{
 				verifications.Success("No UV map needed");
 			}
-			else if(numToRemap == totalNum)
+			else if((numToRemap + numSus) == totalNum)
 			{
 				verifications.Failure("UV map has not been calculated",
 					() =>
@@ -144,7 +160,7 @@ public class TurboRootNode : SkinnableRootNode
 			}
 			else
 			{
-				verifications.Failure($"UV map has {numToRemap} missing pieces",
+				verifications.Failure($"UV map has {numToRemap + numSus} missing pieces",
 					() => { 
 						ApplyAutoUV(out UVMap ignore);
 						return this;

@@ -11,7 +11,7 @@ public static class Minecraft
 	public static readonly Vector3 Down = new Vector3(0f, -1f, 0f);
 	public static readonly Vector3 Back = new Vector3(0f, 0f, 1f);
 
-	public static Vector3 XYZ(float x, float y, float z) { return new Vector3(x, y, -z);  }
+	public static Vector3 XYZ(float x, float y, float z) { return new Vector3(x, y, -z); }
 
 	public static Quaternion Euler(Vector3 v)
 	{

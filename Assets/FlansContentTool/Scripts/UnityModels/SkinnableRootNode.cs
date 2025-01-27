@@ -19,15 +19,21 @@ public abstract class SkinnableRootNode : RootNode
 		}
 		return false;
 	}
-	public void NumUVsToRemap(out int numToRemap, out int totalNum)
+	public void NumUVsToRemap(out int numToRemap, out int numPossiblySet, out int totalNum)
 	{
 		numToRemap = 0;
 		totalNum = 0;
+		numPossiblySet = 0;
 		foreach (GeometryNode geomNode in GetAllDescendantNodes<GeometryNode>())
 		{
 			totalNum++;
 			if (!HasUVMap() || !geomNode.IsUVMapCurrent())
-				numToRemap++;
+			{
+				if (geomNode.BakedUV.position.x == 0 || geomNode.BakedUV.position.y == 0)
+					numToRemap++;
+				else
+					numPossiblySet++;
+			}
 		}
 	}
 	public UVMap ToMap()
@@ -89,7 +95,8 @@ public abstract class SkinnableRootNode : RootNode
 		newSkinTexture.name = Textures.Count == 0 ? "default" : newSkinName;
 		ApplyAutoUV(out UVMap resultMap);
 		SkinGenerator.CreateDefaultTexture(ToMap(), newSkinTexture);
-		
+
+		Directory.CreateDirectory(new FileInfo(fullPath).Directory.FullName);
 		File.WriteAllBytes(fullPath, newSkinTexture.EncodeToPNG());
 		AssetDatabase.Refresh();
 		newSkinTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
@@ -125,7 +132,7 @@ public abstract class SkinnableRootNode : RootNode
 		newMat.SetTexture("_MainTex", tex);
 		newMat.EnableKeyword("_NORMALMAP");
 		newMat.EnableKeyword("_DETAIL_MULX2");
-		newMat.SetOverrideTag("RenderType", "Cutout");
+		newMat.SetOverrideTag("RenderType", "TransparentCutout");
 
 #if UNITY_EDITOR
 		// In Editor, we cache this material on disk
