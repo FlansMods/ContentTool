@@ -114,6 +114,14 @@ public class AttachPointNode : Node
 				Gizmos.DrawLine(Vector3.zero, Minecraft.Forward * 5.0f);
 				Gizmos.DrawWireCube(Minecraft.Forward * 2f, new Vector3(1f, 1f, 4f));
 				break;
+			case "casing_eject":
+				Gizmos.color = Color.yellow;
+				Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
+				Gizmos.DrawLine(Vector3.zero, Minecraft.XYZ(1.5f, 2f, 0f));
+				Gizmos.DrawLine(Minecraft.XYZ(1.5f, 2f, 0f), Minecraft.XYZ(3f, 2.5f, 0f));
+				Gizmos.DrawLine(Minecraft.XYZ(3f, 2.5f, 0f), Minecraft.XYZ(4.5f, 2f, 0f));
+				Gizmos.DrawCube(Minecraft.XYZ(4.5f, 2f, 0f), new Vector3(0.5f, 0.5f, 2.0f));
+				break;
 			default:
 				Gizmos.color = Color.green;
 				Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.4f);
