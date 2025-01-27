@@ -141,7 +141,7 @@ public static class JavaModelImporter
 			{
 				BoxUVPlacement placement = TempUVStorage.GetPlacedPatch($"{sectionNode.PartName}/{geomNode.name.Substring("part_".Length)}");
 				if (placement != null)
-					geomNode.BakedUV = placement.Bounds;
+					geomNode.BakedUV = new RectInt(placement.Origin, geomNode.BoxUVBounds);
 				else
 					logger?.Failure($"Failed to match a UV patch for {geomNode.name}");
 
@@ -568,7 +568,7 @@ public static class JavaModelImporter
 		if (match.Success)
 		{
 			// Run the function
-			string function = Utils.ConvertPartName(match.Groups[1].Value);
+			string function = match.Groups[1].Value;
 			string parameters = match.Groups[2].Value;
 
 			switch (function)
