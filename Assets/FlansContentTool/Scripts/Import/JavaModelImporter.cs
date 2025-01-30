@@ -503,7 +503,7 @@ public static class JavaModelImporter
 			string sectionName = Minecraft.ConvertPartName(match.Groups[1].Value);
 			SectionNode sectionNode = ConvertToNodes.GetOrCreateSectionNode(rootNode, sectionName);
 			string pieceName = $"part_{int.Parse(match.Groups[2].Value)}";
-			if (sectionNode.TryFindChild(pieceName, out GeometryNode geomNode))
+			if (sectionNode.TryFindDescendant(pieceName, out GeometryNode geomNode))
 			{
 				// Then run the function
 				string field = match.Groups[3].Value;
